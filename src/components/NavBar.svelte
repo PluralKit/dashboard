@@ -6,14 +6,15 @@
     IconShare3,
     IconUsers,
     IconBoxMultiple,
-    IconAdjustments
+    IconAdjustments,
+    IconPaint,
   } from "@tabler/icons-svelte"
 </script>
 
 <div class="navbar bg-base-100">
   <div class="navbar-start">
     <div class="dropdown">
-      <button class="btn btn-ghost lg:hidden">
+      <button class="btn btn-ghost md:hidden">
         <IconMenu2 />
       </button>
       <ul class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
@@ -30,7 +31,7 @@
     </div>
     <a href="/" class="btn btn-ghost text-xl">PluralKit</a>
   </div>
-  <div class="navbar-center hidden lg:flex">
+  <div class="navbar-center hidden md:flex">
     <ul class="menu menu-horizontal px-1">
       <li>
         <a
@@ -44,6 +45,7 @@
     </ul>
   </div>
   <div class="navbar-end">
+    <a href="/settings#theme" class="mr-4 tooltip tooltip-bottom" data-tip="Change theme"><IconPaint /></a>
     <div class="dropdown dropdown-left">
       <button class="mr-2">
         <div class="avatar">
