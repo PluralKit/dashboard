@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { System } from "$api/types"
   import {
     IconMenu2,
     IconBook,
@@ -10,6 +11,9 @@
     IconPaint,
     IconLogout,
   } from "@tabler/icons-svelte"
+  import { getContext } from "svelte"
+
+  const system: System = getContext<System>("system") || null
 </script>
 
 <div class="navbar bg-base-100">
@@ -46,26 +50,36 @@
     </ul>
   </div>
   <div class="navbar-end">
-    <a href="/settings#theme" class="mr-4 tooltip tooltip-bottom" data-tip="Change theme"><IconPaint /></a>
-    <div class="dropdown dropdown-left">
-      <button class="mr-2">
-        <div class="avatar">
-          <div class="w-12 rounded-full">
-            <img alt="your avatar" src="https://media.pals.gay/pk/Radian-proxy_1.png" />
-          </div>
-        </div>
-      </button>
-      <ul class="menu menu-sm menu-dropdown dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-36">
-        <li><a href="/dash/system"><IconAdjustments /> System</a></li>
-        <li><a href="/dash/members"><IconUsers /> Members</a></li>
-        <li><a href="/dash/groups"><IconBoxMultiple /> Groups</a></li>
-        <div class="divider divider-neutral my-1"></div>
-        <li>
-          <form method="post" action="/?/logout">
-            <IconLogout /> <input class="text-error w-min" type="submit" value="Logout" />
-          </form>
-        </li>
-      </ul>
-    </div>
+    <a href="/settings#theme" class="mr-4 tooltip tooltip-left" data-tip="Change theme"><IconPaint /></a>
+    {#if system}
+      <div class="dropdown dropdown-left">
+        <button class="mr-2">
+          {#if system.avatar_url}
+            <div class="avatar">
+              <div class="w-12 rounded-full">
+                <img alt="your system avatar" src={system.avatar_url} />
+              </div>
+            </div>
+          {:else}
+            <div class="avatar">
+              <div class="w-12 rounded-full">
+                <img alt="An icon of myriad" src="/myriad_write.png" />
+              </div>
+            </div>
+          {/if}
+        </button>
+        <ul class="menu menu-sm menu-dropdown dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-36">
+          <li><a href="/dash/system"><IconAdjustments /> System</a></li>
+          <li><a href="/dash/members"><IconUsers /> Members</a></li>
+          <li><a href="/dash/groups"><IconBoxMultiple /> Groups</a></li>
+          <div class="divider divider-neutral my-1"></div>
+          <li>
+            <form method="post" action="/?/logout">
+              <IconLogout /> <input class="text-error w-min" type="submit" value="Logout" />
+            </form>
+          </li>
+        </ul>
+      </div>
+    {/if}
   </div>
 </div>
