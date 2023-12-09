@@ -8,11 +8,11 @@
   export let data: PageData
   export let form: ActionData
 
-  if (data.logout && browser) {
+  const system: System = getContext<System>("system") || null
+
+  if (!system && browser) {
     localStorage.removeItem("pk-token")
   }
-
-  const system: System = getContext<System>("system") || null
 </script>
 
 <div class="hero bg-base-200">
@@ -41,7 +41,7 @@
         <p class="pb-6">TODO: explain what the dash is here?</p>
       </div>
       <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-        <form class="card-body" action="/?/login" method="post" use:enhance>
+        <form class="card-body" action="/?/login" method="post" data-sveltekit-reload>
           {#if data.error}
             <span class="text-error">{data.error}</span>
           {/if}

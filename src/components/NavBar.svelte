@@ -74,7 +74,7 @@
           <li><a href="/dash/groups"><IconBoxMultiple /> Groups</a></li>
           <div class="divider divider-neutral my-1"></div>
           <li>
-            <form method="post" action="/?/logout">
+            <form method="post" action="/?/logout" data-sveltekit-reload>
               <IconLogout /> <input class="text-error w-min" type="submit" value="Logout" />
             </form>
           </li>

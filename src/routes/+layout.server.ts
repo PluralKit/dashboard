@@ -11,7 +11,7 @@ export async function load({ cookies }) {
   if (token) {
     const api = apiClient(fetch)
     try {
-      system = await login(api, token, cookies)
+      system = await login(api, cookies)
     } catch (err) {
       return {
         error: (err as Error).message,

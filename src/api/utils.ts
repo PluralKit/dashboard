@@ -3,15 +3,13 @@ import type { Cookies } from "@sveltejs/kit"
 import { env } from "$env/dynamic/private"
 import type { System } from "./types"
 
-export async function login(api: ApiClient, token: string, cookies: Cookies): Promise<System> {
+export async function login(api: ApiClient, cookies: Cookies): Promise<System | null> {
   try {
+    const token = cookies.get("pk-token")
+    if (!token) return null
+
     let system = await api<System>(`systems/@me`, {
       token: token as string,
-    })
-
-    cookies.set("pk-token", token, {
-      path: "/",
-      secure: env.NODE_ENV !== "development",
     })
 
     if (system) return system

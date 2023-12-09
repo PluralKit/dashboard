@@ -1,13 +1,5 @@
 import { redirect, type Actions } from "@sveltejs/kit"
 import { env } from "$env/dynamic/private"
-import apiClient from "$api"
-import { login } from "$api/utils"
-
-export async function load({ url }) {
-  return {
-    logout: url.searchParams.get("logout") === "true" ? true : false,
-  }
-}
 
 export const actions = {
   login: async ({ request, fetch, cookies }) => {
@@ -19,16 +11,12 @@ export const actions = {
         error: "Token is required.",
       }
 
-    const api = apiClient(fetch)
+    cookies.set("pk-token", token as string, {
+      path: "/",
+      secure: env.NODE_ENV !== "development",
+    })
 
-    try {
-      await login(api, token as string, cookies)
-      throw redirect(302, "/")
-    } catch (err) {
-      return {
-        error: (err as Error).message,
-      }
-    }
+    throw redirect(302, "/")
   },
 
   logout: async ({ cookies }) => {
@@ -37,6 +25,6 @@ export const actions = {
       secure: env.NODE_ENV !== "development",
     })
 
-    throw redirect(302, "/?logout=true")
+    throw redirect(302, "/")
   },
 } satisfies Actions
