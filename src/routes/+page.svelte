@@ -41,7 +41,7 @@
         <p class="pb-6">TODO: explain what the dash is here?</p>
       </div>
       <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-        <form class="card-body" action="/?/login" method="post" data-sveltekit-reload>
+        <form class="card-body" action="/?/login" method="post">
           {#if data.error}
             <span class="text-error">{data.error}</span>
           {/if}
