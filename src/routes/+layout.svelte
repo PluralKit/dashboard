@@ -5,6 +5,7 @@
   import "$lib/app.css"
   import type { LayoutData } from "./$types"
   import type { System } from "$api/types"
+  import Footer from "$components/Footer.svelte"
 
   export let data: LayoutData
 
@@ -19,5 +20,8 @@
 
 <div class="w-screen min-h-screen bg-base-100 flex flex-col" data-theme={data.theme}>
   <NavBar />
-  <slot />
+  <div class="flex flex-col flex-1">
+    <slot />
+  </div>
+  <Footer />
 </div>
