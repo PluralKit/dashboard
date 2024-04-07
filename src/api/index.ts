@@ -1,4 +1,4 @@
-interface APIOptions {
+export interface ApiOptions {
   token?: string
   headers?: Record<string, string>
   method?: string
@@ -22,10 +22,10 @@ export interface ApiError {
 
 export type SvelteFetch = (input: RequestInfo, init?: RequestInit | undefined) => Promise<Response>
 
-export type ApiClient = <T>(path: string, options?: APIOptions) => Promise<T | undefined>
+export type ApiClient = <T>(path: string, options?: ApiOptions) => Promise<T | undefined>
 
-export default function apiClient(fetch: SvelteFetch) {
-  const api = async function <T>(path: string, options?: APIOptions): Promise<T | undefined> {
+export default function apiClient(fetch: SvelteFetch): ApiClient {
+  const api: ApiClient = async function <T>(path: string, options?: ApiOptions): Promise<T | undefined> {
     const resp = await fetch(`https://api.pluralkit.me/v2/${path}`, {
       method: (options && options.method) || "GET",
       headers: {
@@ -64,4 +64,24 @@ async function parseError(resp: Response): Promise<ApiError> {
   }
 
   throw err
+}
+
+export async function queue(api: ApiClient, requests: { path: string; options: ApiOptions }[]) {
+  let errors: ApiError[] = []
+  let results: any[] = []
+  for (const req of requests) {
+    try {
+      let res = await api(req.path, req.options)
+      results.push(res)
+    } catch (err) {
+      let e = err as ApiError
+      errors.push(e)
+    }
+
+    // await new Promise(resolve => setTimeout)
+  }
+  errors.forEach((e) => {
+    throw e
+  })
+  return results
 }

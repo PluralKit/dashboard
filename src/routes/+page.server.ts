@@ -16,7 +16,7 @@ export const actions = {
       secure: env.NODE_ENV !== "development",
     })
 
-    redirect(302, "/");
+    redirect(302, "/")
   },
 
   logout: async ({ cookies }) => {
@@ -24,7 +24,11 @@ export const actions = {
       path: "/",
       secure: env.NODE_ENV !== "development",
     })
+    cookies.delete("pk-sid", {
+      path: "/",
+      secure: env.NODE_ENV !== "development",
+    })
 
-    redirect(302, "/");
+    redirect(302, "/")
   },
 } satisfies Actions
