@@ -63,6 +63,7 @@ export interface Member {
   created?: string
   keep_proxy?: boolean
   system?: string
+  message_count?: number
   proxy_tags?: Array<proxytag>
   privacy?: MemberPrivacy
 }

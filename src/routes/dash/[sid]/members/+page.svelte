@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import { dash } from "$lib/dash/dash.svelte"
+  import { FilterMode } from "$lib/dash/filters"
   import { getDashLink } from "$lib/dash/utils"
 </script>
 
@@ -13,7 +14,7 @@
   </div>
   <main class="prose">
     <ol>
-      {#each dash.members as member (member.uuid)}
+      {#each dash.members.list as member (member.uuid)}
         <li><b>{member.name}:</b> ({member.id})</li>
       {/each}
     </ol>

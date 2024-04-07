@@ -18,7 +18,7 @@
       {:else}
         This system currently has registered
       {/if}
-      {dash.members.length} members and {dash.groups.length} groups!
+      {dash.members.list.length} members and {dash.groups.length} groups!
     </p>
   </main>
 </div>

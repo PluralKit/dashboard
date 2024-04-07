@@ -1,4 +1,5 @@
 import type { Group, Member, System } from "$api/types"
+import { filterList, type Filter, type FilterGroup } from "./filters"
 
 export enum PrivacyMode {
   PUBLIC,
@@ -15,7 +16,19 @@ function createDash() {
   let groupList = $state(createGroupListState())
   return {
     get members() {
-      return memberList.members
+      return {
+        list: memberList.members,
+        filters: {
+          list: memberList.filters,
+          append: memberList.appendFilter,
+          replace: memberList.replaceFilter,
+          delete: memberList.removeFilter,
+          insert: memberList.insertFilter,
+          apply: memberList.applyFilters,
+          clear: memberList.clearFilters,
+        },
+        process: memberList.processList,
+      }
     },
     get groups() {
       return groupList.groups
@@ -53,11 +66,39 @@ function createSystemState() {
 
 function createMemberListState() {
   let members: Member[] = $state([])
+  let processedMembers: Member[] = $state([])
+
+  let filters: FilterGroup[] = $state([])
   return {
     get members() {
-      return members
+      return processedMembers
     },
-    init: (data: Member[]) => (members = data),
+    get filters() {
+      return filters
+    },
+    processList: function () {
+      this.applyFilters()
+    },
+    clearFilters: () => {
+      filters = []
+    },
+    applyFilters: () => {
+      processedMembers = filterList<Member>(members, filters)
+    },
+    appendFilter: (filter: FilterGroup) => filters.push(filter),
+    removeFilter: (index: number) => {
+      filters.splice(index, 1)
+    },
+    replaceFilter: (filter: FilterGroup, index: number) => {
+      filters.splice(index, 1, filter)
+    },
+    insertFilter: (filter: FilterGroup, index: number) => {
+      filters.splice(index, 0, filter)
+    },
+    init: (data: Member[]) => {
+      members = data
+      processedMembers = data
+    },
   }
 }
 
