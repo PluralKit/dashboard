@@ -10,6 +10,9 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
 
   // if we have a tab url param, convert that to a subpage
   const tab = url.searchParams.get("tab") || ""
+
+  // save the rest of the searchparams (without the tab)
+  // so we can save that for further processing later
   let searchParams = url.searchParams.toString()
   searchParams = searchParams.replace(/tab=.*?(?:&|$)/, "")
 
@@ -29,8 +32,9 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
     const api = apiClient(fetch)
 
     // if the param system id matches the cookie system id
+    // AND we aren't forcing public mode
     // we can go ahead and fetch using the token
-    if (params.sid === sid) {
+    if (params.sid === sid && !url.searchParams.get("public")) {
       try {
         const { system, members, groups } = await getDashInfo(api, sid || "@me", token)
         return {

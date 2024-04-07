@@ -26,6 +26,9 @@ function createDash() {
     get privacyMode() {
       return privacyMode
     },
+    get sid() {
+      return dash.system.id || ""
+    },
     init: (system: System, members: Member[], groups: Group[], mode: PrivacyMode) => {
       systemData.init(system)
       memberList.init(members)
