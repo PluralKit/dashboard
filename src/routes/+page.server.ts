@@ -16,7 +16,7 @@ export const actions = {
       secure: env.NODE_ENV !== "development",
     })
 
-    throw redirect(302, "/")
+    redirect(302, "/");
   },
 
   logout: async ({ cookies }) => {
@@ -25,6 +25,6 @@ export const actions = {
       secure: env.NODE_ENV !== "development",
     })
 
-    throw redirect(302, "/")
+    redirect(302, "/");
   },
 } satisfies Actions

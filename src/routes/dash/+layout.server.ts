@@ -5,7 +5,7 @@ import { error } from "@sveltejs/kit"
 export async function load({ cookies, fetch }) {
   const token = cookies.get("pk-token")
 
-  if (!token) throw error(401, "Missing token.")
+  if (!token) error(401, "Missing token.");
 
   const api = apiClient(fetch)
 
@@ -17,7 +17,7 @@ export async function load({ cookies, fetch }) {
       })) || []
   } catch (err) {
     let e = err as ApiError
-    if (e.type === ErrorType.InvalidToken) throw error(401, "Invalid token.")
+    if (e.type === ErrorType.InvalidToken) error(401, "Invalid token.");
     else {
       console.log(e)
       throw e
