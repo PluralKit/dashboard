@@ -9,9 +9,9 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
   const sid = cookies.get("pk-sid")
 
   // if we have a tab url param, convert that to a subpage
-  let tab = url.searchParams.get("tab") || ""
-  let searchParams = { ...url.searchParams }
-  if (searchParams.size > 0) searchParams.delete("tab")
+  const tab = url.searchParams.get("tab") || ""
+  let searchParams = url.searchParams.toString()
+  searchParams = searchParams.replace(/tab=.*?(?:&|$)/, "")
 
   // if we don't have a system id, assume old dash link
   // redirect to the new dash link if we have a token
@@ -61,5 +61,5 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
   }
 }
 
-const getRedirectLink = (sid: string, tab: string, searchParams: URLSearchParams) =>
-  `/dash/${sid}${tab ? `/${tab}` : ""}${searchParams.size > 0 ? `?${searchParams.toString()}` : ""}`
+const getRedirectLink = (sid: string, tab: string, searchParams: string) =>
+  `/dash/${sid}${tab ? `/${tab}` : ""}${searchParams.length > 0 ? `?${searchParams}` : ""}`

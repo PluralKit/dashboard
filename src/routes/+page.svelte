@@ -1,14 +1,12 @@
 <script lang="ts">
   import { browser } from "$app/environment"
-  import { enhance } from "$app/forms"
-  import { getContext } from "svelte"
   import type { ActionData, PageData } from "./$types"
-  import type { System } from "$api/types"
+  import { dash } from "$lib/dash/dash.svelte"
 
   export let data: PageData
   export let form: ActionData
 
-  const system: System = getContext<System>("system") || null
+  let system = dash.system
 
   if (!system && browser) {
     localStorage.removeItem("pk-token")

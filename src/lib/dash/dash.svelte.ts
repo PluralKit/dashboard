@@ -32,6 +32,9 @@ function createDash() {
       groupList.init(groups)
       privacyMode = mode
     },
+    initSystem: (system: System) => {
+      systemData.init(system)
+    },
   }
 }
 

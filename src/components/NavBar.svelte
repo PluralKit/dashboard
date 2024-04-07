@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { System } from "$api/types"
   import {
     IconMenu2,
     IconBook,
@@ -10,10 +9,11 @@
     IconAdjustments,
     IconPaint,
     IconLogout,
+    IconAddressBook,
   } from "@tabler/icons-svelte"
-  import { getContext } from "svelte"
+  import { dash } from "$lib/dash/dash.svelte"
 
-  const system: System = getContext<System>("system") || null
+  let system = dash.system
 </script>
 
 <div class="navbar bg-base-100">
@@ -69,9 +69,10 @@
           {/if}
         </button>
         <ul class="menu menu-sm menu-dropdown dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-36">
-          <li><a href="/dash/system"><IconAdjustments /> System</a></li>
-          <li><a href="/dash/members"><IconUsers /> Members</a></li>
-          <li><a href="/dash/groups"><IconBoxMultiple /> Groups</a></li>
+          <li><a href={`/dash/${dash.system.id}`}><IconAdjustments /> Overview</a></li>
+          <li><a href={`/dash/${dash.system.id}/system`}><IconAddressBook /> System</a></li>
+          <li><a href={`/dash/${dash.system.id}/members`}><IconUsers /> Members</a></li>
+          <li><a href={`/dash/${dash.system.id}/groups`}><IconBoxMultiple /> Groups</a></li>
           <div class="divider divider-neutral my-1"></div>
           <li>
             <form method="post" action="/?/logout">
