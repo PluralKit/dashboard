@@ -1,5 +1,6 @@
 import type { Group, Member, System } from "$api/types"
 import { filterList, type Filter, type FilterGroup } from "./filters"
+import { sortList, type Sort } from "./sorts"
 
 export enum PrivacyMode {
   PUBLIC,
@@ -27,8 +28,15 @@ function createDash() {
           replace: memberList.replaceFilter,
           delete: memberList.removeFilter,
           insert: memberList.insertFilter,
-          apply: memberList.applyFilters,
           clear: memberList.clearFilters,
+        },
+        sorts: {
+          list: memberList.sorts,
+          append: memberList.appendSort,
+          replace: memberList.replaceSort,
+          delete: memberList.removeSort,
+          insert: memberList.insertSort,
+          clear: memberList.clearSorts,
         },
         process: memberList.processList,
       }
@@ -82,6 +90,8 @@ function createMemberListState() {
   let processedMembers: Member[] = $state([])
 
   let filters: FilterGroup[] = $state([])
+  let sorts: Sort[] = $state([])
+
   return {
     get members() {
       return processedMembers
@@ -89,14 +99,15 @@ function createMemberListState() {
     get filters() {
       return filters
     },
+    get sorts() {
+      return sorts
+    },
     processList: function () {
-      this.applyFilters()
+      processedMembers = filterList(members, filters)
+      processedMembers = sortList(processedMembers, sorts)
     },
     clearFilters: () => {
       filters = []
-    },
-    applyFilters: () => {
-      processedMembers = filterList<Member>(members, filters)
     },
     appendFilter: (filter: FilterGroup) => filters.push(filter),
     removeFilter: (index: number) => {
@@ -107,6 +118,19 @@ function createMemberListState() {
     },
     insertFilter: (filter: FilterGroup, index: number) => {
       filters.splice(index, 0, filter)
+    },
+    clearSorts: () => {
+      sorts = []
+    },
+    appendSort: (sort: Sort) => sorts.push(sort),
+    removeSort: (index: number) => {
+      sorts.splice(index, 1)
+    },
+    replaceSort: (sort: Sort, index: number) => {
+      sorts.splice(index, 1, sort)
+    },
+    insertSort: (sort: Sort, index: number) => {
+      sorts.splice(index, 0, sort)
     },
     init: (data: Member[]) => {
       members = data

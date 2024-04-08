@@ -1,8 +1,5 @@
 <script lang="ts">
-  import { page } from "$app/stores"
   import { dash } from "$lib/dash/dash.svelte"
-  import { FilterMode } from "$lib/dash/filters"
-  import { getDashLink } from "$lib/dash/utils"
 </script>
 
 <main class="prose">

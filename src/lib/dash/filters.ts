@@ -1,5 +1,3 @@
-import type { Group, Member } from "$api/types"
-
 export interface FilterGroup {
   mode: "and" | "or"
   filters: Filter[]
@@ -64,7 +62,8 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
         switch (typeof i[field]) {
           // string: include any with substring
           case "string": {
-            if ((i[field] as string).toLowerCase().includes((value as string).toLowerCase())) return true
+            if ((i[field] as string).toLowerCase().includes((value as string).toLowerCase()))
+              return true
             else return false
           }
           default:
@@ -77,7 +76,8 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
         switch (typeof i[field]) {
           // string: include any with substring
           case "string": {
-            if ((i[field] as string).toLowerCase().includes((value as string).toLowerCase())) return false
+            if ((i[field] as string).toLowerCase().includes((value as string).toLowerCase()))
+              return false
             else return true
           }
           default:
