@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer components {
+  hr {
+    @apply border-base-content/25
+  }
+
   .btn-menu {
     @apply px-4 py-2 h-auto min-h-0 justify-start;
   }
