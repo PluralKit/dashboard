@@ -4,7 +4,7 @@
 </script>
 
 <div
-  class={`flex flex-col gap-4 ${
+  class={`flex flex-col gap-3 sm:gap-4 ${
     dash.settings.display?.forceControlsAtTop === true ? "" : "lg:flex-1"
   }`}
 >

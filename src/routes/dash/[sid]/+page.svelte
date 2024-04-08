@@ -37,7 +37,7 @@
   </div>
 </div>
 
-<div class="mx-auto flex flex-col flex-1 bg-base-200 w-full p-6 px-4 sm:px-6 xl:px-8">
+<div class="mx-auto flex flex-col flex-1 bg-base-200 w-full p-6 px-2 sm:px-4 lg:px-6 xl:px-8">
   {#if dash.tab === "overview"}
     <Overview />
   {:else if dash.tab === "system"}

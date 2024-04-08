@@ -22,7 +22,7 @@
     : ""}
 >
   <input type="checkbox" bind:checked={open} />
-  <div class="collapse-title pr-4 py-2 text-xl font-medium flex justify-between items-center">
+  <div class="collapse-title px-2 py-2 lg:px-4 text-xl font-medium flex justify-between items-center">
     <span class="h-min">{item.name} <span class="font-light">({item.id})</span></span>
     <div class="h-14">
       {#if type === "member"}
@@ -31,7 +31,7 @@
     </div>
   </div>
   <div
-    class="collapse-content"
+    class="collapse-content px-2 lg:px-4"
     style={item.color && !dash.settings.display?.fullColorBorder
       ? `border-color: #${item.color}; border-left-width: 6px;`
       : ""}
@@ -54,7 +54,7 @@
         onclick={() => (tab = "groups")}>{type === "member" ? "Groups" : "Members"}</button
       >
     </div>
-    <div class="tab-contents flex flex-col rounded-b-lg p-4 bg-base-200">
+    <div class="tab-contents flex flex-col rounded-b-lg p-2 lg:p-4 bg-base-200">
       {#if type === "member"}
         {@render memberTabs(item, tab)}
       {/if}
