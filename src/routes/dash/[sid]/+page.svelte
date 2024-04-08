@@ -7,26 +7,31 @@
   import { getDashLink } from "$lib/dash/utils"
 </script>
 
-<div role="tablist" class="tabs tabs-boxed mb-3">
+<div role="tablist" class="tabs tabs-boxed mb-3 grid-cols-2 md:grid-cols-none">
   <button
     role="tab"
-    class={`tab ${dash.tab === "overview" ? "tab-active" : ""}`}
+    class={`tab ${dash.tab === "overview" ? "tab-active" : ""} row-auto md:row-start-1`}
     onclick={() => (dash.tab = "overview")}>Overview</button
   >
   <button
     role="tab"
-    class={`tab ${dash.tab === "system" ? "tab-active" : ""}`}
+    class={`tab ${dash.tab === "system" ? "tab-active" : ""} row-auto md:row-start-1`}
     onclick={() => (dash.tab = "system")}>System</button
   >
   <button
     role="tab"
-    class={`tab ${dash.tab === "members" ? "tab-active" : ""}`}
+    class={`tab ${dash.tab === "members" ? "tab-active" : ""} row-auto md:row-start-1`}
     onclick={() => (dash.tab = "members")}>Members</button
   >
   <button
     role="tab"
-    class={`tab ${dash.tab === "groups" ? "tab-active" : ""}`}
+    class={`tab ${dash.tab === "groups" ? "tab-active" : ""} row-auto md:row-start-1`}
     onclick={() => (dash.tab = "groups")}>Groups</button
+  >
+  <button
+    role="tab"
+    class={`tab ${dash.tab === "switches" ? "tab-active" : ""} row-auto md:row-start-1`}
+    onclick={() => (dash.tab = "switches")}>Switches</button
   >
 </div>
 
@@ -38,6 +43,8 @@
   <MemberHome />
 {:else if dash.tab === "groups"}
   <GroupHome />
+{:else if dash.tab === "switches"}
+  <p>switch history oooo</p>
 {:else}
   <p>How did you get here?</p>
 {/if}
