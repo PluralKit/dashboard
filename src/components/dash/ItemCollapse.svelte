@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
   import { dash } from "$lib/dash/dash.svelte"
+  import { IconLock, IconShare } from "@tabler/icons-svelte"
+  import MemberView from "./members/MemberView.svelte"
 
   let {
     type,
@@ -12,7 +14,7 @@
     open?: boolean
   } = $props()
 
-  let tab: "view" | "edit" | "groups" = $state("view")
+  let tab: "view" | "info" | "groups" = $state("view")
 </script>
 
 <div
@@ -23,8 +25,17 @@
 >
   <input type="checkbox" bind:checked={open} />
   <div class="collapse-title px-2 py-2 lg:px-4 text-xl font-medium flex justify-between items-center">
-    <span class="h-min">{item.name} <span class="font-light">({item.id})</span></span>
-    <div class="h-14">
+    <div class="flex items-center">
+      <div class="mr-3">
+        {#if item.privacy && item.privacy.visibility === "public"}
+          <IconShare />
+        {:else}
+          <IconLock />
+        {/if}
+      </div>
+      <span class="h-min">{item.name} <span class="font-light">({item.id})</span></span>
+    </div>
+    <div class="h-14 ml-3">
       {#if type === "member"}
         {@render memberIcon(item)}
       {/if}
@@ -45,8 +56,8 @@
       >
       <button
         role="tab"
-        class={`tab ${tab === "edit" ? "tab-active bg-base-200" : ""}`}
-        onclick={() => (tab = "edit")}>Edit</button
+        class={`tab ${tab === "info" ? "tab-active bg-base-200" : ""}`}
+        onclick={() => (tab = "info")}>Info</button
       >
       <button
         role="tab"
@@ -62,16 +73,8 @@
   </div>
 </div>
 
-{#snippet memberTabs(member: Member, tab: "view"|"edit"|"groups")}
-  {#if tab === "view"}
-    hi {member.name}!
-  {:else if tab === "edit"}
-    oooo an edit tab
-  {:else if tab === "groups"}
-    group info goes here :D
-  {:else}
-    what. how
-  {/if}
+{#snippet memberTabs(member: Member, tab: "view"|"info"|"groups")}
+    <MemberView {member} {tab} />
 {/snippet}
 
 {#snippet memberIcon(member: Member)}
