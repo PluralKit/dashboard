@@ -50,7 +50,9 @@
     </ul>
   </div>
   <div class="navbar-end">
-    <a href="/settings#theme" class="mr-4 tooltip tooltip-left" data-tip="Change theme"><IconPaint /></a>
+    <a href="/settings#theme" class="mr-4 tooltip tooltip-left" data-tip="Change theme"
+      ><IconPaint /></a
+    >
     {#if user}
       <div class="dropdown dropdown-left">
         <button class="mr-2">
@@ -68,11 +70,13 @@
             </div>
           {/if}
         </button>
-        <ul class="menu menu-sm menu-dropdown dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-36">
-          <li><a href={`/dash/${user?.id}`}><IconAdjustments /> Overview</a></li>
-          <li><a href={`/dash/${user?.id}/system`}><IconAddressBook /> System</a></li>
-          <li><a href={`/dash/${user?.id}/members`}><IconUsers /> Members</a></li>
-          <li><a href={`/dash/${user?.id}/groups`}><IconBoxMultiple /> Groups</a></li>
+        <ul
+          class="menu menu-sm menu-dropdown dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-36"
+        >
+          <li><a href={`/dash/${user?.id}?tab=overview`}><IconAdjustments /> Overview</a></li>
+          <li><a href={`/dash/${user?.id}?tab=system`}><IconAddressBook /> System</a></li>
+          <li><a href={`/dash/${user?.id}?tab=members`}><IconUsers /> Members</a></li>
+          <li><a href={`/dash/${user?.id}?tab=groups`}><IconBoxMultiple /> Groups</a></li>
           <div class="divider divider-neutral my-1"></div>
           <li>
             <form method="post" action="/?/logout">

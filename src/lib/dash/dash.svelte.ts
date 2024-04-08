@@ -15,6 +15,8 @@ function createDash() {
   let systemData = $state(createSystemState())
   let memberList = $state(createMemberListState())
   let groupList = $state(createGroupListState())
+
+  let tab: string = $state("")
   return {
     get members() {
       return {
@@ -54,6 +56,13 @@ function createDash() {
     },
     initUser: (system: System | null) => {
       user = system
+    },
+    get tab() {
+      return tab
+    },
+    set tab(newTab: string) {
+      if (!newTab) newTab = "overview"
+      tab = newTab
     },
   }
 }

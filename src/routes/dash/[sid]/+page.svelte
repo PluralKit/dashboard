@@ -1,22 +1,43 @@
 <script lang="ts">
-  import { dash, PrivacyMode } from "$lib/dash/dash.svelte"
+  import GroupHome from "$components/dash/groups/GroupHome.svelte"
+  import MemberHome from "$components/dash/members/MemberHome.svelte"
+  import Overview from "$components/dash/overview/Overview.svelte"
+  import SystemHome from "$components/dash/system/SystemHome.svelte"
+  import { dash } from "$lib/dash/dash.svelte"
   import { getDashLink } from "$lib/dash/utils"
-  import { page } from "$app/stores"
 </script>
 
 <div role="tablist" class="tabs tabs-boxed mb-3">
-  <a role="tab" class="tab tab-active" href={getDashLink(dash.sid, "", $page.url.searchParams)}>Overview</a>
-  <a role="tab" class="tab" href={getDashLink(dash.sid, "system", $page.url.searchParams)}>System</a>
-  <a role="tab" class="tab" href={getDashLink(dash.sid, "members", $page.url.searchParams)}>Members</a>
-  <a role="tab" class="tab" href={getDashLink(dash.sid, "groups", $page.url.searchParams)}>Groups</a>
+  <button
+    role="tab"
+    class={`tab ${dash.tab === "overview" ? "tab-active" : ""}`}
+    onclick={() => (dash.tab = "overview")}>Overview</button
+  >
+  <button
+    role="tab"
+    class={`tab ${dash.tab === "system" ? "tab-active" : ""}`}
+    onclick={() => (dash.tab = "system")}>System</button
+  >
+  <button
+    role="tab"
+    class={`tab ${dash.tab === "members" ? "tab-active" : ""}`}
+    onclick={() => (dash.tab = "members")}>Members</button
+  >
+  <button
+    role="tab"
+    class={`tab ${dash.tab === "groups" ? "tab-active" : ""}`}
+    onclick={() => (dash.tab = "groups")}>Groups</button
+  >
 </div>
-<main>
-  <p>
-    {#if dash.privacyMode === PrivacyMode.PRIVATE}
-      You currently have registered
-    {:else}
-      This system currently has registered
-    {/if}
-    {dash.members.list.length} members and {dash.groups.length} groups!
-  </p>
-</main>
+
+{#if dash.tab === "overview"}
+  <Overview />
+{:else if dash.tab === "system"}
+  <SystemHome />
+{:else if dash.tab === "members"}
+  <MemberHome />
+{:else if dash.tab === "groups"}
+  <GroupHome />
+{:else}
+  <p>How did you get here?</p>
+{/if}

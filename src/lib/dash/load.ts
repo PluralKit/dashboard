@@ -8,25 +8,14 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
   const token = cookies.get("pk-token")
   const sid = cookies.get("pk-sid")
 
-  // if we have a tab url param, convert that to a subpage
-  const tab = url.searchParams.get("tab") || ""
-
-  // save the rest of the searchparams (without the tab)
-  // so we can save that for further processing later
-  let searchParams = url.searchParams.toString()
-  searchParams = searchParams.replace(/tab=.*?(?:&|$)/, "")
-
   // if we don't have a system id, assume old dash link
   // redirect to the new dash link if we have a token
   if (!params?.sid) {
     if (token && sid) {
-      redirect(302, getRedirectLink(sid, tab, searchParams))
+      redirect(302, getRedirectLink(sid, url.searchParams.toString()))
     } else {
       error(401, "Missing token")
     }
-  } else if (tab) {
-    // we still have an old tab link! redirect to that page instead
-    redirect(302, getRedirectLink(params.sid, tab, searchParams))
   } else {
     // woo! we've got a new link
     const api = apiClient(fetch)
@@ -38,6 +27,7 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
       try {
         const { system, members, groups } = await getDashInfo(api, sid || "@me", token)
         return {
+          tab: url.searchParams.get("tab") ?? "",
           system: system || {},
           members: members || [],
           groups: groups || [],
@@ -58,6 +48,7 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
       try {
         const { system, members, groups } = await getDashInfo(api, params.sid)
         return {
+          tab: url.searchParams.get("tab") ?? "",
           system: system || {},
           members: members || [],
           groups: groups || [],
@@ -77,5 +68,5 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
   }
 }
 
-const getRedirectLink = (sid: string, tab: string, searchParams: string) =>
-  `/dash/${sid}${tab ? `/${tab}` : ""}${searchParams.length > 0 ? `?${searchParams}` : ""}`
+const getRedirectLink = (sid: string, searchParams: string) =>
+  `/dash/${sid}${searchParams.length > 0 ? `?${searchParams}` : ""}`
