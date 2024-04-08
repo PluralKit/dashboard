@@ -1,6 +1,6 @@
 <script lang="ts">
   import { dash } from "$lib/dash/dash.svelte"
-  import MemberCollapse from "./MemberCollapse.svelte"
+  import ItemCollapse from "../ItemCollapse.svelte"
 </script>
 
 <div
@@ -9,6 +9,6 @@
   }`}
 >
   {#each dash.members.list as member (member.uuid)}
-    <MemberCollapse {member} />
+    <ItemCollapse item={member} type="member" />
   {/each}
 </div>
