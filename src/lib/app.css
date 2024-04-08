@@ -4,7 +4,7 @@
 
 @layer components {
   hr {
-    @apply border-base-content/25
+    @apply border-base-content/20
   }
 
   .btn-menu {
