@@ -5,6 +5,7 @@
 
   let nameFilter = createFilter("name", FilterMode.INCLUDES, "")
 
+  dash.members.filters.clear()
   dash.members.filters.append({
     mode: "and",
     filters: [nameFilter],
