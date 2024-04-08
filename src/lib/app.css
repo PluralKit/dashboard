@@ -6,4 +6,8 @@
   .btn-menu {
     @apply px-4 py-2 h-auto min-h-0 justify-start;
   }
+
+  .box {
+    @apply rounded-lg bg-base-200 p-4;
+  }
 }

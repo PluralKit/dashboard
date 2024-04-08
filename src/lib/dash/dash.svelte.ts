@@ -1,6 +1,6 @@
 import type { Group, Member, System } from "$api/types"
 import { filterList, type Filter, type FilterGroup } from "./filters"
-import { sortList, type Sort } from "./sorts"
+import { SortMode, sortList, type Sort } from "./sorts"
 
 export enum PrivacyMode {
   PUBLIC,
@@ -18,6 +18,7 @@ function createDash() {
   let groupList = $state(createGroupListState())
 
   let tab: string = $state("")
+  let settings: Record<string, any> = $state({})
   return {
     get members() {
       return {
@@ -72,6 +73,9 @@ function createDash() {
       if (!newTab) newTab = "overview"
       tab = newTab
     },
+    get settings() {
+      return settings
+    },
   }
 }
 
@@ -90,7 +94,13 @@ function createMemberListState() {
   let processedMembers: Member[] = $state([])
 
   let filters: FilterGroup[] = $state([])
-  let sorts: Sort[] = $state([])
+  let sorts: Sort[] = $state([
+    {
+      mode: SortMode.ALPHABETICAL,
+      order: 1,
+      field: "name",
+    },
+  ])
 
   return {
     get members() {
@@ -132,9 +142,9 @@ function createMemberListState() {
     insertSort: (sort: Sort, index: number) => {
       sorts.splice(index, 0, sort)
     },
-    init: (data: Member[]) => {
+    init: function (data: Member[]) {
       members = data
-      processedMembers = data
+      this.processList()
     },
   }
 }
