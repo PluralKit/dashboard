@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { ActionData, PageData } from "./$types"
   import { dash } from "$lib/dash/dash.svelte"
+  import { getDashLink } from "$lib/dash/utils"
 
   export let data: PageData
   export let form: ActionData
@@ -22,7 +23,7 @@
       <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
         <div class="card-body">
           <p class="pt-6">Enter the dashboard to edit your system, member and group information.</p>
-          <a class="btn btn-primary" href="/dash">To the dash</a>
+          <a class="btn btn-primary" href={getDashLink(system.id || "", "")}>To the dash</a>
         </div>
       </div>
     </div>
