@@ -40,7 +40,7 @@ function createDash() {
       return privacyMode
     },
     get sid() {
-      return dash.system.id || ""
+      return dash.system?.id || ""
     },
     init: (system: System, members: Member[], groups: Group[], mode: PrivacyMode) => {
       systemData.init(system)
@@ -55,7 +55,7 @@ function createDash() {
 }
 
 function createSystemState() {
-  let system: System = $state({})
+  let system: System | null = $state(null)
   return {
     get system() {
       return system

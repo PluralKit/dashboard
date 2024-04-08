@@ -27,8 +27,9 @@
 </div>
 
 <svelte:head>
-  <title>PluralKit | {$page.data?.meta?.title ?? "Dashboard"}</title>
+  <title>PluralKit | {$page.data?.meta?.title ?? "Dash"}</title>
   <meta property="og:title" content={`PluralKit | ${$page.data?.meta?.ogTitle ?? "Web Dashboard"}`} />
+  <meta property="theme-color" content={`#${$page.data?.meta?.color ?? "da9317"}`} />
   <meta
     property="og:description"
     content={`PluralKit | ${$page.data?.meta?.ogDescription ?? "PluralKit's official dashboard."}`}
