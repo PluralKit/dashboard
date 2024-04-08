@@ -22,8 +22,13 @@
     : ""}
 >
   <input type="checkbox" bind:checked={open} />
-  <div class="collapse-title text-xl font-medium">
-    {item.name} <span class="font-light">({item.id})</span>
+  <div class="collapse-title pr-4 py-2 text-xl font-medium flex justify-between items-center">
+    <span class="h-min">{item.name} <span class="font-light">({item.id})</span></span>
+    <div class="h-14">
+      {#if type === "member"}
+        {@render memberIcon(item)}
+      {/if}
+    </div>
   </div>
   <div
     class="collapse-content"
@@ -69,9 +74,35 @@
   {/if}
 {/snippet}
 
+{#snippet memberIcon(member: Member)}
+  {#if member.webhook_avatar_url || member.avatar_url}
+    <button class="avatar w-14 z-10">
+      {@render iconImage(
+      member.webhook_avatar_url || member.avatar_url || "",
+      `${member.name}'s avatar'`
+    )}
+  </button>
+  {:else}
+    <div class="avatar w-14">
+      {@render iconImage(
+        "/discord_icon.svg",
+        "Default avatar"
+      )}
+    </div>
+  {/if}
+{/snippet}
+
+{#snippet iconImage(url: string, altText: string)}
+  <img class="item-icon rounded-full" src={url} alt={altText} />
+{/snippet}
+
 <style>
   .tab-contents {
     border: var(--tab-border, 1px) solid var(--fallback-b3, oklch(var(--b3) / 1));
     border-width: 0 var(--tab-border, 1px) var(--tab-border, 1px) var(--tab-border, 1px);
+  }
+
+  .item-icon {
+    object-fit: cover;
   }
 </style>
