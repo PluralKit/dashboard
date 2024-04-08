@@ -1,6 +1,9 @@
 <script lang="ts">
   import type { Member } from "$api/types"
   import { IconEdit } from "@tabler/icons-svelte"
+  import moment from "moment"
+  import AwaitHtml from "../AwaitHtml.svelte"
+  import parseMarkdown from "$api/parseMarkdown"
 
   let {
     member,
@@ -12,9 +15,9 @@
 </script>
 
 <div style={tab !== "view" ? "display: none;" : ""}>
-  <div class="flex flex-row gap-2 justify-between items-center mb-2">
-    <h4 class="text-xl ml-3 font-medium">General information</h4>
-    <button class="btn btn-sm btn-primary p-2 tooltip tooltip-left" data-tip="Edit member info">
+  <div class="flex flex-row gap-2 justify-between items-center mb-3">
+    <h4 class="text-2xl ml-3 font-medium">General information</h4>
+    <button class="btn btn-sm btn-primary p-2">
       <IconEdit class="inline" size={18} /> Edit
     </button>
   </div>
@@ -62,20 +65,38 @@
       {#if member.pronouns || member.birthday}
         <ul class="menu bg-base-100 md:flex-1 rounded-box text-base">
           {#if member.pronouns}
-            <li><span class="align-baseline"><b>Pronouns:</b> {member.pronouns}</span></li>
+            <li>
+              <span class="align-baseline"
+                ><b>Pronouns:</b>
+                <AwaitHtml htmlPromise={parseMarkdown(member.pronouns, { embed: true })} /></span
+              >
+            </li>
           {/if}
           {#if member.birthday}
-            <li><span class="align-baseline"><b>Birthday:</b> {member.birthday}</span></li>
+            <li>
+              <span class="align-baseline"
+                ><b>Birthday:</b> {moment(member.birthday).format("MMM D, YYYY")}</span
+              >
+            </li>
           {/if}
         </ul>
       {/if}
       {#if member.description}
         <div class="flex flex-col w-full">
-          <div class="rounded-xl bg-base-100 p-6 py-4">
-            <b>Description:</b>
-            <p>{member.description}</p>
+          <div class="ml-4 px-4 pt-2 pb-1 rounded-t-xl bg-base-100 w-min font-medium">
+            Description:
+          </div>
+          <div class="rounded-xl bg-base-100">
+            <div class="discord-markdown p-6 py-4">
+              <AwaitHtml htmlPromise={parseMarkdown(member.description, { embed: true })} />
+            </div>
+            {#if member.banner}
+              <img class="rounded-b-xl w-full h-auto" src={member.banner} alt={`${member.name}'s banner`} />
+            {/if}
           </div>
         </div>
+      {:else if member.banner}
+      <img class="rounded-xl w-full h-auto" src={member.banner} alt={`${member.name}'s banner`} />
       {/if}
     </div>
   </div>

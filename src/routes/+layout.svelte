@@ -2,6 +2,7 @@
   import { browser } from "$app/environment"
   import NavBar from "$components/NavBar.svelte"
   import "$lib/app.css"
+  import "$lib/highlightjs.scss"
   import type { LayoutData } from "./$types"
   import Footer from "$components/Footer.svelte"
   import { dash } from "$lib/dash/dash.svelte"

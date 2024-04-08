@@ -12,7 +12,7 @@
   }
 
   .box {
-    @apply rounded-lg bg-base-200 p-4;
+    @apply rounded-xl bg-base-200 p-4;
   }
 
   .tabs-lifted.tabs-box > .tab.tab-active:not(.tab-disabled):not([disabled]) {
@@ -24,4 +24,40 @@
   .tabs-lifted.tabs-box .tab.tab-active:not(.tab-disabled):not([disabled]):last-child::before {
     background-image: none;
   }
+
+    .discord-markdown blockquote {
+      @apply pl-3 border-l-4 border-base-content/20
+    }
+
+    .discord-markdown ul {
+      @apply list-disc pl-6
+    }
+
+    .discord-markdown .d-emoji {
+      @apply h-6 w-auto mx-1 inline
+    }
+
+    .discord-markdown .d-spoiler {
+      @apply bg-base-content text-base-content;
+      border-radius: 4px;
+      transition-delay: 6000s;
+    }
+    
+    .discord-markdown .d-spoiler::selection {
+        @apply text-base-content;
+        background-color: transparent;
+    }
+    
+    .discord-markdown .d-spoiler:active {
+        @apply text-base-100 bg-base-300;
+        transition-delay: 0s;
+    }
+
+    .discord-markdown code {
+      @apply p-1 rounded-sm
+    }
+
+    .discord-markdown pre > code {
+      @apply p-2 md:p-3 rounded-xl
+    }
 }
