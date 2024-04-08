@@ -66,13 +66,17 @@ function sortColor(A: any, B: any) {
 
   if (A.color === B.color) return 0
 
-  if (aa.hex === "ffffff") return -1
-  if (bb.hex === "ffffff") return 1
-
-  if (aa.sat === 0) return -1
-  if (bb.sat === 0) return 1
+  if (aa.sat === 0 && bb.sat === 0) {
+    if (aa.luma > bb.luma) return 1
+    if (aa.luma < bb.luma) return -1
+  }
 
   if (aa.hue === bb.hue) {
+    if (aa.sat === 0 || bb.sat === 0) {
+      if (aa.sat > bb.sat) return 1
+      if (aa.sat < bb.sat) return -1
+      return 0
+    }
     if (aa.luma > bb.luma) return 1
     if (aa.luma < bb.luma) return -1
     return 0
