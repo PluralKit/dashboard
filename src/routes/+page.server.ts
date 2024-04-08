@@ -1,6 +1,16 @@
 import { redirect, type Actions } from "@sveltejs/kit"
 import { env } from "$env/dynamic/private"
 
+export const load = () => {
+  return {
+    meta: {
+      title: "Home",
+      ogTitle: "Web Dashboard",
+      ogDescription: "View and edit your system's content on PluralKit's dashboard!",
+    },
+  }
+}
+
 export const actions = {
   login: async ({ request, fetch, cookies }) => {
     const formData = await request.formData()

@@ -66,7 +66,3 @@
     </div>
   {/if}
 </div>
-
-<svelte:head>
-  <title>PluralKit | home</title>
-</svelte:head>

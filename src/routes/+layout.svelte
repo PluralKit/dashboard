@@ -5,6 +5,7 @@
   import type { LayoutData } from "./$types"
   import Footer from "$components/Footer.svelte"
   import { dash } from "$lib/dash/dash.svelte"
+  import { page } from "$app/stores"
 
   export let data: LayoutData
 
@@ -24,3 +25,12 @@
   </div>
   <Footer />
 </div>
+
+<svelte:head>
+  <title>PluralKit | {$page.data?.meta?.title ?? "Dashboard"}</title>
+  <meta property="og:title" content={`PluralKit | ${$page.data?.meta?.ogTitle ?? "Web Dashboard"}`} />
+  <meta
+    property="og:description"
+    content={`PluralKit | ${$page.data?.meta?.ogDescription ?? "PluralKit's official dashboard."}`}
+  />
+</svelte:head>
