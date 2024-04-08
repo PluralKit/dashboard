@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
+  import { dash } from "$lib/dash/dash.svelte"
 
   let {
     type,
@@ -16,14 +17,21 @@
 
 <div
   class="collapse bg-base-100 rounded-lg"
-  style={item.color ? `border-color: #${item.color}; border-left-width: 6px;` : ""}
+  style={item.color && dash.settings.display?.fullColorBorder
+    ? `border-color: #${item.color}; border-left-width: 6px;`
+    : ""}
 >
   <input type="checkbox" bind:checked={open} />
   <div class="collapse-title text-xl font-medium">
     {item.name} <span class="font-light">({item.id})</span>
   </div>
-  <div class="collapse-content">
-    <hr class="mb-3" />
+  <div
+    class="collapse-content"
+    style={item.color && !dash.settings.display?.fullColorBorder
+      ? `border-color: #${item.color}; border-left-width: 6px;`
+      : ""}
+  >
+    <hr class="mb-3 -mx-4" />
     <div role="tablist" class="tabs tabs-lifted tabs-box">
       <button
         role="tab"
