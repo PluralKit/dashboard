@@ -16,7 +16,7 @@
       <SettingsSideBar />
     </div>
   {/if}
-  <SettingsSideBar />
+  <SettingsSideBar hide={true} />
   <div class="px-6 flex-1">
     <!-- Page content here -->
     <button class="btn btn-neutral md:hidden" on:click={() => (sidebarOpen = !sidebarOpen)}> Open sidebar </button>
