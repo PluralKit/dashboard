@@ -1,5 +1,5 @@
 import type { Group, Member, System } from "$api/types"
-import { filterList, type Filter, type FilterGroup } from "./filters"
+import { filterList, type FilterGroup } from "./filters.svelte"
 import { SortMode, sortList, type Sort } from "./sorts"
 
 export enum PrivacyMode {

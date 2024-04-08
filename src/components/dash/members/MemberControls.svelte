@@ -1,6 +1,14 @@
 <script lang="ts">
   import { dash } from "$lib/dash/dash.svelte"
+  import { FilterMode, createFilter } from "$lib/dash/filters.svelte"
   import { IconSettings, IconUsers } from "@tabler/icons-svelte"
+
+  let nameFilter = createFilter("name", FilterMode.INCLUDES, "")
+
+  dash.members.filters.append({
+    mode: "and",
+    filters: [nameFilter],
+  })
 </script>
 
 <div
@@ -21,5 +29,12 @@
     </a>
   </div>
   <hr class="my-2" />
+  <input
+    type="text"
+    bind:value={nameFilter.value}
+    oninput={() => dash.members.process()}
+    placeholder="Search name..."
+    class="input w-full input-bordered my-2 bg-base-200"
+  />
   <p>Controls will go here etc</p>
 </div>

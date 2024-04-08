@@ -3,10 +3,10 @@ export interface FilterGroup {
   filters: Filter[]
 }
 
-export interface Filter {
+export type Filter = {
+  value: string | number,
+  mode: FilterMode,
   field: string
-  mode: FilterMode
-  value?: string | number | string[]
 }
 
 export enum FilterMode {
@@ -26,6 +26,33 @@ export enum FilterMode {
   EXACT,
   // string: any no exact match, int: != value, groups: exclude members in all groups
   NOTEXACT,
+}
+
+export function createFilter(newField: string, newMode: FilterMode, newValue: string|number): Filter {
+  let value: string|number = $state(newValue)
+  let mode: FilterMode = $state(newMode)
+  let field: string = $state(newField)
+
+  return {
+    get value() {
+      return value
+    },
+    set value(newValue: string|number) {
+      value = newValue
+    },
+    get mode() {
+      return mode
+    },
+    set mode(newMode: FilterMode) {
+      mode = newMode
+    },
+    get field() {
+      return field
+    },
+    set field(newField: string) {
+      field = newField
+    }
+  }
 }
 
 export function filterList<T>(list: T[], groups: FilterGroup[]): T[] {
@@ -59,6 +86,7 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
     // INCLUDE MODE
     case FilterMode.INCLUDES:
       processedList = processedList.filter((i) => {
+        if (!value) return true
         switch (typeof i[field]) {
           // string: include any with substring
           case "string": {
@@ -73,6 +101,7 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
       break
     case FilterMode.EXCLUDES:
       processedList = processedList.filter((i) => {
+        if (!value) return true
         switch (typeof i[field]) {
           // string: include any with substring
           case "string": {
@@ -99,18 +128,21 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
       break
     case FilterMode.EXACT:
       processedList = processedList.filter((i) => {
+        if (!value) return true
         if (i[field] === value) return true
         else return false
       })
       break
     case FilterMode.NOTEXACT:
       processedList = processedList.filter((i) => {
+        if (!value) return true
         if (i[field] !== value) return true
         else return false
       })
       break
     case FilterMode.HIGHERTHAN:
       processedList = processedList.filter((i) => {
+        if (!value) return true
         if (typeof i[field] === "string") {
           if ((i[field] as string).length > (value as number)) return true
           else return false
@@ -122,6 +154,7 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
       break
     case FilterMode.LOWERTHAN:
       processedList = processedList.filter((i) => {
+        if (!value) return true
         if (typeof i[field] === "string") {
           if ((i[field] as string).length < (value as number)) return true
           else return false
