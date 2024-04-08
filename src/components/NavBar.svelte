@@ -13,7 +13,7 @@
   } from "@tabler/icons-svelte"
   import { dash } from "$lib/dash/dash.svelte"
 
-  let system = dash.system
+  let user = dash.user
 </script>
 
 <div class="navbar bg-base-100">
@@ -51,13 +51,13 @@
   </div>
   <div class="navbar-end">
     <a href="/settings#theme" class="mr-4 tooltip tooltip-left" data-tip="Change theme"><IconPaint /></a>
-    {#if system}
+    {#if user}
       <div class="dropdown dropdown-left">
         <button class="mr-2">
-          {#if system.avatar_url}
+          {#if user.avatar_url}
             <div class="avatar">
               <div class="w-12 rounded-full">
-                <img alt="your system avatar" src={system.avatar_url} />
+                <img alt="your system avatar" src={user.avatar_url} />
               </div>
             </div>
           {:else}
@@ -69,10 +69,10 @@
           {/if}
         </button>
         <ul class="menu menu-sm menu-dropdown dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-36">
-          <li><a href={`/dash/${dash.system.id}`}><IconAdjustments /> Overview</a></li>
-          <li><a href={`/dash/${dash.system.id}/system`}><IconAddressBook /> System</a></li>
-          <li><a href={`/dash/${dash.system.id}/members`}><IconUsers /> Members</a></li>
-          <li><a href={`/dash/${dash.system.id}/groups`}><IconBoxMultiple /> Groups</a></li>
+          <li><a href={`/dash/${user?.id}`}><IconAdjustments /> Overview</a></li>
+          <li><a href={`/dash/${user?.id}/system`}><IconAddressBook /> System</a></li>
+          <li><a href={`/dash/${user?.id}/members`}><IconUsers /> Members</a></li>
+          <li><a href={`/dash/${user?.id}/groups`}><IconBoxMultiple /> Groups</a></li>
           <div class="divider divider-neutral my-1"></div>
           <li>
             <form method="post" action="/?/logout">

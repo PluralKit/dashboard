@@ -11,11 +11,11 @@
 
   if (data.token && browser) {
     localStorage.setItem("pk-token", data.token)
+  } else if (browser) {
+    localStorage.removeItem("pk-token")
   }
 
-  if (data.system) {
-    dash.initSystem(data.system)
-  }
+  dash.initUser(data.system)
 </script>
 
 <div class="max-w-screen min-h-screen bg-base-100 flex flex-col" data-theme={data.theme}>

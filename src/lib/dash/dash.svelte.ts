@@ -10,6 +10,7 @@ export enum PrivacyMode {
 export let dash = createDash()
 
 function createDash() {
+  let user: System | null = $state(null)
   let privacyMode: PrivacyMode = $state(PrivacyMode.PRIVATE)
   let systemData = $state(createSystemState())
   let memberList = $state(createMemberListState())
@@ -40,7 +41,10 @@ function createDash() {
       return privacyMode
     },
     get sid() {
-      return dash.system?.id || ""
+      return systemData.system?.id ?? ""
+    },
+    get user() {
+      return user
     },
     init: (system: System, members: Member[], groups: Group[], mode: PrivacyMode) => {
       systemData.init(system)
@@ -48,8 +52,8 @@ function createDash() {
       groupList.init(groups)
       privacyMode = mode
     },
-    initSystem: (system: System) => {
-      systemData.init(system)
+    initUser: (system: System | null) => {
+      user = system
     },
   }
 }
@@ -60,7 +64,7 @@ function createSystemState() {
     get system() {
       return system
     },
-    init: (data: System) => (system = data),
+    init: (data: System | null) => (system = data),
   }
 }
 

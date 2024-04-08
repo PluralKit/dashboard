@@ -11,6 +11,6 @@
   <a role="tab" class="tab" href={getDashLink(dash.sid, "groups", $page.url.searchParams)}>Groups</a>
 </div>
 <main class="prose">
-  <h2>Welcome, {dash.system.name}!</h2>
+  <h2>{dash.system?.name || dash.system?.id}</h2>
   <p>Stuff will go here</p>
 </main>

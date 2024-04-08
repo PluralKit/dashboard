@@ -19,6 +19,8 @@ export async function load({ cookies }) {
       })
     } catch (err) {
       return {
+        token,
+        system,
         error: (err as Error).message,
       }
     }

@@ -1,16 +1,11 @@
 <script lang="ts">
-  import { browser } from "$app/environment"
   import type { ActionData, PageData } from "./$types"
   import { dash } from "$lib/dash/dash.svelte"
 
   export let data: PageData
   export let form: ActionData
 
-  let system = dash.system
-
-  if (!system && browser) {
-    localStorage.removeItem("pk-token")
-  }
+  let system = dash.user
 </script>
 
 <div class="hero bg-base-200">
