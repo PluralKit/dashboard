@@ -42,6 +42,12 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
           members: members || [],
           groups: groups || [],
           privacyMode: PrivacyMode.PRIVATE,
+          meta: {
+            title: system?.name,
+            color: system?.color,
+            ogTitle: system?.name,
+            ogDescription: system.id ? `View ${system?.name ?? `this system (${system.id})`} on the dashboard.` : "",
+          },
         }
       } catch (err) {
         const e = err as ApiError
@@ -56,6 +62,12 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
           members: members || [],
           groups: groups || [],
           privacyMode: PrivacyMode.PUBLIC,
+          meta: {
+            title: system?.name,
+            color: system?.color,
+            ogTitle: system?.name,
+            ogDescription: system.id ? `View ${system?.name ?? `this system (${system.id})`} on the dashboard.` : "",
+          },
         }
       } catch (err) {
         const e = err as ApiError
