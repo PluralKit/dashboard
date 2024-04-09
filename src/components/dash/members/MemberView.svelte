@@ -4,6 +4,7 @@
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
   import { getBirthday } from "$lib/dash/member/utils";
+  import ImageModal from "../ImageModal.svelte"
 
   let {
     member,
@@ -34,17 +35,17 @@
         <ul class="flex-1 flex flex-col gap-1 justify-start">
           {#if member.avatar_url}
             <li>
-              <button class="btn btn-neutral btn-sm w-full">View avatar</button>
+              <ImageModal url={member.avatar_url} imageType="avatar" itemName={member.name} />
             </li>
           {/if}
           {#if member.webhook_avatar_url}
             <li>
-              <button class="btn btn-neutral btn-sm w-full">View proxy avatar</button>
+              <ImageModal url={member.webhook_avatar_url} imageType="proxy avatar" itemName={member.name} />
             </li>
           {/if}
           {#if member.banner}
             <li>
-              <button class="btn btn-neutral btn-sm w-full">View banner</button>
+              <ImageModal url={member.banner} imageType="banner" itemName={member.name} />
             </li>
           {/if}
         </ul>

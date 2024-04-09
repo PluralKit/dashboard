@@ -79,7 +79,7 @@
 
 {#snippet memberIcon(member: Member)}
   {#if member.webhook_avatar_url || member.avatar_url}
-    <button class="avatar w-14 z-10">
+    <button class="avatar w-14">
       {@render iconImage(
       member.webhook_avatar_url || member.avatar_url || "",
       `${member.name}'s avatar'`
