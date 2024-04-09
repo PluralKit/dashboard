@@ -60,4 +60,8 @@
     .discord-markdown pre > code {
       @apply p-2 md:p-3 rounded-xl
     }
+
+    .discord-markdown a {
+      @apply link-primary
+    }
 }
