@@ -83,7 +83,7 @@
           <li><a href={`/dash/${user?.id}?tab=system`}><IconAddressBook /> System</a></li>
           <li><a href={`/dash/${user?.id}?tab=members`}><IconUsers /> Members</a></li>
           <li><a href={`/dash/${user?.id}?tab=groups`}><IconBoxMultiple /> Groups</a></li>
-          <div class="divider divider-neutral my-1"></div>
+          <hr class="my-2" />
           <li>
             <form method="post" action="/?/logout">
               <IconLogout /> <input class="text-error w-min" type="submit" value="Logout" />
