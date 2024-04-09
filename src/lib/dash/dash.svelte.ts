@@ -9,6 +9,19 @@ export enum PrivacyMode {
   SCOPED,
 }
 
+export interface DashList<T> {
+  list: {
+    raw: T[]
+    processed: T[]
+    paginated: T[]
+  }
+  filters: FilterGroup[]
+  sorts: Sort[]
+  settings: ListSettings
+  process: () => void
+  paginate: () => void
+}
+
 export let dash = createDash()
 
 function createDash() {
@@ -21,27 +34,14 @@ function createDash() {
   let tab: string = $state("")
   let settings: Record<string, any> = $state({})
   return {
-    get members() {
+    get members(): DashList<Member> {
       return {
         list: memberList.members,
-        filters: {
-          list: memberList.filters,
-          append: memberList.appendFilter,
-          replace: memberList.replaceFilter,
-          delete: memberList.removeFilter,
-          insert: memberList.insertFilter,
-          clear: memberList.clearFilters,
-        },
-        sorts: {
-          list: memberList.sorts,
-          append: memberList.appendSort,
-          replace: memberList.replaceSort,
-          delete: memberList.removeSort,
-          insert: memberList.insertSort,
-          clear: memberList.clearSorts,
-        },
+        filters: memberList.filters,
+        sorts: memberList.sorts,
         settings: memberList.listSettings,
         process: memberList.processList,
+        paginate: memberList.paginateList
       }
     },
     get groups() {
@@ -94,10 +94,6 @@ function createSystemState() {
 function createMemberListState() {
   let listSettings: ListSettings = $state(createListSettings())
 
-  let members: Member[] = $state([])
-  let processedMembers: Member[] = $state([])
-  let paginatedMembers: Member[] = $derived(paginateList(processedMembers, listSettings))
-
   let filters: FilterGroup[] = $state([])
   let sorts: Sort[] = $state([
     {
@@ -107,53 +103,40 @@ function createMemberListState() {
     },
   ])
 
+  let members: Member[] = $state([])
+  let processedMembers: Member[] = $state(processList(members, filters, sorts))
+  let paginatedMembers: Member[] = $state(paginateList(processedMembers, listSettings))
+
   return {
     get members() {
       return {
         raw: members,
         processed: processedMembers,
-        paginated: paginatedMembers
+        paginated: paginatedMembers,
       }
     },
     get filters() {
       return filters
     },
+    set filters(groups: FilterGroup[]) {
+      filters = groups
+    },
     get sorts() {
       return sorts
+    },
+    set sorts(newSorts: Sort[]) {
+      sorts = newSorts
     },
     get listSettings() {
       return listSettings
     },
     processList: function () {
-      processedMembers = filterList(members, filters)
-      processedMembers = sortList(processedMembers, sorts)
+      processedMembers = processList(members, filters, sorts)
       listSettings.currentPage = 1
+      this.paginateList()
     },
-    clearFilters: () => {
-      filters = []
-    },
-    appendFilter: (filter: FilterGroup) => filters.push(filter),
-    removeFilter: (index: number) => {
-      filters.splice(index, 1)
-    },
-    replaceFilter: (filter: FilterGroup, index: number) => {
-      filters.splice(index, 1, filter)
-    },
-    insertFilter: (filter: FilterGroup, index: number) => {
-      filters.splice(index, 0, filter)
-    },
-    clearSorts: () => {
-      sorts = []
-    },
-    appendSort: (sort: Sort) => sorts.push(sort),
-    removeSort: (index: number) => {
-      sorts.splice(index, 1)
-    },
-    replaceSort: (sort: Sort, index: number) => {
-      sorts.splice(index, 1, sort)
-    },
-    insertSort: (sort: Sort, index: number) => {
-      sorts.splice(index, 0, sort)
+    paginateList: function () {
+      paginatedMembers = paginateList(processedMembers, listSettings)
     },
     init: function (data: Member[]) {
       members = data
@@ -170,4 +153,9 @@ function createGroupListState() {
     },
     init: (data: Group[]) => (groups = data),
   }
+}
+
+function processList<T>(raw: T[], filters: FilterGroup[], sorts: Sort[]) {
+  let processed = filterList(raw, filters)
+  return sortList(processed, sorts)
 }

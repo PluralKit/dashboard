@@ -11,8 +11,7 @@
 >
   <Pagination
     class="mx-auto"
-    listLength={dash.members.list.processed.length}
-    settings={dash.members.settings}
+    list={dash.members}
   />
   {#each dash.members.list.paginated as member (member.uuid)}
     <ItemCollapse item={member} type="member" />
@@ -24,7 +23,6 @@
   {/if}
   <Pagination
     class="mx-auto"
-    listLength={dash.members.list.processed.length}
-    settings={dash.members.settings}
+    list={dash.members}
   />
 </div>
