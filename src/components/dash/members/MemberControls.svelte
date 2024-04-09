@@ -19,15 +19,11 @@
 >
   <div class="flex flex-row justify-between items-center">
     <h2 class="text-xl">
-      <IconUsers class="inline mr-2" /> Control member list
+      <IconUsers class="inline mr-2" /> Filter member list
     </h2>
-    <a
-      class="btn btn-ghost tooltip tooltip-left min-h-0 h-auto p-1 min-w-0 w-auto"
-      data-tip="Change display settings"
-      href="/settings/layout#Members"
-    >
-      <IconSettings />
-    </a>
+    <button class="btn btn-sm btn-primary p-2">
+      <IconSettings class="inline" size={16} /> Settings
+    </button>
   </div>
   <hr class="my-2" />
   <input
