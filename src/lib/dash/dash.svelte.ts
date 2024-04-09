@@ -37,7 +37,12 @@ function createDash() {
     get members(): DashList<Member> {
       return {
         list: memberList.members,
-        filters: memberList.filters,
+        get filters() {
+          return memberList.filters
+        },
+        set filters(filterGroups: FilterGroup[]) {
+          memberList.filters = filterGroups
+        },
         sorts: memberList.sorts,
         settings: memberList.listSettings,
         process: memberList.processList,
@@ -133,7 +138,6 @@ function createMemberListState() {
     processList: function () {
       processedMembers = processList(members, filters, sorts)
       listSettings.currentPage = 1
-      this.paginateList()
     },
     paginateList: function () {
       paginatedMembers = paginateList(processedMembers, listSettings)

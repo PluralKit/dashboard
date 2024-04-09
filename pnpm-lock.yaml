@@ -82,6 +82,9 @@ devDependencies:
   svelte-check:
     specifier: ^3.6.0
     version: 3.6.0(postcss@8.4.31)(sass@1.74.1)(svelte@5.0.0-next.95)
+  svelte-dnd-action:
+    specifier: ^0.9.42
+    version: 0.9.42(svelte@5.0.0-next.95)
   tailwindcss:
     specifier: ^3.3.5
     version: 3.3.5
@@ -2400,6 +2403,14 @@ packages:
       - sass
       - stylus
       - sugarss
+    dev: true
+
+  /svelte-dnd-action@0.9.42(svelte@5.0.0-next.95):
+    resolution: {integrity: sha512-hrlMnAtUrQP8V4vH9+dKHzX3z5u9BAo6F/BUUqKftiF6/Wh+yC560kgzTzB2fSZxumd2e6A4RalwlH0NYIllSw==}
+    peerDependencies:
+      svelte: '>=3.23.0'
+    dependencies:
+      svelte: 5.0.0-next.95
     dev: true
 
   /svelte-eslint-parser@0.33.1(svelte@5.0.0-next.95):

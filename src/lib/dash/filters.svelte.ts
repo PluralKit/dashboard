@@ -1,39 +1,47 @@
 export interface FilterGroup {
   mode: "and" | "or"
   filters: Filter[]
+  id: string
 }
 
 export type Filter = {
   value: string | number,
   mode: FilterMode,
-  field: string
+  field: string,
+  fieldName: string,
+  id: string,
 }
 
 export enum FilterMode {
   // string: includes substring, int: N/A, groups: includes member in any of groups
-  INCLUDES,
+  INCLUDES = "include",
   // string: excludes substring, int: N/A, groups: excludes member in any of groups
-  EXCLUDES,
+  EXCLUDES = "exclude",
   // string: empty, int: N/A, groups: any member without group
-  EMPTY,
+  EMPTY = "empty",
   // string: not empty, int: N/A, groups: any member with group
-  NOTEMPTY,
+  NOTEMPTY = "not empty",
   // string: length > value, int: > value, groups: any member with groups > input
-  HIGHERTHAN,
+  HIGHERTHAN = "more than",
   // string: length < value, int: < value, groups: any member with groups < input
-  LOWERTHAN,
+  LOWERTHAN = "less than",
   // string: exact match, int: = value, groups: include members in all groups
-  EXACT,
+  EXACT = "match",
   // string: any no exact match, int: != value, groups: exclude members in all groups
-  NOTEXACT,
+  NOTEXACT = "don't match",
 }
 
-export function createFilter(newField: string, newMode: FilterMode, newValue: string|number): Filter {
+export function createFilter(newField: string, newName: string, newMode: FilterMode, newValue: string|number): Filter {
   let value: string|number = $state(newValue)
   let mode: FilterMode = $state(newMode)
   let field: string = $state(newField)
+  let fieldName: string = $state(newName)
+  let id: string = (Math.random() + 1).toString(36).slice(2, 5)
 
   return {
+    get id() {
+      return id
+    },
     get value() {
       return value
     },
@@ -45,6 +53,12 @@ export function createFilter(newField: string, newMode: FilterMode, newValue: st
     },
     set mode(newMode: FilterMode) {
       mode = newMode
+    },
+    get fieldName() {
+      return fieldName
+    },
+    set fieldName(newName: string) {
+      fieldName = newName
     },
     get field() {
       return field
@@ -69,7 +83,7 @@ export function filterList<T>(list: T[], groups: FilterGroup[]): T[] {
         includeList = [...new Set([...includeList, ...nextFilter])]
       }
       processedList = processedList.filter((i) => includeList.includes(i))
-    } else {
+    } else if (group.filters.length > 0) {
       processedList = applyFilter(processedList, group.filters[0])
     }
   }

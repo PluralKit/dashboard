@@ -2,14 +2,18 @@
   import { dash } from "$lib/dash/dash.svelte"
   import { FilterMode, createFilter } from "$lib/dash/filters.svelte"
   import { IconSettings, IconUsers } from "@tabler/icons-svelte"
+  import FilterGroups from "../filters/FilterGroups.svelte"
 
-  let nameFilter = createFilter("name", FilterMode.INCLUDES, "")
+  let nameFilter = createFilter("name", "name", FilterMode.INCLUDES, "")
 
-  dash.members.filters.clear()
-  dash.members.filters.append({
+  dash.members.filters = [{
     mode: "and",
     filters: [nameFilter],
-  })
+    id: (Math.random() + 1).toString(36).slice(2, 5)
+  }]
+
+  dash.members.process()
+  dash.members.paginate()
 </script>
 
 <div
@@ -26,12 +30,7 @@
     </button>
   </div>
   <hr class="my-2" />
-  <input
-    type="text"
-    bind:value={nameFilter.value}
-    oninput={() => dash.members.process()}
-    placeholder="Search name..."
-    class="input w-full input-bordered my-2 bg-base-200"
-  />
+  <h3 class="text-lg mb-2">Filters</h3>
+  <FilterGroups bind:filterGroups={dash.members.filters} />
   <p>Controls will go here etc</p>
 </div>
