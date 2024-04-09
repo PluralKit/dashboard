@@ -1,5 +1,6 @@
 import type { Group, Member, System } from "$api/types"
 import { filterList, type FilterGroup } from "./filters.svelte"
+import { createListSettings, paginateList, type ListSettings } from "./settings.svelte"
 import { SortMode, sortList, type Sort } from "./sorts"
 
 export enum PrivacyMode {
@@ -39,6 +40,7 @@ function createDash() {
           insert: memberList.insertSort,
           clear: memberList.clearSorts,
         },
+        settings: memberList.listSettings,
         process: memberList.processList,
       }
     },
@@ -90,8 +92,11 @@ function createSystemState() {
 }
 
 function createMemberListState() {
+  let listSettings: ListSettings = $state(createListSettings())
+
   let members: Member[] = $state([])
   let processedMembers: Member[] = $state([])
+  let paginatedMembers: Member[] = $derived(paginateList(processedMembers, listSettings))
 
   let filters: FilterGroup[] = $state([])
   let sorts: Sort[] = $state([
@@ -106,7 +111,8 @@ function createMemberListState() {
     get members() {
       return {
         raw: members,
-        processed: processedMembers
+        processed: processedMembers,
+        paginated: paginatedMembers
       }
     },
     get filters() {
@@ -115,9 +121,13 @@ function createMemberListState() {
     get sorts() {
       return sorts
     },
+    get listSettings() {
+      return listSettings
+    },
     processList: function () {
       processedMembers = filterList(members, filters)
       processedMembers = sortList(processedMembers, sorts)
+      listSettings.currentPage = 1
     },
     clearFilters: () => {
       filters = []
