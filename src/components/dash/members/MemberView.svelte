@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { Member } from "$api/types"
   import { IconEdit } from "@tabler/icons-svelte"
-  import moment from "moment"
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
+  import { getBirthday } from "$lib/dash/member/utils";
 
   let {
     member,
@@ -75,7 +75,7 @@
           {#if member.birthday}
             <li>
               <span class="align-baseline"
-                ><b>Birthday:</b> {moment(member.birthday).format("MMM D, YYYY")}</span
+                ><b>Birthday:</b> {getBirthday(member.birthday)}</span
               >
             </li>
           {/if}
