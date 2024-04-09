@@ -19,6 +19,7 @@
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@tabler/icons-svelte": "^2.40.0",
 		"@tailwindcss/typography": "^0.5.10",
+		"@types/node": "^20.12.6",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"autoprefixer": "^10.4.16",
