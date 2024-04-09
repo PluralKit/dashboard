@@ -1,6 +1,8 @@
 <script lang="ts">
   import SettingsSideBar from "$components/SettingsSideBar.svelte"
   import { slide } from "svelte/transition"
+  import CookieNotice from "$components/CookieNotice.svelte"
+  import { cookieState } from "$lib/common/cookies.svelte"
 
   let sidebarOpen: boolean = false
 </script>
@@ -21,6 +23,11 @@
     <!-- Page content here -->
     <button class="btn btn-neutral md:hidden" on:click={() => (sidebarOpen = !sidebarOpen)}> Open sidebar </button>
     <div class="divider md:hidden"></div>
+      {#if !cookieState().accepted}
+      <div class="w-full flex flex-col">
+        <CookieNotice class="mx-auto mt-3 w-full lg:w-3/4 xl:w-2/3" />
+      </div>
+      {/if}
     <slot />
   </div>
 </div>

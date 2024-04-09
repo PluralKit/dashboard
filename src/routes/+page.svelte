@@ -2,12 +2,18 @@
   import type { ActionData, PageData } from "./$types"
   import { dash } from "$lib/dash/dash.svelte"
   import { getDashLink } from "$lib/dash/utils"
+  import CookieNotice from "$components/CookieNotice.svelte"
+  import { cookieState } from "$lib/common/cookies.svelte"
 
   export let data: PageData
   export let form: ActionData
 
   let system = dash.user
 </script>
+
+{#if !cookieState().accepted}
+  <CookieNotice class="mx-auto mb-4 w-full md:w-3/4 lg:w-2/3 xl:w-1/2" />
+{/if}
 
 <div class="hero bg-base-200">
   {#if system}
@@ -18,7 +24,9 @@
         {:else}
           <h1 class="text-3xl font-bold">Welcome!</h1>
         {/if}
-        <p class="py-6">More info here or something. Yadda yadda bla bla bla I need to fill space somehow. Babana.</p>
+        <p class="py-6">
+          More info here or something. Yadda yadda bla bla bla I need to fill space somehow. Babana.
+        </p>
       </div>
       <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
         <div class="card-body">
@@ -43,7 +51,13 @@
             <label for="token-input" class="label">
               <span class="label-text">PluralKit API token</span>
             </label>
-            <input type="password" placeholder="token" name="token" id="token-input" class="input input-bordered" />
+            <input
+              type="password"
+              placeholder="token"
+              name="token"
+              id="token-input"
+              class="input input-bordered"
+            />
             <label class="label" for="token-input">
               <span class="label-text-alt">You can get this by running pk;token</span>
               {#if form?.error}

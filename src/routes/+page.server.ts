@@ -1,7 +1,7 @@
 import { redirect, type Actions } from "@sveltejs/kit"
 import { env } from "$env/dynamic/private"
 
-export const load = async ({ cookies }) => {
+export const load = async ({ cookies, url }) => {
   const meta = {
     title: "Home",
     ogTitle: "Web Dashboard",
@@ -9,7 +9,7 @@ export const load = async ({ cookies }) => {
   }
 
   return {
-    meta,
+    meta
   }
 }
 
@@ -31,7 +31,7 @@ export const actions = {
     redirect(302, "/")
   },
 
-  logout: async ({ cookies }) => {
+  logout: ({ cookies }) => {
     cookies.delete("pk-token", {
       path: "/",
       secure: env.NODE_ENV !== "development",
