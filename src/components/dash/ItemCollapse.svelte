@@ -16,8 +16,6 @@
   } = $props()
 
   let tab: "view" | "info" | "groups" = $state("view")
-
-  $effect(() => console.log(open))
 </script>
 
 <div
