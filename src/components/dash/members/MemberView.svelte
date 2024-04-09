@@ -22,7 +22,7 @@
       <IconEdit class="inline" size={18} /> Edit
     </button>
   </div>
-  <div class="flex flex-col sm:flex-row gap-2 lg:gap-3">
+  <div class={`flex flex-col gap-2 lg:gap-3 ${member.avatar_url ? "sm:flex-row" : ""}`}>
     {#if member.avatar_url || member.banner || member.webhook_avatar_url}
       <div class="flex flex-col gap-2">
         {#if member.avatar_url}
