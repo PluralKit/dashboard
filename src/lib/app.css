@@ -34,7 +34,7 @@
     }
 
     .discord-markdown .d-emoji {
-      @apply h-4 w-auto mx-1 inline
+      @apply h-4 w-auto inline
     }
 
     .discord-markdown .d-spoiler {

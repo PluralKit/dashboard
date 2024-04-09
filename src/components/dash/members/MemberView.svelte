@@ -70,7 +70,7 @@
         <ul class="menu bg-base-100 flex-1 rounded-box text-base">
           {#if member.pronouns}
             <li>
-              <span class="items-start"
+              <span class="items-start discord-markdown"
                 ><b>Pronouns:</b>
                 <AwaitHtml htmlPromise={parseMarkdown(member.pronouns, { embed: true })} /></span
               >
