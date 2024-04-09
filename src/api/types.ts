@@ -41,6 +41,7 @@ export interface MemberPrivacy {
   pronoun_privacy?: string
   avatar_privacy?: string
   metadata_privacy?: string
+  proxy_privacy?: string
 }
 
 interface proxytag {
