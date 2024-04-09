@@ -21,7 +21,7 @@
     <h2 class="text-xl">
       <IconUsers class="inline mr-2" /> Filter member list
     </h2>
-    <button class="btn btn-sm btn-primary p-2">
+    <button class="btn btn-sm btn-primary p-2 ml-2">
       <IconSettings class="inline" size={16} /> Settings
     </button>
   </div>

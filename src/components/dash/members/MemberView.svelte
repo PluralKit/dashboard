@@ -54,8 +54,8 @@
         </ul>
       </div>
     {/if}
-    <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 flex-wrap">
-      <ul class="menu bg-base-100 md:flex-1 rounded-box text-base">
+    <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 lg:flex-col xl:flex-row flex-wrap">
+      <ul class="menu bg-base-100 flex-1 rounded-box text-base">
         {#if member.id}
           <li><span class="items-start"><b>ID:</b> {member.id}</span></li>
         {/if}
@@ -67,7 +67,7 @@
         {/if}
       </ul>
       {#if member.pronouns || member.birthday}
-        <ul class="menu bg-base-100 md:flex-1 rounded-box text-base">
+        <ul class="menu bg-base-100 flex-1 rounded-box text-base">
           {#if member.pronouns}
             <li>
               <span class="items-start"
@@ -87,7 +87,7 @@
       {/if}
       {#if member.description}
         <div class="flex flex-col w-full">
-          <div class="ml-4 px-4 pt-2 pb-1 rounded-t-xl bg-base-100 w-min font-medium">
+          <div class="ml-4 px-4 pt-2 pb-1 rounded-t-xl bg-base-100 w-fit font-bold">
             Description:
           </div>
           <div class="rounded-xl bg-base-100">
