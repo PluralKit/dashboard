@@ -10,6 +10,7 @@
     IconPaint,
     IconLogout,
     IconAddressBook,
+    IconHome,
   } from "@tabler/icons-svelte"
   import { dash } from "$lib/dash/dash.svelte"
 
@@ -18,11 +19,16 @@
 
 <div class="navbar bg-base-100">
   <div class="navbar-start">
-    <div class="dropdown">
-      <button class="btn btn-ghost md:hidden">
+    <details class="dropdown">
+      <summary class="btn btn-ghost md:hidden">
         <IconMenu2 />
-      </button>
+      </summary>
       <ul class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+        <li>
+          <a href="/">
+            <IconHome /> Homepage
+          </a>
+        </li>
         <li>
           <a
             href="https://discord.com/oauth2/authorize?client_id=466378653216014359&scope=bot%20applications.commands&permissions=536995904"
@@ -33,7 +39,7 @@
         <li><a href="https://pluralkit.me/"><IconBook /> Documentation</a></li>
         <li><a href="https://discord.gg/PczBt78"><IconBrandDiscord /> Support server</a></li>
       </ul>
-    </div>
+    </details>
     <a href="/" class="btn btn-ghost text-xl">PluralKit</a>
   </div>
   <div class="navbar-center hidden md:flex">
@@ -54,8 +60,8 @@
       ><IconPaint /></a
     >
     {#if user}
-      <div class="dropdown dropdown-left">
-        <button class="mr-2">
+      <details class="dropdown dropdown-left">
+        <summary class="mr-2 list-none">
           {#if user.avatar_url}
             <div class="avatar">
               <div class="w-12 rounded-full">
@@ -69,7 +75,7 @@
               </div>
             </div>
           {/if}
-        </button>
+        </summary>
         <ul
           class="menu menu-sm menu-dropdown dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-36"
         >
@@ -84,7 +90,7 @@
             </form>
           </li>
         </ul>
-      </div>
+      </details>
     {/if}
   </div>
 </div>
