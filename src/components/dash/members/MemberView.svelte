@@ -53,20 +53,20 @@
     <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 flex-wrap">
       <ul class="menu bg-base-100 md:flex-1 rounded-box text-base">
         {#if member.id}
-          <li><span class="align-baseline"><b>ID:</b> {member.id}</span></li>
+          <li><span class="items-start"><b>ID:</b> {member.id}</span></li>
         {/if}
         {#if member.name}
-          <li><span class="align-baseline"><b>Name:</b> {member.name}</span></li>
+          <li><span class="items-start"><b>Name:</b> {member.name}</span></li>
         {/if}
         {#if member.display_name}
-          <li><span class="align-baseline"><b>Display name:</b> {member.display_name}</span></li>
+          <li><span class="items-start"><b>Display name:</b> {member.display_name}</span></li>
         {/if}
       </ul>
       {#if member.pronouns || member.birthday}
         <ul class="menu bg-base-100 md:flex-1 rounded-box text-base">
           {#if member.pronouns}
             <li>
-              <span class="align-baseline"
+              <span class="items-start"
                 ><b>Pronouns:</b>
                 <AwaitHtml htmlPromise={parseMarkdown(member.pronouns, { embed: true })} /></span
               >
@@ -74,7 +74,7 @@
           {/if}
           {#if member.birthday}
             <li>
-              <span class="align-baseline"
+              <span class="items-start"
                 ><b>Birthday:</b> {getBirthday(member.birthday)}</span
               >
             </li>
