@@ -5,6 +5,7 @@
   import parseMarkdown from "$api/parseMarkdown"
   import { getBirthday } from "$lib/dash/member/utils";
   import ImageModal from "../ImageModal.svelte"
+  import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
 
   let {
     member,
@@ -18,9 +19,11 @@
 <div style={tab !== "view" ? "display: none;" : ""}>
   <div class="flex flex-row gap-2 justify-between items-center mb-3">
     <h4 class="text-2xl ml-3 font-medium">General information</h4>
+    {#if dash.privacyMode !== PrivacyMode.PUBLIC}
     <button class="btn btn-sm btn-primary p-2">
       <IconEdit class="inline" size={18} /> Edit
     </button>
+    {/if}
   </div>
   <div class={`flex flex-col gap-2 lg:gap-3 ${member.avatar_url ? "sm:flex-row" : ""}`}>
     {#if member.avatar_url || member.banner || member.webhook_avatar_url}
