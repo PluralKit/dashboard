@@ -21,12 +21,12 @@
       <IconEdit class="inline" size={18} /> Edit
     </button>
   </div>
-  <div class="flex flex-col md:flex-row gap-2 lg:gap-3">
+  <div class="flex flex-col sm:flex-row gap-2 lg:gap-3">
     {#if member.avatar_url || member.banner || member.webhook_avatar_url}
-      <div class="flex flex-row md:flex-col gap-2">
+      <div class="flex flex-col gap-2">
         {#if member.avatar_url}
           <img
-            class="rounded-lg hidden md:block w-24 md:w-36 h-auto self-start"
+            class="rounded-lg hidden sm:block sm:w-36 h-auto self-start"
             src={member.avatar_url}
             alt={`${member.name}'s avatar`}
           />
