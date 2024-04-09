@@ -16,6 +16,8 @@
   } = $props()
 
   let tab: "view" | "info" | "groups" = $state("view")
+
+  $effect(() => console.log(open))
 </script>
 
 <div
@@ -75,7 +77,7 @@
 </div>
 
 {#snippet memberTabs(member: Member, tab: "view"|"info"|"groups")}
-    <MemberView {member} {tab} />
+    <MemberView {member} {tab} {open} />
     <MemberInfo {member} {tab} />
 {/snippet}
 

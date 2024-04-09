@@ -10,9 +10,11 @@
   let {
     member,
     tab,
+    open
   }: {
     member: Member
     tab: string
+    open: boolean
   } = $props()
 </script>
 
@@ -28,7 +30,7 @@
   <div class={`flex flex-col gap-2 lg:gap-3 ${member.avatar_url ? "sm:flex-row" : ""}`}>
     {#if member.avatar_url || member.banner || member.webhook_avatar_url}
       <div class="flex flex-col gap-2">
-        {#if member.avatar_url}
+        {#if member.avatar_url && open}
           <img
             class="rounded-lg hidden sm:block sm:w-36 h-auto self-start"
             src={member.avatar_url}
@@ -94,12 +96,12 @@
             <div class="discord-markdown p-6 py-4">
               <AwaitHtml htmlPromise={parseMarkdown(member.description, { embed: true })} />
             </div>
-            {#if member.banner}
+            {#if member.banner && open}
               <img class="rounded-b-xl w-full h-auto" src={member.banner} alt={`${member.name}'s banner`} />
             {/if}
           </div>
         </div>
-      {:else if member.banner}
+      {:else if member.banner && open}
       <img class="rounded-xl w-full h-auto" src={member.banner} alt={`${member.name}'s banner`} />
       {/if}
     </div>
