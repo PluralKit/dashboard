@@ -8,7 +8,7 @@
     dash.settings.display?.forceControlsAtTop === true ? "" : "lg:flex-1"
   }`}
 >
-  {#each dash.members.list as member (member.uuid)}
+  {#each dash.members.list.processed as member (member.uuid)}
     <ItemCollapse item={member} type="member" />
   {/each}
 </div>

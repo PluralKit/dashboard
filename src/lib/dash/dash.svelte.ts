@@ -104,7 +104,10 @@ function createMemberListState() {
 
   return {
     get members() {
-      return processedMembers
+      return {
+        raw: members,
+        processed: processedMembers
+      }
     },
     get filters() {
       return filters

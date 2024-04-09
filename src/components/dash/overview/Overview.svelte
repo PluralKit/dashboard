@@ -9,6 +9,6 @@
     {:else}
       This system currently has registered
     {/if}
-    {dash.members.list.length} members and {dash.groups.length} groups!
+    {dash.members.list.raw.length} members and {dash.groups.length} groups!
   </p>
 </main>
