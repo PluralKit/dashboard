@@ -12,6 +12,10 @@
     mode: "and",
     filters: [nameFilter],
     id: randomId()
+  }, {
+    mode: "and",
+    filters: [],
+    id: randomId()
   }]
 
   onMount(() => {

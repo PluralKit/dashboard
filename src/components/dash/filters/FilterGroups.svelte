@@ -98,7 +98,7 @@
   }
 
   function appendEmptyGroupIfNeeded(groups: FilterGroup[]) {
-    if (groups[groups.length - 1].filters.length > 0)
+    if (groups.length === 0 || groups[groups.length - 1].filters.length > 0)
       groups = [
         ...groups,
         {
