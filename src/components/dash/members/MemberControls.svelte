@@ -6,17 +6,22 @@
   import { randomId } from "$lib/dash/ids"
   import { onMount } from "svelte"
 
+  let mode: "simple" | "advanced" = $state("advanced")
+
   let nameFilter = createFilter("name", "name", FilterMode.INCLUDES, "")
 
-  dash.members.filters = [{
-    mode: "and",
-    filters: [nameFilter],
-    id: randomId()
-  }, {
-    mode: "and",
-    filters: [],
-    id: randomId()
-  }]
+  dash.members.filters = [
+    {
+      mode: "and",
+      filters: [nameFilter],
+      id: randomId(),
+    },
+    {
+      mode: "and",
+      filters: [],
+      id: randomId(),
+    },
+  ]
 
   onMount(() => {
     dash.members.process()
@@ -39,7 +44,21 @@
   </div>
   <hr class="my-2" />
   <p class="my-4">Controls will go here etc</p>
-  <h3 class="text-xl">Filter list</h3>
-  <hr class="my-2" />
-  <FilterGroups bind:filterGroups={dash.members.filters} />
+  {#if mode === "advanced"}
+    <div
+      class={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 ${
+        dash.settings.display?.forceControlsAtTop === true ? "xl:grid-cols-2" : ""
+      }`}
+    >
+      <div>
+        <h3 class="text-xl">Filter list</h3>
+        <hr class="my-2" />
+        <FilterGroups bind:filterGroups={dash.members.filters} />
+      </div>
+      <div>
+        <h3 class="text-xl">Sort list</h3>
+        <hr class="my-2" />
+      </div>
+    </div>
+  {/if}
 </div>

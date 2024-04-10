@@ -5,18 +5,75 @@ export interface FilterGroup {
 }
 
 export type Filter = {
-  value: string | number,
+  value: string | number | null,
   mode: FilterMode,
   field: string,
   fieldName: string,
   id: string,
+  valueType: string
+}
+
+export type FilterModeText = {
+  mode: FilterMode,
+  verb: string,
+  afterVerb?: string
+}
+
+export const filterModeText = (newMode: FilterMode, type: string) => {
+  const mode = newMode
+
+  const text: FilterModeText[] = [
+    {
+      mode: FilterMode.INCLUDES,
+      verb: "include"
+    },
+    {
+      mode: FilterMode.EXCLUDES,
+      verb: "exclude"
+    },
+    {
+      mode: FilterMode.EXACT,
+      verb: "match"
+    },
+    {
+      mode: FilterMode.NOTEXACT,
+      verb: "don't match"
+    },
+    {
+      mode: FilterMode.EMPTY,
+      verb: "are empty"
+    },
+    {
+      mode: FilterMode.NOTEMPTY,
+      verb: "are not empty"
+    },
+    {
+      mode: FilterMode.HIGHERTHAN,
+      verb: "are more than",
+      afterVerb: type === "string" ? "characters long" : ""
+    },
+    {
+      mode: FilterMode.LOWERTHAN,
+      verb: "are less than",
+      afterVerb: type === "string" ? "characters long" : ""
+    }
+  ]
+
+  return {
+    get verb(): string {
+      return text.find(i => i.mode === mode)?.verb ?? "???"
+    },
+    get afterVerb(): string {
+      return text.find(i => i.mode === mode)?.afterVerb ?? ""
+    }
+  }
 }
 
 export enum FilterMode {
   // string: includes substring, int: N/A, groups: includes member in any of groups
-  INCLUDES = "include",
+  INCLUDES = "includes",
   // string: excludes substring, int: N/A, groups: excludes member in any of groups
-  EXCLUDES = "exclude",
+  EXCLUDES = "excludes",
   // string: empty, int: N/A, groups: any member without group
   EMPTY = "empty",
   // string: not empty, int: N/A, groups: any member with group
@@ -28,11 +85,12 @@ export enum FilterMode {
   // string: exact match, int: = value, groups: include members in all groups
   EXACT = "match",
   // string: any no exact match, int: != value, groups: exclude members in all groups
-  NOTEXACT = "don't match",
+  NOTEXACT = "no match",
 }
 
-export function createFilter(newField: string, newName: string, newMode: FilterMode, newValue: string|number): Filter {
-  let value: string|number = $state(newValue)
+export function createFilter(newField: string, newName: string, newMode: FilterMode, newValue: string|number|null): Filter {
+  let value: string | number | null = $state(newValue)
+  let valueType: string = value !== null ? typeof value : "null"
   let mode: FilterMode = $state(newMode)
   let field: string = $state(newField)
   let fieldName: string = $state(newName)
@@ -45,7 +103,11 @@ export function createFilter(newField: string, newName: string, newMode: FilterM
     get value() {
       return value
     },
-    set value(newValue: string|number) {
+    get valueType() {
+      return valueType
+    },
+    set value(newValue: string | number | null) {
+      valueType = newValue !== null ? typeof newValue : "null"
       value = newValue
     },
     get mode() {

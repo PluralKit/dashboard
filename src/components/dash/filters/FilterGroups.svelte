@@ -1,11 +1,10 @@
 <script lang="ts">
   import { dash } from "$lib/dash/dash.svelte"
-  import { FilterMode, type Filter, type FilterGroup } from "$lib/dash/filters.svelte"
+  import { FilterMode, type Filter, type FilterGroup, filterModeText } from "$lib/dash/filters.svelte"
   import { randomId } from "$lib/dash/ids"
   import type { DndEvent } from "svelte-dnd-action"
-  import { dndzone, SHADOW_ITEM_MARKER_PROPERTY_NAME } from "svelte-dnd-action"
+  import { dndzone } from "svelte-dnd-action"
   import FilterHeader from "./FilterHeader.svelte"
-  import { browser } from "$app/environment"
 
   let {
     filterGroups = $bindable(),
@@ -156,17 +155,13 @@
             class="bg-base-100 p-3 flex flex-col rounded-lg hover:border-primary border-base-content/20 outline-primary border-2 gap-1 relative"
             aria-label={`${filter.fieldName} filter: ${filter.mode}`}
           >
-            {#if filter.mode !== FilterMode.EMPTY && filter.mode !== FilterMode.NOTEMPTY}
-              {#if filter.mode === FilterMode.HIGHERTHAN || filter.mode === FilterMode.LOWERTHAN}
-                <FilterHeader action={removeFilter(group.id, filter.id)}>
-                  <span class="text-sm">
-                    <b>{filter.fieldName}s</b> that are {filter.mode}
-                    {filter.value}
-                    {#if filter.field !== "message_count"}
-                      characters long.
-                    {/if}
-                  </span>
-                </FilterHeader>
+              <FilterHeader action={removeFilter(group.id, filter.id)}>
+                <span class="text-sm"
+                  ><b>{filter.fieldName}s</b> that {filterModeText(filter.mode, filter.valueType).verb}
+                  {filter.value ? `"${filter.value}"` : "..."} {filterModeText(filter.mode, filter.valueType).afterVerb}</span
+                >
+              </FilterHeader>
+              {#if filter.valueType === "number"}
                 <input
                   class="input input-sm input-bordered"
                   placeholder={`Filter by ${filter.field}...`}
@@ -175,13 +170,7 @@
                   min={0}
                   onchange={(e) => updateFilterValue(e, index, i, true)}
                 />
-              {:else}
-                <FilterHeader action={removeFilter(group.id, filter.id)}>
-                  <span class="text-sm"
-                    ><b>{filter.fieldName}s</b> that {filter.mode}
-                    {filter.value ? `"${filter.value}"` : "..."}</span
-                  >
-                </FilterHeader>
+              {:else if filter.valueType === "string"}
                 <input
                   class="input input-sm input-bordered"
                   placeholder={`Filter by ${filter.fieldName}...`}
@@ -190,9 +179,6 @@
                   onchange={(e) => updateFilterValue(e, index, i, false)}
                 />
               {/if}
-            {:else}
-              <span class="text-sm"><b>{filter.fieldName}s</b> that are {filter.mode}</span>
-            {/if}
           </div>
         {/each}
       </div>
