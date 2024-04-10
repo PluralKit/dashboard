@@ -1,9 +1,11 @@
 <script lang="ts">
   import { dash } from "$lib/dash/dash.svelte"
   import { FilterMode, type Filter, type FilterGroup } from "$lib/dash/filters.svelte"
-  import { IconTrash } from "@tabler/icons-svelte"
+  import { randomId } from "$lib/dash/ids"
   import type { DndEvent } from "svelte-dnd-action"
-  import { dndzone } from "svelte-dnd-action"
+  import { dndzone, SHADOW_ITEM_MARKER_PROPERTY_NAME } from "svelte-dnd-action"
+  import FilterHeader from "./FilterHeader.svelte"
+  import { browser } from "$app/environment"
 
   let {
     filterGroups = $bindable(),
@@ -27,28 +29,56 @@
     dash.members.paginate()
   }
 
-  function handleConsider(event: CustomEvent<DndEvent<Filter>>, id: string) {
-    const idx = filterGroups.findIndex((g) => g.id === id)
+  function handleConsiderFilter(event: CustomEvent<DndEvent<Filter>>, id: string) {
+    const group = filterGroups.findIndex((g) => g.id === id)
     const dupes = new Set()
     const items = event.detail.items.filter((item) => {
       const dupe = dupes.has(item.id)
       dupes.add(item.id)
       return !dupe
     })
-    filterGroups[idx].filters = items
+    filterGroups[group].filters = items
     filterGroups = filterGroups
   }
 
-  function handleFinal(event: CustomEvent<DndEvent<Filter>>, id: string) {
-    const idx = filterGroups.findIndex((g) => g.id === id)
+  function handleFinalFilter(event: CustomEvent<DndEvent<Filter>>, gid: string) {
+    const group = filterGroups.findIndex((g) => g.id === gid)
     const dupes = new Set()
     const items = event.detail.items.filter((item) => {
       const dupe = dupes.has(item.id)
       dupes.add(item.id)
       return !dupe
     })
-    filterGroups[idx].filters = items
-    filterGroups = filterGroups
+    filterGroups[group].filters = items
+    let newGroups = filterGroups
+    if (filterGroups[group].filters.length < 1) newGroups = filterGroups.filter((g) => g.id !== gid)
+    filterGroups = appendEmptyGroupIfNeeded(newGroups)
+
+    dash.members.process()
+    dash.members.paginate()
+  }
+
+  function handleConsiderGroup(event: CustomEvent<DndEvent<FilterGroup>>) {
+    const dupes = new Set()
+    const items = event.detail.items.filter((item) => {
+      const dupe = dupes.has(item.id)
+      dupes.add(item.id)
+      return !dupe
+    })
+
+    filterGroups = items
+  }
+
+  function handleFinalGroup(event: CustomEvent<DndEvent<FilterGroup>>) {
+    const dupes = new Set()
+    const items = event.detail.items.filter((item) => {
+      const dupe = dupes.has(item.id)
+      dupes.add(item.id)
+      return !dupe
+    })
+
+    let newGroups = items.filter((g) => g.filters.length > 0)
+    filterGroups = appendEmptyGroupIfNeeded(newGroups)
 
     dash.members.process()
     dash.members.paginate()
@@ -57,64 +87,115 @@
   function removeFilter(gid: string, fid: string) {
     const group = filterGroups.findIndex((g) => g.id === gid)
     filterGroups[group].filters = filterGroups[group].filters.filter((item) => item.id !== fid)
-    if (filterGroups[group].filters.length < 1) filterGroups = filterGroups.filter(g => g.id !== gid)
-    else filterGroups = filterGroups
+    let newGroups = filterGroups
+    if (filterGroups[group].filters.length < 1) newGroups = filterGroups.filter((g) => g.id !== gid)
+    newGroups = appendEmptyGroupIfNeeded(newGroups)
+
+    filterGroups = newGroups
+
+    dash.members.process()
+    dash.members.paginate()
+  }
+
+  function appendEmptyGroupIfNeeded(groups: FilterGroup[]) {
+    if (groups[groups.length - 1].filters.length > 0)
+      groups = [
+        ...groups,
+        {
+          id: randomId(),
+          filters: [],
+          mode: "and",
+        },
+      ]
+    return groups
+  }
+
+  function changeMode(mode: "and" | "or", gid: string) {
+    const group = filterGroups.findIndex((g) => g.id === gid)
+    filterGroups[group].mode = mode
 
     dash.members.process()
     dash.members.paginate()
   }
 </script>
 
-<div class="p-3 bg-base-300 rounded-lg">
+<div
+  class="p-3 bg-base-300 rounded-lg flex flex-col gap-4"
+  use:dndzone={{ items: filterGroups, type: "filter-groups", dropTargetStyle: {} }}
+  aria-label="Filter Groups"
+  onconsider={(e) => handleConsiderGroup(e)}
+  onfinalize={(e) => handleFinalGroup(e)}
+>
   {#each filterGroups as group, index (group.id)}
     <div
-      use:dndzone={{ items: group.filters, type: "filter-group", dropTargetStyle: {}}}
-      class={`p-3 flex flex-col gap-3 bg-base-100 border-base-content/20 rounded-lg outline-secondary hover:border-secondary border-2 outline-2`}
-      aria-label={`Filter Group ${index}`}
-      onconsider={(e) => handleConsider(e, group.id)}
-      onfinalize={(e) => handleFinal(e, group.id)}
+      class="flex flex-col p-3 gap-2 bg-base-100 border-base-content/20 rounded-lg hover:border-secondary border-2"
     >
-      {#each group.filters as filter, i (filter.id)}
-        <div
-          class="flex bg-base-100 p-3 rounded-lg flex-col hover:border-primary outline-primary border-2 gap-1 relative"
-          aria-label={`${filter.fieldName} filter: ${filter.mode}`}
-        >
-          <button class="absolute top-1 right-2 text-error" onclick={() => removeFilter(group.id, filter.id)}>
-            <IconTrash />
-          </button>
-          {#if filter.mode !== FilterMode.EMPTY && filter.mode !== FilterMode.NOTEMPTY}
-            {#if filter.mode === FilterMode.HIGHERTHAN || filter.mode === FilterMode.LOWERTHAN}
-              <span class="text-sm">
-                <b>{filter.fieldName}s</b> that are {filter.mode}
-                {filter.value}
-                {#if filter.field !== "message_count"}
-                  characters long.
-                {/if}
-              </span>
-              <input
-                class="input input-sm input-bordered"
-                placeholder={`Filter by ${filter.field}...`}
-                type="number"
-                min={0}
-                onchange={(e) => updateFilterValue(e, index, i, true)}
-              />
-            {:else}
-              <span class="text-sm"
-                ><b>{filter.fieldName}s</b> that {filter.mode}
-                {filter.value ? `"${filter.value}"` : "..."}</span
-              >
-              <input
-                class="input input-sm input-bordered"
-                placeholder={`Filter by ${filter.fieldName}...`}
-                type="text"
-                onchange={(e) => updateFilterValue(e, index, i, false)}
-              />
-            {/if}
-          {:else}
-            <span class="text-sm"><b>{filter.fieldName}s</b> that are {filter.mode}</span>
-          {/if}
+      {#if group.filters.length > 1}
+        <div class="join w-fit mr-auto">
+          <button
+            class={`join-item btn btn-xs ${group.mode === "and" ? "btn-primary" : "btn-neutral"}`}
+            onclick={() => changeMode("and", group.id)}>AND</button
+          >
+          <button
+            class={`join-item btn btn-xs ${group.mode === "or" ? "btn-primary" : "btn-neutral"}`}
+            onclick={() => changeMode("or", group.id)}>OR</button
+          >
         </div>
-      {/each}
+      {/if}
+      <div
+        use:dndzone={{ items: group.filters, type: "filters", dropTargetStyle: {} }}
+        class={`flex flex-col gap-3 rounded-lg outline-secondary outline-2 ${
+          group.filters.length < 1 ? "p-3" : "p-0"
+        }`}
+        aria-label={`Filter Group ${index}`}
+        onconsider={(e) => handleConsiderFilter(e, group.id)}
+        onfinalize={(e) => handleFinalFilter(e, group.id)}
+      >
+        {#each group.filters as filter, i (filter.id)}
+          <div
+            class="bg-base-100 p-3 flex flex-col rounded-lg hover:border-primary border-base-content/20 outline-primary border-2 gap-1 relative"
+            aria-label={`${filter.fieldName} filter: ${filter.mode}`}
+          >
+            {#if filter.mode !== FilterMode.EMPTY && filter.mode !== FilterMode.NOTEMPTY}
+              {#if filter.mode === FilterMode.HIGHERTHAN || filter.mode === FilterMode.LOWERTHAN}
+                <FilterHeader action={removeFilter(group.id, filter.id)}>
+                  <span class="text-sm">
+                    <b>{filter.fieldName}s</b> that are {filter.mode}
+                    {filter.value}
+                    {#if filter.field !== "message_count"}
+                      characters long.
+                    {/if}
+                  </span>
+                </FilterHeader>
+                <input
+                  class="input input-sm input-bordered"
+                  placeholder={`Filter by ${filter.field}...`}
+                  type="number"
+                  value={filter.value}
+                  min={0}
+                  onchange={(e) => updateFilterValue(e, index, i, true)}
+                />
+              {:else}
+                <FilterHeader action={removeFilter(group.id, filter.id)}>
+                  <span class="text-sm"
+                    ><b>{filter.fieldName}s</b> that {filter.mode}
+                    {filter.value ? `"${filter.value}"` : "..."}</span
+                  >
+                </FilterHeader>
+                <input
+                  class="input input-sm input-bordered"
+                  placeholder={`Filter by ${filter.fieldName}...`}
+                  type="text"
+                  value={filter.value}
+                  onchange={(e) => updateFilterValue(e, index, i, false)}
+                />
+              {/if}
+            {:else}
+              <span class="text-sm"><b>{filter.fieldName}s</b> that are {filter.mode}</span>
+            {/if}
+          </div>
+        {/each}
+      </div>
     </div>
   {/each}
 </div>

@@ -145,6 +145,7 @@ function createMemberListState() {
     init: function (data: Member[]) {
       members = data
       this.processList()
+      this.paginateList()
     },
   }
 }
