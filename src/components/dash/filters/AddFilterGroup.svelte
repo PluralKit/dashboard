@@ -66,6 +66,7 @@
 
     filterField = ""
     filterMode = null
+    filterValue = null
   }
 </script>
 
