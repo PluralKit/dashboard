@@ -24,7 +24,7 @@
 		"@typescript-eslint/parser": "^6.0.0",
 		"autoprefixer": "^10.4.16",
 		"daisyui": "^4.0.7",
-		"discord-markdown": "github:draconizations/discord-markdown#77ed4acec80ebbc3f3b6d9e18eb0217c646f18c7",
+		"discord-markdown": "github:draconizations/discord-markdown#a96eed0e1aaebfaeeb2579d4166a642a9b132e79",
 		"dotenv": "^16.4.5",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
@@ -41,7 +41,8 @@
 		"tailwindcss": "^3.3.5",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
-		"vite": "^5.0.0"
+		"vite": "^5.0.0",
+		"vite-plugin-commonjs": "^0.10.1"
 	},
 	"overrides": {
 		"@rgossiaux/svelte-headlessui": {
