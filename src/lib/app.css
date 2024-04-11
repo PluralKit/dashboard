@@ -33,6 +33,10 @@
       @apply list-disc pl-6
     }
 
+    .discord-markdown ol {
+      @apply list-decimal pl-6
+    }
+
     .discord-markdown .d-emoji {
       @apply h-4 w-auto inline
     }
