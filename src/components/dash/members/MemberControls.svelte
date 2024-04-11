@@ -44,7 +44,7 @@
     </button>
   </div>
   <hr class="my-2" />
-  <p class="my-4">Controls will go here etc</p>
+  <p class="my-4">More search options will go here later.</p>
   {#if mode === "advanced"}
     <div
       class={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 ${
@@ -54,7 +54,11 @@
       <div>
         <h3 class="text-xl">Filter list</h3>
         <hr class="my-2" />
-        <AddFilterGroup bind:filterGroups={dash.members.filters} list={dash.members} type="members" />
+        <AddFilterGroup
+          bind:filterGroups={dash.members.filters}
+          list={dash.members}
+          type="members"
+        />
         <FilterGroups bind:filterGroups={dash.members.filters} />
       </div>
       <div>
