@@ -57,14 +57,7 @@
 </script>
 
 <div class="rounded-lg border-base-content/25 border mb-3 p-4">
-  <div class="flex flex-row justify-between items-center">
-    <p class="text-lg mb-2 mr-2">Add new filter</p>
-    {#if filterField && filterMode}
-      <button class="btn btn-success btn-sm" onclick={() => addFilter() }>
-        <IconPlus size={14} /> add filter
-      </button>
-    {/if}
-  </div>
+  <p class="text-lg mb-2 mr-2">Add new filter</p>
   <div class="gap-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
     <div class="flex flex-col">
       <label class="text-sm mb-1" for={`${type}-new-filter-field`}>Filter by...</label>
@@ -122,4 +115,11 @@
         </select>
     </div>
   </div>
+  {#if filterField && filterMode}
+  <div class="flex flex-row">
+    <button class="btn btn-success btn-sm mt-4 ml-auto" onclick={() => addFilter() }>
+      <IconPlus size={14} /> add filter
+    </button>
+  </div>
+{/if}
 </div>
