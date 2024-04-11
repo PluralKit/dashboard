@@ -69,44 +69,44 @@
         class="flex flex-col w-full bg-base-100 gap-2 md:flex-row lg:flex-col xl:flex-row lg:gap-3 p-2 rounded-xl flex-wrap"
       >
         <b class="inline-block px-4 pt-2 w-full">Privacy settings:</b>
-        <ul class="menu flex-1 text-base p-0 grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <li>
+        <ul class="menu flex-1 text-base p-0 flex flex-col sm:flex-row">
+          <li class="w-1/2">
             <span class="items-start"
               ><b>Visibility:</b> <PrivacyDisplay value={member.privacy.visibility} />
             </span>
           </li>
-          <li>
+          <li class="w-1/2">
             <span class="items-start"
               ><b>Name:</b> <PrivacyDisplay value={member.privacy.name_privacy} /></span
             >
           </li>
-          <li>
+          <li class="w-1/2">
             <span class="items-start"
               ><b>Description:</b>
               <PrivacyDisplay value={member.privacy.description_privacy} /></span
             >
           </li>
-          <li>
+          <li class="w-1/2">
             <span class="items-start"
               ><b>Avatar:</b> <PrivacyDisplay value={member.privacy.avatar_privacy} /></span
             >
           </li>
-          <li>
+          <li class="w-1/2">
             <span class="items-start"
               ><b>Pronouns:</b> <PrivacyDisplay value={member.privacy.pronoun_privacy} /></span
             >
           </li>
-          <li>
+          <li class="w-1/2">
             <span class="items-start"
               ><b>Birthday:</b> <PrivacyDisplay value={member.privacy.birthday_privacy} /></span
             >
           </li>
-          <li>
+          <li class="w-1/2">
             <span class="items-start"
               ><b>Proxy tags:</b> <PrivacyDisplay value={member.privacy.proxy_privacy} /></span
             >
           </li>
-          <li>
+          <li class="w-1/2">
             <span class="items-start"
               ><b>Metadata:</b> <PrivacyDisplay value={member.privacy.metadata_privacy} /></span
             >
