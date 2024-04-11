@@ -83,8 +83,8 @@ devDependencies:
     specifier: ^3.6.0
     version: 3.6.0(postcss@8.4.31)(sass@1.74.1)(svelte@5.0.0-next.95)
   svelte-dnd-action:
-    specifier: github:draconizations/svelte-dnd-action#fea1189bc6e0858b20d2f14df51673a5b049193b
-    version: github.com/draconizations/svelte-dnd-action/fea1189bc6e0858b20d2f14df51673a5b049193b(svelte@5.0.0-next.95)
+    specifier: ^0.9.43
+    version: 0.9.43(svelte@5.0.0-next.95)
   tailwindcss:
     specifier: ^3.3.5
     version: 3.3.5
@@ -2405,6 +2405,14 @@ packages:
       - sugarss
     dev: true
 
+  /svelte-dnd-action@0.9.43(svelte@5.0.0-next.95):
+    resolution: {integrity: sha512-KBt8NL3zTBCTw1DJBUFU4zLw0Dr0rsJaimYA5yqsQeV9ZiTZ2ic4Llbe8MdkhhyWzBI0bw0mXElzkrc3+dg5ag==}
+    peerDependencies:
+      svelte: '>=3.23.0'
+    dependencies:
+      svelte: 5.0.0-next.95
+    dev: true
+
   /svelte-eslint-parser@0.33.1(svelte@5.0.0-next.95):
     resolution: {integrity: sha512-vo7xPGTlKBGdLH8T5L64FipvTrqv3OQRx9d2z5X05KKZDlF4rQk8KViZO4flKERY+5BiVdOh7zZ7JGJWo5P0uA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -2716,15 +2724,4 @@ packages:
     dependencies:
       base-64: 1.0.0
       simple-markdown: 0.7.3
-    dev: true
-
-  github.com/draconizations/svelte-dnd-action/fea1189bc6e0858b20d2f14df51673a5b049193b(svelte@5.0.0-next.95):
-    resolution: {tarball: https://codeload.github.com/draconizations/svelte-dnd-action/tar.gz/fea1189bc6e0858b20d2f14df51673a5b049193b}
-    id: github.com/draconizations/svelte-dnd-action/fea1189bc6e0858b20d2f14df51673a5b049193b
-    name: svelte-dnd-action
-    version: 0.9.42
-    peerDependencies:
-      svelte: '>=3.23.0'
-    dependencies:
-      svelte: 5.0.0-next.95
     dev: true
