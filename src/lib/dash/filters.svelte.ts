@@ -25,6 +25,7 @@ export const filterFieldText = (raw: string) => {
     "avatar_url": "avatar",
     "webhook_avatar_url": "proxy avatar",
     "message_count": "message count",
+    "pronouns": "pronoun"
   }
   
   return text[raw] ?? raw
