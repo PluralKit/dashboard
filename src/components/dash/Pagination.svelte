@@ -7,7 +7,7 @@
     list = $bindable(),
     class: className = "",
   }: {
-    list: DashList<Group|Member>
+    list: DashList<Group | Member>
     class?: string
   } = $props()
 
@@ -30,8 +30,10 @@
 <div class={`join ${className}`}>
   {#if pageAmount > 0}
     <button
-      class={`btn btn-sm join-item ${list.settings.currentPage === 1 ? "btn-primary" : "btn-neutral"}`}
-      onclick={() => goToPage(list.settings.currentPage = 1)}
+      class={`btn btn-sm join-item ${
+        list.settings.currentPage === 1 ? "btn-primary" : "btn-neutral"
+      }`}
+      onclick={() => goToPage((list.settings.currentPage = 1))}
     >
       1
     </button>
@@ -39,7 +41,10 @@
       <button class="btn btn-sm btn-neutral join-item" onclick={() => jumpToPage()}> ... </button>
     {/if}
     {#if list.settings.currentPage > 2}
-      <button class="btn btn-sm btn-neutral join-item" onclick={() => goToPage(list.settings.currentPage -= 1)}>
+      <button
+        class="btn btn-sm btn-neutral join-item"
+        onclick={() => goToPage((list.settings.currentPage -= 1))}
+      >
         {list.settings.currentPage - 1}
       </button>
     {/if}
@@ -48,8 +53,11 @@
         {list.settings.currentPage}
       </button>
     {/if}
-    {#if list.settings.currentPage < pageAmount - 1 && pageAmount > 3}
-      <button class="btn btn-sm btn-neutral join-item" onclick={() => goToPage(list.settings.currentPage += 1)}>
+    {#if (list.settings.currentPage < pageAmount - 1 && pageAmount > 3) || (list.settings.currentPage === 1 && pageAmount === 3)}
+      <button
+        class="btn btn-sm btn-neutral join-item"
+        onclick={() => goToPage((list.settings.currentPage += 1))}
+      >
         {list.settings.currentPage + 1}
       </button>
     {/if}
@@ -61,7 +69,7 @@
         class={`btn btn-sm join-item ${
           list.settings.currentPage === pageAmount ? "btn-primary" : "btn-neutral"
         }`}
-        onclick={() => goToPage(list.settings.currentPage = pageAmount)}
+        onclick={() => goToPage((list.settings.currentPage = pageAmount))}
       >
         {pageAmount}
       </button>
