@@ -5,6 +5,7 @@
   import FilterGroups from "../filters/FilterGroups.svelte"
   import { randomId } from "$lib/dash/ids"
   import { onMount } from "svelte"
+  import AddFilterGroup from "../filters/AddFilterGroup.svelte"
 
   let mode: "simple" | "advanced" = $state("advanced")
 
@@ -53,6 +54,7 @@
       <div>
         <h3 class="text-xl">Filter list</h3>
         <hr class="my-2" />
+        <AddFilterGroup bind:filterGroups={dash.members.filters} list={dash.members} type="members" />
         <FilterGroups bind:filterGroups={dash.members.filters} />
       </div>
       <div>

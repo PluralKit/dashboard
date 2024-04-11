@@ -19,6 +19,25 @@ export type FilterModeText = {
   afterVerb?: string
 }
 
+export const filterFieldText = (raw: string) => {
+  const text: Record<string,string> = {
+    "display_name": "display name",
+    "avatar_url": "avatar",
+    "webhook_avatar_url": "proxy avatar",
+    "message_count": "message count",
+  }
+  
+  return text[raw] ?? raw
+}
+
+export const filterFieldType = (raw: string) => {
+  const type: Record<string, string> = {
+    "message_count": "number"
+  }
+
+  return type[raw] ?? "string"
+}
+
 export const filterModeText = (newMode: FilterMode, type: string) => {
   const mode = newMode
 
@@ -163,12 +182,10 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
     case FilterMode.INCLUDES:
       processedList = processedList.filter((i) => {
         if (!value) return true
-        switch (typeof i[field]) {
+        switch (filter.valueType) {
           // string: include any with substring
           case "string": {
-            if ((i[field] as string).toLowerCase().includes((value as string).toLowerCase()))
-              return true
-            else return false
+            return ((i[field] as string).toLowerCase().includes((value as string).toLowerCase()))
           }
           default:
             return false
@@ -178,12 +195,10 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
     case FilterMode.EXCLUDES:
       processedList = processedList.filter((i) => {
         if (!value) return true
-        switch (typeof i[field]) {
+        switch (filter.valueType) {
           // string: include any with substring
           case "string": {
-            if ((i[field] as string).toLowerCase().includes((value as string).toLowerCase()))
-              return false
-            else return true
+            return !((i[field] as string).toLowerCase().includes((value as string).toLowerCase()))
           }
           default:
             return false
@@ -192,39 +207,35 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
       break
     case FilterMode.EMPTY:
       processedList = processedList.filter((i) => {
-        if (i[field] === null || i[field] === undefined) return true
-        else return false
+        return (i[field] === null || i[field] === undefined)
       })
       break
     case FilterMode.NOTEMPTY:
       processedList = processedList.filter((i) => {
-        if (i[field] !== null || i[field] !== undefined) return true
-        else return false
+        return (i[field] !== null && i[field] !== undefined)
       })
       break
     case FilterMode.EXACT:
       processedList = processedList.filter((i) => {
         if (!value) return true
-        if (i[field] === value) return true
-        else return false
+        if (filter.valueType === "string") return (i[field] as string).toLowerCase() === (value as string).toLowerCase()
+        else return i[field] === filter.value
       })
       break
     case FilterMode.NOTEXACT:
       processedList = processedList.filter((i) => {
         if (!value) return true
-        if (i[field] !== value) return true
-        else return false
+        if (filter.valueType === "string") return (i[field] as string).toLowerCase() !== (value as string).toLowerCase()
+        else return i[field] !== filter.value
       })
       break
     case FilterMode.HIGHERTHAN:
       processedList = processedList.filter((i) => {
         if (!value) return true
         if (typeof i[field] === "string") {
-          if ((i[field] as string).length > (value as number)) return true
-          else return false
+          return ((i[field] as string).length > (value as number))
         } else if (typeof i[field] === "number") {
-          if ((i[field] as number) > (value as number)) return true
-          else return false
+          return ((i[field] as number) > (value as number))
         } else return false
       })
       break
@@ -232,11 +243,9 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
       processedList = processedList.filter((i) => {
         if (!value) return true
         if (typeof i[field] === "string") {
-          if ((i[field] as string).length < (value as number)) return true
-          else return false
+          return ((i[field] as string).length < (value as number))
         } else if (typeof i[field] === "number") {
-          if ((i[field] as number) < (value as number)) return true
-          else return false
+          return ((i[field] as number) < (value as number))
         } else return false
       })
       break

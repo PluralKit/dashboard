@@ -129,7 +129,7 @@
     <div
       class="flex flex-col p-3 gap-2 bg-base-100 border-base-content/20 rounded-lg hover:border-secondary border-2"
     >
-      {#if group.filters.length > 1}
+      {#if group.filters.length > 0}
         <div class="join w-fit mr-auto">
           <button
             class={`join-item btn btn-xs ${group.mode === "and" ? "btn-primary" : "btn-neutral"}`}
