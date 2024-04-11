@@ -15,7 +15,7 @@
   <div class="mr-2">
     {@render children()}
   </div>
-  <button class="text-error" onclick={() => action}>
+  <button class="text-error" onclick={() => action} ontouchend={() => action}>
     <IconTrash />
   </button>
 </div>
