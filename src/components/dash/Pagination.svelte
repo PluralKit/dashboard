@@ -4,7 +4,7 @@
   import type { DashList } from "$lib/dash/dash.svelte"
 
   let {
-    list,
+    list = $bindable(),
     class: className = "",
   }: {
     list: DashList<Group|Member>
@@ -48,12 +48,12 @@
         {list.settings.currentPage}
       </button>
     {/if}
-    {#if list.settings.currentPage < pageAmount - 1 && pageAmount > 4}
+    {#if list.settings.currentPage < pageAmount - 1 && pageAmount > 3}
       <button class="btn btn-sm btn-neutral join-item" onclick={() => goToPage(list.settings.currentPage += 1)}>
         {list.settings.currentPage + 1}
       </button>
     {/if}
-    {#if list.settings.currentPage < pageAmount - 2 && pageAmount > 5}
+    {#if list.settings.currentPage < pageAmount - 2 && pageAmount > 3}
       <button class="btn btn-sm btn-neutral join-item" onclick={() => jumpToPage()}> ... </button>
     {/if}
     {#if pageAmount > 1}
