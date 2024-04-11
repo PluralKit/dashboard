@@ -135,22 +135,20 @@
     <div
       class="flex flex-col p-3 gap-2 bg-base-100 border-base-content/20 rounded-lg hover:border-secondary border-2"
     >
-      {#if group.filters.length > 0}
-        <div class="join w-fit mr-auto">
-          <button
-            class={`join-item btn btn-xs ${group.mode === "and" ? "btn-primary" : "btn-neutral"}`}
-            onclick={() => changeMode("and", group.id)}>AND</button
-          >
-          <button
-            class={`join-item btn btn-xs ${group.mode === "or" ? "btn-primary" : "btn-neutral"}`}
-            onclick={() => changeMode("or", group.id)}>OR</button
-          >
-        </div>
-      {/if}
+      <div class="join w-fit mr-auto">
+        <button
+          class={`join-item btn btn-xs ${group.mode === "and" ? "btn-primary" : "btn-neutral"}`}
+          onclick={() => changeMode("and", group.id)}>AND</button
+        >
+        <button
+          class={`join-item btn btn-xs ${group.mode === "or" ? "btn-primary" : "btn-neutral"}`}
+          onclick={() => changeMode("or", group.id)}>OR</button
+        >
+      </div>
       <div
         use:dndzone={{ items: group.filters, type: "filters", dropTargetStyle: {} }}
         class={`flex flex-col gap-3 rounded-lg outline-secondary outline-2 ${
-          group.filters.length < 1 ? "p-3" : "p-0"
+          group.filters.length === 0 ? "p-5 border-2 border-base-content/25" : "p-0"
         }`}
         aria-label={`Filter Group ${index}`}
         onconsider={(e) => handleConsiderFilter(e, group.id)}
@@ -172,7 +170,7 @@
             {#if filter.valueType === "number"}
               <input
                 class="input input-sm input-bordered"
-                placeholder={`Filter by ${filter.field}...`}
+                placeholder={`Filter by ${filter.fieldName}...`}
                 type="number"
                 value={filter.value}
                 min={0}

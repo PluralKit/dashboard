@@ -24,28 +24,31 @@
 
   let filterField = $state("")
   let filterMode: null | FilterMode = $state(null)
+  let filterValue: null | string | number = $state(null)
 
-  function addFilter() {
-    let value: string | number | null = ""
+  let inputType: string = $derived.by(() => {
+    let value: string = "text"
 
-    if (filterMode === FilterMode.EMPTY || filterMode === FilterMode.NOTEMPTY) value = null
+    if (filterMode === FilterMode.EMPTY || filterMode === FilterMode.NOTEMPTY) value = "null"
     else if (
       filterFieldType(filterField) === "number" ||
       filterMode === FilterMode.LOWERTHAN ||
       filterMode === FilterMode.HIGHERTHAN
     )
-      value = 0
+      value = "number"
 
+    return value
+  })
+
+  function addFilter() {
     const filter: Filter = createFilter(
       filterField,
       filterFieldText(filterField),
       filterMode ?? FilterMode.NOTEMPTY,
-      value
+      filterValue
     )
 
-    // we want to add the filter to the last non-empty filter group
-    // or the first empty filter group if there are no non-empty ones
-    // OR a new filter group if there are no groups somehow?
+    // we want to add the filter to the first filter group
     let group: FilterGroup | null = null
     if (filterGroups.length === 0) {
       group = {
@@ -55,13 +58,7 @@
       }
       filterGroups.push(group)
     } else {
-      for (let i = filterGroups.length - 1; i === 0; i--) {
-        if (filterGroups[i].filters.length > 0) group = filterGroups[i]
-      }
-      if (!group) {
-        group = filterGroups[0]
-      }
-      group.filters = [...group.filters, filter]
+      filterGroups[0].filters = [...filterGroups[0].filters, filter]
     }
 
     list.process()
@@ -76,13 +73,13 @@
   <p class="text-lg mb-2 mr-2">Add new filter</p>
   <div class="gap-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
     <div class="flex flex-col">
-      <label class="text-sm mb-1" for={`${type}-new-filter-field`}>Filter by...</label>
+      <label class="text-sm mb-1" for={`${type}-new-filter-field`}>Filter by</label>
       <select
         id={`${type}-new-filter-field`}
         class="select select-sm select-bordered"
         bind:value={filterField}
       >
-        <option disabled value="">select a field to filter by</option>
+        <option disabled value="">Filter by...</option>
         <option value="id">id</option>
         <option value="name">name</option>
         <option value="display_name">display name</option>
@@ -109,11 +106,12 @@
         id={`${type}-new-filter-mode`}
         class="select select-sm select-bordered"
         bind:value={filterMode}
+        disabled={!filterField}
       >
         {#if !filterField}
           <option value={null} disabled>Select a field first</option>
         {:else}
-          <option value={null} disabled>Select a filter mode</option>
+          <option value={null} disabled>Filter mode...</option>
           {#if filterField !== "message_count"}
             <option value={FilterMode.INCLUDES}>include</option>
             <option value={FilterMode.EXCLUDES}>exclude</option>
@@ -132,8 +130,23 @@
     </div>
   </div>
   {#if filterField && filterMode}
-    <div class="flex flex-row">
-      <button class="btn btn-success btn-sm mt-4 ml-auto" onclick={() => addFilter()}>
+    {#if inputType !== "null"}
+      <label class="text-sm mb-1 block mt-3" for={`${type}-new-filter-field`}>Value</label>
+    {/if}
+    <div class="flex flex-row gap-3">
+      {#if inputType !== "null"}
+        <input
+          id={`${type}-new-filter-field`}
+          bind:value={filterValue}
+          class="input flex-1 input-bordered input-sm"
+          type={inputType}
+          placeholder={`Filter by ${filterFieldText(filterField)}...`}
+        />
+      {/if}
+      <button
+        class={`btn btn-success btn-sm ml-auto ${inputType === "null" ? "mt-3" : ""}`}
+        onclick={() => addFilter()}
+      >
         <IconPlus size={14} /> add filter
       </button>
     </div>

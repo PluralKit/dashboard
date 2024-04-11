@@ -9,12 +9,19 @@
 
   let mode: "simple" | "advanced" = $state("advanced")
 
+  const nameFilter = createFilter("name", "name", FilterMode.INCLUDES, "")
+
   dash.members.filters = [
     {
       mode: "and",
-      filters: [],
+      filters: [nameFilter],
       id: randomId(),
     },
+    {
+      mode: "and",
+      filters: [],
+      id: randomId()
+    }
   ]
 </script>
 
