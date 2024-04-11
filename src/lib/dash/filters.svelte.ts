@@ -183,6 +183,7 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
     case FilterMode.INCLUDES:
       processedList = processedList.filter((i) => {
         if (!value) return true
+        if (!i[field]) return false
         switch (filter.valueType) {
           // string: include any with substring
           case "string": {
@@ -196,13 +197,14 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
     case FilterMode.EXCLUDES:
       processedList = processedList.filter((i) => {
         if (!value) return true
+        if (!i[field]) return true
         switch (filter.valueType) {
           // string: include any with substring
           case "string": {
             return !((i[field] as string).toLowerCase().includes((value as string).toLowerCase()))
           }
           default:
-            return false
+            return true
         }
       })
       break
@@ -219,6 +221,7 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
     case FilterMode.EXACT:
       processedList = processedList.filter((i) => {
         if (!value) return true
+        if (!i[field]) return false
         if (filter.valueType === "string") return (i[field] as string).toLowerCase() === (value as string).toLowerCase()
         else return i[field] === filter.value
       })
@@ -226,6 +229,7 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
     case FilterMode.NOTEXACT:
       processedList = processedList.filter((i) => {
         if (!value) return true
+        if (!i[field]) return true
         if (filter.valueType === "string") return (i[field] as string).toLowerCase() !== (value as string).toLowerCase()
         else return i[field] !== filter.value
       })
@@ -233,6 +237,7 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
     case FilterMode.HIGHERTHAN:
       processedList = processedList.filter((i) => {
         if (!value) return true
+        if (!i[field]) return false
         if (typeof i[field] === "string") {
           return ((i[field] as string).length > (value as number))
         } else if (typeof i[field] === "number") {
@@ -243,6 +248,7 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
     case FilterMode.LOWERTHAN:
       processedList = processedList.filter((i) => {
         if (!value) return true
+        if (!i[field]) return false
         if (typeof i[field] === "string") {
           return ((i[field] as string).length < (value as number))
         } else if (typeof i[field] === "number") {

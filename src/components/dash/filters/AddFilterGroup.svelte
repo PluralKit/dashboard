@@ -1,7 +1,14 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
   import { type DashList } from "$lib/dash/dash.svelte"
-  import { FilterMode, type Filter, type FilterGroup, createFilter, filterFieldText, filterFieldType } from "$lib/dash/filters.svelte"
+  import {
+    FilterMode,
+    type Filter,
+    type FilterGroup,
+    createFilter,
+    filterFieldText,
+    filterFieldType,
+  } from "$lib/dash/filters.svelte"
   import { randomId } from "$lib/dash/ids"
   import { IconPlus } from "@tabler/icons-svelte"
 
@@ -10,36 +17,45 @@
     filterGroups = $bindable(),
     type,
   }: {
-    list: DashList<Group|Member>,
+    list: DashList<Group | Member>
     type: "members" | "groups"
     filterGroups: FilterGroup[]
   } = $props()
 
   let filterField = $state("")
   let filterMode: null | FilterMode = $state(null)
-  
+
   function addFilter() {
-    let value: string|number|null = null
+    let value: string | number | null = ""
 
     if (filterMode === FilterMode.EMPTY || filterMode === FilterMode.NOTEMPTY) value = null
-    else if (filterFieldType(filterField) === "number") value = 0
-    else value = ""
+    else if (
+      filterFieldType(filterField) === "number" ||
+      filterMode === FilterMode.LOWERTHAN ||
+      filterMode === FilterMode.HIGHERTHAN
+    )
+      value = 0
 
-    const filter: Filter = createFilter(filterField, filterFieldText(filterField), filterMode ?? FilterMode.NOTEMPTY, value)
-    
+    const filter: Filter = createFilter(
+      filterField,
+      filterFieldText(filterField),
+      filterMode ?? FilterMode.NOTEMPTY,
+      value
+    )
+
     // we want to add the filter to the last non-empty filter group
     // or the first empty filter group if there are no non-empty ones
     // OR a new filter group if there are no groups somehow?
-    let group: FilterGroup|null = null
+    let group: FilterGroup | null = null
     if (filterGroups.length === 0) {
       group = {
         mode: "and",
         filters: [filter],
-        id: randomId()
+        id: randomId(),
       }
       filterGroups.push(group)
     } else {
-      for (let i = filterGroups.length - 1; i = 0; i--) {
+      for (let i = filterGroups.length - 1; i === 0; i--) {
         if (filterGroups[i].filters.length > 0) group = filterGroups[i]
       }
       if (!group) {
@@ -52,7 +68,7 @@
     list.paginate()
 
     filterField = ""
-    filterMode = null 
+    filterMode = null
   }
 </script>
 
@@ -89,11 +105,11 @@
     </div>
     <div class="flex flex-col">
       <label class="text-sm mb-1" for={`${type}-new-filter-mode`}>Filter mode</label>
-        <select
-          id={`${type}-new-filter-mode`}
-          class="select select-sm select-bordered"
-          bind:value={filterMode}
-        >
+      <select
+        id={`${type}-new-filter-mode`}
+        class="select select-sm select-bordered"
+        bind:value={filterMode}
+      >
         {#if !filterField}
           <option value={null} disabled>Select a field first</option>
         {:else}
@@ -112,14 +128,14 @@
             <option value={FilterMode.LOWERTHAN}>less than</option>
           {/if}
         {/if}
-        </select>
+      </select>
     </div>
   </div>
   {#if filterField && filterMode}
-  <div class="flex flex-row">
-    <button class="btn btn-success btn-sm mt-4 ml-auto" onclick={() => addFilter() }>
-      <IconPlus size={14} /> add filter
-    </button>
-  </div>
-{/if}
+    <div class="flex flex-row">
+      <button class="btn btn-success btn-sm mt-4 ml-auto" onclick={() => addFilter()}>
+        <IconPlus size={14} /> add filter
+      </button>
+    </div>
+  {/if}
 </div>

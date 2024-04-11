@@ -9,25 +9,13 @@
 
   let mode: "simple" | "advanced" = $state("advanced")
 
-  let nameFilter = createFilter("name", "name", FilterMode.INCLUDES, "")
-
   dash.members.filters = [
-    {
-      mode: "and",
-      filters: [nameFilter],
-      id: randomId(),
-    },
     {
       mode: "and",
       filters: [],
       id: randomId(),
     },
   ]
-
-  onMount(() => {
-    dash.members.process()
-    dash.members.paginate()
-  })
 </script>
 
 <div
