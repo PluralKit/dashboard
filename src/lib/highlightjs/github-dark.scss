@@ -9,6 +9,12 @@
   Current colors taken from GitHub's CSS
 */
 [data-theme="dark"] {
+  pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em;
+  }
+
   .hljs {
     color: #c9d1d9;
     background: #0d1117;

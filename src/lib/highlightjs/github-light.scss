@@ -11,6 +11,12 @@
 
 [data-theme="light"],
 [data-theme="cotton"] {
+  pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em;
+  }
+
   .hljs {
     color: #24292e;
     background: #ffffff;

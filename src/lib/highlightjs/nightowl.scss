@@ -6,6 +6,12 @@ Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
 
 */
 [data-theme="acid"] {
+  pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em;
+  }
+
   .hljs {
     background: #011627;
     color: #d6deeb;
