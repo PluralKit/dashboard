@@ -37,7 +37,7 @@
             >
           </li>
         {/if}
-        {#if member.message_count}
+        {#if member.message_count !== null}
           <li><span class="items-start"><b>Message count:</b> {member.message_count}</span></li>
         {/if}
         {#if member.color}
