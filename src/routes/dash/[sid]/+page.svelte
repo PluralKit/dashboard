@@ -4,7 +4,6 @@
   import Overview from "$components/dash/overview/Overview.svelte"
   import SystemHome from "$components/dash/system/SystemHome.svelte"
   import { dash } from "$lib/dash/dash.svelte"
-  import { getDashLink } from "$lib/dash/utils"
 </script>
 
 <div class="container mx-auto px-4">

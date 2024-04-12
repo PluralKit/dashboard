@@ -25,9 +25,11 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
     // we can go ahead and fetch using the token
     if (params.sid === sid && !url.searchParams.get("public")) {
       try {
-        const { system, members, groups } = await getDashInfo(api, sid || "@me", token)
+        const { system, members, groups, errors, ratelimited } = await getDashInfo(api, sid || "@me", token)
         return {
-          tab: url.searchParams.get("tab") ?? "",
+          errors,
+          ratelimited,
+          tab: url.searchParams.get("tab") ?? "overview",
           system: system || {},
           members: members || [],
           groups: groups || [],
@@ -46,9 +48,11 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
       // otherwise we'll just fetch public info
     } else {
       try {
-        const { system, members, groups } = await getDashInfo(api, params.sid)
+        const { system, members, groups, ratelimited, errors } = await getDashInfo(api, params.sid)
         return {
-          tab: url.searchParams.get("tab") ?? "",
+          errors,
+          ratelimited,
+          tab: url.searchParams.get("tab") ?? "overview",
           system: system || {},
           members: members || [],
           groups: groups || [],

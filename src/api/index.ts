@@ -11,6 +11,7 @@ export enum ErrorType {
   NotFound = 404,
   InternalServerError = 500,
   Forbidden = 403,
+  RateLimit = 429
 }
 
 export interface ApiError {

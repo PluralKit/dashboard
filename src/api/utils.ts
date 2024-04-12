@@ -41,13 +41,41 @@ export async function getDashInfo(api: ApiClient, sid: string, token?: string) {
     sid = "@me"
   }
 
-  let system: System = (await api<System>(`systems/${sid}`, options)) || {}
+  let ratelimited: Record<string, boolean> = {}
+  let errors: Record<string, string> = {}
+
+  let system: System = {}
+  try {
+    system = (await api<System>(`systems/${sid}`, options)) || {}
+  } catch(err) {
+    const e = err as ApiError
+    if (e.type === ErrorType.RateLimit) ratelimited.system = true
+    errors.system = e.message || "Unknown error while fetching system"
+  }
+
   await new Promise((resolve) => setTimeout(resolve, parseInt(PUBLIC_API_COOLDOWN)))
-  let members: Member[] = (await api<Member[]>(`systems/${sid}/members`, options)) || []
+  let members: Member[] = []
+  try {
+    members = (await api<Member[]>(`systems/${sid}/members`, options)) || []
+  } catch(err) {
+    const e = err as ApiError
+    if (e.type === ErrorType.RateLimit) ratelimited.members = true
+    errors.members = e.message || "Unknown error while fetching members"
+  }
+  
   await new Promise((resolve) => setTimeout(resolve, parseInt(PUBLIC_API_COOLDOWN)))
-  let groups: Group[] = (await api<Group[]>(`systems/${sid}/groups${token ? "?with_members=true" : ""}`, options)) || []
+  let groups: Group[] = []
+  try {
+    groups = (await api<Group[]>(`systems/${sid}/groups${token ? "?with_members=true" : ""}`, options)) || []
+  } catch(err) {
+    const e = err as ApiError
+    if (e.type === ErrorType.RateLimit) ratelimited.groups = true
+    errors.groups = e.message || "Unknown error while fetching groups"
+  }
 
   return {
+    errors,
+    ratelimited,
     system,
     members,
     groups,

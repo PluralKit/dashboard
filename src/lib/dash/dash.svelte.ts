@@ -1,5 +1,6 @@
 import type { Group, Member, System } from "$api/types"
 import { filterList, type FilterGroup } from "./filters.svelte"
+import { fetchList } from "./utils"
 import { createListSettings, paginateList, type ListSettings } from "./settings.svelte"
 import { SortMode, sortList, type Sort } from "./sorts"
 
@@ -20,6 +21,7 @@ export interface DashList<T> {
   settings: ListSettings
   process: () => void
   paginate: () => void
+  fetch: (token?: string) => Promise<void>
 }
 
 export let dash = createDash()
@@ -30,6 +32,8 @@ function createDash() {
   let systemData = $state(createSystemState())
   let memberList = $state(createMemberListState())
   let groupList = $state(createGroupListState())
+  let ratelimited: Record<string, boolean> = $state({})
+  let errors: Record<string, string> = $state({})
 
   let tab: string = $state("")
   let settings: Record<string, any> = $state({})
@@ -46,7 +50,8 @@ function createDash() {
         sorts: memberList.sorts,
         settings: memberList.listSettings,
         process: memberList.processList,
-        paginate: memberList.paginateList
+        paginate: memberList.paginateList,
+        fetch: memberList.fetch
       }
     },
     get groups() {
@@ -83,6 +88,18 @@ function createDash() {
     get settings() {
       return settings
     },
+    get ratelimited() {
+      return ratelimited
+    },
+    set ratelimited(ratelimit: Record<string, boolean>) {
+      ratelimited = ratelimit
+    },
+    get errors() {
+      return errors
+    },
+    set errors(error: Record<string, string>) {
+      errors = error
+    }
   }
 }
 
@@ -142,10 +159,15 @@ function createMemberListState() {
     paginateList: function () {
       paginatedMembers = paginateList(processedMembers, listSettings)
     },
+    fetch: async function (token?: string) {
+      members = await fetchList(fetch, `systems/${dash.system?.id || "exmpl"}/members`, token)
+      processedMembers = processList(members, filters, sorts)
+      paginatedMembers = paginateList(processedMembers, listSettings)
+    },
     init: function (data: Member[]) {
       members = data
-      this.processList()
-      this.paginateList()
+      processedMembers = processList(members, filters, sorts)
+      paginatedMembers = paginateList(processedMembers, listSettings)
     },
   }
 }
