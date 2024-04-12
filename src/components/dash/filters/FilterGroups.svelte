@@ -1,16 +1,15 @@
 <script lang="ts">
   import { dash } from "$lib/dash/dash.svelte"
   import {
-    FilterMode,
     type Filter,
     type FilterGroup,
     filterModeText,
     filterFieldType,
   } from "$lib/dash/filters.svelte"
-  import { randomId } from "$lib/dash/ids"
   import type { DndEvent } from "svelte-dnd-action"
   import { dndzone } from "svelte-dnd-action"
   import FilterHeader from "./FilterHeader.svelte"
+  import { IconTrash } from "@tabler/icons-svelte"
 
   let {
     filterGroups = $bindable(),
@@ -34,8 +33,8 @@
     dash.members.paginate()
   }
 
-  function handleConsiderFilter(event: CustomEvent<DndEvent<Filter>>, id: string) {
-    const group = filterGroups.findIndex((g) => g.id === id)
+  function handleConsiderFilter(event: CustomEvent<DndEvent<Filter>>, gid: string) {
+    const group = filterGroups.findIndex((g) => g.id === gid)
     const dupes = new Set()
     const items = event.detail.items.filter((item) => {
       const dupe = dupes.has(item.id)
@@ -47,17 +46,7 @@
   }
 
   function handleFinalFilter(event: CustomEvent<DndEvent<Filter>>, gid: string) {
-    const group = filterGroups.findIndex((g) => g.id === gid)
-    const dupes = new Set()
-    const items = event.detail.items.filter((item) => {
-      const dupe = dupes.has(item.id)
-      dupes.add(item.id)
-      return !dupe
-    })
-    filterGroups[group].filters = items
-    let newGroups = filterGroups
-    if (filterGroups[group].filters.length < 1) newGroups = filterGroups.filter((g) => g.id !== gid)
-    filterGroups = appendEmptyGroupIfNeeded(newGroups)
+    handleConsiderFilter(event, gid)
 
     dash.members.process()
     dash.members.paginate()
@@ -75,15 +64,7 @@
   }
 
   function handleFinalGroup(event: CustomEvent<DndEvent<FilterGroup>>) {
-    const dupes = new Set()
-    const items = event.detail.items.filter((item) => {
-      const dupe = dupes.has(item.id)
-      dupes.add(item.id)
-      return !dupe
-    })
-
-    let newGroups = items.filter((g) => g.filters.length > 0)
-    filterGroups = appendEmptyGroupIfNeeded(newGroups)
+    handleConsiderGroup(event)
 
     dash.members.process()
     dash.members.paginate()
@@ -94,7 +75,6 @@
     filterGroups[group].filters = filterGroups[group].filters.filter((item) => item.id !== fid)
     let newGroups = filterGroups
     if (filterGroups[group].filters.length < 1) newGroups = filterGroups.filter((g) => g.id !== gid)
-    newGroups = appendEmptyGroupIfNeeded(newGroups)
 
     filterGroups = newGroups
 
@@ -102,17 +82,11 @@
     dash.members.paginate()
   }
 
-  function appendEmptyGroupIfNeeded(groups: FilterGroup[]) {
-    if (groups.length === 0 || groups[groups.length - 1].filters.length > 0)
-      groups = [
-        ...groups,
-        {
-          id: randomId(),
-          filters: [],
-          mode: "and",
-        },
-      ]
-    return groups
+  function removeGroup(gid: string) {
+    filterGroups = filterGroups.filter((g) => g.id !== gid)
+
+    dash.members.process()
+    dash.members.paginate()
   }
 
   function changeMode(mode: "and" | "or", gid: string) {
@@ -125,7 +99,7 @@
 </script>
 
 <div
-  class="p-3 bg-base-300 rounded-lg flex flex-col gap-4"
+  class={`bg-base-300 rounded-lg flex flex-col gap-4 p-3 ${filterGroups.length === 0 ? "hidden" : ""}`}
   use:dndzone={{ items: filterGroups, type: "filter-groups", dropTargetStyle: {} }}
   aria-label="Filter Groups"
   onconsider={(e) => handleConsiderGroup(e)}
@@ -135,14 +109,22 @@
     <div
       class="flex flex-col p-3 gap-2 bg-base-100 border-base-content/20 rounded-lg hover:border-secondary border-2"
     >
-      <div class="join w-fit mr-auto">
+      <div class="flex flex-row gap-3 items-center justify-between">
+        <div class="join w-fit mr-auto">
+          <button
+            class={`join-item btn btn-xs ${group.mode === "and" ? "btn-primary" : "btn-neutral"}`}
+            onclick={() => changeMode("and", group.id)}>AND</button
+          >
+          <button
+            class={`join-item btn btn-xs ${group.mode === "or" ? "btn-primary" : "btn-neutral"}`}
+            onclick={() => changeMode("or", group.id)}>OR</button
+          >
+        </div>
         <button
-          class={`join-item btn btn-xs ${group.mode === "and" ? "btn-primary" : "btn-neutral"}`}
-          onclick={() => changeMode("and", group.id)}>AND</button
-        >
-        <button
-          class={`join-item btn btn-xs ${group.mode === "or" ? "btn-primary" : "btn-neutral"}`}
-          onclick={() => changeMode("or", group.id)}>OR</button
+          class="text-error"
+          onclick={() => removeGroup(group.id)}
+          ontouchend={() => removeGroup(group.id)}
+          aria-label="Delete filter group"><IconTrash class="text-error" /></button
         >
       </div>
       <div
@@ -191,3 +173,8 @@
     </div>
   {/each}
 </div>
+{#if filterGroups.length === 0}
+  <div class="bg-base-300 rounded-lg gap-4 p-3 text-center">
+    No filters added.
+  </div>
+{/if}

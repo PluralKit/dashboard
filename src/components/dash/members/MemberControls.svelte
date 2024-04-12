@@ -1,10 +1,8 @@
 <script lang="ts">
   import { dash } from "$lib/dash/dash.svelte"
-  import { FilterMode, createFilter } from "$lib/dash/filters.svelte"
+  import { FilterMode, createFilter, createFilterGroup } from "$lib/dash/filters.svelte"
   import { IconSettings, IconUsers } from "@tabler/icons-svelte"
   import FilterGroups from "../filters/FilterGroups.svelte"
-  import { randomId } from "$lib/dash/ids"
-  import { onMount } from "svelte"
   import AddFilterGroup from "../filters/AddFilterGroup.svelte"
 
   let mode: "simple" | "advanced" = $state("advanced")
@@ -12,16 +10,7 @@
   const nameFilter = createFilter("name", "name", FilterMode.INCLUDES, "")
 
   dash.members.filters = [
-    {
-      mode: "and",
-      filters: [nameFilter],
-      id: randomId(),
-    },
-    {
-      mode: "and",
-      filters: [],
-      id: randomId()
-    }
+    createFilterGroup([nameFilter])
   ]
 </script>
 

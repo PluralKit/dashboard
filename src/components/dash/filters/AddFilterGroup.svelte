@@ -8,8 +8,8 @@
     createFilter,
     filterFieldText,
     filterFieldType,
+    createFilterGroup,
   } from "$lib/dash/filters.svelte"
-  import { randomId } from "$lib/dash/ids"
   import { IconPlus } from "@tabler/icons-svelte"
 
   let {
@@ -48,17 +48,19 @@
       filterValue
     )
 
-    // we want to add the filter to the first filter group
-    let group: FilterGroup | null = null
-    if (filterGroups.length === 0) {
-      group = {
-        mode: "and",
-        filters: [filter],
-        id: randomId(),
+    // we want to add the filter to the last empty filter group
+    let group = createFilterGroup([filter])
+    if (filterGroups.length === 0) filterGroups = [...filterGroups, group]
+    else {
+      let existingGroup: FilterGroup|null = null
+      for (let i = filterGroups.length - 1; i >= 0; i--) {
+        if (filterGroups[i].filters.length === 0) {
+          existingGroup = filterGroups[i]
+          break
+        }
       }
-      filterGroups.push(group)
-    } else {
-      filterGroups[0].filters = [...filterGroups[0].filters, filter]
+      if (!existingGroup) filterGroups = [...filterGroups, group]
+      else existingGroup.filters = [...existingGroup.filters, filter]
     }
 
     list.process()
@@ -113,7 +115,7 @@
           <option value={null} disabled>Select a field first</option>
         {:else}
           <option value={null} disabled>Filter mode...</option>
-          {#if filterField !== "message_count"}
+          {#if inputType !== "number"}
             <option value={FilterMode.INCLUDES}>include</option>
             <option value={FilterMode.EXCLUDES}>exclude</option>
             <option value={FilterMode.EXACT}>match</option>
@@ -123,6 +125,8 @@
             <option value={FilterMode.HIGHERTHAN}>longer than</option>
             <option value={FilterMode.LOWERTHAN}>shorter than</option>
           {:else}
+            <option value={FilterMode.EMPTY}>empty</option>
+            <option value={FilterMode.NOTEMPTY}>not empty</option>
             <option value={FilterMode.HIGHERTHAN}>more than</option>
             <option value={FilterMode.LOWERTHAN}>less than</option>
           {/if}

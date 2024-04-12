@@ -108,6 +108,30 @@ export enum FilterMode {
   NOTEXACT = "no match",
 }
 
+export function createFilterGroup(filter?: Filter[]): FilterGroup {
+  let filters: Filter[] = $state(filter || [])
+  let id: string = (Math.random() + 1).toString(36).slice(2, 5)
+  let mode: "and" | "or" = "and"
+  
+  return {
+    get filters() {
+      return filters
+    },
+    set filters(filter: Filter[]) {
+      filters = filter
+    },
+    get id() {
+      return id
+    },
+    get mode() {
+      return mode
+    },
+    set mode(newMode: "and"|"or") {
+      mode = newMode
+    }
+  }
+}
+
 export function createFilter(newField: string, newName: string, newMode: FilterMode, newValue: string|number|null): Filter {
   let value: string | number | null = $state(newValue)
   let valueType: string = value !== null ? typeof value : "null"
@@ -210,12 +234,12 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
       break
     case FilterMode.EMPTY:
       processedList = processedList.filter((i) => {
-        return (i[field] === null || i[field] === undefined)
+        return (!i[field])
       })
       break
     case FilterMode.NOTEMPTY:
       processedList = processedList.filter((i) => {
-        return (i[field] !== null && i[field] !== undefined)
+        return (!(!i[field]))
       })
       break
     case FilterMode.EXACT:
