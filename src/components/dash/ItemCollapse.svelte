@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
   import { dash } from "$lib/dash/dash.svelte"
-  import { IconLock, IconShare } from "@tabler/icons-svelte"
+  import { IconLock, IconShare, IconUser } from "@tabler/icons-svelte"
   import MemberView from "./members/MemberView.svelte"
   import MemberInfo from "./members/MemberInfo.svelte"
 
@@ -28,10 +28,12 @@
   <div class="collapse-title px-2 py-2 lg:px-4 text-xl font-medium flex justify-between items-center">
     <div class="flex items-center">
       <div class="mr-3">
-        {#if item.privacy && item.privacy.visibility === "public"}
-          <IconShare />
-        {:else}
+        {#if !item.privacy || !item.privacy.visibility}
+          <IconUser />
+        {:else if  item.privacy.visibility === "private"}
           <IconLock />
+        {:else}
+          <IconShare />
         {/if}
       </div>
       <span class="h-min">{item.name} <span class="font-light">({item.id})</span></span>
