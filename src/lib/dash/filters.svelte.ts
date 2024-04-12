@@ -111,7 +111,7 @@ export enum FilterMode {
 export function createFilterGroup(filter?: Filter[]): FilterGroup {
   let filters: Filter[] = $state(filter || [])
   let id: string = (Math.random() + 1).toString(36).slice(2, 5)
-  let mode: "and" | "or" = "and"
+  let mode: "and" | "or" = $state("and")
   
   return {
     get filters() {
