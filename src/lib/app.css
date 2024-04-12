@@ -30,11 +30,11 @@
     }
 
     .discord-markdown ul {
-      @apply list-disc pl-6
+      @apply list-disc pl-4
     }
 
     .discord-markdown ol {
-      @apply list-decimal pl-6
+      @apply list-decimal pl-4
     }
 
     .discord-markdown .d-emoji {
