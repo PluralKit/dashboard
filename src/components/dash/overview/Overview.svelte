@@ -2,7 +2,7 @@
   import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
 </script>
 
-<main>
+<main class="prose">
   <p>
     {#if dash.privacyMode === PrivacyMode.PRIVATE}
       You currently have registered
@@ -10,5 +10,10 @@
       This system currently has registered
     {/if}
     {dash.members.list.raw.length} members and {dash.groups.length} groups!
+    {#if dash.privacyMode === PrivacyMode.PRIVATE}
+      <a target="_blank" class="link-primary" href={`/dash/${dash.system?.id}?public=true`}
+        >Visit public profile</a
+      >
+    {/if}
   </p>
 </main>
