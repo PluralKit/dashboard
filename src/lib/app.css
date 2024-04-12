@@ -58,11 +58,11 @@
     }
 
     .discord-markdown code {
-      @apply p-1 rounded-sm
+      @apply px-1 text-sm rounded-sm bg-neutral text-neutral-content
     }
 
     .discord-markdown pre > code {
-      @apply p-2 md:p-3 rounded-xl
+      @apply py-1 px-2 md:px-3 md:py-2 rounded-xl
     }
 
     .discord-markdown a {

@@ -4,6 +4,7 @@
   import { IconLock, IconShare, IconUser } from "@tabler/icons-svelte"
   import MemberView from "./members/MemberView.svelte"
   import MemberInfo from "./members/MemberInfo.svelte"
+  import MemberGroups from "./members/MemberGroups.svelte"
 
   let {
     type,
@@ -79,6 +80,7 @@
 {#snippet memberTabs(member: Member, tab: "view"|"info"|"groups")}
     <MemberView {member} {tab} {open} />
     <MemberInfo {member} {tab} />
+    <MemberGroups {member} {tab} />
 {/snippet}
 
 {#snippet memberIcon(member: Member)}

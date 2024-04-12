@@ -4,7 +4,7 @@
 
 <main class="prose">
   <ol>
-    {#each dash.groups as group (group.uuid)}
+    {#each dash.groups.list.raw as group (group.uuid)}
       <li><b>{group.name}:</b> ({group.id})</li>
     {/each}
   </ol>

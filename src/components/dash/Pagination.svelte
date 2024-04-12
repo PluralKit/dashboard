@@ -33,7 +33,7 @@
       class={`btn btn-sm join-item ${
         list.settings.currentPage === 1 ? "btn-primary" : "btn-neutral"
       }`}
-      onclick={() => goToPage((list.settings.currentPage = 1))}
+      onclick={() => goToPage(1)}
     >
       1
     </button>
@@ -43,7 +43,7 @@
     {#if list.settings.currentPage > 2}
       <button
         class="btn btn-sm btn-neutral join-item"
-        onclick={() => goToPage((list.settings.currentPage -= 1))}
+        onclick={() => goToPage((list.settings.currentPage - 1))}
       >
         {list.settings.currentPage - 1}
       </button>
@@ -56,7 +56,7 @@
     {#if (list.settings.currentPage < pageAmount - 1 && pageAmount > 3) || (list.settings.currentPage === 1 && pageAmount === 3)}
       <button
         class="btn btn-sm btn-neutral join-item"
-        onclick={() => goToPage((list.settings.currentPage += 1))}
+        onclick={() => goToPage((list.settings.currentPage + 1))}
       >
         {list.settings.currentPage + 1}
       </button>
@@ -69,7 +69,7 @@
         class={`btn btn-sm join-item ${
           list.settings.currentPage === pageAmount ? "btn-primary" : "btn-neutral"
         }`}
-        onclick={() => goToPage((list.settings.currentPage = pageAmount))}
+        onclick={() => goToPage(pageAmount)}
       >
         {pageAmount}
       </button>

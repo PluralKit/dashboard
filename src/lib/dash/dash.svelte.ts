@@ -55,7 +55,9 @@ function createDash() {
       }
     },
     get groups() {
-      return groupList.groups
+      return {
+        list: groupList.groups
+      }
     },
     get system() {
       return systemData.system
@@ -176,7 +178,9 @@ function createGroupListState() {
   let groups: Group[] = $state([])
   return {
     get groups() {
-      return groups
+      return {
+        raw: groups
+      }
     },
     init: (data: Group[]) => (groups = data),
   }
