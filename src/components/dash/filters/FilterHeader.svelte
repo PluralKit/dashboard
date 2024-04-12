@@ -15,7 +15,12 @@
   <div class="mr-2">
     {@render children()}
   </div>
-  <button class="text-error" onclick={() => action} ontouchend={() => action}>
+  <button
+    class="text-error"
+    onclick={() => action}
+    ontouchend={() => action}
+    aria-label="Delete filter"
+  >
     <IconTrash />
   </button>
 </div>
