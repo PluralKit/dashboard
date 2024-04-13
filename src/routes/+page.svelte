@@ -4,6 +4,7 @@
   import { getDashLink } from "$lib/dash/utils"
   import CookieNotice from "$components/CookieNotice.svelte"
   import { cookieState } from "$lib/common/cookies.svelte"
+  import { IconFlask } from "@tabler/icons-svelte"
 
   export let data: PageData
   export let form: ActionData
@@ -24,9 +25,16 @@
         {:else}
           <h1 class="text-3xl font-bold">Welcome!</h1>
         {/if}
-        <p class="py-6">
-          More info here or something. Yadda yadda bla bla bla I need to fill space somehow. Babana.
-        </p>
+        <div class="alert my-4 bg-base-100 max-w-lg">
+          <IconFlask class="text-info" />
+          <p>
+            This is a complete rewrite of PluralKit's current dashboard, and hosted only
+            for testing purposes. This is a <b
+              >work in progress</b
+            >, many things aren't functional yet.
+            <span class="text-error">Proceed with caution.</span>
+          </p>
+        </div>
       </div>
       <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
         <div class="card-body">
@@ -39,8 +47,14 @@
     <div class="hero-content my-8 flex-col lg:flex-row-reverse">
       <div class="text-center lg:text-left">
         <h1 class="text-5xl font-bold">Welcome to the new dashboard!</h1>
-        <p class="pt-6">Oh yeah. This rewrite is totally going to be finished (massive sarcasm).</p>
-        <p class="pb-6">TODO: explain what the dash is here?</p>
+        <div class="alert my-4 bg-base-100 max-w-lg">
+          <IconFlask class="text-info" />
+          <p>
+            This is a complete rewrite of PluralKit's current dashboard, and hosted only
+            for testing purposes. This is a <b>work in progress</b>, many things aren't functional
+            yet. <span class="text-error">Proceed with caution.</span>
+          </p>
+        </div>
       </div>
       <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
         <form class="card-body" action="/?/login" method="post">
