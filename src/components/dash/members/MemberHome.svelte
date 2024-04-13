@@ -11,7 +11,7 @@
   </div>
 {/if}
 <div
-  class={`flex flex-col gap-8 mx-auto w-full ${
+  class={`flex flex-col gap-8 mx-auto w-full max-w-7xl ${
     dash.settings.display?.forceControlsAtTop === true ? "lg:w-2/3" : "lg:flex-row"
   }`}
 >
