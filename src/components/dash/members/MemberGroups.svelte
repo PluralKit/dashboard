@@ -48,7 +48,7 @@
   <div
     class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 lg:flex-col xl:flex-row flex-wrap"
   >
-    <div class="rounded-xl discord-markdown bg-base-100 flex-1 p-6 py-4">
+    <div class="rounded-xl bg-base-100 flex-1 p-6 py-4">
       {#if dash.privacyMode !== PrivacyMode.PRIVATE}
         <p>Can't get group information in public view {":("}</p>
       {:else}
@@ -58,7 +58,7 @@
         <SimplePagination {itemsPerPage} rawList={groups} bind:currentPage />
       </div>
       <ol
-        class="menu flex-1 text-base p-0 flex flex-col list-decimal"
+        class="menu flex-1 text-base p-0 flex flex-col list-decimal pl-8"
         start={currentPage * itemsPerPage - itemsPerPage + 1}
       >
         {#each paginatedGroups as group (group.uuid)}
