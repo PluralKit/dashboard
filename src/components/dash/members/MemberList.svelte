@@ -3,7 +3,10 @@
   import ItemCollapse from "../ItemCollapse.svelte"
   import Pagination from "../Pagination.svelte"
 
+  let fetching = $state(false)
+
   async function refreshList() {
+    fetching = true
     dash.errors.members = ""
     try {
       const token = dash.privacyMode === PrivacyMode.PRIVATE && localStorage.getItem("pk-token") || undefined
@@ -11,6 +14,7 @@
     } catch (e) {
       dash.errors.members = (e as Error).message
     }
+    fetching = false
   }
 </script>
 
@@ -22,7 +26,7 @@
   <div class="text-center">
     <p>
       {dash.members.list.processed.length} members ({dash.members.list.paginated.length} shown)
-      <button class="link-primary" onclick={() => refreshList()}>Refresh list</button>
+      <button disabled={fetching} class="btn btn-xs btn-primary ml-2" onclick={() => refreshList()}>{fetching ? "Loading..." : "Refresh list"}</button>
     </p>
   </div>
   <Pagination class="mx-auto" bind:list={dash.members} />
