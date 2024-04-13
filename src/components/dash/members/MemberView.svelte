@@ -56,7 +56,7 @@
         </ul>
       </div>
     {/if}
-    <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 lg:flex-col xl:flex-row flex-wrap">
+    <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
       <ul class="menu bg-base-100 flex-1 rounded-box text-base">
         {#if member.id}
           <li><span class="items-start"><b>ID:</b> {member.id}</span></li>

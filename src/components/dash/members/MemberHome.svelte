@@ -11,8 +11,8 @@
   </div>
 {/if}
 <div
-  class={`flex flex-col gap-8 mx-auto w-full max-w-7xl ${
-    dash.settings.display?.forceControlsAtTop === true ? "lg:w-2/3" : "lg:flex-row"
+  class={`flex flex-col gap-8 mx-auto w-full ${
+    dash.settings.display?.forceControlsAtTop === true ? "max-w-4xl" : "lg:flex-row max-w-7xl"
   }`}
 >
   <MemberControls />

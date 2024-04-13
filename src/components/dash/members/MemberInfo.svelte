@@ -26,7 +26,7 @@
     {/if}
   </div>
   <div
-    class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 lg:flex-col xl:flex-row flex-wrap"
+    class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap"
   >
     {#if member.message_count || member.created || member.color}
       <ul class="menu bg-base-100 flex-1 rounded-box text-base">
@@ -66,7 +66,7 @@
     {/if}
     {#if member.privacy}
       <div
-        class="flex flex-col w-full bg-base-100 gap-2 md:flex-row lg:flex-col xl:flex-row lg:gap-3 p-2 rounded-xl flex-wrap"
+        class="flex flex-col w-full bg-base-100 gap-2 md:flex-row xl:flex-row lg:gap-3 p-2 rounded-xl flex-wrap"
       >
         <b class="inline-block px-4 pt-2 w-full">Privacy settings:</b>
         <ul class="menu flex-1 text-base p-0 flex flex-col sm:flex-row">
