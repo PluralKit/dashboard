@@ -7,19 +7,25 @@
   import SimplePagination from "../SimplePagination.svelte"
 
   let {
+    asPage = false,
     member,
     tab,
   }: {
+    asPage?: boolean
     member: Member
     tab: string
   } = $props()
 
   let groups: Group[] = $derived(
-    dash.privacyMode === PrivacyMode.PRIVATE
+    !asPage
       ? dash.groups.list.raw
           .filter((g) => g.members?.includes(member.uuid || ""))
           .sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
-      : []
+      : dash.member.privacyMode === PrivacyMode.PRIVATE
+        ? dash.member.groups
+            .filter((g) => g.members?.includes(member.uuid || ""))
+            .sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
+        : dash.member.groups.sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
   )
   let formattedGroups: string = $derived(
     groups.length <= 5
@@ -46,29 +52,29 @@
     {/if}
   </div>
   <div
-    class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 lg:flex-col xl:flex-row flex-wrap"
+    class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap"
   >
     <div class="rounded-xl bg-base-100 flex-1 p-6 py-4">
       {#if dash.privacyMode !== PrivacyMode.PRIVATE}
-        <p>Can't get group information in public view {":("}</p>
+        <p>Group information isn't available on the public dash yet. You can view them on the individual member page though!</p>
       {:else}
-      <h5 class="text-lg mb-2">Group info</h5>
-      <div class="flex flex-row justify-between gap-2 items-start">
-        <p class="mb-3">{groups.length} total groups</p>
-        <SimplePagination {itemsPerPage} rawList={groups} bind:currentPage />
-      </div>
-      <ol
-        class="menu flex-1 text-base p-0 flex flex-col list-decimal pl-8"
-        start={currentPage * itemsPerPage - itemsPerPage + 1}
-      >
-        {#each paginatedGroups as group (group.uuid)}
-          <li class="list-item border-b border-base-content/20">
-            <span class="items-center gap-2">
-              <span>[<code>{group.id}</code>] {group.name}</span>
-            </span>
-          </li>
-        {/each}
-      </ol>
+        <h5 class="text-lg mb-2">Group info</h5>
+        <div class="flex flex-row justify-between gap-2 items-start">
+          <p class="mb-3">{groups.length} total groups</p>
+          <SimplePagination {itemsPerPage} rawList={groups} bind:currentPage />
+        </div>
+        <ol
+          class="menu flex-1 text-base p-0 flex flex-col list-decimal pl-8"
+          start={currentPage * itemsPerPage - itemsPerPage + 1}
+        >
+          {#each paginatedGroups as group (group.uuid)}
+            <li class="list-item border-b border-base-content/20">
+              <span class="items-center gap-2">
+                <span>[<code>{group.id}</code>] {group.name}</span>
+              </span>
+            </li>
+          {/each}
+        </ol>
       {/if}
     </div>
     {#if groups.length > 0}

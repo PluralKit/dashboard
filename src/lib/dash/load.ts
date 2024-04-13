@@ -43,7 +43,7 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
         }
       } catch (err) {
         const e = err as ApiError
-        error(500, e.message)
+        error(e.code, e.message)
       }
       // otherwise we'll just fetch public info
     } else {
@@ -66,7 +66,7 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
         }
       } catch (err) {
         const e = err as ApiError
-        error(500, e.message)
+        error(e.code, e.message)
       }
     }
   }

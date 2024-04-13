@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from "$app/stores"
   import type { Group, Member } from "$api/types"
   import { dash } from "$lib/dash/dash.svelte"
   import { IconLock, IconShare, IconUser } from "@tabler/icons-svelte"
@@ -9,23 +10,31 @@
   let {
     type,
     item,
+    forceOpen = false,
+    asPage = false,
     open = $bindable(false),
   }: {
     type: "member" | "group"
     item: Member | Group
     open?: boolean
+    asPage?: boolean
+    forceOpen?: boolean
   } = $props()
 
   let tab: "view" | "info" | "groups" = $state("view")
+
+  let isOpen = $derived(forceOpen ? true : open)
 </script>
 
 <div
-  class="collapse bg-base-100 rounded-lg"
+  class={`bg-base-100 rounded-lg ${!forceOpen ? "collapse" : ""}`}
   style={item.color && dash.settings.display?.fullColorBorder
     ? `border-color: #${item.color}; border-left-width: 6px;`
     : ""}
 >
-  <input type="checkbox" bind:checked={open} />
+  {#if !forceOpen}
+    <input type="checkbox" bind:checked={open} />
+  {/if}
   <div class="collapse-title px-2 py-2 lg:px-4 text-xl font-medium flex justify-between items-center">
     <div class="flex items-center">
       <div class="mr-3">
@@ -46,7 +55,7 @@
     </div>
   </div>
   <div
-    class="collapse-content px-2 lg:px-4"
+    class={`px-2 lg:px-4 ${!forceOpen ? "collapse-content" : "pb-4"}`}
     style={item.color && !dash.settings.display?.fullColorBorder
       ? `border-color: #${item.color}; border-left-width: 6px;`
       : ""}
@@ -78,9 +87,28 @@
 </div>
 
 {#snippet memberTabs(member: Member, tab: "view"|"info"|"groups")}
-    <MemberView {member} {tab} {open} />
+    <MemberView {member} {tab} open={isOpen} />
     <MemberInfo {member} {tab} />
-    <MemberGroups {member} {tab} />
+    <MemberGroups {member} {tab} {asPage} />
+    <div class="flex flex-row justify-end items-center">
+      {#if dash.member.member?.uuid !== item.uuid}
+        <a
+          target="_blank"
+          class="btn btn-primary btn-sm mt-2"
+          href={`/dash/m/${item.id}${$page.url.searchParams.get("public") ? "?public=true" : ""}`}
+        >
+          View page
+        </a>
+      {:else}
+      <a
+        target="_blank"
+        class="btn btn-primary btn-sm mt-2"
+        href={`/dash/${(item as Member).system}?tab=members${$page.url.searchParams.get("public") ? "&public=true" : ""}`}
+      >
+        View system
+      </a>
+      {/if}
+    </div>
 {/snippet}
 
 {#snippet memberIcon(member: Member)}

@@ -29,9 +29,13 @@ export let dash = createDash()
 function createDash() {
   let user: System | null = $state(null)
   let privacyMode: PrivacyMode = $state(PrivacyMode.PRIVATE)
+
   let systemData = $state(createSystemState())
   let memberList = $state(createMemberListState())
   let groupList = $state(createGroupListState())
+
+  let member = $state(createMemberState())
+
   let ratelimited: Record<string, boolean> = $state({})
   let errors: Record<string, string> = $state({})
 
@@ -61,6 +65,9 @@ function createDash() {
     },
     get system() {
       return systemData.system
+    },
+    get member() {
+      return member
     },
     get privacyMode() {
       return privacyMode
@@ -183,6 +190,33 @@ function createGroupListState() {
       }
     },
     init: (data: Group[]) => (groups = data),
+  }
+}
+
+function createMemberState() {
+  let member: Member | undefined = $state(undefined)
+  let groups: Group[] = $state([])
+  let privacyMode: PrivacyMode = $state(PrivacyMode.PUBLIC)
+  
+  return {
+    get member() {
+      return member
+    },
+    set member(m: Member|undefined) {
+      member = m
+    },
+    get groups() {
+      return groups
+    },
+    set groups(g: Group[]) {
+      groups = g
+    },
+    get privacyMode() {
+      return privacyMode
+    },
+    set privacyMode(mode: PrivacyMode) {
+      privacyMode = mode
+    }
   }
 }
 
