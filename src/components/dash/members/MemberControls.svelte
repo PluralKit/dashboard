@@ -4,6 +4,7 @@
   import { IconSettings, IconUsers } from "@tabler/icons-svelte"
   import FilterGroups from "../filters/FilterGroups.svelte"
   import AddFilterGroup from "../filters/AddFilterGroup.svelte"
+  import Sorts from "../filters/Sorts.svelte"
 
   let mode: "simple" | "advanced" = $state("advanced")
 
@@ -43,11 +44,12 @@
           list={dash.members}
           type="members"
         />
-        <FilterGroups bind:filterGroups={dash.members.filters} />
+        <FilterGroups filterGroups={dash.members.filters} list={dash.members} />
       </div>
       <div>
         <h3 class="text-xl">Sort list</h3>
         <hr class="my-2" />
+        <Sorts sorts={dash.members.sorts} list={dash.members} />
       </div>
     </div>
   {/if}

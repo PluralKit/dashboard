@@ -1,14 +1,58 @@
-import type { Group, Member } from "$api/types"
+import { randomId } from "./ids"
 
 export interface Sort {
   mode: SortMode
   field: string
   order: 1 | -1
+  id: string
+  fieldName: string
 }
 
 export enum SortMode {
-  ALPHABETICAL,
-  SIZE,
+  ALPHABETICAL = "alphabetical",
+  SIZE = "size",
+}
+
+export const sortModeText = (mode: SortMode, type: string) => {
+  const text: Record<string, string> = {
+    "alphabetical": "alphabetically",
+    "size": type === "string" ? "by character length" : ""
+  }
+  return {
+    get text() {
+      return text[mode.toString()] ?? "???"
+    }
+  }
+}
+
+export function createSort(mode: SortMode, field: string, fieldName: string, order: 1 | -1): Sort {
+  const sortMode: SortMode = mode
+  const sortField: string = field
+  const name: string = fieldName
+  let sortOrder: 1 | -1 = $state(order)
+  
+  const id = randomId()
+
+  return {
+    get mode() {
+      return sortMode
+    },
+    get field() {
+      return sortField
+    },
+    get fieldName() {
+      return name
+    },
+    get order() {
+      return sortOrder
+    },
+    set order(order: 1 | -1) {
+      sortOrder = order
+    },
+    get id() {
+      return id
+    }
+  }
 }
 
 type Color = Record<string, number | string>

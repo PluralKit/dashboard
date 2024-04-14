@@ -2,7 +2,7 @@ import type { Group, Member, System } from "$api/types"
 import { filterList, type FilterGroup } from "./filters.svelte"
 import { fetchList } from "./utils"
 import { createListSettings, paginateList, type ListSettings } from "./settings.svelte"
-import { SortMode, sortList, type Sort } from "./sorts"
+import { SortMode, createSort, sortList, type Sort } from "./sorts.svelte"
 
 export enum PrivacyMode {
   PUBLIC,
@@ -127,11 +127,7 @@ function createMemberListState() {
 
   let filters: FilterGroup[] = $state([])
   let sorts: Sort[] = $state([
-    {
-      mode: SortMode.ALPHABETICAL,
-      order: 1,
-      field: "name",
-    },
+    createSort(SortMode.ALPHABETICAL, "name", "name", 1),
   ])
 
   let members: Member[] = $state([])
