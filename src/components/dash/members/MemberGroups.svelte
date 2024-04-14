@@ -5,6 +5,7 @@
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
   import SimplePagination from "../SimplePagination.svelte"
+  import { copyToClipboard } from "$lib/dash/utils"
 
   let {
     asPage = false,
@@ -68,15 +69,17 @@
           class="menu flex-1 text-base p-0 flex flex-col list-decimal pl-8"
           start={currentPage * itemsPerPage - itemsPerPage + 1}
         >
-          {#each paginatedGroups as group (group.uuid)}
+          {#each paginatedGroups as group, i (group.uuid)}
             <li class="list-item border-b border-base-content/20">
-              <span class="items-center gap-2">
+              <button
+                aria-label={`Group ${i}: ${group.name}`}
+               onclick={() => copyToClipboard(group.id)} class="items-center gap-2 w-full">
                 <span
                   >[<code class="bg-base-200">{group.id}</code>] <AwaitHtml
                     htmlPromise={parseMarkdown(group.name || "", { embed: true })}
                   /></span
                 >
-              </span>
+              </button>
             </li>
           {/each}
         </ol>
