@@ -24,7 +24,7 @@
 		"@typescript-eslint/parser": "^6.0.0",
 		"autoprefixer": "^10.4.16",
 		"daisyui": "^4.0.7",
-		"discord-markdown": "github:draconizations/discord-markdown#a96eed0e1aaebfaeeb2579d4166a642a9b132e79",
+		"discord-markdown": "github:draconizations/discord-markdown#1f74a7094777d5bdfd123c0aac59d8b10db89b30",
 		"dotenv": "^16.4.5",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
