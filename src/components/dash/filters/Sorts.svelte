@@ -51,14 +51,14 @@
 <div
   class={`bg-base-300 rounded-lg flex flex-col gap-2 p-3 ${list.sorts.length === 0 ? "hidden" : ""}`}
   use:dndzone={{ items: list.sorts, type: "sorts", dropTargetStyle: {} }}
-  aria-label="Filter Groups"
+  aria-label="Sorting items"
   onconsider={(e) => handleConsider(e)}
   onfinalize={(e) => handleFinal(e)}
 >
   {#each list.sorts as sort (sort.id)}
     <div
       class="bg-base-100 p-3 flex flex-col rounded-lg hover:border-primary border-base-content/20 outline-primary border-2 gap-2 relative"
-      aria-label={`${sort.field} filter: ${sort.mode}`}
+      aria-label={`Sort ${sort.field}: ${sort.mode}`}
     >
       <div class="flex flex-row gap-3 items-center justify-between">
         <div class="join w-fit mr-auto">
@@ -81,7 +81,7 @@
           class="text-error"
           onclick={() => removeSort(sort.id)}
           ontouchend={() => removeSort(sort.id)}
-          aria-label="Delete filter group"><IconTrash class="text-error" /></button
+          aria-label="Delete sort"><IconTrash class="text-error" /></button
         >
       </div>
       <span class="text-sm"
