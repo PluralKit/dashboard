@@ -60,8 +60,8 @@
       </ul>
     {/if}
     {#if member.proxy_tags && member.proxy_tags.length > 0}
-      <ol class="menu bg-base-100 flex-1 rounded-box text-base" style="list-style-type: decimal;">
-        <b class="inline-block px-4 py-2">Proxy tags:</b>
+      <ol class="menu bg-base-100 flex-1 rounded-box text-base gap-2" style="list-style-type: decimal;">
+        <b class="inline-block px-4 pt-2">Proxy tags:</b>
         {#each member.proxy_tags as tag}
           <li class="ml-8" style="display: list-item">
             <button
@@ -70,7 +70,7 @@
                 copyToClipboard(
                   `${tag.prefix ? tag.prefix : ""}text${tag.suffix ? tag.suffix : ""}`
                 )}
-              class="items-center px-2 w-full"
+              class="items-center px-2 py-0 w-full"
               ><code class="rounded-sm px-2 py-1 font-mono bg-base-200 text-sm discord-markdown"
                 ><AwaitHtml
                   htmlPromise={parseMarkdown(
