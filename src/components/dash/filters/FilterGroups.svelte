@@ -13,11 +13,9 @@
   import type { Group, Member } from "$api/types"
 
   let {
-    list,
-    filterGroups,
+    list
   }: {
     list: DashList<Member|Group>
-    filterGroups: FilterGroup[]
   } = $props()
 
   function updateFilterValue(
@@ -31,21 +29,21 @@
 
     if (number && !isNaN(parseInt(value))) value = parseInt(value)
 
-    filterGroups[groupIndex].filters[filterIndex].value = value
+    list.filters[groupIndex].filters[filterIndex].value = value
     list.process()
     list.paginate()
   }
 
   function handleConsiderFilter(event: CustomEvent<DndEvent<Filter>>, gid: string) {
-    const group = filterGroups.findIndex((g) => g.id === gid)
+    const group = list.filters.findIndex((g) => g.id === gid)
     const dupes = new Set()
     const items = event.detail.items.filter((item) => {
       const dupe = dupes.has(item.id)
       dupes.add(item.id)
       return !dupe
     })
-    filterGroups[group].filters = items
-    filterGroups = filterGroups
+    list.filters[group].filters = items
+    list.filters = list.filters
   }
 
   function handleFinalFilter(event: CustomEvent<DndEvent<Filter>>, gid: string) {
@@ -63,7 +61,7 @@
       return !dupe
     })
 
-    filterGroups = items
+    list.filters = items
   }
 
   function handleFinalGroup(event: CustomEvent<DndEvent<FilterGroup>>) {
@@ -74,27 +72,27 @@
   }
 
   function removeFilter(gid: string, fid: string) {
-    const group = filterGroups.findIndex((g) => g.id === gid)
-    filterGroups[group].filters = filterGroups[group].filters.filter((item) => item.id !== fid)
-    let newGroups = filterGroups
-    if (filterGroups[group].filters.length < 1) newGroups = filterGroups.filter((g) => g.id !== gid)
+    const group = list.filters.findIndex((g) => g.id === gid)
+    list.filters[group].filters = list.filters[group].filters.filter((item) => item.id !== fid)
+    let newGroups = list.filters
+    if (list.filters[group].filters.length < 1) newGroups = list.filters.filter((g) => g.id !== gid)
 
-    filterGroups = newGroups
+    list.filters = newGroups
 
     list.process()
     list.paginate()
   }
 
   function removeGroup(gid: string) {
-    filterGroups = filterGroups.filter((g) => g.id !== gid)
+    list.filters = list.filters.filter((g) => g.id !== gid)
 
     list.process()
     list.paginate()
   }
 
   function changeMode(mode: "and" | "or", gid: string) {
-    const group = filterGroups.findIndex((g) => g.id === gid)
-    filterGroups[group].mode = mode
+    const group = list.filters.findIndex((g) => g.id === gid)
+    list.filters[group].mode = mode
 
     list.process()
     list.paginate()
@@ -102,13 +100,13 @@
 </script>
 
 <div
-  class={`bg-base-300 rounded-lg flex flex-col gap-4 p-3 ${filterGroups.length === 0 ? "hidden" : ""}`}
-  use:dndzone={{ items: filterGroups, type: "filter-groups", dropTargetStyle: {} }}
+  class={`bg-base-300 rounded-lg flex flex-col gap-4 p-3 ${list.filters.length === 0 ? "hidden" : ""}`}
+  use:dndzone={{ items: list.filters, type: "filter-groups", dropTargetStyle: {} }}
   aria-label="Filter Groups"
   onconsider={(e) => handleConsiderGroup(e)}
   onfinalize={(e) => handleFinalGroup(e)}
 >
-  {#each filterGroups as group, index (group.id)}
+  {#each list.filters as group, index (group.id)}
     <div
       class="flex flex-col p-3 gap-2 bg-base-100 border-base-content/20 rounded-lg hover:border-secondary border-2"
     >
@@ -178,7 +176,7 @@
     </div>
   {/each}
 </div>
-{#if filterGroups.length === 0}
+{#if list.filters.length === 0}
   <div class="bg-base-300 rounded-lg gap-4 p-3 text-center">
     No filters added.
   </div>

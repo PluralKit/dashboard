@@ -3,14 +3,15 @@
   import { IconEdit } from "@tabler/icons-svelte"
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
-  import { getBirthday } from "$lib/dash/member/utils";
+  import { getBirthday } from "$lib/dash/member/utils"
   import ImageModal from "../ImageModal.svelte"
   import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
+  import { copyToClipboard } from "$lib/dash/utils"
 
   let {
     member,
     tab,
-    open
+    open,
   }: {
     member: Member
     tab: string
@@ -22,9 +23,9 @@
   <div class="flex flex-row gap-2 justify-between items-center mb-3">
     <h4 class="text-2xl ml-3 font-medium">General information</h4>
     {#if dash.privacyMode !== PrivacyMode.PUBLIC}
-    <button class="btn btn-sm btn-primary p-2">
-      <IconEdit class="inline" size={18} /> Edit
-    </button>
+      <button class="btn btn-sm btn-primary p-2">
+        <IconEdit class="inline" size={18} /> Edit
+      </button>
     {/if}
   </div>
   <div class={`flex flex-col gap-2 lg:gap-3 ${member.avatar_url ? "sm:flex-row" : ""}`}>
@@ -45,7 +46,11 @@
           {/if}
           {#if member.webhook_avatar_url}
             <li>
-              <ImageModal url={member.webhook_avatar_url} imageType="proxy avatar" itemName={member.name} />
+              <ImageModal
+                url={member.webhook_avatar_url}
+                imageType="proxy avatar"
+                itemName={member.name}
+              />
             </li>
           {/if}
           {#if member.banner}
@@ -59,29 +64,59 @@
     <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
       <ul class="menu bg-base-100 flex-1 rounded-box text-base">
         {#if member.id}
-          <li><span class="items-start"><b>ID:</b> {member.id}</span></li>
+          <li>
+            <button
+              title="Copy ID"
+              
+              onclick={() => copyToClipboard(member.id)}
+              class="items-start text-left"><b>ID:</b> {member.id}</button
+            >
+          </li>
         {/if}
         {#if member.name}
-          <li><span class="items-start"><b>Name:</b> {member.name}</span></li>
+          <li>
+            <button
+              title="Copy name"
+              
+              onclick={() => copyToClipboard(member.name)}
+              class="items-start text-left"><b>Name:</b> {member.name}</button
+            >
+          </li>
         {/if}
         {#if member.display_name}
-          <li><span class="items-start"><b>Display name:</b> {member.display_name}</span></li>
+          <li>
+            <button
+              title="Copy display name"
+              
+              onclick={() => copyToClipboard(member.display_name)}
+              class="items-start text-left"
+              ><b>Display name:</b> {member.display_name}</button
+            >
+          </li>
         {/if}
       </ul>
       {#if member.pronouns || member.birthday}
         <ul class="menu bg-base-100 flex-1 rounded-box text-base">
           {#if member.pronouns}
             <li>
-              <span class="items-start discord-markdown"
+              <button
+                title="Copy pronouns"
+                onclick={() => copyToClipboard(member.pronouns)}
+                class="items-start discord-markdown text-left"
+                
                 ><b>Pronouns:</b>
-                <AwaitHtml htmlPromise={parseMarkdown(member.pronouns, { embed: true })} /></span
+                <AwaitHtml htmlPromise={parseMarkdown(member.pronouns, { embed: true })} /></button
               >
             </li>
           {/if}
           {#if member.birthday}
             <li>
-              <span class="items-start"
-                ><b>Birthday:</b> {getBirthday(member.birthday)}</span
+              <button
+                title="Copy birthday"
+                
+                onclick={() => copyToClipboard(member.birthday)}
+                class="items-start text-left"
+                ><b>Birthday:</b> {getBirthday(member.birthday)}</button
               >
             </li>
           {/if}
@@ -89,20 +124,29 @@
       {/if}
       {#if member.description}
         <div class="flex flex-col w-full">
-          <div class="ml-4 px-4 pt-2 pb-1 rounded-t-xl bg-base-100 w-fit font-bold">
+          <button
+            title="Copy description"
+            
+            onclick={() => copyToClipboard(member.description)}
+            class="ml-4 px-4 pt-2 pb-1 rounded-t-xl bg-base-100 w-fit font-bold transition-all hover:bg-base-300 active:bg-neutral active:text-neutral-content tooltip tooltip-right"
+          >
             Description:
-          </div>
+          </button>
           <div class="rounded-xl bg-base-100">
             <div class="discord-markdown p-6 py-4">
               <AwaitHtml htmlPromise={parseMarkdown(member.description, { embed: true })} />
             </div>
             {#if member.banner && open}
-              <img class="rounded-b-xl w-full h-auto" src={member.banner} alt={`${member.name}'s banner`} />
+              <img
+                class="rounded-b-xl w-full h-auto"
+                src={member.banner}
+                alt={`${member.name}'s banner`}
+              />
             {/if}
           </div>
         </div>
       {:else if member.banner && open}
-      <img class="rounded-xl w-full h-auto" src={member.banner} alt={`${member.name}'s banner`} />
+        <img class="rounded-xl w-full h-auto" src={member.banner} alt={`${member.name}'s banner`} />
       {/if}
     </div>
   </div>

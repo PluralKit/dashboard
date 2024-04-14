@@ -6,6 +6,7 @@
   import parseMarkdown from "$api/parseMarkdown"
   import PrivacyDisplay from "../PrivacyDisplay.svelte"
   import moment from "moment"
+  import { copyToClipboard } from "$lib/dash/utils"
 
   let {
     member,
@@ -25,23 +26,36 @@
       </button>
     {/if}
   </div>
-  <div
-    class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap"
-  >
+  <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
     {#if member.message_count || member.created || member.color}
       <ul class="menu bg-base-100 flex-1 rounded-box text-base">
         {#if member.created}
           <li>
-            <span class="items-start"
-              ><b>Created:</b> {moment(member.created).format("MMMM Do, YYYY")}</span
+            <button
+              title="Copy creation date"
+              onclick={() => copyToClipboard(member.created)}
+              class="items-start"
+              ><b>Created:</b> {moment(member.created).format("MMMM Do, YYYY")}</button
             >
           </li>
         {/if}
         {#if member.message_count !== null}
-          <li><span class="items-start"><b>Message count:</b> {member.message_count}</span></li>
+          <li>
+            <button
+              title="Copy message count"
+              onclick={() => copyToClipboard(member.message_count?.toString())}
+              class="items-start"><b>Message count:</b> {member.message_count}</button
+            >
+          </li>
         {/if}
         {#if member.color}
-          <li><span class="items-start"><b>Color:</b> #{member.color}</span></li>
+          <li>
+            <button
+              title="Copy color"
+              onclick={() => copyToClipboard(member.color)}
+              class="items-start"><b>Color:</b> #{member.color}</button
+            >
+          </li>
         {/if}
       </ul>
     {/if}
@@ -50,7 +64,13 @@
         <b class="inline-block px-4 py-2">Proxy tags:</b>
         {#each member.proxy_tags as tag}
           <li class="ml-8" style="display: list-item">
-            <span class="items-center px-2"
+            <button
+              title="Copy proxy tag"
+              onclick={() =>
+                copyToClipboard(
+                  `${tag.prefix ? tag.prefix : ""}text${tag.suffix ? tag.suffix : ""}`
+                )}
+              class="items-center px-2"
               ><code class="rounded-sm px-2 py-1 font-mono bg-base-200 text-sm discord-markdown"
                 ><AwaitHtml
                   htmlPromise={parseMarkdown(
@@ -58,7 +78,7 @@
                     { embed: true }
                   )}
                 /></code
-              ></span
+              ></button
             >
           </li>
         {/each}

@@ -6,6 +6,9 @@ export function getDashLink(sid: string, page: string, params?: URLSearchParams)
   }`
 }
 
+export function copyToClipboard(value?: string) {
+  navigator.clipboard.writeText(value || "")
+}
 
 export async function fetchList<T>(fetch: SvelteFetch, path: string, token?: string): Promise<T[]> {
   const api = apiClient(fetch)
