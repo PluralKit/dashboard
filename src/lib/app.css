@@ -58,7 +58,7 @@
     }
 
     .discord-markdown code {
-      @apply px-1 text-sm rounded-sm bg-neutral text-neutral-content
+      @apply px-1 text-sm rounded-sm bg-base-200
     }
 
     .discord-markdown pre > code {

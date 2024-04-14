@@ -51,12 +51,13 @@
       </button>
     {/if}
   </div>
-  <div
-    class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap"
-  >
+  <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
     <div class="rounded-xl bg-base-100 flex-1 p-6 py-4">
       {#if dash.privacyMode !== PrivacyMode.PRIVATE}
-        <p>Group information isn't available on the public dash yet. You can view them on the individual member page though!</p>
+        <p>
+          Group information isn't available on the public dash yet. You can view them on the
+          individual member page though!
+        </p>
       {:else}
         <h5 class="text-lg mb-2">Group info</h5>
         <div class="flex flex-row justify-between gap-2 items-start">
@@ -70,7 +71,11 @@
           {#each paginatedGroups as group (group.uuid)}
             <li class="list-item border-b border-base-content/20">
               <span class="items-center gap-2">
-                <span>[<code>{group.id}</code>] {group.name}</span>
+                <span
+                  >[<code class="bg-base-200">{group.id}</code>] <AwaitHtml
+                    htmlPromise={parseMarkdown(group.name || "", { embed: true })}
+                  /></span
+                >
               </span>
             </li>
           {/each}
