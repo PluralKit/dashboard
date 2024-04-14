@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { dash } from "$lib/dash/dash.svelte"
+  import { type DashList } from "$lib/dash/dash.svelte"
   import {
     type Filter,
     type FilterGroup,
@@ -10,10 +10,13 @@
   import { dndzone } from "svelte-dnd-action"
   import FilterHeader from "./FilterHeader.svelte"
   import { IconTrash } from "@tabler/icons-svelte"
+  import type { Group, Member } from "$api/types"
 
   let {
-    filterGroups = $bindable(),
+    list,
+    filterGroups,
   }: {
+    list: DashList<Member|Group>
     filterGroups: FilterGroup[]
   } = $props()
 
@@ -29,8 +32,8 @@
     if (number && !isNaN(parseInt(value))) value = parseInt(value)
 
     filterGroups[groupIndex].filters[filterIndex].value = value
-    dash.members.process()
-    dash.members.paginate()
+    list.process()
+    list.paginate()
   }
 
   function handleConsiderFilter(event: CustomEvent<DndEvent<Filter>>, gid: string) {
@@ -48,8 +51,8 @@
   function handleFinalFilter(event: CustomEvent<DndEvent<Filter>>, gid: string) {
     handleConsiderFilter(event, gid)
 
-    dash.members.process()
-    dash.members.paginate()
+    list.process()
+    list.paginate()
   }
 
   function handleConsiderGroup(event: CustomEvent<DndEvent<FilterGroup>>) {
@@ -66,8 +69,8 @@
   function handleFinalGroup(event: CustomEvent<DndEvent<FilterGroup>>) {
     handleConsiderGroup(event)
 
-    dash.members.process()
-    dash.members.paginate()
+    list.process()
+    list.paginate()
   }
 
   function removeFilter(gid: string, fid: string) {
@@ -78,23 +81,23 @@
 
     filterGroups = newGroups
 
-    dash.members.process()
-    dash.members.paginate()
+    list.process()
+    list.paginate()
   }
 
   function removeGroup(gid: string) {
     filterGroups = filterGroups.filter((g) => g.id !== gid)
 
-    dash.members.process()
-    dash.members.paginate()
+    list.process()
+    list.paginate()
   }
 
   function changeMode(mode: "and" | "or", gid: string) {
     const group = filterGroups.findIndex((g) => g.id === gid)
     filterGroups[group].mode = mode
 
-    dash.members.process()
-    dash.members.paginate()
+    list.process()
+    list.paginate()
   }
 </script>
 
@@ -112,12 +115,14 @@
       <div class="flex flex-row gap-3 items-center justify-between">
         <div class="join w-fit mr-auto">
           <button
-            class={`join-item btn btn-xs ${group.mode === "and" ? "btn-primary" : "btn-neutral"}`}
-            onclick={() => changeMode("and", group.id)}>AND</button
+            class={`join-item uppercase btn btn-xs ${group.mode === "and" ? "btn-primary" : "btn-neutral"}`}
+            onclick={() => changeMode("and", group.id)}
+            ontouchend={() => changeMode("and", group.id)}>And</button
           >
           <button
-            class={`join-item btn btn-xs ${group.mode === "or" ? "btn-primary" : "btn-neutral"}`}
-            onclick={() => changeMode("or", group.id)}>OR</button
+            class={`join-item uppercase btn btn-xs ${group.mode === "or" ? "btn-primary" : "btn-neutral"}`}
+            onclick={() => changeMode("or", group.id)}
+            ontouchend={() => changeMode("or", group.id)}>Or</button
           >
         </div>
         <button
