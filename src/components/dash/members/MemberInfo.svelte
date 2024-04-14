@@ -70,7 +70,7 @@
                 copyToClipboard(
                   `${tag.prefix ? tag.prefix : ""}text${tag.suffix ? tag.suffix : ""}`
                 )}
-              class="items-center px-2"
+              class="items-center px-2 w-full"
               ><code class="rounded-sm px-2 py-1 font-mono bg-base-200 text-sm discord-markdown"
                 ><AwaitHtml
                   htmlPromise={parseMarkdown(
