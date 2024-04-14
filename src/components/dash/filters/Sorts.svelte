@@ -8,7 +8,6 @@
   import { filterFieldText, filterFieldType } from "$lib/dash/filters.svelte"
 
   let {
-    sorts,
     list,
   }: {
     list: DashList<Member | Group>
@@ -23,7 +22,7 @@
       return !dupe
     })
     
-    sorts = items
+    list.sorts = items
   }
 
   function handleFinal(event: CustomEvent<DndEvent<Sort>>) {
@@ -34,15 +33,15 @@
   }
 
   function removeSort(id: string) {
-    sorts = sorts.filter((s) => s.id !== id)
+    list.sorts = list.sorts.filter((s) => s.id !== id)
 
     list.process()
     list.paginate()
   }
 
   function changeOrder(order: 1 | -1, id: string) {
-    const sort = sorts.findIndex((s) => s.id === id)
-    sorts[sort].order = order
+    const sort = list.sorts.findIndex((s) => s.id === id)
+    list.sorts[sort].order = order
 
     list.process()
     list.paginate()
@@ -50,13 +49,13 @@
 </script>
 
 <div
-  class={`bg-base-300 rounded-lg flex flex-col gap-4 p-3 ${sorts.length === 0 ? "hidden" : ""}`}
-  use:dndzone={{ items: sorts, type: "sorts", dropTargetStyle: {} }}
+  class={`bg-base-300 rounded-lg flex flex-col gap-2 p-3 ${list.sorts.length === 0 ? "hidden" : ""}`}
+  use:dndzone={{ items: list.sorts, type: "sorts", dropTargetStyle: {} }}
   aria-label="Filter Groups"
   onconsider={(e) => handleConsider(e)}
   onfinalize={(e) => handleFinal(e)}
 >
-  {#each sorts as sort (sort.id)}
+  {#each list.sorts as sort (sort.id)}
     <div
       class="bg-base-100 p-3 flex flex-col rounded-lg hover:border-primary border-base-content/20 outline-primary border-2 gap-2 relative"
       aria-label={`${sort.field} filter: ${sort.mode}`}
@@ -98,6 +97,6 @@
     </div>
   {/each}
 </div>
-{#if sorts.length === 0}
+{#if list.sorts.length === 0}
   <div class="bg-base-300 rounded-lg gap-4 p-3 text-center">No sorting added.</div>
 {/if}

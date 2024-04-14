@@ -5,14 +5,9 @@
   import FilterGroups from "../filters/FilterGroups.svelte"
   import AddFilterGroup from "../filters/AddFilterGroup.svelte"
   import Sorts from "../filters/Sorts.svelte"
+  import AddSort from "../filters/AddSort.svelte"
 
   let mode: "simple" | "advanced" = $state("advanced")
-
-  const nameFilter = createFilter("name", "name", FilterMode.INCLUDES, "")
-
-  dash.members.filters = [
-    createFilterGroup([nameFilter])
-  ]
 </script>
 
 <div
@@ -49,6 +44,7 @@
       <div>
         <h3 class="text-xl">Sort list</h3>
         <hr class="my-2" />
+        <AddSort bind:sorts={dash.members.sorts} list={dash.members} type="members" />
         <Sorts sorts={dash.members.sorts} list={dash.members} />
       </div>
     </div>

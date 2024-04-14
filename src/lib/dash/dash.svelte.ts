@@ -1,5 +1,5 @@
 import type { Group, Member, System } from "$api/types"
-import { filterList, type FilterGroup } from "./filters.svelte"
+import { FilterMode, createFilter, createFilterGroup, filterList, type FilterGroup } from "./filters.svelte"
 import { fetchList } from "./utils"
 import { createListSettings, paginateList, type ListSettings } from "./settings.svelte"
 import { SortMode, createSort, sortList, type Sort } from "./sorts.svelte"
@@ -51,7 +51,12 @@ function createDash() {
         set filters(filterGroups: FilterGroup[]) {
           memberList.filters = filterGroups
         },
-        sorts: memberList.sorts,
+        get sorts() {
+          return memberList.sorts
+        },
+        set sorts(sortList: Sort[]) {
+          memberList.sorts = sortList
+        },
         settings: memberList.listSettings,
         process: memberList.processList,
         paginate: memberList.paginateList,
@@ -125,7 +130,11 @@ function createSystemState() {
 function createMemberListState() {
   let listSettings: ListSettings = $state(createListSettings())
 
-  let filters: FilterGroup[] = $state([])
+  let filters: FilterGroup[] = $state([
+    createFilterGroup([
+      createFilter("name", "name", FilterMode.INCLUDES, "")
+    ])
+  ])
   let sorts: Sort[] = $state([
     createSort(SortMode.ALPHABETICAL, "name", "name", 1),
   ])
