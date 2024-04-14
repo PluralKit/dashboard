@@ -72,8 +72,9 @@
           {#each paginatedGroups as group, i (group.uuid)}
             <li class="list-item border-b border-base-content/20">
               <button
+                title="Copy group ID"
                 aria-label={`Group ${i}: ${group.name}`}
-               onclick={() => copyToClipboard(group.id)} class="items-center gap-2 w-full">
+                onclick={() => copyToClipboard(group.id)} class="items-center gap-2 w-full">
                 <span
                   >[<code class="bg-base-200">{group.id}</code>] <AwaitHtml
                     htmlPromise={parseMarkdown(group.name || "", { embed: true })}

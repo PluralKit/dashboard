@@ -27,15 +27,12 @@
 </script>
 
 <div
-  class={`bg-base-100 rounded-lg ${!forceOpen ? "collapse" : ""}`}
+  class="bg-base-100 rounded-lg"
   style={item.color && dash.settings.display?.fullColorBorder
     ? `border-color: #${item.color}; border-left-width: 6px;`
     : ""}
 >
-  {#if !forceOpen}
-    <input type="checkbox" bind:checked={open} />
-  {/if}
-  <div class="collapse-title px-2 py-2 lg:px-4 text-xl font-medium flex justify-between items-center">
+  <button aria-label={`Open or close ${item.name}'s card`} onclick={() => open = !open} class="collapse-title px-2 py-2 lg:px-4 text-xl font-medium flex justify-between items-center">
     <div class="flex items-center">
       <div class="mr-3">
         {#if !item.privacy || !item.privacy.visibility}
@@ -53,9 +50,9 @@
         {@render memberIcon(item)}
       {/if}
     </div>
-  </div>
+  </button>
   <div
-    class={`px-2 lg:px-4 ${!forceOpen ? "collapse-content" : "pb-4"}`}
+    class={`px-2 lg:px-4 pb-4 ${forceOpen || open ? "" : "hidden"}`}
     style={item.color && !dash.settings.display?.fullColorBorder
       ? `border-color: #${item.color}; border-left-width: 6px;`
       : ""}
@@ -113,12 +110,12 @@
 
 {#snippet memberIcon(member: Member)}
   {#if member.webhook_avatar_url || member.avatar_url}
-    <button class="avatar w-14">
+    <div class="avatar w-14">
       {@render iconImage(
       member.webhook_avatar_url || member.avatar_url || "",
       `${member.name}'s avatar'`
     )}
-  </button>
+  </div>
   {:else}
     <div class="avatar w-14">
       {@render iconImage(
