@@ -108,7 +108,7 @@
 >
   {#each list.filters as group, index (group.id)}
     <div
-      class="flex flex-col p-3 gap-2 bg-base-100 border-base-content/20 rounded-lg hover:border-secondary border-2"
+      class="flex flex-col p-3 gap-2 bg-base-100 border-muted/50 rounded-lg hover:border-secondary border-2"
     >
       <div class="flex flex-row gap-3 items-center justify-between">
         <div class="join w-fit mr-auto">
@@ -133,7 +133,7 @@
       <div
         use:dndzone={{ items: group.filters, type: "filters", dropTargetStyle: {} }}
         class={`flex flex-col gap-3 rounded-lg outline-secondary outline-2 ${
-          group.filters.length === 0 ? "p-5 border-2 border-base-content/25" : "p-0"
+          group.filters.length === 0 ? "p-5 border-2 border-muted/50" : "p-0"
         }`}
         aria-label={`Filter Group ${index}`}
         onconsider={(e) => handleConsiderFilter(e, group.id)}
@@ -141,7 +141,7 @@
       >
         {#each group.filters as filter, i (filter.id)}
           <div
-            class="bg-base-100 p-3 flex flex-col rounded-lg hover:border-primary border-base-content/20 outline-primary border-2 gap-1 relative"
+            class="bg-base-100 p-3 flex flex-col rounded-lg hover:border-primary border-muted/50 outline-primary border-2 gap-1 relative"
             aria-label={`${filter.fieldName} filter: ${filter.mode}`}
           >
             <FilterHeader action={removeFilter(group.id, filter.id)}>

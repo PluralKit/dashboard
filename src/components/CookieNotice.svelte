@@ -20,7 +20,7 @@
   <IconExclamationCircle class="text-info" />
   <p>
     The dashboard uses cookies to provide some of <span
-      class="tooltip tooltip-bottom border-b inline border-base-content/50 border-dashed"
+      class="tooltip tooltip-bottom border-b inline border-muted/50 border-dashed"
       data-tip="such as logging in, and changing any display settings.">its core functionality</span
     >.
   </p>

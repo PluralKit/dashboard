@@ -70,7 +70,7 @@
           start={currentPage * itemsPerPage - itemsPerPage + 1}
         >
           {#each paginatedGroups as group, i (group.uuid)}
-            <li class="list-item border-b border-base-content/20">
+            <li class="list-item border-b border-muted/50">
               <button
                 title="Copy group ID"
                 aria-label={`Group ${i}: ${group.name}`}

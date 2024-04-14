@@ -57,7 +57,7 @@
 >
   {#each list.sorts as sort (sort.id)}
     <div
-      class="bg-base-100 p-3 flex flex-col rounded-lg hover:border-primary border-base-content/20 outline-primary border-2 gap-2 relative"
+      class="bg-base-100 p-3 flex flex-col rounded-lg hover:border-primary border-muted/50 outline-primary border-2 gap-2 relative"
       aria-label={`Sort ${sort.field}: ${sort.mode}`}
     >
       <div class="flex flex-row gap-3 items-center justify-between">
