@@ -6,7 +6,7 @@
   import { getBirthday } from "$lib/dash/member/utils"
   import ImageModal from "../ImageModal.svelte"
   import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
-  import { copyToClipboard } from "$lib/dash/utils"
+  import CopyField from "../CopyField.svelte"
 
   let {
     member,
@@ -65,33 +65,41 @@
       <ul class="menu bg-base-100 flex-1 rounded-box text-base">
         {#if member.id}
           <li>
-            <button
-              title="Copy ID"
-              
-              onclick={() => copyToClipboard(member.id)}
-              class="items-start text-left"><b>ID:</b> {member.id}</button
+            <span
+              class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
             >
+              <span class="flex flex-row justify-start gap-2"
+                ><b>ID:</b>
+                {member.id}
+              </span>
+              <CopyField class="ml-auto" field="id" value={member.id} />
+            </span>
           </li>
         {/if}
         {#if member.name}
           <li>
-            <button
-              title="Copy name"
-              
-              onclick={() => copyToClipboard(member.name)}
-              class="items-start text-left"><b>Name:</b> {member.name}</button
+            <span
+              class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
             >
+              <span class="flex flex-row justify-start gap-2"
+                ><b>Name:</b>
+                {member.name}
+              </span>
+              <CopyField class="ml-auto" field="name" value={member.name} />
+            </span>
           </li>
         {/if}
         {#if member.display_name}
           <li>
-            <button
-              title="Copy display name"
-              
-              onclick={() => copyToClipboard(member.display_name)}
-              class="items-start text-left"
-              ><b>Display name:</b> {member.display_name}</button
+            <span
+              class="items-start pr-1 text-left justify-between gap-1 hover:bg-transparent hover:cursor-default"
             >
+              <span class="flex flex-row justify-start gap-2"
+                ><b class="block w-fit">Display name:</b>
+                <AwaitHtml htmlPromise={parseMarkdown(member.display_name, { embed: true })} />
+              </span>
+              <CopyField class="ml-auto" field="display name" value={member.display_name} />
+            </span>
           </li>
         {/if}
       </ul>
@@ -99,39 +107,39 @@
         <ul class="menu bg-base-100 flex-1 rounded-box text-base">
           {#if member.pronouns}
             <li>
-              <button
-                title="Copy pronouns"
-                onclick={() => copyToClipboard(member.pronouns)}
-                class="items-start discord-markdown text-left"
-                
-                ><b>Pronouns:</b>
-                <AwaitHtml htmlPromise={parseMarkdown(member.pronouns, { embed: true })} /></button
+              <span
+                class="items-start discord-markdown text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
               >
+                <span class="flex flex-row justify-start gap-2"
+                  ><b>Pronouns:</b>
+                  <AwaitHtml htmlPromise={parseMarkdown(member.pronouns, { embed: true })} />
+                </span>
+                <CopyField class="ml-auto" field="pronouns" value={member.pronouns} />
+              </span>
             </li>
           {/if}
           {#if member.birthday}
             <li>
-              <button
-                title="Copy birthday"
-                
-                onclick={() => copyToClipboard(member.birthday)}
-                class="items-start text-left"
-                ><b>Birthday:</b> {getBirthday(member.birthday)}</button
+              <span
+                class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
               >
+                <span class="flex flex-row justify-start gap-2"
+                  ><b>Birthday:</b>
+                  {getBirthday(member.birthday)}
+                </span>
+                <CopyField class="ml-auto" field="birthday" value={member.birthday} />
+              </span>
             </li>
           {/if}
         </ul>
       {/if}
       {#if member.description}
         <div class="flex flex-col w-full">
-          <button
-            title="Copy description"
-            
-            onclick={() => copyToClipboard(member.description)}
-            class="ml-4 px-4 pt-2 pb-1 rounded-t-xl bg-base-100 w-fit font-bold transition-all hover:bg-base-300 active:bg-neutral active:text-neutral-content tooltip tooltip-right"
+          <div
+            class="ml-4 px-4 pt-2 pb-1 rounded-t-xl bg-base-100 w-fit font-bold flex flex-row gap-3"
           >
-            Description:
-          </button>
+            Description <CopyField field="description" value={member.description} />
+          </div>
           <div class="rounded-xl bg-base-100">
             <div class="discord-markdown p-6 py-4">
               <AwaitHtml htmlPromise={parseMarkdown(member.description, { embed: true })} />

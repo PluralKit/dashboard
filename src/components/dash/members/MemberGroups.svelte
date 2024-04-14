@@ -6,6 +6,7 @@
   import parseMarkdown from "$api/parseMarkdown"
   import SimplePagination from "../SimplePagination.svelte"
   import { copyToClipboard } from "$lib/dash/utils"
+  import CopyField from "../CopyField.svelte"
 
   let {
     asPage = false,
@@ -71,16 +72,15 @@
         >
           {#each paginatedGroups as group, i (group.uuid)}
             <li class="list-item border-b border-muted/50">
-              <button
-                title="Copy group ID"
-                aria-label={`Group ${i}: ${group.name}`}
-                onclick={() => copyToClipboard(group.id)} class="items-center gap-2 w-full">
-                <span
-                  >[<code class="bg-base-200">{group.id}</code>] <AwaitHtml
-                    htmlPromise={parseMarkdown(group.name || "", { embed: true })}
-                  /></span
-                >
-              </button>
+              <span class="hover:bg-transparent hover:cursor-default flex flex-row">
+                <div class="flex flex-row w-full justify-between">
+                  <span
+                    >[<code class="bg-base-200">{group.id}</code>] <AwaitHtml
+                      htmlPromise={parseMarkdown(group.name || "", { embed: true })}
+                    />
+                  </span><CopyField class="ml-auto" field="group id" value={group.id} />
+                </div>
+              </span>
             </li>
           {/each}
         </ol>
