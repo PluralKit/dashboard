@@ -35,9 +35,10 @@ export default {
         // bright dark
         acid: {
           ...night,
+          "base-100": "#1a2433",
           primary: "#66d11f",
-          secondary: "#11e8f7",
-          accent: "#ff7d19",
+          secondary: "#30d0db",
+          accent: "#f29838",
           "--muted": "60.29% 0.047 275.29",
         },
         // bright light (trans rights!)
