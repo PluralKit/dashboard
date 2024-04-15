@@ -12,12 +12,11 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@rgossiaux/svelte-headlessui": "^2.0.0",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-node": "^5.0.1",
 		"@sveltejs/kit": "^2.0.0",
-		"@sveltejs/vite-plugin-svelte": "^3.0.0",
-		"@tabler/icons-svelte": "^2.40.0",
+		"@sveltejs/vite-plugin-svelte": "^3.1.0",
+		"@tabler/icons-svelte": "^3.2.0",
 		"@tailwindcss/typography": "^0.5.10",
 		"@types/node": "^20.12.6",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
@@ -28,7 +27,7 @@
 		"dotenv": "^16.4.5",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
-		"eslint-plugin-svelte": "^2.30.0",
+		"eslint-plugin-svelte": "^2.37.0",
 		"js-base64": "^3.7.7",
 		"moment": "^2.30.1",
 		"postcss": "^8.4.31",
