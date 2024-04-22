@@ -2,7 +2,6 @@
   import type { ActionData, PageData } from "./$types"
   import { dash } from "$lib/dash/dash.svelte"
   import { getDashLink } from "$lib/dash/utils"
-  import CookieNotice from "$components/CookieNotice.svelte"
   import { cookieState } from "$lib/common/cookies.svelte"
   import { IconFlask } from "@tabler/icons-svelte"
 
@@ -11,10 +10,6 @@
 
   let system = dash.user
 </script>
-
-{#if !cookieState().accepted}
-  <CookieNotice class="mx-auto mb-4 w-full md:w-3/4 lg:w-2/3 xl:w-1/2" />
-{/if}
 
 <div class="hero bg-base-200">
   {#if system}
