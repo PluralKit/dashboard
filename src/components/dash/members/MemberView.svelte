@@ -94,9 +94,9 @@
             <span
               class="items-start pr-1 text-left justify-between gap-1 hover:bg-transparent hover:cursor-default"
             >
-              <span class="flex flex-row justify-start gap-2"
+              <span class="flex flex-row justify-start gap-2 discord-markdown"
                 ><b class="block w-fit">Display name:</b>
-                <AwaitHtml htmlPromise={parseMarkdown(member.display_name, { embed: true })} />
+                <span><AwaitHtml htmlPromise={parseMarkdown(member.display_name, { embed: true })} /></span>
               </span>
               <CopyField class="ml-auto" field="display name" value={member.display_name} />
             </span>
