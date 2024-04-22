@@ -1,0 +1,31 @@
+name: Build and Push Docker Container
+
+on:
+  push:
+    branches: main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    if: github.repository == 'PluralKit/dashboard'
+    steps:
+      - uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+      - run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+      - uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          build-args: |
+            "api_cooldown=330"
+          tags: |
+            ghcr.io/pluralkit/dashboard-v2:${{ env.BRANCH_NAME }}
+            ghcr.io/pluralkit/dashboard-v2:${{ github.sha }}
+            ghcr.io/pluralkit/dashboard-v2:latest
