@@ -1,38 +1,19 @@
-# create-svelte
+This the SvelteKit rewrite of [PluralKit's dashboard](https://github.com/PluralKit/PluralKit/tree/main/dashboard). It uses [svelte 5](https://svelte-5-preview.vercel.app/).
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+## Development
+Developing the dashboard requires [node.js v20](https://nodejs.org/en) and [pnpm](https://pnpm.io/).
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+Create a .env file in the repository root with the following variables
+- `PUBLIC_API_COOLDOWN`: time in milliseconds between *some* consecutive API requests (to avoid getting ratelimited)
+- `PUBLIC_REPOSITORY_URL`: url of the git repository (use https://github.com/PluralKit/dashboard or your fork)
 
 ## Building
+Building can either be done using `pnpm build` or `docker build`.
 
-To create a production version of your app:
-
-```bash
-npm run build
+Example docker build command
 ```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+docker build -t pluralkit-dashboard \
+  --build-arg="api_cooldown=330" \
+  --build-arg="repository_url=https://github.com/PluralKit/dashboard" \
+  .
+```
