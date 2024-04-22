@@ -6,6 +6,7 @@
   import MemberView from "./members/MemberView.svelte"
   import MemberInfo from "./members/MemberInfo.svelte"
   import MemberGroups from "./members/MemberGroups.svelte"
+  import GroupView from "./groups/GroupView.svelte"
 
   let {
     type,
@@ -52,6 +53,8 @@
     <div class="h-14 ml-3">
       {#if type === "member"}
         {@render memberIcon(item)}
+      {:else if type === "group"}
+        {@render groupIcon(item)}
       {/if}
     </div>
   </button>
@@ -82,6 +85,8 @@
     <div class="tab-contents flex flex-col rounded-b-lg p-2 lg:p-4 bg-base-200">
       {#if type === "member"}
         {@render memberTabs(item, tab)}
+      {:else if type === "group"}
+        {@render groupTabs(item, tab)}
       {/if}
     </div>
   </div>
@@ -112,12 +117,50 @@
   </div>
 {/snippet}
 
+{#snippet groupTabs(group: Group, tab: "view"|"info"|"groups")}
+  <GroupView {group} {tab} open={isOpen} />
+  <div class="flex flex-row justify-end items-center">
+    {#if dash.group.group?.uuid !== item.uuid || !asPage}
+      <a
+        target="_blank"
+        class="btn btn-primary btn-sm mt-2"
+        href={`/dash/g/${item.id}${$page.url.searchParams.get("public") ? "?public=true" : ""}`}
+      >
+        View page
+      </a>
+    {:else}
+      <a
+        target="_blank"
+        class="btn btn-primary btn-sm mt-2"
+        href={`/dash/${(item as Member).system}?tab=groups${$page.url.searchParams.get("public") ? "&public=true" : ""}`}
+      >
+        View system
+      </a>
+    {/if}
+  </div>
+{/snippet}
+
 {#snippet memberIcon(member: Member)}
   {#if member.webhook_avatar_url || member.avatar_url}
     <div class="avatar w-14">
       {@render iconImage(
         member.webhook_avatar_url || member.avatar_url || "",
         `${member.name}'s avatar'`
+      )}
+    </div>
+  {:else}
+    <div class="avatar w-14">
+      {@render iconImage("/discord_icon.svg", "Default avatar")}
+    </div>
+  {/if}
+{/snippet}
+
+{#snippet groupIcon(group: Group)}
+  {#if group.icon}
+    <div class="avatar w-14">
+      {@render iconImage(
+        group.icon || "",
+        `${group.name}'s icon'`
       )}
     </div>
   {:else}
