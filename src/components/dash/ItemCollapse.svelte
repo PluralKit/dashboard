@@ -7,6 +7,7 @@
   import MemberInfo from "./members/MemberInfo.svelte"
   import MemberGroups from "./members/MemberGroups.svelte"
   import GroupView from "./groups/GroupView.svelte"
+  import GroupInfo from "./groups/GroupInfo.svelte"
 
   let {
     type,
@@ -119,6 +120,7 @@
 
 {#snippet groupTabs(group: Group, tab: "view"|"info"|"groups")}
   <GroupView {group} {tab} open={isOpen} />
+  <GroupInfo {group} {tab} />
   <div class="flex flex-row justify-end items-center">
     {#if dash.group.group?.uuid !== item.uuid || !asPage}
       <a
