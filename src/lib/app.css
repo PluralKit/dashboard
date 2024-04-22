@@ -4,7 +4,7 @@
 
 @layer components {
   hr {
-    @apply border-muted/50
+    @apply border-muted/50;
   }
 
   .btn-menu {
@@ -15,8 +15,9 @@
     @apply rounded-xl bg-base-200 p-4;
   }
 
-  .menu :where(li:not(.menu-title) > :not(ul):not(details):not(.menu-title)), .menu :where(li:not(.menu-title) > details > summary:not(.menu-title)) {
-    @apply select-text
+  .menu :where(li:not(.menu-title) > :not(ul):not(details):not(.menu-title)),
+  .menu :where(li:not(.menu-title) > details > summary:not(.menu-title)) {
+    @apply select-text;
   }
 
   .tabs-lifted.tabs-box > .tab.tab-active:not(.tab-disabled):not([disabled]) {
@@ -29,47 +30,47 @@
     background-image: none;
   }
 
-    .discord-markdown blockquote {
-      @apply pl-3 border-l-4 border-muted/50
-    }
+  .discord-markdown blockquote {
+    @apply pl-3 border-l-4 border-muted/50;
+  }
 
-    .discord-markdown ul {
-      @apply list-disc pl-4
-    }
+  .discord-markdown ul {
+    @apply list-disc pl-4;
+  }
 
-    .discord-markdown ol {
-      @apply list-decimal pl-4
-    }
+  .discord-markdown ol {
+    @apply list-decimal pl-4;
+  }
 
-    .discord-markdown .d-emoji {
-      @apply h-4 w-auto inline
-    }
+  .discord-markdown .d-emoji {
+    @apply h-4 w-auto inline;
+  }
 
-    .discord-markdown .d-spoiler {
-      @apply bg-base-content text-base-content;
-      border-radius: 4px;
-      transition-delay: 6000s;
-    }
-    
-    .discord-markdown .d-spoiler::selection {
-        @apply text-base-content;
-        background-color: transparent;
-    }
-    
-    .discord-markdown .d-spoiler:active {
-        @apply text-base-100 bg-base-300;
-        transition-delay: 0s;
-    }
+  .discord-markdown .d-spoiler {
+    @apply bg-base-content text-base-content;
+    border-radius: 4px;
+    transition-delay: 6000s;
+  }
 
-    .discord-markdown code {
-      @apply px-1 text-sm rounded-sm bg-base-200
-    }
+  .discord-markdown .d-spoiler::selection {
+    @apply text-base-content;
+    background-color: transparent;
+  }
 
-    .discord-markdown pre > code {
-      @apply py-1 px-2 md:px-3 md:py-2 rounded-xl
-    }
+  .discord-markdown .d-spoiler:active {
+    @apply text-base-100 bg-base-300;
+    transition-delay: 0s;
+  }
 
-    .discord-markdown a {
-      @apply link-primary
-    }
+  .discord-markdown code {
+    @apply px-1 text-sm rounded-sm bg-base-200;
+  }
+
+  .discord-markdown pre > code {
+    @apply py-1 px-2 md:px-3 md:py-2 rounded-xl;
+  }
+
+  .discord-markdown a {
+    @apply link-primary;
+  }
 }

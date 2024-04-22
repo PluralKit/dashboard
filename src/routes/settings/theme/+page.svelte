@@ -14,7 +14,12 @@
     <label class="label" for="theme-select"><span class="label-text">Change theme</span></label>
     <div class="flex flex-col gap-5 mb-3">
       <div class="flex-none">
-        <select name="theme" bind:value={data.theme} class="form-control select select-bordered" id="theme-select">
+        <select
+          name="theme"
+          bind:value={data.theme}
+          class="form-control select select-bordered"
+          id="theme-select"
+        >
           <option value="light">Light</option>
           <option value="dark">Dark</option>
           <option value="cotton">Cotton (trans rights!)</option>

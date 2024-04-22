@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let htmlPromise: Promise<string> = Promise.resolve("");
+  export let htmlPromise: Promise<string> = Promise.resolve("")
 </script>
 
 {#await htmlPromise}

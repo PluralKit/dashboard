@@ -11,7 +11,7 @@ export enum ErrorType {
   NotFound = 404,
   InternalServerError = 500,
   Forbidden = 403,
-  RateLimit = 429
+  RateLimit = 429,
 }
 
 export interface ApiError {
@@ -26,7 +26,10 @@ export type SvelteFetch = (input: RequestInfo, init?: RequestInit | undefined) =
 export type ApiClient = <T>(path: string, options?: ApiOptions) => Promise<T | undefined>
 
 export default function apiClient(fetch: SvelteFetch): ApiClient {
-  const api: ApiClient = async function <T>(path: string, options?: ApiOptions): Promise<T | undefined> {
+  const api: ApiClient = async function <T>(
+    path: string,
+    options?: ApiOptions
+  ): Promise<T | undefined> {
     const resp = await fetch(`https://api.pluralkit.me/v2/${path}`, {
       method: (options && options.method) || "GET",
       headers: {

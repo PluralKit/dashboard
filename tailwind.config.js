@@ -9,8 +9,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        muted: "oklch(var(--muted) / <alpha-value>)"
-      }
+        muted: "oklch(var(--muted) / <alpha-value>)",
+      },
     },
   },
   daisyui: {
@@ -49,7 +49,7 @@ export default {
           accent: "#f8b939",
           neutral: "b6bec8",
           "--muted": "69.38% 0.01 252.85",
-          "--rounded-btn": "0.5rem"
+          "--rounded-btn": "0.5rem",
         },
         // warm light
         autumn: {

@@ -14,20 +14,25 @@
       on:click={() => (sidebarOpen = !sidebarOpen)}
       aria-label="close sidebar"
     ></button>
-    <div class="absolute top-0 left-0 bottom-0 md:hidden" transition:slide={{ axis: "x", duration: 350 }}>
+    <div
+      class="absolute top-0 left-0 bottom-0 md:hidden"
+      transition:slide={{ axis: "x", duration: 350 }}
+    >
       <SettingsSideBar />
     </div>
   {/if}
   <SettingsSideBar hide={true} />
   <div class="px-6 flex-1">
     <!-- Page content here -->
-    <button class="btn btn-neutral md:hidden" on:click={() => (sidebarOpen = !sidebarOpen)}> Open sidebar </button>
+    <button class="btn btn-neutral md:hidden" on:click={() => (sidebarOpen = !sidebarOpen)}>
+      Open sidebar
+    </button>
     <div class="divider md:hidden"></div>
-      {#if !cookieState().accepted}
+    {#if !cookieState().accepted}
       <div class="w-full flex flex-col">
         <CookieNotice class="mx-auto mt-3 w-full lg:w-3/4 xl:w-2/3" />
       </div>
-      {/if}
+    {/if}
     <slot />
   </div>
 </div>

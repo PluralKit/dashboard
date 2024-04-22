@@ -16,7 +16,7 @@ Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
     background: #011627;
     color: #d6deeb;
   }
-  
+
   /* General Purpose */
   .hljs-keyword {
     color: #c792ea;
@@ -33,7 +33,7 @@ Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
     color: #ff5874;
   }
   .hljs-number {
-    color: #F78C6C;
+    color: #f78c6c;
   }
   .hljs-regexp {
     color: #5ca7e4;
@@ -51,16 +51,16 @@ Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
     color: #ffcb8b;
   }
   .hljs-function {
-    color: #82AAFF;
+    color: #82aaff;
   }
   .hljs-title {
-    color: #DCDCAA;
+    color: #dcdcaa;
     font-style: italic;
   }
   .hljs-params {
     color: #7fdbca;
   }
-  
+
   /* Meta */
   .hljs-comment {
     color: #637777;
@@ -73,13 +73,12 @@ Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
     color: #82aaff;
   }
   .hljs-meta .hljs-keyword {
-  
     color: #82aaff;
   }
   .hljs-meta .hljs-string {
     color: #ecc48d;
   }
-  
+
   /* Tags, attributes, config */
   .hljs-section {
     color: #82b1ff;
@@ -97,13 +96,13 @@ Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
   .hljs-variable {
     color: #addb67;
   }
-  
+
   /* Markup */
   .hljs-bullet {
     color: #d9f5dd;
   }
   .hljs-code {
-    color: #80CBC4;
+    color: #80cbc4;
   }
   .hljs-emphasis {
     color: #c792ea;
@@ -123,27 +122,27 @@ Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
     color: #697098;
     font-style: italic;
   }
-  
+
   /* CSS */
   .hljs-selector-tag {
     color: #ff6363;
   }
-  
+
   .hljs-selector-id {
     color: #fad430;
   }
-  
+
   .hljs-selector-class {
     color: #addb67;
     font-style: italic;
   }
-  
+
   .hljs-selector-attr,
   .hljs-selector-pseudo {
     color: #c792ea;
     font-style: italic;
   }
-  
+
   /* Templates */
   .hljs-template-tag {
     color: #c792ea;
@@ -151,15 +150,15 @@ Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
   .hljs-template-variable {
     color: #addb67;
   }
-  
+
   /* diff */
   .hljs-addition {
     color: #addb67ff;
     font-style: italic;
   }
-  
+
   .hljs-deletion {
-    color: #EF535090;
+    color: #ef535090;
     font-style: italic;
   }
 }

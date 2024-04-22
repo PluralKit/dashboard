@@ -19,7 +19,7 @@ export async function load({ cookies, params, url }) {
 
   try {
     member = await api<Member>(`members/${params.mid}`)
-  } catch(err) {
+  } catch (err) {
     const e = err as ApiError
     if (e.type === ErrorType.NotFound) error(404, `Member with id "${params.mid}" not found.`)
     else error(e.code, e.message)
@@ -33,16 +33,15 @@ export async function load({ cookies, params, url }) {
       try {
         member = await api<Member>(`members/${params.mid}`, options)
         await new Promise((resolve) => setTimeout(resolve, parseInt(PUBLIC_API_COOLDOWN)))
-        groups = await api<Group[]>(`systems/${sid}/groups?with_members=true`, options) || []
+        groups = (await api<Group[]>(`systems/${sid}/groups?with_members=true`, options)) || []
       } catch (err) {
         const e = err as ApiError
         if (e.type === ErrorType.RateLimit) errs.push(e.message || e.code.toString())
         else error(e.code, e.message)
       }
-    }
-    else {
+    } else {
       try {
-        groups = await api<Group[]>(`members/${params.mid}/groups`) || []
+        groups = (await api<Group[]>(`members/${params.mid}/groups`)) || []
       } catch (err) {
         const e = err as ApiError
         if (e.type === ErrorType.RateLimit) errs.push(e.message || e.code.toString())

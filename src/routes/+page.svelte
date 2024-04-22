@@ -28,10 +28,8 @@
         <div class="alert my-4 bg-base-100 max-w-lg">
           <IconFlask class="text-info" />
           <p>
-            This is a complete rewrite of PluralKit's current dashboard, and hosted only
-            for testing purposes. This is a <b
-              >work in progress</b
-            >, many things aren't functional yet.
+            This is a complete rewrite of PluralKit's current dashboard, and hosted only for testing
+            purposes. This is a <b>work in progress</b>, many things aren't functional yet.
             <span class="text-error">Proceed with caution.</span>
           </p>
         </div>
@@ -50,9 +48,9 @@
         <div class="alert my-4 bg-base-100 max-w-lg">
           <IconFlask class="text-info" />
           <p>
-            This is a complete rewrite of PluralKit's current dashboard, and hosted only
-            for testing purposes. This is a <b>work in progress</b>, many things aren't functional
-            yet. <span class="text-error">Proceed with caution.</span>
+            This is a complete rewrite of PluralKit's current dashboard, and hosted only for testing
+            purposes. This is a <b>work in progress</b>, many things aren't functional yet.
+            <span class="text-error">Proceed with caution.</span>
           </p>
         </div>
       </div>

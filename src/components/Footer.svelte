@@ -6,12 +6,16 @@
 
 <footer class="footer items-center p-4">
   <nav class="grid-flow-col gap-4">
-    <span>Commit: <a
-      aria-label="View commit on github"
-      class="underline"
-      href={`${
-        PUBLIC_REPOSITORY_URL ? PUBLIC_REPOSITORY_URL : "https://github.com/Draconizations/pk-dashboard-sveltekit"
-      }/commit/${version}`}>{version}</a>
+    <span
+      >Commit: <a
+        aria-label="View commit on github"
+        class="underline"
+        href={`${
+          PUBLIC_REPOSITORY_URL
+            ? PUBLIC_REPOSITORY_URL
+            : "https://github.com/Draconizations/pk-dashboard-sveltekit"
+        }/commit/${version}`}>{version}</a
+      >
     </span>
   </nav>
   <nav class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">

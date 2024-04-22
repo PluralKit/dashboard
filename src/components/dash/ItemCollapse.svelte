@@ -32,12 +32,16 @@
     ? `border-color: #${item.color}; border-left-width: 6px;`
     : ""}
 >
-  <button aria-label={`Open or close ${item.name}'s card`} onclick={() => open = !open} class="collapse-title px-2 py-2 lg:px-4 text-xl font-medium flex justify-between items-center">
+  <button
+    aria-label={`Open or close ${item.name}'s card`}
+    onclick={() => (open = !open)}
+    class="collapse-title px-2 py-2 lg:px-4 text-xl font-medium flex justify-between items-center"
+  >
     <div class="flex items-center">
       <div class="mr-3">
         {#if !item.privacy || !item.privacy.visibility}
           <IconUser />
-        {:else if  item.privacy.visibility === "private"}
+        {:else if item.privacy.visibility === "private"}
           <IconLock />
         {:else}
           <IconShare />
@@ -84,19 +88,19 @@
 </div>
 
 {#snippet memberTabs(member: Member, tab: "view"|"info"|"groups")}
-    <MemberView {member} {tab} open={isOpen} />
-    <MemberInfo {member} {tab} />
-    <MemberGroups {member} {tab} {asPage} />
-    <div class="flex flex-row justify-end items-center">
-      {#if dash.member.member?.uuid !== item.uuid}
-        <a
-          target="_blank"
-          class="btn btn-primary btn-sm mt-2"
-          href={`/dash/m/${item.id}${$page.url.searchParams.get("public") ? "?public=true" : ""}`}
-        >
-          View page
-        </a>
-      {:else}
+  <MemberView {member} {tab} open={isOpen} />
+  <MemberInfo {member} {tab} />
+  <MemberGroups {member} {tab} {asPage} />
+  <div class="flex flex-row justify-end items-center">
+    {#if dash.member.member?.uuid !== item.uuid}
+      <a
+        target="_blank"
+        class="btn btn-primary btn-sm mt-2"
+        href={`/dash/m/${item.id}${$page.url.searchParams.get("public") ? "?public=true" : ""}`}
+      >
+        View page
+      </a>
+    {:else}
       <a
         target="_blank"
         class="btn btn-primary btn-sm mt-2"
@@ -104,18 +108,18 @@
       >
         View system
       </a>
-      {/if}
-    </div>
+    {/if}
+  </div>
 {/snippet}
 
 {#snippet memberIcon(member: Member)}
   {#if member.webhook_avatar_url || member.avatar_url}
     <div class="avatar w-14">
       {@render iconImage(
-      member.webhook_avatar_url || member.avatar_url || "",
-      `${member.name}'s avatar'`
-    )}
-  </div>
+        member.webhook_avatar_url || member.avatar_url || "",
+        `${member.name}'s avatar'`
+      )}
+    </div>
   {:else}
     <div class="avatar w-14">
       {@render iconImage(

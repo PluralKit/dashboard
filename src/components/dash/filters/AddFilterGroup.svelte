@@ -52,7 +52,7 @@
     let group = createFilterGroup([filter])
     if (filterGroups.length === 0) filterGroups = [...filterGroups, group]
     else {
-      let existingGroup: FilterGroup|null = null
+      let existingGroup: FilterGroup | null = null
       for (let i = filterGroups.length - 1; i >= 0; i--) {
         if (filterGroups[i].filters.length === 0) {
           existingGroup = filterGroups[i]

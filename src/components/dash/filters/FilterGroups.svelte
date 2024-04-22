@@ -13,9 +13,9 @@
   import type { Group, Member } from "$api/types"
 
   let {
-    list
+    list,
   }: {
-    list: DashList<Member|Group>
+    list: DashList<Member | Group>
   } = $props()
 
   function updateFilterValue(
@@ -100,7 +100,9 @@
 </script>
 
 <div
-  class={`bg-base-300 rounded-lg flex flex-col gap-4 p-3 ${list.filters.length === 0 ? "hidden" : ""}`}
+  class={`bg-base-300 rounded-lg flex flex-col gap-4 p-3 ${
+    list.filters.length === 0 ? "hidden" : ""
+  }`}
   use:dndzone={{ items: list.filters, type: "filter-groups", dropTargetStyle: {} }}
   aria-label="Filter Groups"
   onconsider={(e) => handleConsiderGroup(e)}
@@ -113,12 +115,16 @@
       <div class="flex flex-row gap-3 items-center justify-between">
         <div class="join w-fit mr-auto">
           <button
-            class={`join-item uppercase btn btn-xs ${group.mode === "and" ? "btn-primary" : "btn-neutral"}`}
+            class={`join-item uppercase btn btn-xs ${
+              group.mode === "and" ? "btn-primary" : "btn-neutral"
+            }`}
             onclick={() => changeMode("and", group.id)}
             ontouchend={() => changeMode("and", group.id)}>And</button
           >
           <button
-            class={`join-item uppercase btn btn-xs ${group.mode === "or" ? "btn-primary" : "btn-neutral"}`}
+            class={`join-item uppercase btn btn-xs ${
+              group.mode === "or" ? "btn-primary" : "btn-neutral"
+            }`}
             onclick={() => changeMode("or", group.id)}
             ontouchend={() => changeMode("or", group.id)}>Or</button
           >
@@ -177,7 +183,5 @@
   {/each}
 </div>
 {#if list.filters.length === 0}
-  <div class="bg-base-300 rounded-lg gap-4 p-3 text-center">
-    No filters added.
-  </div>
+  <div class="bg-base-300 rounded-lg gap-4 p-3 text-center">No filters added.</div>
 {/if}

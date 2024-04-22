@@ -48,48 +48,55 @@
     {#if member.message_count || member.created || member.color}
       <ul class="menu bg-base-100 flex-1 rounded-box text-base">
         {#if member.created}
-        <li>
-          <span
-            class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
-          >
-            <span class="flex flex-row justify-start gap-2"
-              ><b>Created:</b>
-              {moment(member.created).format("MMMM Do, YYYY")}
+          <li>
+            <span
+              class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
+            >
+              <span class="flex flex-row justify-start gap-2"
+                ><b>Created:</b>
+                {moment(member.created).format("MMMM Do, YYYY")}
+              </span>
+              <CopyField class="ml-auto" field="creation date" value={member.created} />
             </span>
-            <CopyField class="ml-auto" field="creation date" value={member.created} />
-          </span>
-        </li>
+          </li>
         {/if}
         {#if member.message_count !== null}
-        <li>
-          <span
-            class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
-          >
-            <span class="flex flex-row justify-start gap-2"
-              ><b>Message count:</b>
-              {member.message_count}
+          <li>
+            <span
+              class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
+            >
+              <span class="flex flex-row justify-start gap-2"
+                ><b>Message count:</b>
+                {member.message_count}
+              </span>
+              <CopyField
+                class="ml-auto"
+                field="message count"
+                value={member.message_count?.toString()}
+              />
             </span>
-            <CopyField class="ml-auto" field="message count" value={member.message_count?.toString()} />
-          </span>
-        </li>
+          </li>
         {/if}
         {#if member.color}
-        <li>
-          <span
-            class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
-          >
-            <span class="flex flex-row justify-start gap-2"
-              ><b>Color:</b>
-              #{member.color}
+          <li>
+            <span
+              class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
+            >
+              <span class="flex flex-row justify-start gap-2"
+                ><b>Color:</b>
+                #{member.color}
+              </span>
+              <CopyField class="ml-auto" field="color" value={member.color} />
             </span>
-            <CopyField class="ml-auto" field="color" value={member.color} />
-          </span>
-        </li>
+          </li>
         {/if}
       </ul>
     {/if}
     {#if member.proxy_tags && member.proxy_tags.length > 0}
-      <ol class="menu bg-base-100 flex-1 rounded-box text-base gap-2" style="list-style-type: decimal;">
+      <ol
+        class="menu bg-base-100 flex-1 rounded-box text-base gap-2"
+        style="list-style-type: decimal;"
+      >
         <b class="inline-block px-4 pt-2">Proxy tags:</b>
         {#each member.proxy_tags as tag}
           <li class="ml-8 list-item justify-between">
@@ -102,7 +109,11 @@
                     { embed: true }
                   )}
                 /></code
-              ><CopyField class="ml-auto" field="proxy tag" value={`${tag.prefix ? tag.prefix : ""}text${tag.suffix ? tag.suffix : ""}`}/></span
+              ><CopyField
+                class="ml-auto"
+                field="proxy tag"
+                value={`${tag.prefix ? tag.prefix : ""}text${tag.suffix ? tag.suffix : ""}`}
+              /></span
             >
           </li>
         {/each}
@@ -115,43 +126,51 @@
         <b class="inline-block px-4 pt-2 w-full">Privacy settings:</b>
         <ul class="menu flex-1 text-base p-0 flex flex-col sm:flex-row">
           <li class="w-1/2">
-            <span class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
+            <span
+              class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
               ><b>Visibility:</b> <PrivacyDisplay value={member.privacy.visibility} />
             </span>
           </li>
           <li class="w-1/2">
-            <span class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
+            <span
+              class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
               ><b>Name:</b> <PrivacyDisplay value={member.privacy.name_privacy} /></span
             >
           </li>
           <li class="w-1/2">
-            <span class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
+            <span
+              class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
               ><b>Description:</b>
               <PrivacyDisplay value={member.privacy.description_privacy} /></span
             >
           </li>
           <li class="w-1/2">
-            <span class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
+            <span
+              class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
               ><b>Avatar:</b> <PrivacyDisplay value={member.privacy.avatar_privacy} /></span
             >
           </li>
           <li class="w-1/2">
-            <span class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
+            <span
+              class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
               ><b>Pronouns:</b> <PrivacyDisplay value={member.privacy.pronoun_privacy} /></span
             >
           </li>
           <li class="w-1/2">
-            <span class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
+            <span
+              class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
               ><b>Birthday:</b> <PrivacyDisplay value={member.privacy.birthday_privacy} /></span
             >
           </li>
           <li class="w-1/2">
-            <span class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
+            <span
+              class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
               ><b>Proxy tags:</b> <PrivacyDisplay value={member.privacy.proxy_privacy} /></span
             >
           </li>
           <li class="w-1/2">
-            <span class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
+            <span
+              class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
               ><b>Metadata:</b> <PrivacyDisplay value={member.privacy.metadata_privacy} /></span
             >
           </li>

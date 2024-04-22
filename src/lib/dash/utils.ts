@@ -12,7 +12,9 @@ export function copyToClipboard(value?: string) {
 
 export async function fetchList<T>(fetch: SvelteFetch, path: string, token?: string): Promise<T[]> {
   const api = apiClient(fetch)
-  return await api<T[]>(path, {
-    token
-  }) || []
+  return (
+    (await api<T[]>(path, {
+      token,
+    })) || []
+  )
 }

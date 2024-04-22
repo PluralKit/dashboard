@@ -9,7 +9,8 @@
     fetching = true
     dash.errors.members = ""
     try {
-      const token = dash.privacyMode === PrivacyMode.PRIVATE && localStorage.getItem("pk-token") || undefined
+      const token =
+        (dash.privacyMode === PrivacyMode.PRIVATE && localStorage.getItem("pk-token")) || undefined
       await dash.members.fetch(token)
     } catch (e) {
       dash.errors.members = (e as Error).message
@@ -26,7 +27,9 @@
   <div class="text-center">
     <p>
       {dash.members.list.processed.length} members ({dash.members.list.paginated.length} shown)
-      <button disabled={fetching} class="btn btn-xs btn-primary ml-2" onclick={() => refreshList()}>{fetching ? "Loading..." : "Refresh list"}</button>
+      <button disabled={fetching} class="btn btn-xs btn-primary ml-2" onclick={() => refreshList()}
+        >{fetching ? "Loading..." : "Refresh list"}</button
+      >
     </p>
   </div>
   <Pagination class="mx-auto" bind:list={dash.members} />

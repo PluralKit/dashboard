@@ -9,7 +9,7 @@ enum ViewType {
 interface View {
   type: ViewType
   itemsPerPageSelection: number[]
-  defaultItemsPerPage: number,
+  defaultItemsPerPage: number
 }
 
 export interface ListSettings {
@@ -70,7 +70,7 @@ export function createListSettings() {
     },
     set currentPage(page: number) {
       currentPage = page
-    }
+    },
   }
 }
 

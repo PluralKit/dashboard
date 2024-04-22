@@ -7,7 +7,7 @@
 
 {#if dash.errors.members}
   <div class="alert bg-error/10 mb-4 w-full mx-auto sm:w-3/4 md:w-2/3 lg:w-1/2">
-      <IconAlertTriangle class="text-error" /> Error fetching members: {dash.errors.members}
+    <IconAlertTriangle class="text-error" /> Error fetching members: {dash.errors.members}
   </div>
 {/if}
 <div

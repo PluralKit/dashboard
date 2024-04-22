@@ -34,15 +34,24 @@
     </button>
   </div>
   <div class="text-sm mt-2">
-    <button class="text-secondary hover:text-primary cursor-pointer transition-all" onclick={() => toggle("devMode")}>
+    <button
+      class="text-secondary hover:text-primary cursor-pointer transition-all"
+      onclick={() => toggle("devMode")}
+    >
       Dev mode
     </button>
     |
-    <button class="text-secondary hover:text-primary cursor-pointer transition-all" onclick={() => toggle("display", "forceControlsAtTop")}>
+    <button
+      class="text-secondary hover:text-primary cursor-pointer transition-all"
+      onclick={() => toggle("display", "forceControlsAtTop")}
+    >
       Controls at top
     </button>
     |
-    <button class="text-secondary hover:text-primary cursor-pointer transition-all" onclick={() => toggle("display", "fullColorBorder")}>
+    <button
+      class="text-secondary hover:text-primary cursor-pointer transition-all"
+      onclick={() => toggle("display", "fullColorBorder")}
+    >
       Show colors
     </button>
   </div>

@@ -25,7 +25,11 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
     // we can go ahead and fetch using the token
     if (params.sid === sid && !url.searchParams.get("public")) {
       try {
-        const { system, members, groups, errors, ratelimited } = await getDashInfo(api, sid || "@me", token)
+        const { system, members, groups, errors, ratelimited } = await getDashInfo(
+          api,
+          sid || "@me",
+          token
+        )
         return {
           errors,
           ratelimited,
@@ -38,7 +42,9 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
             title: system?.name,
             color: system?.color,
             ogTitle: system?.name,
-            ogDescription: system.id ? `View ${system?.name ?? `this system (${system.id})`} on the dashboard.` : "",
+            ogDescription: system.id
+              ? `View ${system?.name ?? `this system (${system.id})`} on the dashboard.`
+              : "",
           },
         }
       } catch (err) {
@@ -61,7 +67,9 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
             title: system?.name,
             color: system?.color,
             ogTitle: system?.name,
-            ogDescription: system.id ? `View ${system?.name ?? `this system (${system.id})`} on the dashboard.` : "",
+            ogDescription: system.id
+              ? `View ${system?.name ?? `this system (${system.id})`} on the dashboard.`
+              : "",
           },
         }
       } catch (err) {

@@ -21,7 +21,7 @@
       dupes.add(item.id)
       return !dupe
     })
-    
+
     list.sorts = items
   }
 
@@ -49,7 +49,9 @@
 </script>
 
 <div
-  class={`bg-base-300 rounded-lg flex flex-col gap-2 p-3 ${list.sorts.length === 0 ? "hidden" : ""}`}
+  class={`bg-base-300 rounded-lg flex flex-col gap-2 p-3 ${
+    list.sorts.length === 0 ? "hidden" : ""
+  }`}
   use:dndzone={{ items: list.sorts, type: "sorts", dropTargetStyle: {} }}
   aria-label="Sorting items"
   onconsider={(e) => handleConsider(e)}
@@ -92,8 +94,7 @@
         {:else}
           in <b>descending</b> order
         {/if}
-        </span
-      >
+      </span>
     </div>
   {/each}
 </div>

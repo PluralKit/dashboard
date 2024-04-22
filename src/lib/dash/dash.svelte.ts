@@ -1,5 +1,11 @@
 import type { Group, Member, System } from "$api/types"
-import { FilterMode, createFilter, createFilterGroup, filterList, type FilterGroup } from "./filters.svelte"
+import {
+  FilterMode,
+  createFilter,
+  createFilterGroup,
+  filterList,
+  type FilterGroup,
+} from "./filters.svelte"
 import { fetchList } from "./utils"
 import { createListSettings, paginateList, type ListSettings } from "./settings.svelte"
 import { SortMode, createSort, sortList, type Sort } from "./sorts.svelte"
@@ -60,12 +66,12 @@ function createDash() {
         settings: memberList.listSettings,
         process: memberList.processList,
         paginate: memberList.paginateList,
-        fetch: memberList.fetch
+        fetch: memberList.fetch,
       }
     },
     get groups() {
       return {
-        list: groupList.groups
+        list: groupList.groups,
       }
     },
     get system() {
@@ -113,7 +119,7 @@ function createDash() {
     },
     set errors(error: Record<string, string>) {
       errors = error
-    }
+    },
   }
 }
 
@@ -131,13 +137,9 @@ function createMemberListState() {
   let listSettings: ListSettings = $state(createListSettings())
 
   let filters: FilterGroup[] = $state([
-    createFilterGroup([
-      createFilter("name", "name", FilterMode.INCLUDES, "")
-    ])
+    createFilterGroup([createFilter("name", "name", FilterMode.INCLUDES, "")]),
   ])
-  let sorts: Sort[] = $state([
-    createSort(SortMode.ALPHABETICAL, "name", "name", 1),
-  ])
+  let sorts: Sort[] = $state([createSort(SortMode.ALPHABETICAL, "name", "name", 1)])
 
   let members: Member[] = $state([])
   let processedMembers: Member[] = $state(processList(members, filters, sorts))
@@ -191,7 +193,7 @@ function createGroupListState() {
   return {
     get groups() {
       return {
-        raw: groups
+        raw: groups,
       }
     },
     init: (data: Group[]) => (groups = data),
@@ -202,12 +204,12 @@ function createMemberState() {
   let member: Member | undefined = $state(undefined)
   let groups: Group[] = $state([])
   let privacyMode: PrivacyMode = $state(PrivacyMode.PUBLIC)
-  
+
   return {
     get member() {
       return member
     },
-    set member(m: Member|undefined) {
+    set member(m: Member | undefined) {
       member = m
     },
     get groups() {
@@ -221,7 +223,7 @@ function createMemberState() {
     },
     set privacyMode(mode: PrivacyMode) {
       privacyMode = mode
-    }
+    },
   }
 }
 

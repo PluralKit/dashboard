@@ -15,13 +15,13 @@ export enum SortMode {
 
 export const sortModeText = (mode: SortMode, type: string) => {
   const text: Record<string, string> = {
-    "alphabetical": "alphabetically",
-    "size": type === "string" ? "by character length" : ""
+    alphabetical: "alphabetically",
+    size: type === "string" ? "by character length" : "",
   }
   return {
     get text() {
       return text[mode.toString()] ?? "???"
-    }
+    },
   }
 }
 
@@ -30,7 +30,7 @@ export function createSort(mode: SortMode, field: string, fieldName: string, ord
   const sortField: string = field
   const name: string = fieldName
   let sortOrder: 1 | -1 = $state(order)
-  
+
   const id = randomId()
 
   return {
@@ -51,7 +51,7 @@ export function createSort(mode: SortMode, field: string, fieldName: string, ord
     },
     get id() {
       return id
-    }
+    },
   }
 }
 

@@ -57,7 +57,10 @@
       </button>
     {/if}
     {#if list.settings.currentPage > 1 && list.settings.currentPage < pageAmount}
-      <button aria-label={`Page ${list.settings.currentPage} (current page)`} class="btn btn-sm join-item btn-primary">
+      <button
+        aria-label={`Page ${list.settings.currentPage} (current page)`}
+        class="btn btn-sm join-item btn-primary"
+      >
         {list.settings.currentPage}
       </button>
     {/if}

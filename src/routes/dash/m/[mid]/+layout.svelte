@@ -12,10 +12,7 @@
 
 <div class="container mx-auto px-4">
   <div class="flex flex-row mb-4 justify-center">
-    <a
-      class="btn btn-ghost w-fit"
-      href={`/dash/${dash.member.member?.system}`}
-    >
+    <a class="btn btn-ghost w-fit" href={`/dash/${dash.member.member?.system}`}>
       <IconArrowLeft /> Back to system
     </a>
   </div>

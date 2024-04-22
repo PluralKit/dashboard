@@ -396,7 +396,7 @@ const parseMarkdown = async (raw: string, opts?: ParseMarkdownOptions) => {
 
     codeBlock.classList.add("hljs")
 
-    const specifiedLanguage = codeBlock.getAttribute("data-code-language")  ?? "plaintext"
+    const specifiedLanguage = codeBlock.getAttribute("data-code-language") ?? "plaintext"
     const languageImportFn = languages[specifiedLanguage] ?? aliases[specifiedLanguage]
 
     if (languageImportFn) {

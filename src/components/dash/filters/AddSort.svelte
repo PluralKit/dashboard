@@ -10,7 +10,7 @@
     list,
     sorts = $bindable(),
   }: {
-    type: "members"|"groups",
+    type: "members" | "groups"
     list: DashList<Member | Group>
     sorts: Sort[]
   } = $props()
@@ -74,17 +74,15 @@
       >
         {#if !sortField}
           <option value={null} disabled>Select a field first</option>
+        {:else if sortField === "color"}
+          <option value={null} disabled>color</option>
         {:else}
-          {#if sortField === "color"}
-            <option value={null} disabled>color</option>
+          <option value={null} disabled>Sort mode...</option>
+          <option value={SortMode.ALPHABETICAL}>alphabetical</option>
+          {#if filterFieldType(sortField) === "string"}
+            <option value={SortMode.SIZE}>length</option>
           {:else}
-            <option value={null} disabled>Sort mode...</option>
-            <option value={SortMode.ALPHABETICAL}>alphabetical</option>
-            {#if filterFieldType(sortField) === "string"}
-              <option value={SortMode.SIZE}>length</option>
-            {:else}
-              <option value={SortMode.SIZE}>count</option>
-            {/if}
+            <option value={SortMode.SIZE}>count</option>
           {/if}
         {/if}
       </select>
@@ -97,10 +95,7 @@
         <option value={1}>Ascending</option>
         <option value={-1}>Descending</option>
       </select>
-      <button
-        class="btn btn-success btn-sm ml-auto"
-        onclick={() => addSort()}
-      >
+      <button class="btn btn-success btn-sm ml-auto" onclick={() => addSort()}>
         <IconPlus size={14} /> sort
       </button>
     </div>

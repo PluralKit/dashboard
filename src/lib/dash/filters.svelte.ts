@@ -5,35 +5,35 @@ export interface FilterGroup {
 }
 
 export type Filter = {
-  value: string | number | null,
-  mode: FilterMode,
-  field: string,
-  fieldName: string,
-  id: string,
+  value: string | number | null
+  mode: FilterMode
+  field: string
+  fieldName: string
+  id: string
   valueType: string
 }
 
 export type FilterModeText = {
-  mode: FilterMode,
-  verb: string,
+  mode: FilterMode
+  verb: string
   afterVerb?: string
 }
 
 export const filterFieldText = (raw: string) => {
-  const text: Record<string,string> = {
-    "display_name": "display name",
-    "avatar_url": "avatar",
-    "webhook_avatar_url": "proxy avatar",
-    "message_count": "message count",
-    "pronouns": "pronoun"
+  const text: Record<string, string> = {
+    display_name: "display name",
+    avatar_url: "avatar",
+    webhook_avatar_url: "proxy avatar",
+    message_count: "message count",
+    pronouns: "pronoun",
   }
-  
+
   return text[raw] ?? raw
 }
 
 export const filterFieldType = (raw: string) => {
   const type: Record<string, string> = {
-    "message_count": "number"
+    message_count: "number",
   }
 
   return type[raw] ?? "string"
@@ -45,47 +45,47 @@ export const filterModeText = (newMode: FilterMode, type: string) => {
   const text: FilterModeText[] = [
     {
       mode: FilterMode.INCLUDES,
-      verb: "include"
+      verb: "include",
     },
     {
       mode: FilterMode.EXCLUDES,
-      verb: "exclude"
+      verb: "exclude",
     },
     {
       mode: FilterMode.EXACT,
-      verb: "match"
+      verb: "match",
     },
     {
       mode: FilterMode.NOTEXACT,
-      verb: "don't match"
+      verb: "don't match",
     },
     {
       mode: FilterMode.EMPTY,
-      verb: "are empty"
+      verb: "are empty",
     },
     {
       mode: FilterMode.NOTEMPTY,
-      verb: "are not empty"
+      verb: "are not empty",
     },
     {
       mode: FilterMode.HIGHERTHAN,
       verb: "are more than",
-      afterVerb: type === "string" ? "characters long" : ""
+      afterVerb: type === "string" ? "characters long" : "",
     },
     {
       mode: FilterMode.LOWERTHAN,
       verb: "are less than",
-      afterVerb: type === "string" ? "characters long" : ""
-    }
+      afterVerb: type === "string" ? "characters long" : "",
+    },
   ]
 
   return {
     get verb(): string {
-      return text.find(i => i.mode === mode)?.verb ?? "???"
+      return text.find((i) => i.mode === mode)?.verb ?? "???"
     },
     get afterVerb(): string {
-      return text.find(i => i.mode === mode)?.afterVerb ?? ""
-    }
+      return text.find((i) => i.mode === mode)?.afterVerb ?? ""
+    },
   }
 }
 
@@ -112,7 +112,7 @@ export function createFilterGroup(filter?: Filter[]): FilterGroup {
   let filters: Filter[] = $state(filter || [])
   let id: string = (Math.random() + 1).toString(36).slice(2, 5)
   let mode: "and" | "or" = $state("and")
-  
+
   return {
     get filters() {
       return filters
@@ -126,13 +126,18 @@ export function createFilterGroup(filter?: Filter[]): FilterGroup {
     get mode() {
       return mode
     },
-    set mode(newMode: "and"|"or") {
+    set mode(newMode: "and" | "or") {
       mode = newMode
-    }
+    },
   }
 }
 
-export function createFilter(newField: string, newName: string, newMode: FilterMode, newValue: string|number|null): Filter {
+export function createFilter(
+  newField: string,
+  newName: string,
+  newMode: FilterMode,
+  newValue: string | number | null
+): Filter {
   let value: string | number | null = $state(newValue)
   let valueType: string = value !== null ? typeof value : "null"
   let mode: FilterMode = $state(newMode)
@@ -171,7 +176,7 @@ export function createFilter(newField: string, newName: string, newMode: FilterM
     },
     set field(newField: string) {
       field = newField
-    }
+    },
   }
 }
 
@@ -211,7 +216,7 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
         switch (filter.valueType) {
           // string: include any with substring
           case "string": {
-            return ((i[field] as string).toLowerCase().includes((value as string).toLowerCase()))
+            return (i[field] as string).toLowerCase().includes((value as string).toLowerCase())
           }
           default:
             return false
@@ -225,7 +230,7 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
         switch (filter.valueType) {
           // string: include any with substring
           case "string": {
-            return !((i[field] as string).toLowerCase().includes((value as string).toLowerCase()))
+            return !(i[field] as string).toLowerCase().includes((value as string).toLowerCase())
           }
           default:
             return true
@@ -234,19 +239,20 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
       break
     case FilterMode.EMPTY:
       processedList = processedList.filter((i) => {
-        return (!i[field])
+        return !i[field]
       })
       break
     case FilterMode.NOTEMPTY:
       processedList = processedList.filter((i) => {
-        return (!(!i[field]))
+        return !!i[field]
       })
       break
     case FilterMode.EXACT:
       processedList = processedList.filter((i) => {
         if (!value) return true
         if (!i[field]) return false
-        if (filter.valueType === "string") return (i[field] as string).toLowerCase() === (value as string).toLowerCase()
+        if (filter.valueType === "string")
+          return (i[field] as string).toLowerCase() === (value as string).toLowerCase()
         else return i[field] === filter.value
       })
       break
@@ -254,7 +260,8 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
       processedList = processedList.filter((i) => {
         if (!value) return true
         if (!i[field]) return true
-        if (filter.valueType === "string") return (i[field] as string).toLowerCase() !== (value as string).toLowerCase()
+        if (filter.valueType === "string")
+          return (i[field] as string).toLowerCase() !== (value as string).toLowerCase()
         else return i[field] !== filter.value
       })
       break
@@ -263,9 +270,9 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
         if (!value) return true
         if (!i[field]) return false
         if (typeof i[field] === "string") {
-          return ((i[field] as string).length > (value as number))
+          return (i[field] as string).length > (value as number)
         } else if (typeof i[field] === "number") {
-          return ((i[field] as number) > (value as number))
+          return (i[field] as number) > (value as number)
         } else return false
       })
       break
@@ -274,9 +281,9 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
         if (!value) return true
         if (!i[field]) return false
         if (typeof i[field] === "string") {
-          return ((i[field] as string).length < (value as number))
+          return (i[field] as string).length < (value as number)
         } else if (typeof i[field] === "number") {
-          return ((i[field] as number) < (value as number))
+          return (i[field] as number) < (value as number)
         } else return false
       })
       break

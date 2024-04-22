@@ -1,5 +1,5 @@
 import { redirect } from "@sveltejs/kit"
 
 export function load() {
-  redirect(301, "/settings/theme");
+  redirect(301, "/settings/theme")
 }
