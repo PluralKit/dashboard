@@ -90,4 +90,5 @@ export interface Group {
   privacy?: GroupPrivacy
   created?: string
   members?: string[]
+  system?: string
 }
