@@ -56,11 +56,7 @@
       <div>
         <h3 class="text-xl">Filter list</h3>
         <hr class="my-2" />
-        <AddFilterGroup
-          bind:filterGroups={dash.groups.filters}
-          list={dash.groups}
-          type="groups"
-        />
+        <AddFilterGroup bind:filterGroups={dash.groups.filters} list={dash.groups} type="groups" />
         <FilterGroups list={dash.groups} />
       </div>
       <div>

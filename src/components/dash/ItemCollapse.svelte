@@ -162,10 +162,7 @@
 {#snippet groupIcon(group: Group)}
   {#if group.icon}
     <div class="avatar w-14">
-      {@render iconImage(
-        group.icon || "",
-        `${group.name}'s icon'`
-      )}
+      {@render iconImage(group.icon || "", `${group.name}'s icon'`)}
     </div>
   {:else}
     <div class="avatar w-14">

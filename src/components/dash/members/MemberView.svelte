@@ -96,7 +96,11 @@
             >
               <span class="flex flex-row justify-start gap-2 discord-markdown"
                 ><b class="block w-fit">Display name:</b>
-                <span><AwaitHtml htmlPromise={parseMarkdown(member.display_name, { embed: true })} /></span>
+                <span
+                  ><AwaitHtml
+                    htmlPromise={parseMarkdown(member.display_name, { embed: true })}
+                  /></span
+                >
               </span>
               <CopyField class="ml-auto" field="display name" value={member.display_name} />
             </span>

@@ -20,9 +20,11 @@
   let members: Member[] = $derived(
     !asPage
       ? dash.members.list.raw
-          .filter((m) => dash.groups.list.raw.find(g => g.uuid === group.uuid)?.members?.includes(m.uuid ?? ""))
+          .filter((m) =>
+            dash.groups.list.raw.find((g) => g.uuid === group.uuid)?.members?.includes(m.uuid ?? "")
+          )
           .sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
-        : [...dash.group.members].sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
+      : [...dash.group.members].sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
   )
 
   let itemsPerPage = 10

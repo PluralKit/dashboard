@@ -13,7 +13,12 @@
 
 <div class="container mx-auto px-4">
   <div class="flex flex-row mb-4 justify-center">
-    <a class="btn btn-ghost w-fit" href={`/dash/${dash.group.group?.system}?tab=groups${$page.url.searchParams.get("public") ? "&public=true" : ""}`}>
+    <a
+      class="btn btn-ghost w-fit"
+      href={`/dash/${dash.group.group?.system}?tab=groups${
+        $page.url.searchParams.get("public") ? "&public=true" : ""
+      }`}
+    >
       <IconArrowLeft /> Back to system
     </a>
   </div>

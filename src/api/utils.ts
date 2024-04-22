@@ -66,9 +66,7 @@ export async function getDashInfo(api: ApiClient, sid: string, token?: string) {
   await new Promise((resolve) => setTimeout(resolve, parseInt(PUBLIC_API_COOLDOWN)))
   let groups: Group[] = []
   try {
-    groups =
-      (await api<Group[]>(`systems/${sid}/groups?with_members=true`, options)) ||
-      []
+    groups = (await api<Group[]>(`systems/${sid}/groups?with_members=true`, options)) || []
   } catch (err) {
     const e = err as ApiError
     if (e.type === ErrorType.RateLimit) ratelimited.groups = true
