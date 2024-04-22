@@ -18,3 +18,13 @@ export async function fetchList<T>(fetch: SvelteFetch, path: string, token?: str
     })) || []
   )
 }
+
+export function toggleSetting(dash: any, ...path: string[]) {
+  let previous = dash.settings
+  for (let i = 0; i < path.length - 1; i++) {
+    if (!previous[path[i]]) previous[path[i]] = {}
+    previous = previous[path[i]]
+  }
+  previous[path[path.length - 1]] = previous[path[path.length - 1]] === true ? false : true
+  console.log(previous[path[path.length - 1]])
+}

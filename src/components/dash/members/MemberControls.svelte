@@ -1,23 +1,13 @@
 <script lang="ts">
   import { dash } from "$lib/dash/dash.svelte"
-  import { FilterMode, createFilter, createFilterGroup } from "$lib/dash/filters.svelte"
   import { IconSettings, IconUsers } from "@tabler/icons-svelte"
   import FilterGroups from "../filters/FilterGroups.svelte"
   import AddFilterGroup from "../filters/AddFilterGroup.svelte"
   import Sorts from "../filters/Sorts.svelte"
   import AddSort from "../filters/AddSort.svelte"
+  import { toggleSetting } from "$lib/dash/utils"
 
   let mode: "simple" | "advanced" = $state("advanced")
-
-  function toggle(...path: string[]) {
-    let previous = dash.settings
-    for (let i = 0; i < path.length - 1; i++) {
-      if (!previous[path[i]]) previous[path[i]] = {}
-      previous = previous[path[i]]
-    }
-    previous[path[path.length - 1]] = previous[path[path.length - 1]] === true ? false : true
-    console.log(previous[path[path.length - 1]])
-  }
 </script>
 
 <div
@@ -36,21 +26,21 @@
   <div class="text-sm mt-2">
     <button
       class="text-secondary hover:text-primary cursor-pointer transition-all"
-      onclick={() => toggle("devMode")}
+      onclick={() => toggleSetting(dash, "devMode")}
     >
       Dev mode
     </button>
     |
     <button
       class="text-secondary hover:text-primary cursor-pointer transition-all"
-      onclick={() => toggle("display", "forceControlsAtTop")}
+      onclick={() => toggleSetting(dash, "display", "forceControlsAtTop")}
     >
       Controls at top
     </button>
     |
     <button
       class="text-secondary hover:text-primary cursor-pointer transition-all"
-      onclick={() => toggle("display", "fullColorBorder")}
+      onclick={() => toggleSetting(dash, "display", "fullColorBorder")}
     >
       Show colors
     </button>
