@@ -56,7 +56,7 @@
     </div>
   </button>
   <div
-    class={`px-2 lg:px-4 pb-4 ${forceOpen || open ? "" : "hidden"}`}
+    class={`px-2 lg:px-4 pb-4 rounded-b-lg  ${forceOpen || open ? "" : "hidden"}`}
     style={item.color && !dash.settings.display?.fullColorBorder
       ? `border-color: #${item.color}; border-left-width: 6px;`
       : ""}
