@@ -67,7 +67,7 @@ export async function getDashInfo(api: ApiClient, sid: string, token?: string) {
   let groups: Group[] = []
   try {
     groups =
-      (await api<Group[]>(`systems/${sid}/groups${token ? "?with_members=true" : ""}`, options)) ||
+      (await api<Group[]>(`systems/${sid}/groups?with_members=true`, options)) ||
       []
   } catch (err) {
     const e = err as ApiError
