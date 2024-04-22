@@ -132,7 +132,7 @@
       <a
         target="_blank"
         class="btn btn-primary btn-sm mt-2"
-        href={`/dash/${(item as Member).system}?tab=groups${$page.url.searchParams.get("public") ? "&public=true" : ""}`}
+        href={`/dash/${(item as Group).system}?tab=groups${$page.url.searchParams.get("public") ? "&public=true" : ""}`}
       >
         View system
       </a>
