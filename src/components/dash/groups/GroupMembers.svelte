@@ -36,7 +36,7 @@
 
 <div style={tab !== "groups" ? "display: none;" : ""}>
   <div class="flex flex-row gap-2 justify-between items-center mb-3">
-    <h4 class="text-2xl ml-3 font-medium">Group list</h4>
+    <h4 class="text-2xl ml-3 font-medium">Member list</h4>
     {#if dash.privacyMode !== PrivacyMode.PUBLIC}
       <button class="btn btn-sm btn-primary p-2">
         <IconEdit class="inline" size={18} /> Edit
@@ -45,7 +45,7 @@
   </div>
   <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
     <div class="rounded-xl bg-base-100 flex-1 p-6 py-4">
-      <h5 class="text-lg mb-2">Member list</h5>
+      <h5 class="text-lg mb-2">Member info</h5>
       <div class="flex flex-row justify-between gap-2 items-start">
         <p class="mb-3">{members.length} total members</p>
         <SimplePagination {itemsPerPage} rawList={members} bind:currentPage />
