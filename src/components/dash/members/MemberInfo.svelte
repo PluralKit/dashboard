@@ -54,7 +54,12 @@
             >
               <span class="flex flex-row justify-start gap-2"
                 ><b>Created:</b>
-                {moment(member.created).format("MMMM Do, YYYY")}
+                {moment(member.created).format("MMMM Do, YYYY")} (at {new Date(
+                  member.created
+                ).toLocaleTimeString([], {
+                  hour: "numeric",
+                  minute: "2-digit",
+                })})
               </span>
               <CopyField class="ml-auto" field="creation date" value={member.created} />
             </span>
