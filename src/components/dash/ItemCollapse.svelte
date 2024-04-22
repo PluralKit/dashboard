@@ -92,7 +92,7 @@
   <MemberInfo {member} {tab} />
   <MemberGroups {member} {tab} {asPage} />
   <div class="flex flex-row justify-end items-center">
-    {#if dash.member.member?.uuid !== item.uuid}
+    {#if dash.member.member?.uuid !== item.uuid || !asPage}
       <a
         target="_blank"
         class="btn btn-primary btn-sm mt-2"
