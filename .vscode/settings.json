@@ -4,5 +4,6 @@
   "editor.formatOnSave": false,
   "editor.formatOnType": true,
   "editor.tabSize": 2,
-  "editor.formatOnSaveMode": "modifications"
+  "editor.formatOnSaveMode": "modifications",
+  "svelte.plugin.svelte.format.enable": false
 }

@@ -122,10 +122,7 @@
     </div>
   {:else}
     <div class="avatar w-14">
-      {@render iconImage(
-        "/discord_icon.svg",
-        "Default avatar"
-      )}
+      {@render iconImage("/discord_icon.svg", "Default avatar")}
     </div>
   {/if}
 {/snippet}
