@@ -39,7 +39,7 @@
 </script>
 
 <div class="rounded-lg border-muted/50 border mb-3 p-4">
-  <p class="text-lg mb-2 mr-2">Add new filter</p>
+  <p class="text-lg mb-2 mr-2">Add new sort</p>
   <div class="gap-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
     <div class="flex flex-col">
       <label class="text-sm mb-1" for={`${type}-new-sort-field`}>Filter by</label>
