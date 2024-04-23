@@ -127,14 +127,14 @@
 
 {#snippet memberIcon(member: Member)}
   {#if member.webhook_avatar_url || member.avatar_url}
-    <div class="avatar w-14">
+    <div class="avatar w-14 h-14">
       {@render iconImage(
         member.webhook_avatar_url || member.avatar_url || "",
         `${member.name}'s avatar'`
       )}
     </div>
   {:else}
-    <div class="avatar w-14">
+    <div class="avatar w-14 h-14">
       {@render iconImage("/discord_icon.svg", "Default avatar")}
     </div>
   {/if}
@@ -142,18 +142,18 @@
 
 {#snippet groupIcon(group: Group)}
   {#if group.icon}
-    <div class="avatar w-14">
+    <div class="avatar w-14 h-14">
       {@render iconImage(group.icon || "", `${group.name}'s icon'`)}
     </div>
   {:else}
-    <div class="avatar w-14">
+    <div class="avatar w-14 h-14">
       {@render iconImage("/discord_icon.svg", "Default avatar")}
     </div>
   {/if}
 {/snippet}
 
 {#snippet iconImage(url: string, altText: string)}
-  <img class="item-icon rounded-full" src={url} alt={altText} />
+  <img class="item-icon object-cover rounded-full" src={url} alt={altText} />
 {/snippet}
 
 <style>
