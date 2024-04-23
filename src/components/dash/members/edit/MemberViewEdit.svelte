@@ -1,14 +1,10 @@
 <script lang="ts">
-  import apiClient, { type ApiError } from "$api"
   import type { Member } from "$api/types"
-  import { browser } from "$app/environment"
   import EditDescription from "$components/dash/edit/EditDescription.svelte"
   import EditField from "$components/dash/edit/EditField.svelte"
   import EditImage from "$components/dash/edit/EditImage.svelte"
-  import { dash } from "$lib/dash/dash.svelte"
   import { createViewEditState, submitMemberSave } from "$lib/dash/member/edit.svelte"
   import { IconDeviceFloppy, IconLoader, IconTrash, IconX } from "@tabler/icons-svelte"
-  import moment from "moment"
   import { fade } from "svelte/transition"
 
   let {
