@@ -1,6 +1,7 @@
 <script lang="ts">
   import { PUBLIC_REPOSITORY_URL } from "$env/static/public"
 
+  // @ts-ignore
   const version = __COMMIT_HASH__.slice(1, __COMMIT_HASH__.length - 1)
 </script>
 
