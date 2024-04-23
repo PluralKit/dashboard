@@ -152,7 +152,9 @@
               Description <CopyField field="description" value={member.description} />
             </div>
             <div class="rounded-xl bg-base-100">
-              <div class="discord-markdown p-6 py-4">
+              <div class="discord-markdown p-6 py-4"
+                style="word-wrap: anywhere;"
+              >
                 <AwaitHtml htmlPromise={parseMarkdown(member.description, { embed: true })} />
               </div>
               {#if member.banner && open}

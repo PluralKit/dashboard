@@ -105,7 +105,9 @@
             Description <CopyField field="description" value={group.description} />
           </div>
           <div class="rounded-xl bg-base-100">
-            <div class="discord-markdown p-6 py-4">
+            <div class="discord-markdown p-6 py-4"
+              style="word-wrap: anywhere;"
+            >
               <AwaitHtml htmlPromise={parseMarkdown(group.description, { embed: true })} />
             </div>
             {#if group.banner && open}
