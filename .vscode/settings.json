@@ -1,8 +1,5 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnPaste": false,
-  "editor.formatOnSave": false,
-  "editor.formatOnType": true,
   "editor.tabSize": 2,
   "editor.formatOnSaveMode": "modifications",
   "svelte.plugin.svelte.format.enable": false
