@@ -3,8 +3,10 @@
   import EditDescription from "$components/dash/edit/EditDescription.svelte"
   import EditField from "$components/dash/edit/EditField.svelte"
   import EditImage from "$components/dash/edit/EditImage.svelte"
-  import { createViewEditState, submitMemberSave } from "$lib/dash/member/edit.svelte"
-  import { IconDeviceFloppy, IconLoader, IconTrash, IconX } from "@tabler/icons-svelte"
+  import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
+  import { dash } from "$lib/dash/dash.svelte"
+  import { createViewEditState } from "$lib/dash/member/edit.svelte"
+  import { IconLoader, IconTrash, IconX } from "@tabler/icons-svelte"
   import { fade } from "svelte/transition"
 
   let {
@@ -33,8 +35,6 @@
   let err: string | undefined = $state("")
   let success = $state(false)
   let loading = $state(false)
-
-  
 </script>
 
 <div class="flex flex-row gap-2 justify-between items-center mb-3">
@@ -106,12 +106,7 @@
       bind:value={editedState.webhook_avatar_url}
       field="Proxy avatar"
     />
-    <EditImage
-      {member}
-      original={member.banner}
-      bind:value={editedState.banner}
-      field="Banner"
-    />
+    <EditImage {member} original={member.banner} bind:value={editedState.banner} field="Banner" />
   </div>
   <EditDescription
     item={member}
@@ -133,11 +128,16 @@
   <div class="join mt-2">
     {#if !loading}
       {#if Object.keys(edited).length > 0}
-        <button onclick={() => submitMemberSave(edited, `members/${member.uuid}`, {
-          asPage, loading, success, err
-        })} class="btn btn-sm btn-success join-item">
-          <IconDeviceFloppy /> Save
-        </button>
+        <SubmitEditButton
+          bind:loading
+          bind:err
+          bind:success
+          pageItem={dash.member.member || {}}
+          {asPage}
+          path={`members/${member.uuid}`}
+          list={dash.members}
+          {edited}
+        />
         <button
           onclick={() => (mode = "view")}
           class="btn btn-sm btn-neutral join-item"
