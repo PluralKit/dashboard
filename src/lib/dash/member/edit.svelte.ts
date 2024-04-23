@@ -1,7 +1,7 @@
 import apiClient, { type ApiError } from "$api"
 import type { Group, Member, System } from "$api/types"
 import moment from "moment"
-import { browser } from "process"
+import { browser } from  "$app/environment"
 import { dash } from "../dash.svelte"
 
 // TODO: move this to it's own file
