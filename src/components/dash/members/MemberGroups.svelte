@@ -7,6 +7,7 @@
   import SimplePagination from "../SimplePagination.svelte"
   import { copyToClipboard } from "$lib/dash/utils"
   import CopyField from "../CopyField.svelte"
+  import MemberLink from "./MemberLink.svelte"
 
   let {
     asPage = false,
@@ -87,5 +88,8 @@
         </p>
       </div>
     {/if}
+  </div>
+  <div class="flex flex-row justify-end items-center">
+    <MemberLink item={member} {asPage} />
   </div>
 </div>

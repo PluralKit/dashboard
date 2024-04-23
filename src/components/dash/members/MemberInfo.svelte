@@ -8,13 +8,16 @@
   import moment from "moment"
   import { copyToClipboard } from "$lib/dash/utils"
   import CopyField from "../CopyField.svelte"
+  import MemberLink from "./MemberLink.svelte"
 
   let {
     member,
     tab,
+    asPage,
   }: {
     member: Member
     tab: string
+    asPage: boolean
   } = $props()
 </script>
 
@@ -182,5 +185,8 @@
         </ul>
       </div>
     {/if}
+  </div>
+  <div class="flex flex-row justify-end items-center">
+    <MemberLink item={member} {asPage} />
   </div>
 </div>

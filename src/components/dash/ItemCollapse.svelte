@@ -95,28 +95,9 @@
 </div>
 
 {#snippet memberTabs(member: Member, tab: "view"|"info"|"groups")}
-  <MemberView {member} {tab} open={isOpen} />
-  <MemberInfo {member} {tab} />
+  <MemberView {member} {tab} open={isOpen} {asPage} />
+  <MemberInfo {member} {tab} {asPage} />
   <MemberGroups {member} {tab} {asPage} />
-  <div class="flex flex-row justify-end items-center">
-    {#if dash.member.member?.uuid !== item.uuid || !asPage}
-      <a
-        target="_blank"
-        class="btn btn-primary btn-sm mt-2"
-        href={`/dash/m/${item.id}${$page.url.searchParams.get("public") ? "?public=true" : ""}`}
-      >
-        View page
-      </a>
-    {:else}
-      <a
-        target="_blank"
-        class="btn btn-primary btn-sm mt-2"
-        href={`/dash/${(item as Member).system}?tab=members${$page.url.searchParams.get("public") ? "&public=true" : ""}`}
-      >
-        View system
-      </a>
-    {/if}
-  </div>
 {/snippet}
 
 {#snippet groupTabs(group: Group, tab: "view"|"info"|"groups")}
