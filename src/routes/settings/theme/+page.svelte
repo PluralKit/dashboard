@@ -13,11 +13,11 @@
   <form class="flex-1" method="post" action="?/theme" use:enhance>
     <label class="label" for="theme-select"><span class="label-text">Change theme</span></label>
     <div class="flex flex-col gap-5 mb-3">
-      <div class="flex-none">
+      <div class="flex flex-row items-center">
         <select
           name="theme"
           bind:value={data.theme}
-          class="form-control select select-bordered"
+          class="form-control select select-bordered py-2"
           id="theme-select"
         >
           <option value="light">Light</option>
