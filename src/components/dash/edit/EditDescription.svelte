@@ -23,7 +23,7 @@
   <div
     class="ml-4 px-4 pt-2 pb-1 rounded-t-xl bg-base-100 w-fit font-bold flex flex-row gap-3 items-center"
   >
-    <label for={`i-${item.uuid}-edit-description`} class="text-lg">Description</label>
+    <label for={`${item.uuid}-edit-description`} class="text-lg">Description</label>
     <button onclick={() => popupElement.showModal()} class="btn btn-primary btn-xs">Preview</button>
     <span title={original === value ? "" : "Edited"} class={original === value ? "hidden" : "text-info"} >
       <IconPencil size={26} />
@@ -31,7 +31,7 @@
   </div>
   <div class="rounded-xl bg-base-100 p-4">
     <textarea
-      id={`i-${item.uuid}-edit-description`}
+      id={`${item.uuid}-edit-description`}
       bind:value
       use:autoresize
       rows={5}

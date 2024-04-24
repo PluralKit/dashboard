@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Member } from "$api/types"
+  import EditColor from "$components/dash/edit/EditColor.svelte"
   import EditDescription from "$components/dash/edit/EditDescription.svelte"
   import EditField from "$components/dash/edit/EditField.svelte"
   import EditImage from "$components/dash/edit/EditImage.svelte"
@@ -67,9 +68,9 @@
   <div class="bg-base-100 flex-1 rounded-box p-4 gap-2 flex flex-col">
     <h5 class="text-lg">Names</h5>
     <hr />
-    <EditField {member} original={member.name} bind:value={editedState.name} field="Name" />
+    <EditField item={member} original={member.name} bind:value={editedState.name} field="Name" />
     <EditField
-      {member}
+      item={member}
       original={member.display_name}
       bind:value={editedState.display_name}
       field="Display name"
@@ -79,13 +80,13 @@
     <h5 class="text-lg">Information</h5>
     <hr />
     <EditField
-      {member}
+      item={member}
       original={member.pronouns}
       bind:value={editedState.pronouns}
       field="Pronouns"
     />
     <EditField
-      {member}
+      item={member}
       original={member.birthday}
       bind:value={editedState.birthday}
       field="Birthday"
@@ -95,18 +96,18 @@
     <h5 class="text-lg">Images</h5>
     <hr />
     <EditImage
-      {member}
+      item={member}
       original={member.avatar_url}
       bind:value={editedState.avatar_url}
       field="Avatar"
     />
     <EditImage
-      {member}
+      item={member}
       original={member.webhook_avatar_url}
       bind:value={editedState.webhook_avatar_url}
       field="Proxy avatar"
     />
-    <EditImage {member} original={member.banner} bind:value={editedState.banner} field="Banner" />
+    <EditImage item={member} original={member.banner} bind:value={editedState.banner} field="Banner" />
   </div>
   <EditDescription
     item={member}
