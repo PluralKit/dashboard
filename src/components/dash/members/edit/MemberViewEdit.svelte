@@ -33,7 +33,7 @@
     )
   )
 
-  let err: string | undefined = $state("")
+  let err: string[] = $state([])
   let success = $state(false)
   let loading = $state(false)
 </script>
@@ -91,6 +91,11 @@
       bind:value={editedState.birthday}
       field="Birthday"
     />
+    <EditColor
+      item={member}
+      original={member.color}
+      bind:value={editedState.color}
+    />
   </div>
   <div class="bg-base-100 w-full rounded-box p-4 gap-2 flex flex-col">
     <h5 class="text-lg">Images</h5>
@@ -115,10 +120,14 @@
     original={member.description}
   />
 </div>
-{#if err}
-  <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-error/20 mt-2">
-    {err}
-  </div>
+{#if err.length > 0}
+  {#each err as e}
+    {#if e}
+      <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-error/20 mt-2">
+        {e}
+      </div>
+    {/if}
+  {/each}
 {/if}
 {#if success}
   <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-success/20 mt-2">

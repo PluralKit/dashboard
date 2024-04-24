@@ -97,6 +97,23 @@
           </li>
         {/if}
       </ul>
+      {#if group.color}
+        <ul class="menu bg-base-100 flex-1 rounded-box text-base">
+          {#if group.color}
+            <li>
+              <span
+                class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
+              >
+                <span class="flex flex-row justify-start gap-2"
+                  ><b>Color:</b>
+                  #{group.color}
+                </span>
+                <CopyField class="ml-auto" field="color" value={group.color} />
+              </span>
+            </li>
+          {/if}
+        </ul>
+      {/if}
       {#if group.description}
         <div class="flex flex-col w-full">
           <div
@@ -105,9 +122,7 @@
             Description <CopyField field="description" value={group.description} />
           </div>
           <div class="rounded-xl bg-base-100">
-            <div class="discord-markdown p-6 py-4"
-              style="word-wrap: anywhere;"
-            >
+            <div class="discord-markdown p-6 py-4" style="word-wrap: anywhere;">
               <AwaitHtml htmlPromise={parseMarkdown(group.description, { embed: true })} />
             </div>
             {#if group.banner && open}

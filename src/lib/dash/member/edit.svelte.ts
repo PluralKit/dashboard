@@ -9,6 +9,7 @@ export const createViewEditState = (member: Member) => {
   let avatar_url = $state(member.avatar_url)
   let webhook_avatar_url = $state(member.webhook_avatar_url)
   let banner = $state(member.banner)
+  let color = $state(member.color)
 
   return {
     get name() {
@@ -59,5 +60,11 @@ export const createViewEditState = (member: Member) => {
     set banner(value: string | undefined) {
       banner = value
     },
+    get color() {
+      return color
+    },
+    set color(value: string|undefined) {
+      color = value
+    }
   }
 }

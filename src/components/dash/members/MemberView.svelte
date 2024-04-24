@@ -114,7 +114,7 @@
             </li>
           {/if}
         </ul>
-        {#if member.pronouns || member.birthday}
+        {#if member.pronouns || member.birthday || member.color}
           <ul class="menu bg-base-100 flex-1 rounded-box text-base">
             {#if member.pronouns}
               <li>
@@ -139,6 +139,19 @@
                     {getBirthday(member.birthday)}
                   </span>
                   <CopyField class="ml-auto" field="birthday" value={member.birthday} />
+                </span>
+              </li>
+            {/if}
+            {#if member.color}
+              <li>
+                <span
+                  class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
+                >
+                  <span class="flex flex-row justify-start gap-2"
+                    ><b>Color:</b>
+                    #{member.color}
+                  </span>
+                  <CopyField class="ml-auto" field="color" value={member.color} />
                 </span>
               </li>
             {/if}

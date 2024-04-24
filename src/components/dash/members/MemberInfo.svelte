@@ -47,8 +47,13 @@
       </ul>
     </div>
   {/if}
+  {#if !member.message_count && !member.created && (!member.proxy_tags || member.proxy_tags.length === 0) && !member.privacy}
+  <div class="bg-base-100 rounded-box p-4 gap-2">
+    <p>There is no additional information available for this member.</p>
+  </div>
+  {/if}
   <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
-    {#if member.message_count || member.created || member.color}
+    {#if member.message_count || member.created}
       <ul class="menu bg-base-100 flex-1 rounded-box text-base">
         {#if member.created}
           <li>
@@ -82,19 +87,6 @@
                 field="message count"
                 value={member.message_count?.toString()}
               />
-            </span>
-          </li>
-        {/if}
-        {#if member.color}
-          <li>
-            <span
-              class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
-            >
-              <span class="flex flex-row justify-start gap-2"
-                ><b>Color:</b>
-                #{member.color}
-              </span>
-              <CopyField class="ml-auto" field="color" value={member.color} />
             </span>
           </li>
         {/if}

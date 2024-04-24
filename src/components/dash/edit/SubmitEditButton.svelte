@@ -10,15 +10,15 @@
     asPage: boolean,
     loading: boolean,
     success: boolean,
-    err: string|undefined,
+    err: string[],
     edited: Member|Group|System
     path: string,
     list: DashList<Member|Group>,
     pageItem: Member|Group|System
   } = $props()
 
-  export async function submitMemberSave() {
-  err = ""
+  export async function submitEdit() {
+  err = []
 
   // first trim every field
   let body = Object.fromEntries(
@@ -40,10 +40,19 @@
 
     if (body.birthday.split("-").length !== 3 || !moment(body.birthday, "YYYY-MM-DD").isValid()) {
       // invalid format!
-      err = "Invalid birthday format (use YYYY-MM-DD instead)"
-      return
+      err.push("Invalid birthday format (use YYYY-MM-DD instead)")
     }
   }
+
+  if (body.color) {
+    body.color = body.color.replace("#", "")
+    const match = new RegExp(/^#?([a-f0-9]{6}|[a-f0-9]{3})$/i).test(body.color)
+    if (!match) {
+      err.push("Invalid color format")
+    }
+  }
+
+  if (err.length > 0) return
 
   const token = (browser && localStorage.getItem("pk-token")) || ""
   const api = apiClient(fetch)
@@ -71,7 +80,8 @@
     }
   } catch (e) {
     const error = e as ApiError
-    err = error.message
+    console.error(error.data)
+    err.push(error.message || "")
   }
 
   loading = false
@@ -81,6 +91,6 @@
 }
 </script>
 
-<button onclick={() => submitMemberSave()} class="btn btn-sm btn-success join-item">
+<button onclick={() => submitEdit()} class="btn btn-sm btn-success join-item">
   <IconDeviceFloppy /> Save
 </button>

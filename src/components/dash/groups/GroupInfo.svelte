@@ -42,7 +42,7 @@
     </div>
   {/if}
   <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
-    {#if group.created || group.color}
+    {#if group.created}
       <ul class="menu bg-base-100 flex-1 rounded-box text-base">
         {#if group.created}
           <li>
@@ -59,19 +59,6 @@
                 })})
               </span>
               <CopyField class="ml-auto" field="creation date" value={group.created} />
-            </span>
-          </li>
-        {/if}
-        {#if group.color}
-          <li>
-            <span
-              class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
-            >
-              <span class="flex flex-row justify-start gap-2"
-                ><b>Color:</b>
-                #{group.color}
-              </span>
-              <CopyField class="ml-auto" field="color" value={group.color} />
             </span>
           </li>
         {/if}
