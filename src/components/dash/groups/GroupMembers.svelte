@@ -39,7 +39,7 @@
 <div style={tab !== "groups" ? "display: none;" : ""}>
   <div class="flex flex-row gap-2 justify-between items-center mb-3">
     <h4 class="text-2xl ml-3 font-medium">Member list</h4>
-    {#if dash.privacyMode !== PrivacyMode.PUBLIC}
+    {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.group.privacyMode !== PrivacyMode.PUBLIC)}
       <button class="btn btn-sm btn-primary p-2">
         <IconEdit class="inline" size={18} /> Edit
       </button>

@@ -101,8 +101,8 @@
 {/snippet}
 
 {#snippet groupTabs(group: Group, tab: "view"|"info"|"groups")}
-  <GroupView {group} {tab} open={isOpen} />
-  <GroupInfo {group} {tab} />
+  <GroupView {group} {tab} open={isOpen} {asPage} />
+  <GroupInfo {group} {tab} {asPage} />
   <GroupMembers {group} {tab} {asPage} />
   <div class="flex flex-row justify-end items-center">
     {#if dash.group.group?.uuid !== item.uuid || !asPage}
