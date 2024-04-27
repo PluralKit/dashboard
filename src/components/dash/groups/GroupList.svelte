@@ -37,7 +37,7 @@
     <ItemCollapse item={group} type="group" />
   {/each}
   {#if dash.groups.list.processed.length === 0}
-    <div class="text-center mx-auto">No groups found.</div>
+    <div class="alert bg-info/20 flex flex-col text-center">No groups found.</div>
   {/if}
   <Pagination class="mx-auto" bind:list={dash.groups} />
 </div>

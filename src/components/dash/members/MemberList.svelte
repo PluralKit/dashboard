@@ -37,7 +37,7 @@
     <ItemCollapse item={member} type="member" />
   {/each}
   {#if dash.members.list.processed.length === 0}
-    <div class="text-center mx-auto">No members found.</div>
+    <div class="alert bg-info/20 flex flex-col text-center">No members found.</div>
   {/if}
   <Pagination class="mx-auto" bind:list={dash.members} />
 </div>
