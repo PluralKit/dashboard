@@ -13,7 +13,7 @@
   <form class="flex-1" method="post" action="?/theme" use:enhance>
     <label class="label" for="theme-select"><span class="label-text">Change theme</span></label>
     <div class="flex flex-col gap-5 mb-3">
-      <div class="flex flex-row items-center">
+      <div class="flex flex-row flex-wrap items-center">
         <select
           name="theme"
           bind:value={data.theme}
@@ -29,10 +29,10 @@
         </select>
         <input type="submit" class="btn btn-primary ml-2" value="Submit" />
         {#if form?.success}
-          <p class="text-success mb-3">{form?.success}</p>
+          <p class="text-success mb-3 mt-2 w-full">{form?.success}</p>
         {/if}
         {#if form?.error}
-          <p class="text-error mb-3">{form?.error}</p>
+          <p class="text-error mb-3 mt-2 w-full">{form?.error}</p>
         {/if}
       </div>
       <div class="flex-1 p-3 rounded-xl" data-theme={data.theme}>
