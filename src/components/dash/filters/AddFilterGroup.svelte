@@ -40,6 +40,18 @@
     return value
   })
 
+  function changeFilterValue() {
+    if (
+      filterFieldType(filterField) === "number" ||
+      filterMode === FilterMode.LOWERTHAN ||
+      filterMode === FilterMode.HIGHERTHAN
+    )
+      filterValue = 0
+    else if (!(filterMode === FilterMode.EMPTY || filterMode === FilterMode.NOTEMPTY)) {
+      filterValue = ""
+    }
+  }
+
   function addFilter() {
     const filter: Filter = createFilter(
       filterField,
@@ -110,6 +122,7 @@
         class="select select-sm select-bordered"
         bind:value={filterMode}
         disabled={!filterField}
+        onchange={() => changeFilterValue()}
       >
         {#if !filterField}
           <option value={null} disabled>Select a field first</option>

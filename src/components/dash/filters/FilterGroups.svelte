@@ -154,7 +154,9 @@
               <span class="text-sm"
                 ><b>{filter.fieldName}s</b> that {filterModeText(filter.mode, filter.valueType)
                   .verb}
-                {filter.value ? `"${filter.value}"` : "..."}
+                {filter.value !== null && filter.value !== ""
+                  ? `${filter.valueType === "string" ? `"${filter.value}"` : filter.value}`
+                  : "..."}
                 {filterModeText(filter.mode, filterFieldType(filter.field)).afterVerb}</span
               >
             </FilterHeader>
