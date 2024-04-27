@@ -10,6 +10,7 @@
     filterFieldText,
     filterFieldType,
     createFilterGroup,
+    groupArrayModes,
   } from "$lib/dash/filters.svelte"
   import { dash } from "$lib/dash/dash.svelte"
   import { IconPlus } from "@tabler/icons-svelte"
@@ -23,12 +24,6 @@
     type: "members" | "groups"
     filterGroups: FilterGroup[]
   } = $props()
-
-  let groupOptions = $derived(
-    dash.groups.list.raw.map((g) => {
-      return { value: g.uuid, text: `${g.name} (${g.id})`, extra: g.display_name }
-    }).sort((a,b) => a.text.localeCompare(b.text))
-  )
 
   let filterField = $state("")
   let filterMode: null | FilterMode = $state(null)
@@ -141,7 +136,16 @@
           <option value={null} disabled>Select a field first</option>
         {:else}
           <option value={null} disabled>Filter mode...</option>
-          {#if inputType !== "number" || filterField === "groups" || filterField === "members"}
+          {#if filterField === "group" || filterField === "member"}
+            <option value={FilterMode.INCLUDES}>include any</option>
+            <option value={FilterMode.EXCLUDES}>exclude any</option>
+            <option value={FilterMode.EXACT}>match all</option>
+            <option value={FilterMode.NOTEXACT}>don't match all</option>
+            <option value={FilterMode.EMPTY}>empty</option>
+            <option value={FilterMode.NOTEMPTY}>not empty</option>
+            <option value={FilterMode.HIGHERTHAN}>more than</option>
+            <option value={FilterMode.LOWERTHAN}>less than</option>
+          {:else if inputType !== "number"}
             <option value={FilterMode.INCLUDES}>include</option>
             <option value={FilterMode.EXCLUDES}>exclude</option>
             <option value={FilterMode.EXACT}>match</option>
@@ -165,10 +169,10 @@
       <label class="text-sm mb-1 block mt-3" for={`${type}-new-filter-field`}>Value</label>
     {/if}
     <div class="flex flex-row gap-3 flex-wrap">
-      {#if filterField === "group" && [FilterMode.INCLUDES, FilterMode.EXCLUDES, FilterMode.EXACT, FilterMode.NOTEXACT].includes(filterMode)}
+      {#if filterField === "group" && groupArrayModes.includes(filterMode)}
         <Svelecte
           class="svelecte-control w-full"
-          options={groupOptions}
+          options={dash.groups.list.options}
           multiple
           bind:value={filterValue}
           valueField="value"

@@ -112,6 +112,8 @@ export enum FilterMode {
   NOTEXACT = "no match",
 }
 
+export const groupArrayModes = [FilterMode.INCLUDES, FilterMode.EXCLUDES, FilterMode.EXACT, FilterMode.NOTEXACT]
+
 export function createFilterGroup(filter?: Filter[]): FilterGroup {
   let filters: Filter[] = $state(filter || [])
   let id: string = (Math.random() + 1).toString(36).slice(2, 5)
@@ -143,7 +145,7 @@ export function createFilter(
   newValue: FilterValueType
 ): Filter {
   const getValueType = (value: FilterValueType) => {
-    if (value?.toString() === "[object Array]") return "array"
+    if (Array.isArray(value)) return "array"
     if (value !== null) return typeof value
     return "null"
   }

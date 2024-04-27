@@ -21,6 +21,7 @@ export interface DashList<T> {
     raw: T[]
     processed: T[]
     paginated: T[]
+    options: SvelecteOption[]
   }
   filters: FilterGroup[]
   sorts: Sort[]
@@ -28,6 +29,12 @@ export interface DashList<T> {
   process: (groupList?: Group[]) => void
   paginate: () => void
   fetch: (token?: string) => Promise<void>
+}
+
+interface SvelecteOption {
+  value: string|undefined,
+  text: string,
+  extra: string|undefined
 }
 
 export let dash = createDash()
@@ -164,6 +171,12 @@ function createMemberListState() {
   let members: Member[] = $state([])
   let processedMembers: Member[] = $state(processList(members, filters, sorts))
   let paginatedMembers: Member[] = $state(paginateList(processedMembers, listSettings))
+  
+  let optionMembers: SvelecteOption[] = $derived(
+    members.map((g) => {
+      return { value: g.uuid, text: `${g.name} (${g.id})`, extra: g.display_name }
+    }).sort((a,b) => a.text.localeCompare(b.text))
+  )
 
   return {
     get members() {
@@ -171,6 +184,7 @@ function createMemberListState() {
         raw: members,
         processed: processedMembers,
         paginated: paginatedMembers,
+        options: optionMembers
       }
     },
     get filters() {
@@ -219,12 +233,19 @@ function createGroupListState() {
   let processedGroups: Group[] = $state(processList(groups, filters, sorts))
   let paginatedGroups: Group[] = $state(paginateList(processedGroups, listSettings))
 
+  let optionGroups: SvelecteOption[] = $derived(
+    groups.map((g) => {
+      return { value: g.uuid, text: `${g.name} (${g.id})`, extra: g.display_name }
+    }).sort((a,b) => a.text.localeCompare(b.text))
+  )
+
   return {
     get groups() {
       return {
         raw: groups,
         processed: processedGroups,
         paginated: paginatedGroups,
+        options: optionGroups
       }
     },
     get filters() {
