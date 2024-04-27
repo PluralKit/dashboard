@@ -74,6 +74,8 @@
       if (!asPage) {
         const toReplace = list.list.raw.find((m) => m.uuid === response?.uuid) || {}
         Object.assign(toReplace, response)
+        list.process()
+        list.paginate()
       } else {
         Object.assign(pageItem || {}, response)
       }
