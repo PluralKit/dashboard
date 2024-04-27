@@ -4,6 +4,7 @@ export interface FilterGroup {
   mode: "and" | "or"
   filters: Filter[]
   id: string
+  draggable: boolean
 }
 
 export type Filter = {
@@ -114,10 +115,11 @@ export enum FilterMode {
 
 export const groupArrayModes = [FilterMode.INCLUDES, FilterMode.EXCLUDES, FilterMode.EXACT, FilterMode.NOTEXACT]
 
-export function createFilterGroup(filter?: Filter[]): FilterGroup {
+export function createFilterGroup(filter?: Filter[], drag: boolean = true): FilterGroup {
   let filters: Filter[] = $state(filter || [])
   let id: string = (Math.random() + 1).toString(36).slice(2, 5)
   let mode: "and" | "or" = $state("and")
+  let draggable: boolean = drag
 
   return {
     get filters() {
@@ -135,6 +137,9 @@ export function createFilterGroup(filter?: Filter[]): FilterGroup {
     set mode(newMode: "and" | "or") {
       mode = newMode
     },
+    get draggable() {
+      return draggable
+    }
   }
 }
 
