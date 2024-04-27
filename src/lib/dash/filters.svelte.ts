@@ -232,7 +232,7 @@ function applyFilter<T>(list: T[], filter: Filter, groupList?: Group[]): T[] {
   }
 
   if (filter.field === "member") {
-    // TODO
+    return filterGroupsByMember(processedList, filter.mode, value)
   }
 
   switch (filter.mode) {
@@ -425,6 +425,68 @@ function filterMembersByGroup<T>(
           return false
         return true
       })
+      break
+  }
+  return list
+}
+
+function filterGroupsByMember<T>(
+  list: T[],
+  mode: FilterMode,
+  value: FilterValueType
+): T[] {
+  const members = value as string[]
+
+  switch (mode) {
+    case FilterMode.INCLUDES:
+      // include any group that has ANY of the members
+      list = list.filter((i) => {
+        if (members.length === 0) return true
+
+        for (const uuid of members) {
+          if ((i as Group).members?.includes(uuid)) return true
+        }
+        return false
+      })
+      break
+    case FilterMode.EXCLUDES:
+      // include any group that has NONE of the members
+      list = list.filter((i) => {
+        if (members.length === 0) return true
+
+        for (const uuid of members) {
+          if ((i as Group).members?.includes(uuid)) return false
+        }
+        return true
+      })
+      break
+    case FilterMode.EXACT:
+      // include any group that has ALL of the members
+      list = list.filter((i) => {
+        if (members.length === 0) return true
+
+        return members.every(m => (i as Group).members?.includes(m))
+      })
+      break
+    case FilterMode.NOTEXACT:
+      // include any group that does not have ALL of the members
+      list = list.filter((i) => {
+        if (members.length === 0) return true
+
+        return !members.every(m => (i as Group).members?.includes(m))
+      })
+      break
+    case FilterMode.HIGHERTHAN:
+      list = list.filter((i) => ((i as Group).members?.length ?? 0) > (value as number))
+      break
+    case FilterMode.LOWERTHAN:
+      list = list.filter((i) => ((i as Group).members?.length ?? 0) < (value as number))
+      break
+    case FilterMode.EMPTY:
+      list = list.filter((i) => ((i as Group).members?.length ?? 0) === 0)
+      break
+    case FilterMode.NOTEMPTY:
+      list = list.filter((i) => ((i as Group).members?.length ?? 0) > 0)
       break
   }
   return list

@@ -178,6 +178,15 @@
           valueField="value"
           labelField="text"
         />
+      {:else if filterField === "member" && groupArrayModes.includes(filterMode)}
+        <Svelecte
+          class="svelecte-control w-full"
+          options={dash.members.list.options}
+          multiple
+          bind:value={filterValue}
+          valueField="value"
+          labelField="text"
+        />
       {:else if inputType !== "null"}
         <input
           id={`${type}-new-filter-field`}
