@@ -34,7 +34,7 @@
     "prettier": "^3.0.0",
     "prettier-plugin-svelte": "^3.2.3",
     "sass": "^1.74.1",
-    "svelecte": "4.0.0-alpha.13",
+    "svelecte": "github:Draconizations/svelecte#3c2869d0c0ed5b2f5d6e7abf7d49ad9e40e07428",
     "svelte": "5.0.0-next.115",
     "svelte-check": "^3.6.0",
     "svelte-dnd-action": "^0.9.43",

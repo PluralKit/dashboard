@@ -77,8 +77,8 @@ devDependencies:
     specifier: ^1.74.1
     version: 1.74.1
   svelecte:
-    specifier: 4.0.0-alpha.13
-    version: 4.0.0-alpha.13(svelte@5.0.0-next.115)
+    specifier: github:Draconizations/svelecte#3c2869d0c0ed5b2f5d6e7abf7d49ad9e40e07428
+    version: github.com/Draconizations/svelecte/3c2869d0c0ed5b2f5d6e7abf7d49ad9e40e07428(svelte@5.0.0-next.115)
   svelte:
     specifier: 5.0.0-next.115
     version: 5.0.0-next.115
@@ -2407,15 +2407,6 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /svelecte@4.0.0-alpha.13(svelte@5.0.0-next.115):
-    resolution: {integrity: sha512-YsH9E3QLKGA1/klTqLBePCDaTqxIPjRy+W0ssy9tJmqtHpO5LgJlkB3Kc34rgOKFNM8MPpKOpWXBzIHuo5Io1Q==}
-    peerDependencies:
-      svelte: ^3.43.0 || ^4.0.0
-    dependencies:
-      svelte: 5.0.0-next.115
-      svelte-tiny-virtual-list: 2.1.0
-    dev: true
-
   /svelte-check@3.6.0(postcss@8.4.31)(sass@1.74.1)(svelte@5.0.0-next.115):
     resolution: {integrity: sha512-8VfqhfuRJ1sKW+o8isH2kPi0RhjXH1nNsIbCFGyoUHG+ZxVxHYRKcb+S8eaL/1tyj3VGvWYx3Y5+oCUsJgnzcw==}
     hasBin: true
@@ -2779,6 +2770,18 @@ packages:
 
   /zimmerframe@1.1.2:
     resolution: {integrity: sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w==}
+    dev: true
+
+  github.com/Draconizations/svelecte/3c2869d0c0ed5b2f5d6e7abf7d49ad9e40e07428(svelte@5.0.0-next.115):
+    resolution: {tarball: https://codeload.github.com/Draconizations/svelecte/tar.gz/3c2869d0c0ed5b2f5d6e7abf7d49ad9e40e07428}
+    id: github.com/Draconizations/svelecte/3c2869d0c0ed5b2f5d6e7abf7d49ad9e40e07428
+    name: svelecte
+    version: 4.1.0
+    peerDependencies:
+      svelte: ^3.43.0 || ^4.0.0
+    dependencies:
+      svelte: 5.0.0-next.115
+      svelte-tiny-virtual-list: 2.1.0
     dev: true
 
   github.com/draconizations/discord-markdown/1f74a7094777d5bdfd123c0aac59d8b10db89b30:
