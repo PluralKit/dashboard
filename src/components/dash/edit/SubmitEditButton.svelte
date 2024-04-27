@@ -2,7 +2,7 @@
   import apiClient, { type ApiError } from "$api"
   import type { Group, Member, System } from "$api/types"
   import { browser } from "$app/environment"
-  import type { DashList } from "$lib/dash/dash.svelte"
+  import { dash, type DashList } from "$lib/dash/dash.svelte"
   import { IconDeviceFloppy } from "@tabler/icons-svelte"
   import moment from "moment"
 
@@ -74,7 +74,7 @@
       if (!asPage) {
         const toReplace = list.list.raw.find((m) => m.uuid === response?.uuid) || {}
         Object.assign(toReplace, response)
-        list.process()
+        list.process(dash.groups.list.raw)
         list.paginate()
       } else {
         Object.assign(pageItem || {}, response)

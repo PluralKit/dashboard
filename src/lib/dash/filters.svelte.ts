@@ -1,3 +1,5 @@
+import type { Group, Member } from "$api/types"
+
 export interface FilterGroup {
   mode: "and" | "or"
   filters: Filter[]
@@ -5,13 +7,15 @@ export interface FilterGroup {
 }
 
 export type Filter = {
-  value: string | number | null
+  value: FilterValueType
   mode: FilterMode
   field: string
   fieldName: string
   id: string
   valueType: string
 }
+
+export type FilterValueType = string | number | null | string[]
 
 export type FilterModeText = {
   mode: FilterMode
@@ -136,10 +140,16 @@ export function createFilter(
   newField: string,
   newName: string,
   newMode: FilterMode,
-  newValue: string | number | null
+  newValue: FilterValueType
 ): Filter {
-  let value: string | number | null = $state(newValue)
-  let valueType: string = value !== null ? typeof value : "null"
+  const getValueType = (value: FilterValueType) => {
+    if (value?.toString() === "[object Array]") return "array"
+    if (value !== null) return typeof value
+    return "null"
+  }
+
+  let value: FilterValueType = $state(newValue)
+  let valueType: string = getValueType(newValue)
   let mode: FilterMode = $state(newMode)
   let field: string = $state(newField)
   let fieldName: string = $state(newName)
@@ -155,8 +165,8 @@ export function createFilter(
     get valueType() {
       return valueType
     },
-    set value(newValue: string | number | null) {
-      valueType = newValue !== null ? typeof newValue : "null"
+    set value(newValue: FilterValueType) {
+      valueType = getValueType(newValue)
       value = newValue
     },
     get mode() {
@@ -180,32 +190,48 @@ export function createFilter(
   }
 }
 
-export function filterList<T>(list: T[], groups: FilterGroup[]): T[] {
+export function filterList<T>(list: T[], groups: FilterGroup[], groupList?: Group[]): T[] {
   let processedList: T[] = [...list]
   for (const group of groups) {
     if (group.filters.length > 1 && group.mode === "and") {
+      // AND MODE - we need to only include items that match ALL criteria
       for (const filter of group.filters) {
-        processedList = applyFilter(processedList, filter)
+        processedList = applyFilter(processedList, filter, groupList)
       }
     } else if (group.filters.length > 1 && group.mode === "or") {
-      let includeList: T[] = []
+      // OR MODE - we need to include any items that matches ONE of the criteria
+      let includeList: T[] = [] // all items to include
       for (const filter of group.filters) {
-        let nextFilter = applyFilter(processedList, filter)
+        // for each filter, get all items that are included in that filter
+        let nextFilter = applyFilter(processedList, filter, groupList)
+        // then add those items to the list to include
+        // so all of them are included
         includeList = [...new Set([...includeList, ...nextFilter])]
       }
       processedList = processedList.filter((i) => includeList.includes(i))
     } else if (group.filters.length > 0) {
-      processedList = applyFilter(processedList, group.filters[0])
+      // item is alone in the list. technically the same as AND
+      processedList = applyFilter(processedList, group.filters[0], groupList)
     }
   }
 
   return processedList
 }
 
-function applyFilter<T>(list: T[], filter: Filter): T[] {
+function applyFilter<T>(list: T[], filter: Filter, groupList?: Group[]): T[] {
   let processedList: T[] = [...list]
   const field = filter.field as keyof T
   const value = filter.value
+
+  // first handle filtering by groups and members since they're rather... special
+  if (filter.field === "group" && groupList) {
+    // filtering members by groups
+    return filterMembersByGroup(processedList, filter.mode, value, groupList)
+  }
+
+  if (filter.field === "member") {
+    // TODO
+  }
 
   switch (filter.mode) {
     // INCLUDE MODE
@@ -289,4 +315,115 @@ function applyFilter<T>(list: T[], filter: Filter): T[] {
       break
   }
   return processedList
+}
+
+function filterMembersByGroup<T>(
+  list: T[],
+  mode: FilterMode,
+  value: FilterValueType,
+  groupList: Group[]
+): T[] {
+  const groups = value as string[]
+
+  switch (mode) {
+    case FilterMode.INCLUDES:
+      // include any member that is in ANY of the groups
+      list = list.filter((i) => {
+        if (groups.length === 0) return true
+
+        for (const uuid of groups) {
+          // get the corresponding group of each group uuid included
+          const group = groupList.find((g) => g.uuid === uuid)
+          if (group && group.members?.includes((i as Member).uuid ?? "")) return true
+        }
+        // none of the groups had this member, exclude them
+        return false
+      })
+      break
+    case FilterMode.EXCLUDES:
+      // include any member that is in NONE of the groups
+      list = list.filter((i) => {
+        if (groups.length === 0) return true
+
+        for (const uuid of groups) {
+          const group = groupList.find((g) => g.uuid === uuid)
+          if (group && group.members?.includes((i as Member).uuid ?? "")) return false
+        }
+        return true
+      })
+      break
+    case FilterMode.EXACT:
+      // include any member that is in ALL of the groups
+      list = list.filter((i) => {
+        if (groups.length === 0) return true
+
+        if (
+          groups.every(
+            (uuid) =>
+              groupList.find((g) => g.uuid === uuid)?.members?.includes((i as Member).uuid ?? "")
+          )
+        )
+          return true
+        return false
+      })
+      break
+    case FilterMode.NOTEXACT:
+      // include any member that is NOT in ALL of the groups
+      list = list.filter((i) => {
+        if (groups.length === 0) return true
+
+        if (
+          groups.every(
+            (uuid) =>
+              groupList.find((g) => g.uuid === uuid)?.members?.includes((i as Member).uuid ?? "")
+          )
+        )
+          return false
+        return true
+      })
+      break
+    case FilterMode.HIGHERTHAN:
+      // include any member that is in MORE groups than...
+      list = list.filter((i) => {
+        if (
+          groupList.filter((g) => g.members?.includes((i as Member).uuid || "")).length >
+          (value as number)
+        )
+          return true
+        return false
+      })
+      break
+    case FilterMode.LOWERTHAN:
+      // include any member that is in MORE groups than...
+      list = list.filter((i) => {
+        if (
+          groupList.filter((g) => g.members?.includes((i as Member).uuid || "")).length <
+          (value as number)
+        )
+          return true
+        return false
+      })
+      break
+    case FilterMode.NOTEMPTY:
+      // include any member a group
+      list = list.filter((i) => {
+        if (
+          groupList.some((g) => g.members?.includes((i as Member).uuid || ""))
+        )
+          return true
+        return false
+      })
+      break
+    case FilterMode.EMPTY:
+      // include any member without a group
+      list = list.filter((i) => {
+        if (
+          groupList.some((g) => g.members?.includes((i as Member).uuid || ""))
+        )
+          return false
+        return true
+      })
+      break
+  }
+  return list
 }

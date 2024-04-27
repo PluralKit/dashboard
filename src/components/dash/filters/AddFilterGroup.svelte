@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
   import { type DashList } from "$lib/dash/dash.svelte"
+  import Svelecte from "svelecte"
   import {
     FilterMode,
     type Filter,
@@ -10,6 +11,7 @@
     filterFieldType,
     createFilterGroup,
   } from "$lib/dash/filters.svelte"
+  import { dash } from "$lib/dash/dash.svelte"
   import { IconPlus } from "@tabler/icons-svelte"
 
   let {
@@ -21,6 +23,12 @@
     type: "members" | "groups"
     filterGroups: FilterGroup[]
   } = $props()
+
+  let groupOptions = $derived(
+    dash.groups.list.raw.map((g) => {
+      return { value: g.uuid, text: `${g.name} (${g.id})`, extra: g.display_name }
+    }).sort((a,b) => a.text.localeCompare(b.text))
+  )
 
   let filterField = $state("")
   let filterMode: null | FilterMode = $state(null)
@@ -75,7 +83,7 @@
       else existingGroup.filters = [...existingGroup.filters, filter]
     }
 
-    list.process()
+    list.process(dash.groups.list.raw)
     list.paginate()
 
     filterField = ""
@@ -112,6 +120,11 @@
           <option value="birthday">birthday</option>
           <option value="message_count">message count</option>
         {/if}
+        {#if type === "members"}
+          <option value="group">groups</option>
+        {:else if type === "groups"}
+          <option value="member">members</option>
+        {/if}
         <option value="created">created</option>
       </select>
     </div>
@@ -128,7 +141,7 @@
           <option value={null} disabled>Select a field first</option>
         {:else}
           <option value={null} disabled>Filter mode...</option>
-          {#if inputType !== "number"}
+          {#if inputType !== "number" || filterField === "groups" || filterField === "members"}
             <option value={FilterMode.INCLUDES}>include</option>
             <option value={FilterMode.EXCLUDES}>exclude</option>
             <option value={FilterMode.EXACT}>match</option>
@@ -151,8 +164,17 @@
     {#if inputType !== "null"}
       <label class="text-sm mb-1 block mt-3" for={`${type}-new-filter-field`}>Value</label>
     {/if}
-    <div class="flex flex-row gap-3">
-      {#if inputType !== "null"}
+    <div class="flex flex-row gap-3 flex-wrap">
+      {#if filterField === "group" && [FilterMode.INCLUDES, FilterMode.EXCLUDES, FilterMode.EXACT, FilterMode.NOTEXACT].includes(filterMode)}
+        <Svelecte
+          class="svelecte-control w-full"
+          options={groupOptions}
+          multiple
+          bind:value={filterValue}
+          valueField="value"
+          labelField="text"
+        />
+      {:else if inputType !== "null"}
         <input
           id={`${type}-new-filter-field`}
           bind:value={filterValue}

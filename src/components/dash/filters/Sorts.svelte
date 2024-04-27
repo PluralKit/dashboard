@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type DashList } from "$lib/dash/dash.svelte"
+  import { dash, type DashList } from "$lib/dash/dash.svelte"
   import type { DndEvent } from "svelte-dnd-action"
   import { dndzone } from "svelte-dnd-action"
   import { IconTrash } from "@tabler/icons-svelte"
@@ -28,14 +28,14 @@
   function handleFinal(event: CustomEvent<DndEvent<Sort>>) {
     handleConsider(event)
 
-    list.process()
+    list.process(dash.groups.list.raw)
     list.paginate()
   }
 
   function removeSort(id: string) {
     list.sorts = list.sorts.filter((s) => s.id !== id)
 
-    list.process()
+    list.process(dash.groups.list.raw)
     list.paginate()
   }
 
@@ -43,7 +43,7 @@
     const sort = list.sorts.findIndex((s) => s.id === id)
     list.sorts[sort].order = order
 
-    list.process()
+    list.process(dash.groups.list.raw)
     list.paginate()
   }
 </script>

@@ -25,7 +25,7 @@ export interface DashList<T> {
   filters: FilterGroup[]
   sorts: Sort[]
   settings: ListSettings
-  process: () => void
+  process: (groupList?: Group[]) => void
   paginate: () => void
   fetch: (token?: string) => Promise<void>
 }
@@ -188,8 +188,8 @@ function createMemberListState() {
     get listSettings() {
       return listSettings
     },
-    processList: function () {
-      processedMembers = processList(members, filters, sorts)
+    processList: function (groupList?: Group[]) {
+      processedMembers = processList(members, filters, sorts, groupList)
     },
     paginateList: function () {
       paginatedMembers = paginateList(processedMembers, listSettings)
@@ -242,8 +242,8 @@ function createGroupListState() {
     get listSettings() {
       return listSettings
     },
-    processList: function () {
-      processedGroups = processList(groups, filters, sorts)
+    processList: function (groupList?: Group[]) {
+      processedGroups = processList(groups, filters, sorts, groupList)
     },
     paginateList: function () {
       paginatedGroups = paginateList(processedGroups, listSettings)
@@ -315,7 +315,7 @@ function createGroupState() {
   }
 }
 
-function processList<T>(raw: T[], filters: FilterGroup[], sorts: Sort[]) {
-  let processed = filterList(raw, filters)
+function processList<T>(raw: T[], filters: FilterGroup[], sorts: Sort[], groupList?: Group[]) {
+  let processed = filterList(raw, filters, groupList)
   return sortList(processed, sorts)
 }

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type DashList } from "$lib/dash/dash.svelte"
+  import { dash, type DashList } from "$lib/dash/dash.svelte"
   import {
     type Filter,
     type FilterGroup,
@@ -30,7 +30,7 @@
     if (number && !isNaN(parseInt(value))) value = parseInt(value)
 
     list.filters[groupIndex].filters[filterIndex].value = value
-    list.process()
+    list.process(dash.groups.list.raw)
     list.paginate()
   }
 
@@ -49,7 +49,7 @@
   function handleFinalFilter(event: CustomEvent<DndEvent<Filter>>, gid: string) {
     handleConsiderFilter(event, gid)
 
-    list.process()
+    list.process(dash.groups.list.raw)
     list.paginate()
   }
 
@@ -67,7 +67,7 @@
   function handleFinalGroup(event: CustomEvent<DndEvent<FilterGroup>>) {
     handleConsiderGroup(event)
 
-    list.process()
+    list.process(dash.groups.list.raw)
     list.paginate()
   }
 
@@ -79,14 +79,14 @@
 
     list.filters = newGroups
 
-    list.process()
+    list.process(dash.groups.list.raw)
     list.paginate()
   }
 
   function removeGroup(gid: string) {
     list.filters = list.filters.filter((g) => g.id !== gid)
 
-    list.process()
+    list.process(dash.groups.list.raw)
     list.paginate()
   }
 
@@ -94,7 +94,7 @@
     const group = list.filters.findIndex((g) => g.id === gid)
     list.filters[group].mode = mode
 
-    list.process()
+    list.process(dash.groups.list.raw)
     list.paginate()
   }
 </script>

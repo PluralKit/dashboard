@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
-  import type { DashList } from "$lib/dash/dash.svelte"
+  import { dash, type DashList } from "$lib/dash/dash.svelte"
   import { filterFieldText, filterFieldType } from "$lib/dash/filters.svelte"
   import { createSort, SortMode, type Sort } from "$lib/dash/sorts.svelte"
   import { IconPlus } from "@tabler/icons-svelte"
@@ -33,7 +33,7 @@
     sortMode = null
     sortOrder = 1
 
-    list.process()
+    list.process(dash.groups.list.raw)
     list.paginate()
   }
 </script>
