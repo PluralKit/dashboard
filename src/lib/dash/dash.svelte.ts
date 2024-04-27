@@ -190,7 +190,6 @@ function createMemberListState() {
     },
     processList: function () {
       processedMembers = processList(members, filters, sorts)
-      listSettings.currentPage = 1
     },
     paginateList: function () {
       paginatedMembers = paginateList(processedMembers, listSettings)
@@ -245,7 +244,6 @@ function createGroupListState() {
     },
     processList: function () {
       processedGroups = processList(groups, filters, sorts)
-      listSettings.currentPage = 1
     },
     paginateList: function () {
       paginatedGroups = paginateList(processedGroups, listSettings)
