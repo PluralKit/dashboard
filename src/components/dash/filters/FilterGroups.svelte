@@ -169,7 +169,7 @@
               </FilterHeader>
               {#if groupArrayModes.includes(filter.mode)}
                 <Svelecte
-                  class="svelecte-control w-full"
+                  class="svelecte-control-pk w-full"
                   options={dash.groups.list.options}
                   multiple
                   valueField="value"
@@ -210,7 +210,7 @@
               </FilterHeader>
               {#if groupArrayModes.includes(filter.mode)}
                 <Svelecte
-                  class="svelecte-control w-full"
+                  class="svelecte-control-pk w-full"
                   options={dash.members.list.options}
                   multiple
                   valueField="value"

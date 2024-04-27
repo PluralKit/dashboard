@@ -73,4 +73,44 @@
   .discord-markdown a {
     @apply link-primary;
   }
+
+  .svelecte-control-pk .has-multiSelection .sv-item {
+    @apply rounded-md bg-base-200 flex flex-row border border-muted/50 p-1 px-2
+  }
+
+  .svelecte-control-pk {
+    @apply input h-fit input-bordered p-1
+  }
+}
+
+.sv-content {
+  gap: 0.25rem;
+  flex-direction: row;
+}
+
+.sv-dropdown {
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity))) !important;
+}
+
+.sv-dropdown-scroll {
+  max-height: 320px !important;
+  padding: 1rem !important;
+}
+
+.sv-dd-item:not(:last-child), .sv-dd-item-active:not(:last-child) {
+  border-bottom: 1px solid oklch(var(--muted) / 0.5);
+  padding: 0.25rem 0;
+}
+
+.sv-item {
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+
+.sv-dd-item-active > .sv-item {
+  background-color: var(--fallback-b3,oklch(var(--b2)/var(--tw-bg-opacity))) !important;
+}
+
+.sv-item-btn {
+  fill: var(--fallback-bc,oklch(var(--bc)/1)) !important;
 }

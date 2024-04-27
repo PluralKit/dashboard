@@ -171,7 +171,7 @@
     <div class="flex flex-row gap-3 flex-wrap">
       {#if filterField === "group" && groupArrayModes.includes(filterMode)}
         <Svelecte
-          class="svelecte-control w-full"
+          class="svelecte-control-pk w-full"
           options={dash.groups.list.options}
           multiple
           bind:value={filterValue}
@@ -180,7 +180,7 @@
         />
       {:else if filterField === "member" && groupArrayModes.includes(filterMode)}
         <Svelecte
-          class="svelecte-control w-full"
+          class="svelecte-control-pk w-full"
           options={dash.members.list.options}
           multiple
           bind:value={filterValue}
