@@ -1,4 +1,5 @@
 import type { Group, Member } from "$api/types"
+import { randomId } from "./ids"
 
 export interface FilterGroup {
   mode: "and" | "or"
@@ -117,7 +118,7 @@ export const groupArrayModes = [FilterMode.INCLUDES, FilterMode.EXCLUDES, Filter
 
 export function createFilterGroup(filter?: Filter[], drag: boolean = true): FilterGroup {
   let filters: Filter[] = $state(filter || [])
-  let id: string = (Math.random() + 1).toString(36).slice(2, 5)
+  let id: string = randomId()
   let mode: "and" | "or" = $state("and")
   let draggable: boolean = drag
 

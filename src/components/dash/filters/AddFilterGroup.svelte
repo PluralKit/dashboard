@@ -71,9 +71,9 @@
 
     // we want to add the filter to the last empty filter group
     // unless it's a non-draggable group
-    let group = createFilterGroup([filter], draggable)
+    let group = createFilterGroup([filter])
     if (filterGroups.length === 0) filterGroups = [...filterGroups, group]
-    else if (draggable) {
+    else {
       let existingGroup: FilterGroup | null = null
       for (let i = filterGroups.length - 1; i >= 0; i--) {
         if (filterGroups[i].filters.length === 0) {
@@ -82,16 +82,6 @@
         }
       }
       if (!existingGroup) filterGroups = [...filterGroups, group]
-      else existingGroup.filters = [...existingGroup.filters, filter]
-    } else {
-      let existingGroup: FilterGroup | null = null
-      for (let i = filterGroups.length - 1; i >= 0; i--) {
-        if (!filterGroups[i].draggable) {
-          existingGroup = filterGroups[i]
-          break
-        }
-      }
-      if (!existingGroup) filterGroups = [group, ...filterGroups]
       else existingGroup.filters = [...existingGroup.filters, filter]
     }
 

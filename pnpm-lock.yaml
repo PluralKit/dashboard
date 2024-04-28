@@ -77,8 +77,8 @@ devDependencies:
     specifier: ^1.74.1
     version: 1.74.1
   svelecte:
-    specifier: github:Draconizations/svelecte#3c2869d0c0ed5b2f5d6e7abf7d49ad9e40e07428
-    version: github.com/Draconizations/svelecte/3c2869d0c0ed5b2f5d6e7abf7d49ad9e40e07428(svelte@5.0.0-next.115)
+    specifier: github:Draconizations/svelecte#235ff9415c42ac86d98c8008ec17638a2a6f62b5
+    version: github.com/Draconizations/svelecte/235ff9415c42ac86d98c8008ec17638a2a6f62b5(svelte@5.0.0-next.115)
   svelte:
     specifier: 5.0.0-next.115
     version: 5.0.0-next.115
@@ -2772,9 +2772,9 @@ packages:
     resolution: {integrity: sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w==}
     dev: true
 
-  github.com/Draconizations/svelecte/3c2869d0c0ed5b2f5d6e7abf7d49ad9e40e07428(svelte@5.0.0-next.115):
-    resolution: {tarball: https://codeload.github.com/Draconizations/svelecte/tar.gz/3c2869d0c0ed5b2f5d6e7abf7d49ad9e40e07428}
-    id: github.com/Draconizations/svelecte/3c2869d0c0ed5b2f5d6e7abf7d49ad9e40e07428
+  github.com/Draconizations/svelecte/235ff9415c42ac86d98c8008ec17638a2a6f62b5(svelte@5.0.0-next.115):
+    resolution: {tarball: https://codeload.github.com/Draconizations/svelecte/tar.gz/235ff9415c42ac86d98c8008ec17638a2a6f62b5}
+    id: github.com/Draconizations/svelecte/235ff9415c42ac86d98c8008ec17638a2a6f62b5
     name: svelecte
     version: 4.1.0
     peerDependencies:

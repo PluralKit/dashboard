@@ -1,9 +1,9 @@
 <script lang="ts">
   import { dash } from "$lib/dash/dash.svelte"
   import { IconSettings, IconUsers } from "@tabler/icons-svelte"
-  import FilterGroups from "../filters/FilterGroups.svelte"
+  import FilterGroups from "../filters/StaticFilterGroups.svelte"
   import AddFilterGroup from "../filters/AddFilterGroup.svelte"
-  import Sorts from "../filters/Sorts.svelte"
+  import Sorts from "../filters/StaticSorts.svelte"
   import AddSort from "../filters/AddSort.svelte"
   import { toggleSetting } from "$lib/dash/utils"
 
@@ -63,7 +63,7 @@
         <h3 class="text-xl">Sort list</h3>
         <hr class="my-2" />
         <AddSort bind:sorts={dash.groups.sorts} list={dash.groups} type="groups" />
-        <Sorts sorts={dash.groups.sorts} list={dash.groups} />
+        <Sorts list={dash.groups} />
       </div>
     </div>
   {/if}
