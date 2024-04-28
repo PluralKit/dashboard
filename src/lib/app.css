@@ -127,7 +127,7 @@
   position: relative;
 }
 
-.sv-item--wrap.in-dropdown::after {
+.sv-item--wrap.in-dropdown:not(:last-child)::after {
   content: "";
   position: absolute;
   bottom: -0.375rem;
