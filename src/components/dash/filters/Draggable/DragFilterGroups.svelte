@@ -10,7 +10,7 @@
   } from "$lib/dash/filters.svelte"
   import type { DndEvent } from "svelte-dnd-action"
   import { dndzone } from "svelte-dnd-action"
-  import FilterHeader from "./FilterHeader.svelte"
+  import FilterHeader from "./DragFilterHeader.svelte"
   import { IconHelpCircle, IconTrash } from "@tabler/icons-svelte"
   import type { Group, Member } from "$api/types"
   import Svelecte from "svelecte"
