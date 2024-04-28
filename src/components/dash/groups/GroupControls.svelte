@@ -12,7 +12,7 @@
 
 <div
   class={`box bg-base-100 h-min ${
-    dash.settings.display?.forceControlsAtTop === true ? "" : "lg:w-1/3"
+    dash.settings.display?.forceControlsAtTop === true ? "" : "xl:w-1/3"
   }`}
 >
   <div class="flex flex-row justify-between items-center">
@@ -49,8 +49,8 @@
   <p class="my-4">Some options will be moved at some point.</p>
   {#if mode === "advanced"}
     <div
-      class={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 ${
-        dash.settings.display?.forceControlsAtTop === true ? "xl:grid-cols-2" : ""
+      class={`grid grid-cols-1 md:grid-cols-2 gap-4 ${
+        dash.settings.display?.forceControlsAtTop === true ? "xl:grid-cols-2" : "xl:grid-cols-1"
       }`}
     >
       <div>
