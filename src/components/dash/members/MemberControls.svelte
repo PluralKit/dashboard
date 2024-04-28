@@ -1,9 +1,9 @@
 <script lang="ts">
   import { dash } from "$lib/dash/dash.svelte"
   import { IconSettings, IconUsers } from "@tabler/icons-svelte"
-  import FilterGroups from "../filters/StaticFilterGroups.svelte"
+  import FilterGroups from "../filters/FilterGroups.svelte"
   import AddFilterGroup from "../filters/AddFilterGroup.svelte"
-  import Sorts from "../filters/StaticSorts.svelte"
+  import Sorts from "../filters/Sorts.svelte"
   import AddSort from "../filters/AddSort.svelte"
   import { toggleSetting } from "$lib/dash/utils"
 

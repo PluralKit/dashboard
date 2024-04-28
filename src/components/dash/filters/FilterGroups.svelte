@@ -4,7 +4,7 @@
   import type { Group, Member } from "$api/types"
   import { IconChevronDown, IconChevronUp } from "@tabler/icons-svelte"
   import FilterInfo from "./FilterInfo.svelte"
-  import StaticFilterHeader from "./StaticFilterHeader.svelte"
+  import StaticFilterHeader from "./FilterHeader.svelte"
   import type { Filter, FilterGroup } from "$lib/dash/filters.svelte"
   import { send, receive } from "./transition"
   import { flip } from "svelte/animate"
