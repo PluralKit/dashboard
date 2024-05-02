@@ -68,6 +68,7 @@
         >
           {#if index > 0}
             <button
+              aria-label="Move group up"
               onclick={() => moveGroup(group, -1)}
               class="mb-auto btn btn-ghost btn-xs btn-circle focus:text-neutral-content/50 hover:text-neutral-content/80 active:text-accent"
             >
@@ -76,6 +77,7 @@
           {/if}
           {#if index + 1 < list.filters.length}
             <button
+              aria-label="Move group down"
               onclick={() => moveGroup(group, 1)}
               class="mt-auto btn btn-ghost btn-xs btn-circle hover:text-neutral-content/50 active:text-accent"
             >
@@ -103,6 +105,7 @@
                 {#if !(index === 0 && i === 0)}
                   <button
                     onclick={() => moveFilter(filter, group, -1)}
+                    aria-label="Move filter up"
                     class="mb-auto btn btn-ghost btn-xs btn-circle hover:text-neutral-content/80 active:text-accent"
                   >
                     <IconChevronUp />
@@ -111,6 +114,7 @@
                 {#if !(index + 1 >= list.filters.length && i + 1 >= group.filters.length)}
                   <button
                     onclick={() => moveFilter(filter, group, 1)}
+                    aria-label="Move filter down"
                     class="mt-auto btn btn-ghost btn-xs btn-circle hover:text-neutral-content/80 active:text-accent"
                   >
                     <IconChevronDown />

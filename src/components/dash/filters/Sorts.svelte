@@ -46,6 +46,7 @@
           {#if index > 0}
             <button
               onclick={() => moveSort(sort, -1)}
+              aria-label="Move sort up"
               class="mb-auto btn btn-ghost btn-xs btn-circle focus:text-neutral-content/50 hover:text-neutral-content/80 active:text-accent"
             >
               <IconChevronUp />
@@ -54,6 +55,7 @@
           {#if index + 1 < list.sorts.length}
             <button
               onclick={() => moveSort(sort, 1)}
+              aria-label="Move sort down"
               class="mt-auto btn btn-ghost btn-xs btn-circle hover:text-neutral-content/50 active:text-accent"
             >
               <IconChevronDown />
