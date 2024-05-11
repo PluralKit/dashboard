@@ -270,7 +270,7 @@ function createGroupListState() {
       paginatedGroups = paginateList(processedGroups, listSettings)
     },
     fetch: async function (token?: string) {
-      groups = await fetchList(fetch, `systems/${dash.system?.id || "exmpl"}/groups`, token)
+      groups = await fetchList(fetch, `systems/${dash.system?.id || "exmpl"}/groups?with_members=true`, token)
       processedGroups = processList(groups, filters, sorts)
       paginatedGroups = paginateList(processedGroups, listSettings)
     },

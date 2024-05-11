@@ -12,6 +12,8 @@
       const token =
         (dash.privacyMode === PrivacyMode.PRIVATE && localStorage.getItem("pk-token")) || undefined
       await dash.groups.fetch(token)
+      dash.members.process(dash.groups.list.raw)
+      dash.members.paginate()
     } catch (e) {
       dash.errors.groups = (e as Error).message
     }
