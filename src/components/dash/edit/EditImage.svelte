@@ -35,7 +35,7 @@
       bind:value
       type="url"
       placeholder={original}
-      class="flex-grow input input-bordered placeholder:text-base-content/40"
+      class="flex-grow input input-bordered placeholder:text-base-content/40 w-full"
       onchange={() => (previewValue = value)}
       max={256}
     />

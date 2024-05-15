@@ -34,7 +34,7 @@
       bind:value
       type="text"
       placeholder={original}
-      class="flex-1 input resize-none input-bordered placeholder:text-base-content/40"
+      class="flex-1 input input-bordered placeholder:text-base-content/40 w-full"
     />
     <input
       type="color"
