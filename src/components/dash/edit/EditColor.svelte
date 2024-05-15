@@ -20,7 +20,14 @@
 </script>
 
 <div class="flex flex-col">
-  <label for={`${item.uuid}-edit-color`}>Color</label>
+  <span class="flex flex-row justify-between mb-1">
+    <label for={`${item.uuid}-edit-color`}>Color</label>
+    {#if original !== value}
+      <span title="edited">
+        <IconPencil size={26} class="text-info" />
+      </span>
+    {/if}
+  </span>
   <div class="flex flex-row gap-2 justify-between items-center">
     <input
       id={`${item.uuid}-edit-color`}
@@ -34,11 +41,5 @@
       class="w-16 rounded-md p-2 input-bordered input"
       onchange={(e) => changeColor(e)}
     />
-    <span title={original === value ? "" : "Edited"}>
-      <IconPencil
-        size={26}
-        class={original === value || (!original && !value) ? "text-transparent" : "text-info"}
-      />
-    </span>
   </div>
 </div>

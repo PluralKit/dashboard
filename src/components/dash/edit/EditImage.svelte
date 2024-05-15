@@ -10,34 +10,39 @@
   }: {
     original: string | undefined
     value: string | undefined
-    item: Member|Group|System
+    item: Member | Group | System
     field: string
   } = $props()
 
   let previewValue = $state(value)
 </script>
 
-<div class="flex flex-col">
-  <label for={`${item.uuid}-edit-${field}`}>{field}</label>
-  <div class="flex flex-row gap-2 justify-between items-center">
+<div class="flex flex-row gap-2 justify-between items-end">
+  <div class="flex flex-col flex-1">
+    <span class="flex flex-row gap-2 justify-between items-center mb-1">
+      <span class="flex-1 flex flex-row gap-2 justify-between items-center">
+        <label for={`${item.uuid}-edit-${field}`}>{field}</label>
+        <span class="text-xs">{value?.length ?? 0}/256</span>
+      </span>
+      {#if original !== value}
+        <span title="edited">
+          <IconPencil size={26} class="text-info" />
+        </span>
+      {/if}
+    </span>
     <input
       id={`${item.uuid}-edit-${field}`}
       bind:value
       type="url"
       placeholder={original}
-      class="flex-1 input input-bordered placeholder:text-base-content/40"
-      onchange={() => previewValue = value}
+      class="flex-grow input input-bordered placeholder:text-base-content/40"
+      onchange={() => (previewValue = value)}
+      max={256}
     />
-    {#if value}
-      <div class="avatar w-12 h-12">
-        <img src={previewValue} class="object-cover rounded-full" alt={`${field} preview`} />
-      </div>
-    {/if}
-    <span title={original === value ? "" : "Edited"}>
-      <IconPencil
-        size={26}
-        class={original === value || (!original && !value) ? "text-transparent" : "text-info"}
-      />
-    </span>
   </div>
+  {#if previewValue}
+    <div class="avatar w-12 h-12">
+      <img src={previewValue} class="object-cover rounded-full" alt={`${field} preview`} />
+    </div>
+  {/if}
 </div>

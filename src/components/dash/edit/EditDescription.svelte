@@ -21,12 +21,15 @@
 
 <div class="flex flex-col w-full">
   <div
-    class="ml-4 px-4 pt-2 pb-1 rounded-t-xl bg-base-100 w-fit font-bold flex flex-row gap-3 items-center"
+    class="mx-4 px-4 pt-2 pb-1 rounded-t-xl bg-base-100 w-fit font-bold flex flex-row gap-3 items-center flex-wrap"
   >
     <label for={`${item.uuid}-edit-description`} class="text-lg">Description</label>
     <button onclick={() => popupElement.showModal()} class="btn btn-primary btn-xs">Preview</button>
     <span title={original === value ? "" : "Edited"} class={original === value ? "hidden" : "text-info"} >
       <IconPencil size={26} />
+    </span>
+    <span class="font-normal text-sm">
+      {value?.length ?? 0}/1000
     </span>
   </div>
   <div class="rounded-xl bg-base-100 p-4">
@@ -36,6 +39,7 @@
       use:autoresize
       rows={5}
       placeholder={original}
+      maxlength={1000}
       class="w-full textarea resize-none textarea-bordered placeholder:text-base-content/40"
     ></textarea>
   </div>

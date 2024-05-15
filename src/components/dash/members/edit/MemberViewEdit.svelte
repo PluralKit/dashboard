@@ -88,6 +88,7 @@
     <EditField
       item={member}
       original={member.birthday}
+      showCount={false}
       bind:value={editedState.birthday}
       field="Birthday"
     />
