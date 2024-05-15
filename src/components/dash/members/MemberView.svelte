@@ -123,7 +123,7 @@
                 >
                   <span class="flex flex-row justify-start gap-2"
                     ><b>Pronouns:</b>
-                    <AwaitHtml htmlPromise={parseMarkdown(member.pronouns, { embed: true })} />
+                    <span><AwaitHtml htmlPromise={parseMarkdown(member.pronouns, { embed: true })} /></span>
                   </span>
                   <CopyField class="ml-auto" field="pronouns" value={member.pronouns} />
                 </span>
