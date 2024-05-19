@@ -40,9 +40,9 @@
       max={256}
     />
   </div>
-  {#if previewValue}
-    <div class="avatar w-12 h-12">
+  <div class="avatar w-12 h-12">
+    {#if previewValue}
       <img src={previewValue} class="object-cover rounded-full" alt={`${field} preview`} />
-    </div>
-  {/if}
+    {/if}
+  </div>
 </div>
