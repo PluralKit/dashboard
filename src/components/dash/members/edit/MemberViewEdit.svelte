@@ -20,7 +20,7 @@
     asPage: boolean
   } = $props()
 
-  let editedState: Member = createViewEditState(member)
+  let editedState: Member = $derived(createViewEditState(member))
 
   let edited = $derived(
     Object.fromEntries(

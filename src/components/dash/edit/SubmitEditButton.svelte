@@ -6,12 +6,20 @@
   import { IconDeviceFloppy } from "@tabler/icons-svelte"
   import moment from "moment"
 
-  let { asPage, loading = $bindable(), success = $bindable(), err = $bindable(), edited, path, pageItem, list }: {
+  let { 
+    asPage, 
+    loading = $bindable(), 
+    success = $bindable(), 
+    err = $bindable(), 
+    edited,
+    path, pageItem, 
+    list, 
+  }: {
     asPage: boolean,
     loading: boolean,
     success: boolean,
     err: string[],
-    edited: Member|Group|System
+    edited: Member|Group|System,
     path: string,
     list: DashList<Member|Group>,
     pageItem: Member|Group|System
