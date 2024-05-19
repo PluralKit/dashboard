@@ -1,6 +1,7 @@
-import type { Member } from "$api/types"
+import type { Member, MemberPrivacy, proxytag } from "$api/types"
+import type MemberInfoEdit from "$components/dash/members/edit/MemberInfoEdit.svelte"
 
-export const createViewEditState = (member: Member) => {
+export const createViewEditState = (member: Member): Member => {
   let name = $state(member.name)
   let display_name = $state(member.display_name)
   let pronouns = $state(member.pronouns)
@@ -63,8 +64,92 @@ export const createViewEditState = (member: Member) => {
     get color() {
       return color
     },
-    set color(value: string|undefined) {
+    set color(value: string | undefined) {
       color = value
+    },
+  }
+}
+
+export const createInfoEditState = (member: Member): Member & {
+  proxy_tags: proxytag[],
+  privacy: MemberPrivacy
+} => {
+  let proxy_tags: proxytag[] = $state(JSON.parse(JSON.stringify(member.proxy_tags)) || [])
+  let privacy = $state(createPrivacyEditState(member))
+
+  return {
+    get proxy_tags() {
+      return proxy_tags
+    },
+    set proxy_tags(value: proxytag[]) {
+      proxy_tags = value
+    },
+    get privacy() {
+      return privacy
+    },
+    set privacy(value: MemberPrivacy) {
+      privacy = value
     }
+  }
+}
+
+const createPrivacyEditState = (member: Member): MemberPrivacy => {
+  let visibility = $state(member.privacy?.visibility)
+  let description_privacy = $state(member.privacy?.description_privacy)
+  let name_privacy = $state(member.privacy?.name_privacy)
+  let birthday_privacy = $state(member.privacy?.birthday_privacy)
+  let pronoun_privacy = $state(member.privacy?.pronoun_privacy)
+  let avatar_privacy = $state(member.privacy?.avatar_privacy)
+  let metadata_privacy = $state(member.privacy?.metadata_privacy)
+  let proxy_privacy = $state(member.privacy?.proxy_privacy)
+  return {
+    get visibility() {
+      return visibility
+    },
+    set visibility(value: string | undefined) {
+      visibility = value
+    },
+    get description_privacy() {
+      return description_privacy
+    },
+    set description_privacy(value: string | undefined) {
+      description_privacy = value
+    },
+    get name_privacy() {
+      return name_privacy
+    },
+    set name_privacy(value: string | undefined) {
+      name_privacy = value
+    },
+    get birthday_privacy() {
+      return birthday_privacy
+    },
+    set birthday_privacy(value: string | undefined) {
+      birthday_privacy = value
+    },
+    get pronoun_privacy() {
+      return pronoun_privacy
+    },
+    set pronoun_privacy(value: string | undefined) {
+      pronoun_privacy = value
+    },
+    get avatar_privacy() {
+      return avatar_privacy
+    },
+    set avatar_privacy(value: string | undefined) {
+      avatar_privacy = value
+    },
+    get metadata_privacy() {
+      return metadata_privacy
+    },
+    set metadata_privacy(value: string | undefined) {
+      metadata_privacy = value
+    },
+    get proxy_privacy() {
+      return proxy_privacy
+    },
+    set proxy_privacy(value: string | undefined) {
+      proxy_privacy = value
+    },
   }
 }

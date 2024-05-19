@@ -9,6 +9,7 @@
   import { copyToClipboard } from "$lib/dash/utils"
   import CopyField from "../CopyField.svelte"
   import MemberLink from "./MemberLink.svelte"
+  import MemberInfoEdit from "./edit/MemberInfoEdit.svelte"
 
   let {
     member,
@@ -19,13 +20,16 @@
     tab: string
     asPage: boolean
   } = $props()
+
+  let mode: "view" | "edit" = $state("view")
 </script>
 
 <div style={tab !== "info" ? "display: none;" : ""}>
+  {#if mode === "view"}
   <div class="flex flex-row gap-2 justify-between items-center mb-3">
     <h4 class="text-2xl ml-3 font-medium">Member details</h4>
     {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.member.privacyMode !== PrivacyMode.PUBLIC)}
-      <button class="btn btn-sm btn-primary p-2">
+      <button onclick={() => (mode = "edit")} class="btn btn-sm btn-primary p-2">
         <IconEdit class="inline" size={18} /> Edit
       </button>
     {/if}
@@ -181,4 +185,7 @@
   <div class="flex flex-row justify-end items-center">
     <MemberLink item={member} {asPage} />
   </div>
+  {:else if mode === "edit"}
+    <MemberInfoEdit bind:mode {member} {asPage}  />
+  {/if}
 </div>

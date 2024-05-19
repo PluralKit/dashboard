@@ -44,7 +44,7 @@ export interface MemberPrivacy {
   proxy_privacy?: string
 }
 
-interface proxytag {
+export interface proxytag {
   prefix?: string
   suffix?: string
 }

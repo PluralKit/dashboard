@@ -31,7 +31,7 @@
   // first trim every field
   let body = Object.fromEntries(
     Object.entries(edited)
-      .map(([key, value]) => [key, value ? value.trim() : value])
+      .map(([key, value]) => [key, value && typeof value === "string" ? value.trim() : value])
       .filter(([_, value]) => value != null)
   )
 
