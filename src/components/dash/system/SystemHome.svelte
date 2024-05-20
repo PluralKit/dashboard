@@ -2,6 +2,7 @@
   import { dash } from "$lib/dash/dash.svelte"
   import { IconAlertTriangle } from "@tabler/icons-svelte"
   import ItemCollapse from "../ItemCollapse.svelte"
+  import SystemControls from "./SystemControls.svelte"
 </script>
 
 {#if dash.errors.system}
@@ -12,5 +13,6 @@
 <div
   class={`flex flex-col gap-8 mx-auto w-full max-w-4xl`}
 >
+  <SystemControls />
   <ItemCollapse item={dash.system || {}} forceOpen={true} type="system" />
 </div>
