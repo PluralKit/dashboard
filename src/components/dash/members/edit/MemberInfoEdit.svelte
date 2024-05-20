@@ -155,7 +155,7 @@
     <h5 class="text-lg">Privacy</h5>
     <hr />
     <ul class="flex flex-row flex-wrap">
-      <li class="w-1/2 px-2 py-1">
+      <li class="w-full md:w-1/2 px-2 py-1">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.visibility}
@@ -163,7 +163,7 @@
           field="Visibility"
         />
       </li>
-      <li class="w-1/2 px-2 py-1">
+      <li class="w-full md:w-1/2 px-2 py-1">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.name_privacy}
@@ -171,7 +171,7 @@
           field="Name"
         />
       </li>
-      <li class="w-1/2 px-2 py-1">
+      <li class="w-full md:w-1/2 px-2 py-1">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.description_privacy}
@@ -179,7 +179,7 @@
           field="Description"
         />
       </li>
-      <li class="w-1/2 px-2 py-1">
+      <li class="w-full md:w-1/2 px-2 py-1">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.avatar_privacy}
@@ -187,7 +187,7 @@
           field="Avatar"
         />
       </li>
-      <li class="w-1/2 px-2 py-1">
+      <li class="w-full md:w-1/2 px-2 py-1">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.pronoun_privacy}
@@ -195,7 +195,7 @@
           field="Pronouns"
         />
       </li>
-      <li class="w-1/2 px-2 py-1">
+      <li class="w-full md:w-1/2 px-2 py-1">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.birthday_privacy}
@@ -203,7 +203,7 @@
           field="Birthday"
         />
       </li>
-      <li class="w-1/2 px-2 py-1">
+      <li class="w-full md:w-1/2 px-2 py-1">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.proxy_privacy}
@@ -211,7 +211,7 @@
           field="Proxy tags"
         />
       </li>
-      <li class="w-1/2 px-2 py-1">
+      <li class="w-full md:w-1/2 px-2 py-1">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.metadata_privacy}
