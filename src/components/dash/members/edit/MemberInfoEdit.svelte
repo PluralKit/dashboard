@@ -72,6 +72,21 @@
 
     editedState.proxy_tags = tags
   }
+
+  function changeAllPrivacy(event: Event) {
+    const target = event.target as HTMLSelectElement
+    if (target.value === "public" || target.value === "private") {
+      Object.entries(editedState.privacy).forEach(
+        ([key]) => editedState.privacy[key as keyof MemberPrivacy] = target.value
+      )
+    } else if (target.value) {
+      Object.entries(editedState.privacy).forEach(
+        ([key]) =>
+          editedState.privacy[key as keyof MemberPrivacy] =
+          (member.privacy as MemberPrivacy)[key as keyof MemberPrivacy]
+      )
+    }
+  }
 </script>
 
 <div class="flex flex-row gap-2 justify-between items-center mb-3">
@@ -155,13 +170,28 @@
     <h5 class="text-lg">Privacy</h5>
     <hr />
     <ul class="flex flex-row flex-wrap">
+      <li class="w-full px-2 py-1 flex flex-col">
+        <label class="mb-1" for={`${member.uuid}-privacy-all`}>Set all to</label>
+        <select
+          class="input input-bordered input-sm"
+          onchange={(e) => changeAllPrivacy(e)}
+          id={`${member.uuid}-privacy-all`}
+        >
+          <option value="">Select privacy level...</option>
+          <option value="public">Public</option>
+          <option value="private">Private</option>
+          <option value="nope">Reset to current</option>
+        </select>
+      </li>
       <li class="w-full md:w-1/2 px-2 py-1">
-        <EditPrivacy
-          item={member}
-          bind:value={editedState.privacy.visibility}
-          original={member.privacy?.visibility}
-          field="Visibility"
-        />
+        <div class="flex flex-col">
+          <EditPrivacy
+            item={member}
+            bind:value={editedState.privacy.visibility}
+            original={member.privacy?.visibility}
+            field="Visibility"
+          />
+        </div>
       </li>
       <li class="w-full md:w-1/2 px-2 py-1">
         <EditPrivacy
