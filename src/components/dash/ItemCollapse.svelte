@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import type { Group, Member } from "$api/types"
+  import type { Group, Member, MemberPrivacy, System } from "$api/types"
   import { dash } from "$lib/dash/dash.svelte"
   import { IconLock, IconShare, IconUser } from "@tabler/icons-svelte"
   import MemberView from "./members/MemberView.svelte"
@@ -9,6 +9,8 @@
   import GroupView from "./groups/GroupView.svelte"
   import GroupInfo from "./groups/GroupInfo.svelte"
   import GroupMembers from "./groups/GroupMembers.svelte"
+  import SystemView from "./system/SystemView.svelte"
+  import SystemInfo from "./system/SystemInfo.svelte"
 
   let {
     type,
@@ -17,8 +19,8 @@
     asPage = false,
     open = $bindable(false),
   }: {
-    type: "member" | "group"
-    item: Member | Group
+    type: "member" | "group" | "system"
+    item: Member | Group | System
     open?: boolean
     asPage?: boolean
     forceOpen?: boolean
@@ -42,9 +44,9 @@
   >
     <div class="flex items-center">
       <div class="mr-3">
-        {#if !item.privacy || !item.privacy.visibility}
+        {#if !item.privacy || !(item.privacy as MemberPrivacy).visibility}
           <IconUser />
-        {:else if item.privacy.visibility === "private"}
+        {:else if (item.privacy as MemberPrivacy).visibility === "private"}
           <IconLock />
         {:else}
           <IconShare />
@@ -55,6 +57,8 @@
     <div class="h-14 ml-3">
       {#if type === "member"}
         {@render memberIcon(item)}
+      {:else if type === "system"}
+        {@render systemIcon(item)}
       {:else if type === "group"}
         {@render groupIcon(item)}
       {/if}
@@ -78,15 +82,19 @@
         class={`tab ${tab === "info" ? "tab-active bg-base-200" : ""}`}
         onclick={() => (tab = "info")}>Info</button
       >
-      <button
-        role="tab"
-        class={`tab ${tab === "groups" ? "tab-active bg-base-200" : ""}`}
-        onclick={() => (tab = "groups")}>{type === "member" ? "Groups" : "Members"}</button
-      >
+      {#if type === "member" || type === "group"}
+        <button
+          role="tab"
+          class={`tab ${tab === "groups" ? "tab-active bg-base-200" : ""}`}
+          onclick={() => (tab = "groups")}>{type === "member" ? "Groups" : "Members"}</button
+        >
+      {/if}
     </div>
     <div class="tab-contents flex flex-col rounded-b-lg p-2 lg:p-4 bg-base-200">
       {#if type === "member"}
         {@render memberTabs(item, tab)}
+      {:else if type === "system"}
+        {@render systemTabs(item, tab)}
       {:else if type === "group"}
         {@render groupTabs(item, tab)}
       {/if}
@@ -98,6 +106,11 @@
   <MemberView {member} {tab} open={isOpen} {asPage} />
   <MemberInfo {member} {tab} {asPage} />
   <MemberGroups {member} {tab} {asPage} />
+{/snippet}
+
+{#snippet systemTabs(system: System, tab: "view"|"info"|"groups")}
+  <SystemView {system} {tab} open={isOpen} {asPage} />
+  <SystemInfo {system} {tab} {asPage}/>
 {/snippet}
 
 {#snippet groupTabs(group: Group, tab: "view"|"info"|"groups")}
@@ -131,6 +144,21 @@
       {@render iconImage(
         member.webhook_avatar_url || member.avatar_url || "",
         `${member.name}'s avatar'`
+      )}
+    </div>
+  {:else}
+    <div class="avatar w-14 h-14">
+      {@render iconImage("/discord_icon.svg", "Default avatar")}
+    </div>
+  {/if}
+{/snippet}
+
+{#snippet systemIcon(system: System)}
+  {#if system.avatar_url}
+    <div class="avatar w-14 h-14">
+      {@render iconImage(
+        system.avatar_url || "",
+        `Avatar of ${system.name ?? "this system"}`
       )}
     </div>
   {:else}
