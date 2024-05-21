@@ -1,5 +1,4 @@
 import type { Member, MemberPrivacy, proxytag } from "$api/types"
-import type MemberInfoEdit from "$components/dash/members/edit/MemberInfoEdit.svelte"
 
 export const createViewEditState = (member: Member): Member => {
   let name = $state(member.name)
