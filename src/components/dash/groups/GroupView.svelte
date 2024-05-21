@@ -6,6 +6,7 @@
   import ImageModal from "../ImageModal.svelte"
   import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
   import CopyField from "../CopyField.svelte"
+  import GroupLink from "./GroupLink.svelte"
 
   let {
     group,
@@ -141,4 +142,5 @@
       {/if}
     </div>
   </div>
+  <GroupLink {asPage} item={group} />
 </div>

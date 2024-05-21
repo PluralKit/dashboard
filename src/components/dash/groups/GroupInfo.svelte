@@ -5,6 +5,7 @@
   import PrivacyDisplay from "../PrivacyDisplay.svelte"
   import moment from "moment"
   import CopyField from "../CopyField.svelte"
+  import GroupLink from "./GroupLink.svelte"
 
   let {
     group,
@@ -118,4 +119,5 @@
       </div>
     {/if}
   </div>
+  <GroupLink {asPage} item={group} />
 </div>

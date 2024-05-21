@@ -117,25 +117,6 @@
   <GroupView {group} {tab} open={isOpen} {asPage} />
   <GroupInfo {group} {tab} {asPage} />
   <GroupMembers {group} {tab} {asPage} />
-  <div class="flex flex-row justify-end items-center">
-    {#if dash.group.group?.uuid !== item.uuid || !asPage}
-      <a
-        target="_blank"
-        class="btn btn-primary btn-sm mt-2"
-        href={`/dash/g/${item.id}${$page.url.searchParams.get("public") ? "?public=true" : ""}`}
-      >
-        View page
-      </a>
-    {:else}
-      <a
-        target="_blank"
-        class="btn btn-primary btn-sm mt-2"
-        href={`/dash/${(item as Group).system}?tab=groups${$page.url.searchParams.get("public") ? "&public=true" : ""}`}
-      >
-        View system
-      </a>
-    {/if}
-  </div>
 {/snippet}
 
 {#snippet memberIcon(member: Member)}

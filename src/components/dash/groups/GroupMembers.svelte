@@ -6,6 +6,7 @@
   import parseMarkdown from "$api/parseMarkdown"
   import SimplePagination from "../SimplePagination.svelte"
   import CopyField from "../CopyField.svelte"
+  import GroupLink from "./GroupLink.svelte"
 
   let {
     asPage = false,
@@ -72,4 +73,5 @@
       </ol>
     </div>
   </div>
+  <GroupLink {asPage} item={group} />
 </div>
