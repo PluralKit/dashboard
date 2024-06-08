@@ -105,7 +105,9 @@
 {#snippet memberTabs(member: Member, tab: "view"|"info"|"groups")}
   <MemberView {member} {tab} open={isOpen} {asPage} />
   <MemberInfo {member} {tab} {asPage} />
+  {#if tab === "groups"}
   <MemberGroups {member} {tab} {asPage} />
+  {/if}
 {/snippet}
 
 {#snippet systemTabs(system: System, tab: "view"|"info"|"groups")}
@@ -116,7 +118,9 @@
 {#snippet groupTabs(group: Group, tab: "view"|"info"|"groups")}
   <GroupView {group} {tab} open={isOpen} {asPage} />
   <GroupInfo {group} {tab} {asPage} />
+  {#if tab === "groups"}
   <GroupMembers {group} {tab} {asPage} />
+  {/if}
 {/snippet}
 
 {#snippet memberIcon(member: Member)}
