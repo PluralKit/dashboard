@@ -29,7 +29,7 @@ function tablerOptimizer(): import("vite").Plugin {
 						.map((v) => v.trim())
 						.map((name) => {
 							const path = name
-							return `${whitespace}import ${name} from '@tabler/icons-svelte/${path}.svelte'${hasSemi ? ";" : ""}`
+							return `${whitespace}import ${name} from '@tabler/icons-svelte/dist/svelte/icons/${path}.svelte'${hasSemi ? ";" : ""}`
 						})
 					return imports.join("\n")
 				}
