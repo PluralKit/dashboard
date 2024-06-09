@@ -1,4 +1,4 @@
-:root {
+#themed-container {
   --nprogress-color: var(--fallback-p,oklch(var(--p)/1))
 }
 

@@ -19,6 +19,10 @@
     localStorage.removeItem("pk-token")
   }
 
+  nprogress.configure({
+    parent: "#themed-container"
+  })
+
   $: {
     if ($navigating) nprogress.start()
     else if (!$navigating) nprogress.done()
@@ -27,7 +31,7 @@
   dash.initUser(data.system)
 </script>
 
-<div class="max-w-screen min-h-screen bg-base-100 flex flex-col" data-theme={data.theme}>
+<div id="themed-container" class="max-w-screen min-h-screen bg-base-100 flex flex-col" data-theme={data.theme}>
   <NavBar />
   <div class="flex flex-col flex-1">
     <slot />
