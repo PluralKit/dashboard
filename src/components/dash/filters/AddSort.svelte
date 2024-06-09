@@ -20,8 +20,11 @@
   let sortOrder: 1 | -1 = $state(1)
 
   function addSort() {
+    let mode = sortMode
+    if (filterFieldType(sortField) === "number") mode = SortMode.SIZE
+
     const sort = createSort(
-      sortMode || SortMode.ALPHABETICAL,
+      mode || SortMode.ALPHABETICAL,
       sortField,
       filterFieldText(sortField),
       sortOrder
@@ -76,19 +79,19 @@
           <option value={null} disabled>Select a field first</option>
         {:else if sortField === "color"}
           <option value={null} disabled>color</option>
+        {:else if filterFieldType(sortField) === "number"}
+          <option value={null} disabled>amount</option>
         {:else}
           <option value={null} disabled>Sort mode...</option>
-          <option value={SortMode.ALPHABETICAL}>alphabetical</option>
           {#if filterFieldType(sortField) === "string"}
-            <option value={SortMode.SIZE}>length</option>
-          {:else}
-            <option value={SortMode.SIZE}>count</option>
+          <option value={SortMode.ALPHABETICAL}>alphabetical</option>
+          <option value={SortMode.SIZE}>length</option>
           {/if}
         {/if}
       </select>
     </div>
   </div>
-  {#if sortField && (sortMode || sortField === "color")}
+  {#if sortField && (sortMode || sortField === "color" || filterFieldType(sortField) === "number")}
     <label class="mt-3" for={`${type}-new-sort-order`}>Order</label>
     <div class="flex flex-row gap-3">
       <select bind:value={sortOrder} class="flex-1 select select-sm select-bordered">

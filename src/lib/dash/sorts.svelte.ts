@@ -13,10 +13,12 @@ export enum SortMode {
   SIZE = "size",
 }
 
-export const sortModeText = (mode: SortMode, type: string) => {
+export const sortModeText = (mode: SortMode, type: string, withComma?: boolean) => {
+  const comma = withComma ? "," : ""
+
   const text: Record<string, string> = {
-    alphabetical: "alphabetically",
-    size: type === "string" ? "by character length" : "",
+    alphabetical: `alphabetically${comma}`,
+    size: type === "string" ? `by character length${comma}` : "",
   }
   return {
     get text() {

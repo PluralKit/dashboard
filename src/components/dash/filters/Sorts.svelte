@@ -94,7 +94,7 @@
           </div>
           <span class="text-sm"
             >Sort by <b>{filterFieldText(sort.field)}</b>
-            {sortModeText(sort.mode, filterFieldType(sort.field)).text},
+            {sortModeText(sort.mode, filterFieldType(sort.field), true).text}
             {#if sort.order !== -1}
               in <b>ascending</b> order
             {:else}
