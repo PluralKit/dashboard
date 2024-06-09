@@ -58,7 +58,7 @@
   }
 
   .discord-markdown .d-spoiler:active {
-    @apply text-base-100 bg-base-300;
+    @apply bg-base-300;
     transition-delay: 0s;
   }
 
