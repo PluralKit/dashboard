@@ -22,6 +22,7 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "autoprefixer": "^10.4.16",
+    "caniuse-lite": "^1.0.30001629",
     "daisyui": "^4.0.7",
     "discord-markdown": "github:draconizations/discord-markdown#1f74a7094777d5bdfd123c0aac59d8b10db89b30",
     "dotenv": "^16.4.5",
