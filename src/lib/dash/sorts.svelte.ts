@@ -92,7 +92,7 @@ function applySort<T>(list: T[], sort: Sort): T[] {
           if (a[field] === null) result = 0
           else if (b[field] === null) result = 0
           else if (a[field] === b[field]) result = 0
-          else result = a > b ? 1 : -1
+          else result = a[field] > b[field] ? 1 : -1
         } else result = 0
         return result * sort.order
     }
