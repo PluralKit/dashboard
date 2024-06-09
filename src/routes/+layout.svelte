@@ -2,11 +2,14 @@
   import { browser } from "$app/environment"
   import NavBar from "$components/NavBar.svelte"
   import "$lib/app.css"
+  import "$lib/nprogress.css"
   import "$lib/highlightjs.scss"
   import type { LayoutData } from "./$types"
   import Footer from "$components/Footer.svelte"
   import { dash } from "$lib/dash/dash.svelte"
   import { page } from "$app/stores"
+  import { navigating } from "$app/stores"
+  import nprogress from "nprogress"
 
   export let data: LayoutData
 
@@ -14,6 +17,11 @@
     localStorage.setItem("pk-token", data.token)
   } else if (browser) {
     localStorage.removeItem("pk-token")
+  }
+
+  $: {
+    if ($navigating) nprogress.start()
+    else if (!$navigating) nprogress.done()
   }
 
   dash.initUser(data.system)
