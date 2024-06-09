@@ -53,7 +53,6 @@ function createDash() {
   let ratelimited: Record<string, boolean> = $state({})
   let errors: Record<string, string> = $state({})
 
-  let tab: string = $state("")
   let settings: Record<string, any> = $state({})
   return {
     get members(): DashList<Member> {
@@ -124,13 +123,6 @@ function createDash() {
     },
     initUser: (system: System | null) => {
       user = system
-    },
-    get tab() {
-      return tab
-    },
-    set tab(newTab: string) {
-      if (!newTab) newTab = "overview"
-      tab = newTab
     },
     get settings() {
       return settings
