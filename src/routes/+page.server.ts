@@ -26,6 +26,7 @@ export const actions = {
     cookies.set("pk-token", token as string, {
       path: "/",
       secure: env.NODE_ENV !== "development",
+      maxAge: 60 * 60 * 24 * 90 // 90 days
     })
 
     redirect(302, "/")
