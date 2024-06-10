@@ -73,12 +73,14 @@
         id={`${type}-new-sort-mode`}
         class="select select-sm select-bordered"
         bind:value={sortMode}
-        disabled={!sortField || sortField === "color"}
+        disabled={!sortField || sortField === "color" || sortField === "date"}
       >
         {#if !sortField}
           <option value={null} disabled>Select a field first</option>
         {:else if sortField === "color"}
           <option value={null} disabled>color</option>
+        {:else if filterFieldType(sortField) === "date"}
+          <option value={null} disabled>date</option>
         {:else if filterFieldType(sortField) === "number"}
           <option value={null} disabled>amount</option>
         {:else}
@@ -91,7 +93,7 @@
       </select>
     </div>
   </div>
-  {#if sortField && (sortMode || sortField === "color" || filterFieldType(sortField) === "number")}
+  {#if sortField && (sortMode || sortField === "color" || filterFieldType(sortField) === "number") || filterFieldType(sortField) === "date"}
     <label class="mt-3" for={`${type}-new-sort-order`}>Order</label>
     <div class="flex flex-row gap-3">
       <select bind:value={sortOrder} class="flex-1 select select-sm select-bordered">

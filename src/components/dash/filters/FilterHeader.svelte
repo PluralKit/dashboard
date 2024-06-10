@@ -13,6 +13,20 @@
     group: FilterGroup,
     list: DashList<Member|Group>
   } = $props()
+
+  function getDateValue(value: string) {
+    if (filter.mode === FilterMode.INCLUDES || filter.mode === FilterMode.EXCLUDES) {
+      const params = new URLSearchParams(value)
+      let text: string[] = []
+      if (params.get("day")) text.push(`day: ${params.get("day")}`)
+      if (params.get("weekday")) text.push(`weekday: ${params.get("weekday")}`)
+      if (params.get("month")) text.push(`month: ${(parseInt(params.get("month") || "") + 1).toString()}`)
+      if (params.get("year")) text.push(`year: ${params.get("year")}`)
+      return `(${text.join(", ")})`
+    }
+
+    return value
+  }
 </script>
 
 <div class="flex flex-row justify-between align-center w-full">
@@ -49,6 +63,11 @@
         groups with a <b>members</b>
       {/if}
     </span>
+    {:else if filterFieldType(filter.field) === "date"}
+      <span class="text-sm">
+        <b>{filter.fieldName}</b> that {filterModeText(filter.mode, filterFieldType(filter.field)).verb}
+        {getDateValue(filter.value as string)}
+      </span>
     <!-- The other filters are just able to be done in one swoop -->
     {:else}
     <span class="text-sm"

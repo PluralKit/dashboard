@@ -30,44 +30,48 @@
   let filterValue: null | string | number = $state(null)
 
   let inputType: string = $derived.by(() => {
-    let value: string = "text"
-
-    if (filterMode === FilterMode.EMPTY || filterMode === FilterMode.NOTEMPTY) value = "null"
-    else if (
-      filterFieldType(filterField) === "number" ||
-      filterMode === FilterMode.LOWERTHAN ||
-      filterMode === FilterMode.HIGHERTHAN
-    )
-      value = "number"
-
-    return value
-  })
-
-  function changeFilterValue() {
+    if (filterMode === FilterMode.EMPTY || filterMode === FilterMode.NOTEMPTY) return "null"
+    if (filterFieldType(filterField) === "date") return "text"
     if (
       filterFieldType(filterField) === "number" ||
       filterMode === FilterMode.LOWERTHAN ||
       filterMode === FilterMode.HIGHERTHAN
     )
+      return "number"
+
+    return "text"
+  })
+
+  function changeFilterValue() {
+    filterValue = ""
+    if (filterFieldType(filterField) === "date") {
+      filterValue = ""
+    } else if (
+      filterFieldType(filterField) === "number" ||
+      filterMode === FilterMode.LOWERTHAN ||
+      filterMode === FilterMode.HIGHERTHAN
+    ) {
       filterValue = 0
-    else if (!(filterMode === FilterMode.EMPTY || filterMode === FilterMode.NOTEMPTY)) {
+    }
+    
+    if (filterMode === FilterMode.EMPTY || filterMode === FilterMode.NOTEMPTY) {
       filterValue = ""
     }
   }
 
   function addFilter() {
+    const value =
+      filterFieldType("date") &&
+      (filterMode === FilterMode.INCLUDES || filterMode === FilterMode.EXCLUDES)
+        ? dateString
+        : filterValue
+
     const filter: Filter = createFilter(
       filterField,
       filterFieldText(filterField),
       filterMode ?? FilterMode.NOTEMPTY,
-      filterValue
+      value
     )
-
-    const draggable =
-      (filterField === "member" || filterField === "group") &&
-      groupArrayModes.includes(filterMode || FilterMode.EMPTY)
-        ? false
-        : true
 
     // we want to add the filter to the last empty filter group
     // unless it's a non-draggable group
@@ -91,7 +95,26 @@
     filterField = ""
     filterMode = null
     filterValue = null
+    dateDay = null
+    dateWeekday = null
+    dateMonth = null
+    dateYear = null
   }
+
+  let dateDay: number|null = $state(null)
+  let dateWeekday: number|null = $state(null)
+  let dateMonth: number|null = $state(null)
+  let dateYear: number|null = $state(null)
+
+  let dateString: string = $derived.by(() => {
+    let params = new URLSearchParams()
+    if (dateDay !== null) params.set("day", dateDay.toString())
+    if (dateWeekday !== null) params.set("weekday", dateWeekday.toString())
+    if (dateMonth !== null) params.set("month", dateMonth.toString())
+    if (dateYear !== null) params.set("year", dateYear.toString())
+
+    return params.toString()
+  })
 </script>
 
 <div class="rounded-lg border-muted/50 border mb-3 p-4">
@@ -152,7 +175,21 @@
             <option value={FilterMode.NOTEMPTY}>not empty</option>
             <option value={FilterMode.HIGHERTHAN}>more than</option>
             <option value={FilterMode.LOWERTHAN}>less than</option>
-          {:else if inputType !== "number"}
+          {:else if filterFieldType(filterField) === "date"}
+            <option value={FilterMode.HIGHERTHAN}>after date</option>
+            <option value={FilterMode.LOWERTHAN}>before date</option>
+            <option value={FilterMode.EXACT}>match</option>
+            <option value={FilterMode.NOTEXACT}>don't match</option>
+            <option value={FilterMode.EMPTY}>empty</option>
+            <option value={FilterMode.NOTEMPTY}>not empty</option>
+            <option value={FilterMode.INCLUDES}>in time period</option>
+            <option value={FilterMode.EXCLUDES}>not in time period</option>
+          {:else if inputType === "number"}
+            <option value={FilterMode.EMPTY}>empty</option>
+            <option value={FilterMode.NOTEMPTY}>not empty</option>
+            <option value={FilterMode.HIGHERTHAN}>more than</option>
+            <option value={FilterMode.LOWERTHAN}>less than</option>
+          {:else}
             <option value={FilterMode.INCLUDES}>include</option>
             <option value={FilterMode.EXCLUDES}>exclude</option>
             <option value={FilterMode.EXACT}>match</option>
@@ -161,11 +198,6 @@
             <option value={FilterMode.NOTEMPTY}>not empty</option>
             <option value={FilterMode.HIGHERTHAN}>longer than</option>
             <option value={FilterMode.LOWERTHAN}>shorter than</option>
-          {:else}
-            <option value={FilterMode.EMPTY}>empty</option>
-            <option value={FilterMode.NOTEMPTY}>not empty</option>
-            <option value={FilterMode.HIGHERTHAN}>more than</option>
-            <option value={FilterMode.LOWERTHAN}>less than</option>
           {/if}
         {/if}
       </select>
@@ -194,6 +226,70 @@
           valueField="value"
           labelField="text"
         />
+      {:else if inputType !== "null" && filterFieldType(filterField) === "date"}
+        {#if filterMode === FilterMode.INCLUDES || filterMode === FilterMode.EXCLUDES}
+          <div class="flex flex-col w-full">
+            <hr class="mt-3" />
+            <label class="text-sm mb-1 block mt-3" for="new-filter-day">Day</label>
+            <input
+              class="input input-bordered input-sm"
+              type="number"
+              id="new-filter-day"
+              bind:value={dateDay}
+              min={1}
+              max={31}
+            />
+            <label class="text-sm mb-1 block mt-3" for="new-filter-month">Month</label>
+            <select
+              class="input input-bordered input-sm"
+              bind:value={dateMonth}
+              id="new-filter-month"
+            >
+              <option value={0}>January</option>
+              <option value={1}>February</option>
+              <option value={2}>March</option>
+              <option value={3}>April</option>
+              <option value={4}>May</option>
+              <option value={5}>June</option>
+              <option value={6}>July</option>
+              <option value={7}>August</option>
+              <option value={8}>September</option>
+              <option value={9}>October</option>
+              <option value={10}>November</option>
+              <option value={11}>December</option>
+            </select>
+            <label class="text-sm mb-1 block mt-3" for="new-filter-year">Year</label>
+            <input
+              class="input input-bordered input-sm"
+              type="number"
+              id="new-filter-year"
+              bind:value={dateYear}
+              min={0}
+              max={new Date().getFullYear()}
+            />
+            <label class="text-sm mb-1 block mt-3" for="new-filter-weekday">Weekday</label>
+            <select
+              class="input input-bordered input-sm"
+              bind:value={dateWeekday}
+              id="new-filter-weekday"
+            >
+              <option value={1}>Monday</option>
+              <option value={2}>Tuesday</option>
+              <option value={3}>Wednesday</option>
+              <option value={4}>Thursday</option>
+              <option value={5}>Friday</option>
+              <option value={6}>Saturday</option>
+              <option value={0}>Sunday</option>
+            </select>
+          </div>
+        {:else}
+          <input
+            id={`${type}-new-filter-field`}
+            bind:value={filterValue}
+            class="input flex-1 input-bordered input-sm"
+            type="date"
+          />
+        {/if}
       {:else if inputType !== "null"}
         <input
           id={`${type}-new-filter-field`}

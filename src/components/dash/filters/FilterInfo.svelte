@@ -1,7 +1,12 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
   import { dash, type DashList } from "$lib/dash/dash.svelte"
-  import { groupArrayModes, type Filter } from "$lib/dash/filters.svelte"
+  import {
+    FilterMode,
+    filterFieldType,
+    groupArrayModes,
+    type Filter,
+  } from "$lib/dash/filters.svelte"
   import Svelecte from "svelecte"
 
   let {
@@ -51,7 +56,16 @@
   />
   <!-- TODO: privacy filtering here -->
   <!-- TODO: Same for proxy tags -->
-
+{:else if filterFieldType(filter.field) === "date" && !(filter.mode === FilterMode.INCLUDES || filter.mode === FilterMode.EXCLUDES )}
+  {#if filter.mode !== FilterMode.EMPTY && filter.mode !== FilterMode.NOTEMPTY}
+  <input
+      class="input input-sm input-bordered"
+      type="date"
+      value={filter.value}
+      min={0}
+      onchange={(e) => changeValue(e)}
+    />
+  {/if}
   <!-- The rest of the input types are either numbers or strings -->
 {:else if filter.valueType === "number"}
   <input

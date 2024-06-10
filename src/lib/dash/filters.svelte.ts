@@ -18,6 +18,7 @@ export type Filter = {
 }
 
 export type FilterValueType = string | number | null | string[]
+export type FilterFieldType = "number"|"date"|"string"|"group"|"member"
 
 export type FilterModeText = {
   mode: FilterMode
@@ -32,14 +33,20 @@ export const filterFieldText = (raw: string) => {
     webhook_avatar_url: "proxy avatar",
     message_count: "message count",
     pronouns: "pronoun",
+    birthday: "birthdays",
+    created: "creation dates"
   }
 
   return text[raw] ?? raw
 }
 
-export const filterFieldType = (raw: string) => {
-  const type: Record<string, string> = {
+export const filterFieldType = (raw: string): FilterFieldType  => {
+  const type: Record<string, FilterFieldType> = {
     message_count: "number",
+    created: "date",
+    birthday: "date",
+    group: "group",
+    member: "member"
   }
 
   return type[raw] ?? "string"
@@ -51,11 +58,11 @@ export const filterModeText = (newMode: FilterMode, type: string) => {
   const text: FilterModeText[] = [
     {
       mode: FilterMode.INCLUDES,
-      verb: "include",
+      verb: type === "date" ? "match the following criteria:" : "include",
     },
     {
       mode: FilterMode.EXCLUDES,
-      verb: "exclude",
+      verb: type === "date" ? "don't match the following criteria:" : "exclude",
     },
     {
       mode: FilterMode.EXACT,
@@ -75,12 +82,12 @@ export const filterModeText = (newMode: FilterMode, type: string) => {
     },
     {
       mode: FilterMode.HIGHERTHAN,
-      verb: "are more than",
+      verb: type === "date" ? "are after" : "are more than",
       afterVerb: type === "string" ? "characters long" : "",
     },
     {
       mode: FilterMode.LOWERTHAN,
-      verb: "are less than",
+      verb: type === "date" ? "are before" : "are less than",
       afterVerb: type === "string" ? "characters long" : "",
     },
   ]
@@ -231,14 +238,19 @@ function applyFilter<T>(list: T[], filter: Filter, groupList?: Group[]): T[] {
   const field = filter.field as keyof T
   const value = filter.value
 
+  const fieldType = filterFieldType(filter.field)
+
   // first handle filtering by groups and members since they're rather... special
-  if (filter.field === "group" && groupList) {
-    // filtering members by groups
-    return filterMembersByGroup(processedList, filter.mode, value, groupList)
+  if (fieldType === "group" && groupList) {
+    return filterMembersByGroup<T>(processedList, filter.mode, value, groupList)
   }
 
-  if (filter.field === "member") {
-    return filterGroupsByMember(processedList, filter.mode, value)
+  if (fieldType === "member") {
+    return filterGroupsByMember<T>(processedList, filter.mode, value)
+  }
+
+  if (fieldType === "date") {
+    return filterByDate<T>(processedList, filter)
   }
 
   switch (filter.mode) {
@@ -495,5 +507,76 @@ function filterGroupsByMember<T>(
       list = list.filter((i) => ((i as Group).members?.length ?? 0) > 0)
       break
   }
+  return list
+}
+
+function filterByDate<T>(list: T[], filter: Filter) {
+  const field = filter.field as keyof T
+  const value = filter.value as string
+  
+  if (filter.mode === FilterMode.INCLUDES || filter.mode === FilterMode.EXCLUDES) {
+    // filters items based on whether the date has a certain timeframe
+    // like everyone created on the 12th day of the month
+    // or everyone with a birthday in november 2022
+
+    // the search query is formatted as an URLSearchParams string
+    const params = new URLSearchParams(value)
+    const day = params.get("day")
+    const month = params.get("month")
+    const year = params.get("year")
+    const weekday = params.get("weekday")
+
+    list = list.filter(i => {
+      if (!i[field]) return filter.mode === FilterMode.EXCLUDES
+      const date = new Date(i[field] as string)
+      let include = true
+
+      // include every time period that isn't specified, exclude if it is, and it doesn't match
+      if (day && date.getDate() !== parseInt(day)) include = false
+      if (include && weekday && date.getDay() !== parseInt(weekday)) include = false
+      if (include && month && date.getMonth() !== parseInt(month)) include = false
+      if (include && year && date.getFullYear() !== parseInt(year)) include = false
+      
+      // invert the include if the filtermode is EXCLUDE
+      if (filter.mode === FilterMode.EXCLUDES) return !include
+      else return include
+    })
+  } else if (filter.mode === FilterMode.EXACT || filter.mode === FilterMode.NOTEXACT) {
+    // filters dates based on whether they match the specified *date* exactly
+    // we ignore the time
+
+    // we use toLocaleDateString with locale en-CA
+    // since that keeps timezones in mind and formats the date as YYYY-MM-DD
+    // unsure if there's a better way.
+    const matchDate = new Date(value).toLocaleDateString("en-CA")
+
+    list = list.filter(i => {
+      if (!i[field]) return filter.mode === FilterMode.NOTEXACT
+      const date = new Date(i[field] as string).toLocaleDateString("en-CA")
+      let include = false
+      if (date === matchDate) include = true
+      if (filter.mode === FilterMode.NOTEXACT) return !include
+      else return include
+    })
+  } else if (filter.mode === FilterMode.HIGHERTHAN || filter.mode === FilterMode.LOWERTHAN) {
+    // filters dates based on whether they were after/before the specified date
+    // again, we ignore the time
+
+    const matchDate = new Date(value).toLocaleDateString("en-CA")
+
+    list = list.filter(i => {
+      if (!i[field]) return false
+
+      const date = new Date(i[field] as string).toLocaleDateString("en-CA")
+      const compare = date.localeCompare(matchDate)
+      if (filter.mode === FilterMode.LOWERTHAN) return compare < 0
+      else return compare > 0
+    })
+  } else if (filter.mode === FilterMode.EMPTY || filter.mode === FilterMode.NOTEMPTY) {
+    // filters the date based on whether it's set or not
+    const empty = filter.mode === FilterMode.EMPTY
+    list = list.filter(i => !i[field] ? empty : !empty)
+  }
+
   return list
 }
