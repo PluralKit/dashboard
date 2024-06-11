@@ -166,10 +166,12 @@
   </div>
   <div class="bg-base-100 flex-1 rounded-box p-4 gap-2 flex flex-col">
     <h5 class="text-lg">Changes</h5>
+    <div class="text-sm">
+      {uuidSelection.length} groups total ({added.length} added, {removed.length} removed)
+    </div>
     {#if added.length > 0}
-      <hr />
       <div>
-        <h6 class="flex flex-row gap-1 items-center mb-1">
+        <h6 class="flex flex-row gap-1 items-center mb-1 mt-2">
           <IconPlus class="text-success" size={22} />
           Groups added
           <button
@@ -185,9 +187,8 @@
       </div>
     {/if}
     {#if removed.length > 0}
-      <hr />
       <div>
-        <h6 class="flex flex-row gap-1 items-center mb-1">
+        <h6 class="flex flex-row gap-1 items-center mb-1 mt-2">
           <IconMinus class="text-error" size={22} />
           Groups removed
           <button
@@ -207,7 +208,7 @@
       </div>
     {/if}
     {#if removed.length === 0 && added.length === 0}
-      <span class="text-sm">No changes have been made yet.</span>
+      <div class="mt-3">No changes have been made yet.</div>
     {/if}
   </div>
 </div>
