@@ -61,7 +61,7 @@
 
   function addFilter() {
     const value =
-      filterFieldType("date") &&
+      filterFieldType(filterField) === "date" &&
       (filterMode === FilterMode.INCLUDES || filterMode === FilterMode.EXCLUDES)
         ? dateString
         : filterValue
