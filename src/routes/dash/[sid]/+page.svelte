@@ -9,7 +9,6 @@
   let { data } = $props()
   let tab = $state(data.tab || "overview")
   $effect(() => {
-    console.log(data.tab)
     tab = data.tab
   })
 
