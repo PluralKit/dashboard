@@ -31,7 +31,7 @@ export interface DashList<T> {
   fetch: (token?: string) => Promise<void>
 }
 
-interface SvelecteOption {
+export interface SvelecteOption {
   value: string|undefined,
   text: string,
   extra: string|undefined

@@ -33,6 +33,8 @@ export async function load({ cookies, params, url }) {
       try {
         member = await api<Member>(`members/${params.mid}`, options)
         await new Promise((resolve) => setTimeout(resolve, parseInt(PUBLIC_API_COOLDOWN)))
+
+        // fetch all the groups in the system so people can edit that member's groups on the page
         groups = (await api<Group[]>(`systems/${sid}/groups?with_members=true`, options)) || []
       } catch (err) {
         const e = err as ApiError

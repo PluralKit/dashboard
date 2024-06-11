@@ -140,3 +140,7 @@
 .sv-dropdown-scroll {
   padding: 0 0.75rem !important;
 }
+
+.svelecte {
+  flex: auto !important;
+}

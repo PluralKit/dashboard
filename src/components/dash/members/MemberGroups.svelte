@@ -5,9 +5,10 @@
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
   import SimplePagination from "../SimplePagination.svelte"
-  import { copyToClipboard } from "$lib/dash/utils"
   import CopyField from "../CopyField.svelte"
   import MemberLink from "./MemberLink.svelte"
+  import MemberGroupEdit from "./edit/MemberGroupEdit.svelte"
+  import MemberGroupList from "./MemberGroupList.svelte"
 
   let {
     asPage = false,
@@ -18,6 +19,8 @@
     member: Member
     tab: string
   } = $props()
+
+  let mode: "view"|"edit" = $state("view")
 
   let groups: Group[] = $derived(
     !asPage
@@ -38,18 +41,17 @@
 
   let itemsPerPage = 5
   let currentPage = $state(1)
-  let paginatedGroups = $derived.by(() => {
-    let last = currentPage * itemsPerPage
-    let first = last - itemsPerPage
-    return groups.slice(first, last)
-  })
 </script>
 
 <div style={tab !== "groups" ? "display: none;" : ""}>
+  {#if mode === "view"}
   <div class="flex flex-row gap-2 justify-between items-center mb-3">
     <h4 class="text-2xl ml-3 font-medium">Group list</h4>
     {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.member.privacyMode !== PrivacyMode.PUBLIC)}
-      <button class="btn btn-sm btn-primary p-2">
+      <button 
+        class="btn btn-sm btn-primary p-2"
+        onclick={() => mode = "edit"}
+      >
         <IconEdit class="inline" size={18} /> Edit
       </button>
     {/if}
@@ -61,35 +63,21 @@
         <p class="mb-3">{groups.length} total groups</p>
         <SimplePagination {itemsPerPage} rawList={groups} bind:currentPage />
       </div>
-      <ol
-        class="menu flex-1 text-base p-0 flex flex-col list-decimal pl-8"
-        start={currentPage * itemsPerPage - itemsPerPage + 1}
-      >
-        {#each paginatedGroups as group, i (group.uuid)}
-          <li class="list-item border-b border-muted/50">
-            <span class="hover:bg-transparent hover:cursor-default flex flex-row">
-              <div class="flex flex-row w-full justify-between">
-                <span
-                  >[<code class="bg-base-200">{group.id}</code>] <AwaitHtml
-                    htmlPromise={parseMarkdown(group.name || "", { embed: true })}
-                  />
-                </span><CopyField class="ml-auto" field="group id" value={group.id} />
-              </div>
-            </span>
-          </li>
-        {/each}
-      </ol>
+      <MemberGroupList {groups} bind:currentPage {itemsPerPage}/>
     </div>
     {#if groups.length > 0}
       <div class="rounded-xl text-sm discord-markdown bg-base-100 p-6 py-4 flex-1">
         <h5 class="text-lg mb-2">Formatted list</h5>
-        <p>
+        <div>
           <AwaitHtml htmlPromise={parseMarkdown(formattedGroups, { embed: true })} />
-        </p>
+        </div>
       </div>
     {/if}
   </div>
   <div class="flex flex-row justify-end items-center">
     <MemberLink item={member} {asPage} />
   </div>
+  {:else if mode === "edit"}
+  <MemberGroupEdit bind:mode {member} groupsCurrent={groups}  />
+  {/if}
 </div>
