@@ -86,14 +86,14 @@
         {:else}
           <option value={null} disabled>Sort mode...</option>
           {#if filterFieldType(sortField) === "string"}
-          <option value={SortMode.ALPHABETICAL}>alphabetical</option>
-          <option value={SortMode.SIZE}>length</option>
+            <option value={SortMode.ALPHABETICAL}>alphabetical</option>
+            <option value={SortMode.SIZE}>length</option>
           {/if}
         {/if}
       </select>
     </div>
   </div>
-  {#if sortField && (sortMode || sortField === "color" || filterFieldType(sortField) === "number") || filterFieldType(sortField) === "date"}
+  {#if (sortField && (sortMode || sortField === "color" || filterFieldType(sortField) === "number")) || filterFieldType(sortField) === "date"}
     <label class="mt-3" for={`${type}-new-sort-order`}>Order</label>
     <div class="flex flex-row gap-3">
       <select bind:value={sortOrder} class="flex-1 select select-sm select-bordered">

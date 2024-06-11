@@ -92,11 +92,7 @@
       bind:value={editedState.birthday}
       field="Birthday"
     />
-    <EditColor
-      item={member}
-      original={member.color}
-      bind:value={editedState.color}
-    />
+    <EditColor item={member} original={member.color} bind:value={editedState.color} />
   </div>
   <div class="bg-base-100 w-full rounded-box p-4 gap-2 flex flex-col">
     <h5 class="text-lg">Images</h5>
@@ -113,7 +109,12 @@
       bind:value={editedState.webhook_avatar_url}
       field="Proxy avatar"
     />
-    <EditImage item={member} original={member.banner} bind:value={editedState.banner} field="Banner" />
+    <EditImage
+      item={member}
+      original={member.banner}
+      bind:value={editedState.banner}
+      field="Banner"
+    />
   </div>
   <EditDescription
     item={member}

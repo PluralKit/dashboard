@@ -53,7 +53,7 @@
     ) {
       filterValue = 0
     }
-    
+
     if (filterMode === FilterMode.EMPTY || filterMode === FilterMode.NOTEMPTY) {
       filterValue = ""
     }
@@ -101,10 +101,10 @@
     dateYear = null
   }
 
-  let dateDay: number|null = $state(null)
-  let dateWeekday: number|null = $state(null)
-  let dateMonth: number|null = $state(null)
-  let dateYear: number|null = $state(null)
+  let dateDay: number | null = $state(null)
+  let dateWeekday: number | null = $state(null)
+  let dateMonth: number | null = $state(null)
+  let dateYear: number | null = $state(null)
 
   let dateString: string = $derived.by(() => {
     let params = new URLSearchParams()

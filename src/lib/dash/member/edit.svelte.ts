@@ -69,8 +69,10 @@ export const createViewEditState = (member: Member): Member => {
   }
 }
 
-export const createInfoEditState = (member: Member): Member & {
-  proxy_tags: proxytag[],
+export const createInfoEditState = (
+  member: Member
+): Member & {
+  proxy_tags: proxytag[]
   privacy: MemberPrivacy
 } => {
   let proxy_tags: proxytag[] = $state(JSON.parse(JSON.stringify(member.proxy_tags)) || [])
@@ -88,7 +90,7 @@ export const createInfoEditState = (member: Member): Member & {
     },
     set privacy(value: MemberPrivacy) {
       privacy = value
-    }
+    },
   }
 }
 

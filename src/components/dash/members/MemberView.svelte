@@ -123,7 +123,11 @@
                 >
                   <span class="flex flex-row justify-start gap-2"
                     ><b>Pronouns:</b>
-                    <span><AwaitHtml htmlPromise={parseMarkdown(member.pronouns, { embed: true })} /></span>
+                    <span
+                      ><AwaitHtml
+                        htmlPromise={parseMarkdown(member.pronouns, { embed: true })}
+                      /></span
+                    >
                   </span>
                   <CopyField class="ml-auto" field="pronouns" value={member.pronouns} />
                 </span>
@@ -165,9 +169,7 @@
               Description <CopyField field="description" value={member.description} />
             </div>
             <div class="rounded-xl bg-base-100">
-              <div class="discord-markdown p-6 py-4"
-                style="word-wrap: anywhere;"
-              >
+              <div class="discord-markdown p-6 py-4" style="word-wrap: anywhere;">
                 <AwaitHtml htmlPromise={parseMarkdown(member.description, { embed: true })} />
               </div>
               {#if member.banner && open}

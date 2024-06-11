@@ -58,9 +58,9 @@
   />
   <!-- TODO: privacy filtering here -->
   <!-- TODO: Same for proxy tags -->
-{:else if filterFieldType(filter.field) === "date" && !(filter.mode === FilterMode.INCLUDES || filter.mode === FilterMode.EXCLUDES )}
+{:else if filterFieldType(filter.field) === "date" && !(filter.mode === FilterMode.INCLUDES || filter.mode === FilterMode.EXCLUDES)}
   {#if filter.mode !== FilterMode.EMPTY && filter.mode !== FilterMode.NOTEMPTY}
-  <input
+    <input
       class="input input-sm input-bordered"
       type="date"
       value={filter.value}

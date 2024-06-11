@@ -10,7 +10,7 @@
   let {
     group,
     tab,
-    asPage
+    asPage,
   }: {
     group: Group
     tab: string
@@ -45,9 +45,9 @@
     </div>
   {/if}
   {#if !group.created && !group.privacy}
-  <div class="bg-base-100 rounded-box p-4 gap-2">
-    <p>There is no additional information available for this group.</p>
-  </div>
+    <div class="bg-base-100 rounded-box p-4 gap-2">
+      <p>There is no additional information available for this group.</p>
+    </div>
   {/if}
   <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
     {#if group.created}

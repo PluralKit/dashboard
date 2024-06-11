@@ -25,7 +25,10 @@
   >
     <label for={`${item.uuid}-edit-description`} class="text-lg">Description</label>
     <button onclick={() => popupElement.showModal()} class="btn btn-primary btn-xs">Preview</button>
-    <span title={original === value ? "" : "Edited"} class={original === value ? "hidden" : "text-info"} >
+    <span
+      title={original === value ? "" : "Edited"}
+      class={original === value ? "hidden" : "text-info"}
+    >
       <IconPencil size={26} />
     </span>
     <span class="font-normal text-sm">
@@ -60,7 +63,7 @@
       <AwaitHtml htmlPromise={parseMarkdown(value || "", { embed: true })} />
     </div>
   </div>
-      <form method="dialog" class="modal-backdrop">
-      <button tabindex="-1">close</button>
+  <form method="dialog" class="modal-backdrop">
+    <button tabindex="-1">close</button>
   </form>
 </dialog>

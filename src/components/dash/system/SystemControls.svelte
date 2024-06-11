@@ -3,9 +3,8 @@
   import { toggleSetting } from "$lib/dash/utils"
   import { IconAddressBook, IconSettings } from "@tabler/icons-svelte"
 </script>
-<div
-  class={`box bg-base-100 h-min`}
->
+
+<div class={`box bg-base-100 h-min`}>
   <div class="flex flex-row justify-between items-center">
     <h2 class="text-xl">
       <IconAddressBook class="inline mr-2" /> System options
@@ -29,6 +28,6 @@
       Show colors
     </button>
   </div>
-  <hr class="my-2"/>
+  <hr class="my-2" />
   <p class="my-4">Links to bulk privacy will go here.</p>
 </div>

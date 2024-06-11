@@ -84,12 +84,7 @@
   <div class="bg-base-100 w-full rounded-box p-4 gap-2 flex flex-col">
     <h5 class="text-lg">Images</h5>
     <hr />
-    <EditImage
-      item={group}
-      original={group.icon}
-      bind:value={editedState.icon}
-      field="Avatar"
-    />
+    <EditImage item={group} original={group.icon} bind:value={editedState.icon} field="Avatar" />
     <EditImage
       item={group}
       original={group.banner}
@@ -97,11 +92,7 @@
       field="Banner"
     />
   </div>
-  <EditDescription
-    item={group}
-    bind:value={editedState.description}
-    original={group.description}
-  />
+  <EditDescription item={group} bind:value={editedState.description} original={group.description} />
 </div>
 {#if err.length > 0}
   {#each err as e}

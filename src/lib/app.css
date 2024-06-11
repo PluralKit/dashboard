@@ -90,8 +90,11 @@
   --sv-control-bg: var(--sv-bg);
   --sv-item-wrap-padding: 3px 3px 3px 6px;
   --sv-item-selected-bg: var(--fallback-b3, oklch(var(--b3) / var(--tw-bg-opacity)));
-  --sv-item-btn-color: var(--fallback-bc,oklch(var(--bc)/1));
-  --sv-item-btn-color-hover: var(--fallback-bc,oklch(var(--bc)/0.6)); /* same as icon-color-hover in default theme */
+  --sv-item-btn-color: var(--fallback-bc, oklch(var(--bc) / 1));
+  --sv-item-btn-color-hover: var(
+    --fallback-bc,
+    oklch(var(--bc) / 0.6)
+  ); /* same as icon-color-hover in default theme */
   --sv-item-btn-bg: transparent;
   --sv-item-btn-bg-hover: transparent;
   --sv-icon-color: var(--sv-item-btn-color);
@@ -108,7 +111,7 @@
   --sv-dropdown-shadow: none;
   --sv-dropdown-height: 320px;
   --sv-dropdown-active-bg: var(--fallback-b3, oklch(var(--b3) / var(--tw-bg-opacity)));
-  --sv-dropdown-selected-bg: oklch(var(--p) / 0.20);
+  --sv-dropdown-selected-bg: oklch(var(--p) / 0.2);
   --sv-create-kbd-border: none;
   --sv-create-kbd-bg: transparent;
   --sv-create-disabled-bg: transparent;

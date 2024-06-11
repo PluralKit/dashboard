@@ -126,20 +126,20 @@
   <MemberView {member} {tab} open={isOpen} {asPage} />
   <MemberInfo {member} {tab} {asPage} />
   {#if openedOnce && tabbedOnce}
-  <MemberGroups {member} {tab} {asPage} />
+    <MemberGroups {member} {tab} {asPage} />
   {/if}
 {/snippet}
 
 {#snippet systemTabs(system: System, tab: "view"|"info"|"groups")}
   <SystemView {system} {tab} open={isOpen} {asPage} />
-  <SystemInfo {system} {tab} {asPage}/>
+  <SystemInfo {system} {tab} {asPage} />
 {/snippet}
 
 {#snippet groupTabs(group: Group, tab: "view"|"info"|"groups")}
   <GroupView {group} {tab} open={isOpen} {asPage} />
   <GroupInfo {group} {tab} {asPage} />
   {#if openedOnce && tabbedOnce}
-  <GroupMembers {group} {tab} {asPage} />
+    <GroupMembers {group} {tab} {asPage} />
   {/if}
 {/snippet}
 
@@ -161,10 +161,7 @@
 {#snippet systemIcon(system: System)}
   {#if system.avatar_url}
     <div class="avatar w-14 h-14">
-      {@render iconImage(
-        system.avatar_url || "",
-        `Avatar of ${system.name ?? "this system"}`
-      )}
+      {@render iconImage(system.avatar_url || "", `Avatar of ${system.name ?? "this system"}`)}
     </div>
   {:else}
     <div class="avatar w-14 h-14">

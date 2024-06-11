@@ -27,7 +27,7 @@
   {#if mode === "view"}
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">General information</h4>
-      {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC)}
+      {#if !asPage && dash.privacyMode !== PrivacyMode.PUBLIC}
         <button onclick={() => (mode = "edit")} class="btn btn-sm btn-primary p-2">
           <IconEdit class="inline" size={18} /> Edit
         </button>
@@ -46,12 +46,20 @@
           <ul class="flex-1 flex flex-col gap-1 justify-start">
             {#if system.avatar_url}
               <li>
-                <ImageModal url={system.avatar_url} imageType="avatar" itemName={system.name || "this system"} />
+                <ImageModal
+                  url={system.avatar_url}
+                  imageType="avatar"
+                  itemName={system.name || "this system"}
+                />
               </li>
             {/if}
             {#if system.banner}
               <li>
-                <ImageModal url={system.banner} imageType="banner" itemName={system.name || "this system"} />
+                <ImageModal
+                  url={system.banner}
+                  imageType="banner"
+                  itemName={system.name || "this system"}
+                />
               </li>
             {/if}
           </ul>
@@ -95,7 +103,11 @@
                 >
                   <span class="flex flex-row justify-start gap-2"
                     ><b>Pronouns:</b>
-                    <span><AwaitHtml htmlPromise={parseMarkdown(system.pronouns, { embed: true })} /></span>
+                    <span
+                      ><AwaitHtml
+                        htmlPromise={parseMarkdown(system.pronouns, { embed: true })}
+                      /></span
+                    >
                   </span>
                   <CopyField class="ml-auto" field="pronouns" value={system.pronouns} />
                 </span>
@@ -124,9 +136,7 @@
               Description <CopyField field="description" value={system.description} />
             </div>
             <div class="rounded-xl bg-base-100">
-              <div class="discord-markdown p-6 py-4"
-                style="word-wrap: anywhere;"
-              >
+              <div class="discord-markdown p-6 py-4" style="word-wrap: anywhere;">
                 <AwaitHtml htmlPromise={parseMarkdown(system.description, { embed: true })} />
               </div>
               {#if system.banner && open}

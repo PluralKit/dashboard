@@ -26,7 +26,7 @@
       </span>
     {/if}
   </span>
-  <select bind:value={value} class="input input-sm input-bordered">
+  <select bind:value class="input input-sm input-bordered">
     <option value="public">Public</option>
     <option value="private">Private</option>
   </select>

@@ -10,9 +10,7 @@
     <IconAlertTriangle class="text-error" /> Error fetching system: {dash.errors.system}
   </div>
 {/if}
-<div
-  class={`flex flex-col gap-8 mx-auto w-full max-w-4xl`}
->
+<div class={`flex flex-col gap-8 mx-auto w-full max-w-4xl`}>
   <SystemControls />
   <ItemCollapse item={dash.system || {}} forceOpen={true} type="system" />
 </div>

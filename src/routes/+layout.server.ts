@@ -16,7 +16,7 @@ export async function load({ cookies }) {
       cookies.set("pk-sid", system?.id || "", {
         path: "/",
         secure: env.NODE_ENV !== "development",
-        maxAge: 60 * 60 * 24 * 90 // 90 days
+        maxAge: 60 * 60 * 24 * 90, // 90 days
       })
     } catch (err) {
       return {

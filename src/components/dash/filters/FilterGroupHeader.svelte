@@ -4,9 +4,12 @@
   import type { FilterGroup } from "$lib/dash/filters.svelte"
   import { IconTrash } from "@tabler/icons-svelte"
 
-  let { group, list }: {
-    group: FilterGroup,
-    list: DashList<Member|Group>
+  let {
+    group,
+    list,
+  }: {
+    group: FilterGroup
+    list: DashList<Member | Group>
   } = $props()
 </script>
 

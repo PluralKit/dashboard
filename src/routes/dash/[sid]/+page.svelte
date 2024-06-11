@@ -5,7 +5,7 @@
   import MemberHome from "$components/dash/members/MemberHome.svelte"
   import Overview from "$components/dash/overview/Overview.svelte"
   import SystemHome from "$components/dash/system/SystemHome.svelte"
-  
+
   let { data } = $props()
   let tab = $state(data.tab || "overview")
   $effect(() => {

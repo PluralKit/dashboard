@@ -18,7 +18,7 @@ export type Filter = {
 }
 
 export type FilterValueType = string | number | null | string[]
-export type FilterFieldType = "number"|"date"|"string"|"group"|"member"
+export type FilterFieldType = "number" | "date" | "string" | "group" | "member"
 
 export type FilterModeText = {
   mode: FilterMode
@@ -34,19 +34,19 @@ export const filterFieldText = (raw: string) => {
     message_count: "message count",
     pronouns: "pronoun",
     birthday: "birthdays",
-    created: "creation dates"
+    created: "creation dates",
   }
 
   return text[raw] ?? raw
 }
 
-export const filterFieldType = (raw: string): FilterFieldType  => {
+export const filterFieldType = (raw: string): FilterFieldType => {
   const type: Record<string, FilterFieldType> = {
     message_count: "number",
     created: "date",
     birthday: "date",
     group: "group",
-    member: "member"
+    member: "member",
   }
 
   return type[raw] ?? "string"
@@ -121,7 +121,12 @@ export enum FilterMode {
   NOTEXACT = "no match",
 }
 
-export const groupArrayModes = [FilterMode.INCLUDES, FilterMode.EXCLUDES, FilterMode.EXACT, FilterMode.NOTEXACT]
+export const groupArrayModes = [
+  FilterMode.INCLUDES,
+  FilterMode.EXCLUDES,
+  FilterMode.EXACT,
+  FilterMode.NOTEXACT,
+]
 
 export function createFilterGroup(filter?: Filter[], drag: boolean = true): FilterGroup {
   let filters: Filter[] = $state(filter || [])
@@ -147,7 +152,7 @@ export function createFilterGroup(filter?: Filter[], drag: boolean = true): Filt
     },
     get draggable() {
       return draggable
-    }
+    },
   }
 }
 
@@ -427,20 +432,14 @@ function filterMembersByGroup<T>(
     case FilterMode.NOTEMPTY:
       // include any member a group
       list = list.filter((i) => {
-        if (
-          groupList.some((g) => g.members?.includes((i as Member).uuid || ""))
-        )
-          return true
+        if (groupList.some((g) => g.members?.includes((i as Member).uuid || ""))) return true
         return false
       })
       break
     case FilterMode.EMPTY:
       // include any member without a group
       list = list.filter((i) => {
-        if (
-          groupList.some((g) => g.members?.includes((i as Member).uuid || ""))
-        )
-          return false
+        if (groupList.some((g) => g.members?.includes((i as Member).uuid || ""))) return false
         return true
       })
       break
@@ -448,11 +447,7 @@ function filterMembersByGroup<T>(
   return list
 }
 
-function filterGroupsByMember<T>(
-  list: T[],
-  mode: FilterMode,
-  value: FilterValueType
-): T[] {
+function filterGroupsByMember<T>(list: T[], mode: FilterMode, value: FilterValueType): T[] {
   const members = value as string[]
 
   switch (mode) {
@@ -483,7 +478,7 @@ function filterGroupsByMember<T>(
       list = list.filter((i) => {
         if (members.length === 0) return true
 
-        return members.every(m => (i as Group).members?.includes(m))
+        return members.every((m) => (i as Group).members?.includes(m))
       })
       break
     case FilterMode.NOTEXACT:
@@ -491,7 +486,7 @@ function filterGroupsByMember<T>(
       list = list.filter((i) => {
         if (members.length === 0) return true
 
-        return !members.every(m => (i as Group).members?.includes(m))
+        return !members.every((m) => (i as Group).members?.includes(m))
       })
       break
     case FilterMode.HIGHERTHAN:
@@ -513,7 +508,7 @@ function filterGroupsByMember<T>(
 function filterByDate<T>(list: T[], filter: Filter) {
   const field = filter.field as keyof T
   const value = filter.value as string
-  
+
   if (filter.mode === FilterMode.INCLUDES || filter.mode === FilterMode.EXCLUDES) {
     // filters items based on whether the date has a certain timeframe
     // like everyone created on the 12th day of the month
@@ -526,7 +521,7 @@ function filterByDate<T>(list: T[], filter: Filter) {
     const year = params.get("year")
     const weekday = params.get("weekday")
 
-    list = list.filter(i => {
+    list = list.filter((i) => {
       if (!i[field]) return filter.mode === FilterMode.EXCLUDES
       const date = new Date(i[field] as string)
       let include = true
@@ -536,7 +531,7 @@ function filterByDate<T>(list: T[], filter: Filter) {
       if (include && weekday && date.getDay() !== parseInt(weekday)) include = false
       if (include && month && date.getMonth() !== parseInt(month)) include = false
       if (include && year && date.getFullYear() !== parseInt(year)) include = false
-      
+
       // invert the include if the filtermode is EXCLUDE
       if (filter.mode === FilterMode.EXCLUDES) return !include
       else return include
@@ -550,7 +545,7 @@ function filterByDate<T>(list: T[], filter: Filter) {
     // unsure if there's a better way.
     const matchDate = new Date(value).toLocaleDateString("en-CA")
 
-    list = list.filter(i => {
+    list = list.filter((i) => {
       if (!i[field]) return filter.mode === FilterMode.NOTEXACT
       const date = new Date(i[field] as string).toLocaleDateString("en-CA")
       let include = false
@@ -564,7 +559,7 @@ function filterByDate<T>(list: T[], filter: Filter) {
 
     const matchDate = new Date(value).toLocaleDateString("en-CA")
 
-    list = list.filter(i => {
+    list = list.filter((i) => {
       if (!i[field]) return false
 
       const date = new Date(i[field] as string).toLocaleDateString("en-CA")
@@ -575,7 +570,7 @@ function filterByDate<T>(list: T[], filter: Filter) {
   } else if (filter.mode === FilterMode.EMPTY || filter.mode === FilterMode.NOTEMPTY) {
     // filters the date based on whether it's set or not
     const empty = filter.mode === FilterMode.EMPTY
-    list = list.filter(i => !i[field] ? empty : !empty)
+    list = list.filter((i) => (!i[field] ? empty : !empty))
   }
 
   return list

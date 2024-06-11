@@ -20,7 +20,7 @@
     tab: string
   } = $props()
 
-  let mode: "view"|"edit" = $state("view")
+  let mode: "view" | "edit" = $state("view")
 
   let groups: Group[] = $derived(
     !asPage
@@ -45,39 +45,36 @@
 
 <div style={tab !== "groups" ? "display: none;" : ""}>
   {#if mode === "view"}
-  <div class="flex flex-row gap-2 justify-between items-center mb-3">
-    <h4 class="text-2xl ml-3 font-medium">Group list</h4>
-    {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.member.privacyMode !== PrivacyMode.PUBLIC)}
-      <button 
-        class="btn btn-sm btn-primary p-2"
-        onclick={() => mode = "edit"}
-      >
-        <IconEdit class="inline" size={18} /> Edit
-      </button>
-    {/if}
-  </div>
-  <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
-    <div class="rounded-xl bg-base-100 flex-1 p-6 py-4">
-      <h5 class="text-lg mb-2">Group info</h5>
-      <div class="flex flex-row justify-between gap-2 items-start">
-        <p class="mb-3">{groups.length} total groups</p>
-        <SimplePagination {itemsPerPage} rawList={groups} bind:currentPage />
-      </div>
-      <MemberGroupList {groups} bind:currentPage {itemsPerPage}/>
+    <div class="flex flex-row gap-2 justify-between items-center mb-3">
+      <h4 class="text-2xl ml-3 font-medium">Group list</h4>
+      {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.member.privacyMode !== PrivacyMode.PUBLIC)}
+        <button class="btn btn-sm btn-primary p-2" onclick={() => (mode = "edit")}>
+          <IconEdit class="inline" size={18} /> Edit
+        </button>
+      {/if}
     </div>
-    {#if groups.length > 0}
-      <div class="rounded-xl text-sm discord-markdown bg-base-100 p-6 py-4 flex-1">
-        <h5 class="text-lg mb-2">Formatted list</h5>
-        <div>
-          <AwaitHtml htmlPromise={parseMarkdown(formattedGroups, { embed: true })} />
+    <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
+      <div class="rounded-xl bg-base-100 flex-1 p-6 py-4">
+        <h5 class="text-lg mb-2">Group info</h5>
+        <div class="flex flex-row justify-between gap-2 items-start">
+          <p class="mb-3">{groups.length} total groups</p>
+          <SimplePagination {itemsPerPage} rawList={groups} bind:currentPage />
         </div>
+        <MemberGroupList {groups} bind:currentPage {itemsPerPage} />
       </div>
-    {/if}
-  </div>
-  <div class="flex flex-row justify-end items-center">
-    <MemberLink item={member} {asPage} />
-  </div>
+      {#if groups.length > 0}
+        <div class="rounded-xl text-sm discord-markdown bg-base-100 p-6 py-4 flex-1">
+          <h5 class="text-lg mb-2">Formatted list</h5>
+          <div>
+            <AwaitHtml htmlPromise={parseMarkdown(formattedGroups, { embed: true })} />
+          </div>
+        </div>
+      {/if}
+    </div>
+    <div class="flex flex-row justify-end items-center">
+      <MemberLink item={member} {asPage} />
+    </div>
   {:else if mode === "edit"}
-  <MemberGroupEdit bind:mode {member} groupsCurrent={groups} {asPage} />
+    <MemberGroupEdit bind:mode {member} groupsCurrent={groups} {asPage} />
   {/if}
 </div>

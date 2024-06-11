@@ -77,13 +77,14 @@
     const target = event.target as HTMLSelectElement
     if (target.value === "public" || target.value === "private") {
       Object.entries(editedState.privacy).forEach(
-        ([key]) => editedState.privacy[key as keyof MemberPrivacy] = target.value
+        ([key]) => (editedState.privacy[key as keyof MemberPrivacy] = target.value)
       )
     } else if (target.value) {
       Object.entries(editedState.privacy).forEach(
         ([key]) =>
-          editedState.privacy[key as keyof MemberPrivacy] =
-          (member.privacy as MemberPrivacy)[key as keyof MemberPrivacy]
+          (editedState.privacy[key as keyof MemberPrivacy] = (member.privacy as MemberPrivacy)[
+            key as keyof MemberPrivacy
+          ])
       )
     }
   }

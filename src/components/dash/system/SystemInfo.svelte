@@ -9,7 +9,7 @@
   let {
     system,
     tab,
-    asPage
+    asPage,
   }: {
     system: System
     tab: string
@@ -20,7 +20,7 @@
 <div style={tab !== "info" ? "display: none;" : ""}>
   <div class="flex flex-row gap-2 justify-between items-center mb-3">
     <h4 class="text-2xl ml-3 font-medium">System details</h4>
-    {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC)}
+    {#if !asPage && dash.privacyMode !== PrivacyMode.PUBLIC}
       <button class="btn btn-sm btn-primary p-2">
         <IconEdit class="inline" size={18} /> Edit
       </button>
@@ -44,9 +44,9 @@
     </div>
   {/if}
   {#if !system.created && !system.privacy}
-  <div class="bg-base-100 rounded-box p-4 gap-2">
-    <p>There is no additional information available for this system.</p>
-  </div>
+    <div class="bg-base-100 rounded-box p-4 gap-2">
+      <p>There is no additional information available for this system.</p>
+    </div>
   {/if}
   <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
     {#if system.created}
@@ -80,7 +80,8 @@
           <li class="w-1/2">
             <span
               class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
-              ><b>Member list:</b> <PrivacyDisplay value={system.privacy.member_list_privacy} /></span
+              ><b>Member list:</b>
+              <PrivacyDisplay value={system.privacy.member_list_privacy} /></span
             >
           </li>
           <li class="w-1/2">
@@ -111,7 +112,8 @@
           <li class="w-1/2">
             <span
               class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
-              ><b>Front history:</b> <PrivacyDisplay value={system.privacy.front_history_privacy} /></span
+              ><b>Front history:</b>
+              <PrivacyDisplay value={system.privacy.front_history_privacy} /></span
             >
           </li>
         </ul>

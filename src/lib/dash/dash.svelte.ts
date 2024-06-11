@@ -32,9 +32,9 @@ export interface DashList<T> {
 }
 
 export interface SvelecteOption {
-  value: string|undefined,
-  text: string,
-  extra: string|undefined
+  value: string | undefined
+  text: string
+  extra: string | undefined
 }
 
 export let dash = createDash()
@@ -163,11 +163,13 @@ function createMemberListState() {
   let members: Member[] = $state([])
   let processedMembers: Member[] = $state(processList(members, filters, sorts))
   let paginatedMembers: Member[] = $state(paginateList(processedMembers, listSettings))
-  
+
   let optionMembers: SvelecteOption[] = $derived(
-    members.map((g) => {
-      return { value: g.uuid, text: `${g.name} (${g.id})`, extra: g.display_name }
-    }).sort((a,b) => a.text.localeCompare(b.text))
+    members
+      .map((g) => {
+        return { value: g.uuid, text: `${g.name} (${g.id})`, extra: g.display_name }
+      })
+      .sort((a, b) => a.text.localeCompare(b.text))
   )
 
   return {
@@ -176,7 +178,7 @@ function createMemberListState() {
         raw: members,
         processed: processedMembers,
         paginated: paginatedMembers,
-        options: optionMembers
+        options: optionMembers,
       }
     },
     get filters() {
@@ -226,9 +228,11 @@ function createGroupListState() {
   let paginatedGroups: Group[] = $state(paginateList(processedGroups, listSettings))
 
   let optionGroups: SvelecteOption[] = $derived(
-    groups.map((g) => {
-      return { value: g.uuid, text: `${g.name} (${g.id})`, extra: g.display_name }
-    }).sort((a,b) => a.text.localeCompare(b.text))
+    groups
+      .map((g) => {
+        return { value: g.uuid, text: `${g.name} (${g.id})`, extra: g.display_name }
+      })
+      .sort((a, b) => a.text.localeCompare(b.text))
   )
 
   return {
@@ -237,7 +241,7 @@ function createGroupListState() {
         raw: groups,
         processed: processedGroups,
         paginated: paginatedGroups,
-        options: optionGroups
+        options: optionGroups,
       }
     },
     get filters() {
@@ -262,7 +266,11 @@ function createGroupListState() {
       paginatedGroups = paginateList(processedGroups, listSettings)
     },
     fetch: async function (token?: string) {
-      groups = await fetchList(fetch, `systems/${dash.system?.id || "exmpl"}/groups?with_members=true`, token)
+      groups = await fetchList(
+        fetch,
+        `systems/${dash.system?.id || "exmpl"}/groups?with_members=true`,
+        token
+      )
       processedGroups = processList(groups, filters, sorts)
       paginatedGroups = paginateList(processedGroups, listSettings)
     },

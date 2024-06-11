@@ -3,8 +3,11 @@
   import { dash } from "$lib/dash/dash.svelte"
   import { page } from "$app/stores"
 
-  let { asPage, item }: {
-    asPage: boolean,
+  let {
+    asPage,
+    item,
+  }: {
+    asPage: boolean
     item: Member
   } = $props()
 </script>
