@@ -197,7 +197,7 @@
             onclick={() =>
               (uuidSelection = [
                 ...uuidsCurrent,
-                ...uuidSelection.filter((g) => uuidsCurrent.includes(g)),
+                ...uuidSelection.filter((g) => !uuidsCurrent.includes(g)),
               ])}
           >
             <IconRefresh size={18} class="inline" />
