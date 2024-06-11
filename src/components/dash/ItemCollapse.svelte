@@ -11,6 +11,8 @@
   import GroupMembers from "./groups/GroupMembers.svelte"
   import SystemView from "./system/SystemView.svelte"
   import SystemInfo from "./system/SystemInfo.svelte"
+  import { untrack } from "svelte"
+  import { fail } from "@sveltejs/kit"
 
   let {
     type,
@@ -29,6 +31,24 @@
   let tab: "view" | "info" | "groups" = $state("view")
 
   let isOpen = $derived(forceOpen ? true : open)
+
+  // checking which members are in what groups is a very expensive operation
+  // we only load in the membergroup components when ready
+  // so: 1. we've opened the card AND 2. already tabbed over to the group tab
+  // but we don't want to unload the groups afterwards
+  // which for example would cause us to lose state when editing
+  // hence why these two variables exist
+  let openedOnce = $state(false)
+  $effect(() => {
+    if (untrack(() => openedOnce)) return
+    else if (isOpen) openedOnce = true
+  })
+
+  let tabbedOnce = $state(false)
+  $effect(() => {
+    if (untrack(() => tabbedOnce)) return
+    else if (tab === "groups") tabbedOnce = true
+  })
 </script>
 
 <div
@@ -105,7 +125,7 @@
 {#snippet memberTabs(member: Member, tab: "view"|"info"|"groups")}
   <MemberView {member} {tab} open={isOpen} {asPage} />
   <MemberInfo {member} {tab} {asPage} />
-  {#if tab === "groups"}
+  {#if openedOnce && tabbedOnce}
   <MemberGroups {member} {tab} {asPage} />
   {/if}
 {/snippet}
@@ -118,7 +138,7 @@
 {#snippet groupTabs(group: Group, tab: "view"|"info"|"groups")}
   <GroupView {group} {tab} open={isOpen} {asPage} />
   <GroupInfo {group} {tab} {asPage} />
-  {#if tab === "groups"}
+  {#if openedOnce && tabbedOnce}
   <GroupMembers {group} {tab} {asPage} />
   {/if}
 {/snippet}
