@@ -78,6 +78,6 @@
     <MemberLink item={member} {asPage} />
   </div>
   {:else if mode === "edit"}
-  <MemberGroupEdit bind:mode {member} groupsCurrent={groups}  />
+  <MemberGroupEdit bind:mode {member} groupsCurrent={groups} {asPage} />
   {/if}
 </div>
