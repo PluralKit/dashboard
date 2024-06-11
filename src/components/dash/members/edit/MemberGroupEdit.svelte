@@ -82,7 +82,7 @@
 </script>
 
 <div class="alert mb-2 bg-warning/10">
-  <IconAlertTriangle class="text-warning" /><span>This section is incomplete! You cannot submit your edits yet.</span>
+  <IconAlertTriangle /><span>This section is incomplete! You cannot submit your edits yet.</span>
 </div>
 <div class="flex flex-row gap-2 justify-between items-center mb-3">
   <h4 class="text-2xl ml-3 font-medium">Editing member groups</h4>
@@ -173,7 +173,7 @@
           <IconPlus class="text-success" size={22} />
           Groups added
           <button
-            class="btn btn-ghost btn-circle text-warning btn-sm ml-auto"
+            class="btn btn-warning btn-xs ml-auto"
             title="Reset"
             aria-label="Reset added groups"
             onclick={() => (uuidSelection = uuidSelection.filter((g) => uuidsCurrent.includes(g)))}
@@ -191,7 +191,7 @@
           <IconMinus class="text-error" size={22} />
           Groups removed
           <button
-            class="btn btn-ghost btn-circle text-warning btn-sm ml-auto"
+            class="btn btn-warning btn-xs ml-auto"
             title="Reset"
             aria-label="Reset removed groups"
             onclick={() =>
@@ -215,17 +215,17 @@
 {#snippet option(opt)}
   <div
     class={`option flex flex-row justify-between rounded -m-1 p-1 ${
-      !opt.included ? "bg-success/20 hover:bg-success/40" : "bg-error/20 hover:bg-error/40"
+      !opt.included ? "bg-success/10 hover:bg-success/25" : "bg-error/10 hover:bg-error/25"
     }`}
   >
     <span>{opt.text}</span>
     {#if !opt.included}
       <span title="Add group">
-        <IconPlus size={20} class="text-success" />
+        <IconPlus size={20} />
       </span>
     {:else}
       <span title="Remove group">
-        <IconMinus size={20} class="text-error" />
+        <IconMinus size={20} />
       </span>
     {/if}
   </div>
