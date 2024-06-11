@@ -17,6 +17,8 @@
     list: DashList<Member | Group>
   } = $props()
 
+  let filterValue = $state(filter.value)
+
   const changeValue = (e: Event) => {
     const target = e.target as HTMLInputElement
     filter.value = filter.valueType === "number" ? parseInt(target.value) : target.value
@@ -33,9 +35,9 @@
     multiple
     valueField="value"
     labelField="text"
-    value={filter.value}
-    on:change={(e) => {
-      filter.value = e.detail.map((i: any) => i.value)
+    bind:value={filterValue}
+    onChange={() => {
+      filter.value = $state.snapshot(filterValue)
       list.process(dash.groups.list.raw)
       list.paginate()
     }}
@@ -47,9 +49,9 @@
     multiple
     valueField="value"
     labelField="text"
-    value={filter.value}
-    on:change={(e) => {
-      filter.value = e.detail.map((i: any) => i.value)
+    bind:value={filterValue}
+    onChange={() => {
+      filter.value = $state.snapshot(filterValue)
       list.process(dash.groups.list.raw)
       list.paginate()
     }}
