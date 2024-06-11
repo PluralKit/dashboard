@@ -50,7 +50,7 @@
               value: g.uuid,
               text: `${g.name} (${g.id})`,
               extra: g.display_name,
-              included: uuidSelection.includes(g.uuid || ""),
+              included: uuidsCurrent.includes(g.uuid || ""),
             }
           })
           .sort((a, b) => a.text.localeCompare(b.text))
@@ -60,7 +60,7 @@
               value: g.uuid,
               text: `${g.name} (${g.id})`,
               extra: g.display_name,
-              included: uuidSelection.includes(g.uuid || ""),
+              included: uuidsCurrent.includes(g.uuid || ""),
             }
           })
           .sort((a, b) => a.text.localeCompare(b.text))
@@ -79,6 +79,8 @@
 
   let added = $derived(groupSelection.filter((g) => !uuidsCurrent.includes(g.uuid || "")))
   let removed = $derived(groupsCurrent.filter((g) => !uuidSelection.includes(g.uuid || "")))
+
+  $effect(() => console.log(toRemove))
 </script>
 
 <div class="alert mb-2 bg-warning/10">
@@ -115,43 +117,95 @@
     <h5 class="text-lg">Edit groups</h5>
     <div class="flex flex-col md:flex-row gap-3">
       <div class="flex flex-col gap-2 flex-1">
-        <label for={`${member.id}-add-group-input`}>Add group</label>
+        <div class="flex flex-row gap-2 items-center">
+          <button
+            class="btn btn-success btn-xs"
+            title="Add all"
+            aria-label="Add all groups to member"
+            onclick={() => {
+              toAdd = allOptions.filter((opt) => !opt.included).map((g) => g.value || "")
+              uuidSelection = uuidSelection = [...uuidsCurrent, ...toAdd].filter(
+                (g) => !toRemove.includes(g)
+              )
+            }}
+          >
+            <IconPlus size={18} class="inline" />
+          </button>
+          <label for={`${member.id}-add-group-input`}>Add groups</label>
+          {#if added.length > 0}
+            <button
+              class="btn btn-warning btn-xs ml-auto"
+              title="Reset"
+              aria-label="Reset added groups"
+              onclick={() => {
+                uuidSelection = uuidSelection.filter((g) => uuidsCurrent.includes(g))
+                toAdd = []
+              }}
+            >
+              <IconRefresh size={18} class="inline" />
+            </button>
+          {/if}
+        </div>
         <Svelecte
           inputId={`${member.id}-add-group-input`}
           class="svelecte-control-pk"
-          highlightFirstItem={false}
           options={allOptions.filter((opt) => !opt.included)}
           multiple
+          collapseSelection="always"
           valueField="value"
           labelField="text"
-          selectOnTab={true}
           bind:value={toAdd}
           onChange={() => {
-            if (toAdd.length > 0) {
-              uuidSelection = [...uuidSelection, ...toAdd]
-            }
-            toAdd = []
+            uuidSelection = [...uuidsCurrent, ...toAdd].filter((g) => !toRemove.includes(g))
           }}
           {option}
         />
       </div>
       <div class="flex flex-col gap-2 flex-1">
-        <label for={`${member.id}-remove-group-input`}>Remove group</label>
+        <div class="flex flex-row gap-2 items-center">
+          <button
+            class="btn btn-error btn-xs"
+            title="Remove all"
+            aria-label="Remove all groups from member"
+            onclick={() => {
+              toRemove = allOptions.filter((opt) => opt.included).map((g) => g.value || "")
+              uuidSelection = uuidSelection = [...uuidsCurrent, ...toAdd].filter(
+                (g) => !toRemove.includes(g)
+              )
+            }}
+          >
+            <IconMinus size={18} class="inline" />
+          </button>
+          <label for={`${member.id}-remove-group-input`}>Remove groups</label>
+
+          {#if removed.length > 0}
+            <button
+              class="btn btn-warning btn-xs ml-auto"
+              title="Reset"
+              aria-label="Reset removed groups"
+              onclick={() => {
+                uuidSelection = [
+                  ...uuidsCurrent,
+                  ...uuidSelection.filter((g) => !uuidsCurrent.includes(g)),
+                ]
+                toRemove = []
+              }}
+            >
+              <IconRefresh size={18} class="inline" />
+            </button>
+          {/if}
+        </div>
         <Svelecte
           inputId={`${member.id}-remove-group-input`}
           class="svelecte-control-pk"
-          highlightFirstItem={false}
           options={allOptions.filter((opt) => opt.included)}
           multiple
+          collapseSelection="always"
           valueField="value"
           labelField="text"
-          selectOnTab={true}
           bind:value={toRemove}
           onChange={() => {
-            if (toRemove.length > 0) {
-              uuidSelection = uuidSelection.filter((g) => g !== toRemove[0])
-            }
-            toRemove = []
+            uuidSelection = [...uuidsCurrent, ...toAdd].filter((g) => !toRemove.includes(g))
           }}
           {option}
         />
@@ -178,7 +232,10 @@
             class="btn btn-warning btn-xs ml-auto"
             title="Reset"
             aria-label="Reset added groups"
-            onclick={() => (uuidSelection = uuidSelection.filter((g) => uuidsCurrent.includes(g)))}
+            onclick={() => {
+              uuidSelection = uuidSelection.filter((g) => uuidsCurrent.includes(g))
+              toAdd = []
+            }}
           >
             <IconRefresh size={18} class="inline" />
           </button>
@@ -195,11 +252,13 @@
             class="btn btn-warning btn-xs ml-auto"
             title="Reset"
             aria-label="Reset removed groups"
-            onclick={() =>
-              (uuidSelection = [
+            onclick={() => {
+              uuidSelection = [
                 ...uuidsCurrent,
                 ...uuidSelection.filter((g) => !uuidsCurrent.includes(g)),
-              ])}
+              ]
+              toRemove = []
+            }}
           >
             <IconRefresh size={18} class="inline" />
           </button>
@@ -233,10 +292,15 @@
 {/snippet}
 
 {#snippet joinGroups(groups: Group[])}
-  <ul class="discord-markdown text-sm flex flex-row flex-wrap gap-y-1 gap-x-3">
-    {#each groups as group}
-      <li>[<code>{group.id}</code>] {group.name}</li>
+  <ul class="discord-markdown text-sm flex flex-row flex-wrap gap-y-1 gap-x-2">
+    {#each groups as group, i}
+      {#if i <= 10}
+        <li>[<code>{group.id}</code>] {group.name}{i < groups.length - 1 ? ", " : ""}</li>
+      {/if}
     {/each}
+    {#if groups.length > 10}
+      <li>and {groups.length - 10} more...</li>
+    {/if}
   </ul>
 {/snippet}
 
