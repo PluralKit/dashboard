@@ -10,8 +10,13 @@ export function copyToClipboard(value?: string) {
   navigator.clipboard.writeText(value || "")
 }
 
-export async function fetchList<T>(fetch: SvelteFetch, path: string, token?: string): Promise<T[]> {
-  const api = apiClient(fetch)
+export async function fetchList<T>(
+  fetch: SvelteFetch,
+  path: string,
+  token?: string,
+  apiBaseUrl?: string
+): Promise<T[]> {
+  const api = apiClient(fetch, apiBaseUrl)
   return (
     (await api<T[]>(path, {
       token,

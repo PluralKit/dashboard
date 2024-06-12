@@ -7,6 +7,7 @@ import { getDashInfo } from "$api/utils"
 export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, params?: any) {
   const token = cookies.get("pk-token")
   const sid = cookies.get("pk-sid")
+  const apiBaseUrl = cookies.get("pk-api-url")
 
   // if we don't have a system id, assume old dash link
   // redirect to the new dash link if we have a token
@@ -18,7 +19,7 @@ export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, p
     }
   } else {
     // woo! we've got a new link
-    const api = apiClient(fetch)
+    const api = apiClient(fetch, apiBaseUrl)
 
     // if the param system id matches the cookie system id
     // AND we aren't forcing public mode

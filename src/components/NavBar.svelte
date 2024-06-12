@@ -11,6 +11,7 @@
     IconLogout,
     IconAddressBook,
     IconHome,
+    IconSettings,
   } from "@tabler/icons-svelte"
   import { dash } from "$lib/dash/dash.svelte"
 
@@ -84,6 +85,7 @@
           <li><a href={`/dash/${user?.id}?tab=members`}><IconUsers /> Members</a></li>
           <li><a href={`/dash/${user?.id}?tab=groups`}><IconBoxMultiple /> Groups</a></li>
           <hr class="my-2" />
+          <li><a href="/settings/general"><IconSettings /> Settings</a></li>
           <li>
             <form method="post" action="/?/logout">
               <IconLogout /> <input class="text-error w-min" type="submit" value="Logout" />

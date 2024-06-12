@@ -64,7 +64,7 @@
     if (err.length > 0) return
 
     const token = (browser && localStorage.getItem("pk-token")) || ""
-    const api = apiClient(fetch)
+    const api = apiClient(fetch, dash.apiBaseUrl)
 
     let response: Member | Group | System | undefined = undefined
     loading = true

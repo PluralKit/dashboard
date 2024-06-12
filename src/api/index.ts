@@ -1,3 +1,5 @@
+import { PUBLIC_BASE_API_URL } from "$env/static/public"
+
 export interface ApiOptions {
   token?: string
   headers?: Record<string, string>
@@ -25,12 +27,12 @@ export type SvelteFetch = (input: RequestInfo, init?: RequestInit | undefined) =
 
 export type ApiClient = <T>(path: string, options?: ApiOptions) => Promise<T | undefined>
 
-export default function apiClient(fetch: SvelteFetch): ApiClient {
+export default function apiClient(fetch: SvelteFetch, baseUrl?: string): ApiClient {
   const api: ApiClient = async function <T>(
     path: string,
     options?: ApiOptions
   ): Promise<T | undefined> {
-    const resp = await fetch(`https://api.pluralkit.me/v2/${path}`, {
+    const resp = await fetch(`${baseUrl ?? PUBLIC_BASE_API_URL}/v2/${path}`, {
       method: (options && options.method) || "GET",
       headers: {
         ...(options && options.token ? { Authorization: options.token } : {}),

@@ -7,8 +7,9 @@ import { error } from "@sveltejs/kit"
 export async function load({ cookies, params, url }) {
   const token = cookies.get("pk-token")
   const sid = cookies.get("pk-sid")
+  const apiBaseUrl = cookies.get("pk-api-url")
 
-  const api = apiClient(fetch)
+  const api = apiClient(fetch, apiBaseUrl)
 
   let options: ApiOptions = {}
 

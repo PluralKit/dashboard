@@ -5,6 +5,7 @@
 
   export let data: LayoutData
 
+  dash.apiBaseUrl = data.apiBaseUrl
   dash.member.member = data.member
   dash.member.groups = data.groups
   dash.member.privacyMode = data.privacyMode

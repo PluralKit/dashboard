@@ -7,10 +7,11 @@ export async function load({ cookies }) {
   const theme = cookies.get("pk-theme") ?? "dark"
 
   const token = cookies.get("pk-token")
+  const apiBaseUrl = cookies.get("pk-api-url")
 
   let system: System | null = null
   if (token) {
-    const api = apiClient(fetch)
+    const api = apiClient(fetch, apiBaseUrl)
     try {
       system = await login(api, cookies)
       cookies.set("pk-sid", system?.id || "", {
@@ -31,5 +32,6 @@ export async function load({ cookies }) {
     system: system,
     token: token,
     theme: theme,
+    apiBaseUrl,
   }
 }
