@@ -5,7 +5,6 @@
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
   import SimplePagination from "../SimplePagination.svelte"
-  import CopyField from "../CopyField.svelte"
   import MemberLink from "./MemberLink.svelte"
   import MemberGroupEdit from "./edit/MemberGroupEdit.svelte"
   import MemberGroupList from "./MemberGroupList.svelte"
@@ -38,6 +37,11 @@
       ? groups.map((g) => `[\`${g.id}\`] ${g.display_name || g.name}`).join("\n")
       : groups.map((g) => g.display_name || g.name).join(", ")
   )
+
+  // dirty hack to make the formatted groups update on edit
+  // there probably is a better way to do this, and I probably should submit a bug report to svelte!
+  function noop(_: any) {}
+  $effect(() => noop(formattedGroups))
 
   let itemsPerPage = 5
   let currentPage = $state(1)
