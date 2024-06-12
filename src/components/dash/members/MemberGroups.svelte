@@ -36,7 +36,7 @@
   let formattedGroups: string = $derived(
     groups.length <= 5
       ? groups.map((g) => `[\`${g.id}\`] ${g.display_name || g.name}`).join("\n")
-      : groups.map((g) => g.display_name).join(", ")
+      : groups.map((g) => g.display_name || g.name).join(", ")
   )
 
   let itemsPerPage = 5

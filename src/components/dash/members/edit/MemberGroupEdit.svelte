@@ -74,7 +74,7 @@
   let formattedGroups = $derived(
     groupSelection.length <= 5
       ? groupSelection.map((g) => `[\`${g.id}\`] ${g.display_name || g.name}`).join("\n")
-      : groupSelection.map((g) => g.display_name).join(", ")
+      : groupSelection.map((g) => g.display_name || g.name).join(", ")
   )
 
   let added = $derived(groupSelection.filter((g) => !uuidsCurrent.includes(g.uuid || "")))
