@@ -151,7 +151,7 @@
           class="svelecte-control-pk"
           options={allOptions.filter((opt) => !opt.included)}
           multiple
-          collapseSelection="always"
+          collapseSelection="blur"
           valueField="value"
           labelField="text"
           bind:value={toAdd}
@@ -200,7 +200,7 @@
           class="svelecte-control-pk"
           options={allOptions.filter((opt) => opt.included)}
           multiple
-          collapseSelection="always"
+          collapseSelection="blur"
           valueField="value"
           labelField="text"
           bind:value={toRemove}
