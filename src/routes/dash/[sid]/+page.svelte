@@ -42,11 +42,11 @@
       class={`tab ${tab === "groups" ? "tab-active" : ""} row-auto md:row-start-1`}
       onclick={() => changeTab("groups")}>Groups</button
     >
-    <button
+    <!-- <button
       role="tab"
       class={`tab ${tab === "switches" ? "tab-active" : ""} row-auto md:row-start-1`}
       onclick={() => changeTab("switches")}>Switches</button
-    >
+    > -->
   </div>
 </div>
 
