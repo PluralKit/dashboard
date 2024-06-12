@@ -81,8 +81,6 @@
 
   let added = $derived(groupSelection.filter((g) => !uuidsCurrent.includes(g.uuid || "")))
   let removed = $derived(groupsCurrent.filter((g) => !uuidSelection.includes(g.uuid || "")))
-
-  $effect(() => console.log(toRemove))
 </script>
 
 <div class="flex flex-row gap-2 justify-between items-center mb-3">
