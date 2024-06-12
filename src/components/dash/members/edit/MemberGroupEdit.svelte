@@ -213,6 +213,12 @@
   </div>
   <div class="bg-base-100 flex-1 rounded-box p-4 gap-2 flex flex-col">
     <h5 class="text-lg">Formatted preview</h5>
+    {#if formattedGroups.length > 1000}
+      <span class="text-sm"
+        ><IconAlertTriangle class="text-warning inline-block mr-1" size={18} />The formatted groups
+        take up more than 1000 characters. It will be cut off when viewed via the bot.</span
+      >
+    {/if}
     <div class="text-sm discord-markdown">
       <AwaitHtml htmlPromise={parseMarkdown(formattedGroups, { embed: true })} />
     </div>
