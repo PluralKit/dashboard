@@ -116,11 +116,13 @@
           bind:loading
           bind:err
           bind:success
-          pageItem={dash.group.group || {}}
-          {asPage}
+          options={{
+            item: group,
+            body: edited,
+            list: dash.groups,
+            asPage,
+          }}
           path={`groups/${group.uuid}`}
-          list={dash.groups}
-          {edited}
         />
         <button
           onclick={() => (mode = "view")}

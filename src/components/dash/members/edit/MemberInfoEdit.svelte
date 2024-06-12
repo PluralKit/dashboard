@@ -275,11 +275,13 @@
           bind:loading
           bind:err
           bind:success
-          pageItem={dash.member.member || {}}
-          {asPage}
+          options={{
+            item: member,
+            body: edited,
+            list: dash.members,
+            asPage,
+          }}
           path={`members/${member.uuid}`}
-          list={dash.members}
-          {edited}
         />
         <button
           onclick={() => (mode = "view")}

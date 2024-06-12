@@ -12,6 +12,8 @@
   import Svelecte from "svelecte"
   import AwaitHtml from "$components/dash/AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
+  import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
+  import { fade } from "svelte/transition"
 
   let {
     groupsCurrent,
@@ -29,7 +31,7 @@
   let success = $state(false)
   let loading = $state(false)
 
-  let uuidsCurrent: string[] = $state(groupsCurrent.map((g) => g.uuid || ""))
+  let uuidsCurrent: string[] = $derived(groupsCurrent.map((g) => g.uuid || ""))
   let uuidSelection: string[] = $state(uuidsCurrent)
 
   let groupSelection: Group[] = $derived(
@@ -83,9 +85,6 @@
   $effect(() => console.log(toRemove))
 </script>
 
-<div class="alert mb-2 bg-warning/10">
-  <IconAlertTriangle /><span>This section is incomplete! You cannot submit your edits yet.</span>
-</div>
 <div class="flex flex-row gap-2 justify-between items-center mb-3">
   <h4 class="text-2xl ml-3 font-medium">Editing member groups</h4>
   {#if !loading}
@@ -268,6 +267,63 @@
     {/if}
     {#if removed.length === 0 && added.length === 0}
       <div class="mt-3">No changes have been made yet.</div>
+    {/if}
+  </div>
+</div>
+{#if err.length > 0}
+  {#each err as e}
+    {#if e}
+      <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-error/20 mt-2">
+        {e}
+      </div>
+    {/if}
+  {/each}
+{/if}
+{#if success}
+  <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-success/20 mt-2">
+    Member successfully edited
+  </div>
+{/if}
+<div class="flex flex-row items-center">
+  <div class="join mt-2">
+    {#if !loading}
+      {#if edited}
+        <SubmitEditButton
+          onSuccess={() => {
+            toAdd = []
+            toRemove = []
+            uuidSelection = uuidsCurrent
+          }}
+          bind:loading
+          bind:err
+          bind:success
+          options={{
+            member,
+            body: uuidSelection,
+            asPage,
+          }}
+          path={`members/${member.uuid}/groups/overwrite`}
+        />
+        <button
+          onclick={() => (mode = "view")}
+          class="btn btn-sm btn-neutral join-item"
+          aria-label="Cancel edit"
+        >
+          <IconX /> Cancel
+        </button>
+      {:else}
+        <button
+          onclick={() => (mode = "view")}
+          class="btn btn-sm btn-neutral join-item"
+          aria-label="Exit edit"
+        >
+          <IconX /> Exit
+        </button>
+      {/if}
+    {:else}
+      <button onclick={() => (mode = "view")} class="btn btn-sm btn-neutral join-item" disabled>
+        <IconLoader /> Loading...
+      </button>
     {/if}
   </div>
 </div>
