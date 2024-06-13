@@ -1,4 +1,4 @@
-import type { Group } from "$api/types"
+import type { Group, GroupPrivacy } from "$api/types"
 
 export const createViewEditState = (group: Group): Group => {
   let name = $state(group.name)
@@ -44,6 +44,70 @@ export const createViewEditState = (group: Group): Group => {
     },
     set color(value: string | undefined) {
       color = value
+    },
+  }
+}
+
+export const createInfoEditState = (
+  group: Group
+): Group & {
+  privacy: GroupPrivacy
+} => {
+  let privacy = $state(createPrivacyEditState(group))
+
+  return {
+    get privacy() {
+      return privacy
+    },
+    set privacy(value: GroupPrivacy) {
+      privacy = value
+    },
+  }
+}
+
+const createPrivacyEditState = (group: Group): GroupPrivacy => {
+  let visibility = $state(group.privacy?.visibility)
+  let description_privacy = $state(group.privacy?.description_privacy)
+  let name_privacy = $state(group.privacy?.name_privacy)
+  let icon_privacy = $state(group.privacy?.icon_privacy)
+  let metadata_privacy = $state(group.privacy?.metadata_privacy)
+  let list_privacy = $state(group.privacy?.list_privacy)
+  return {
+    get visibility() {
+      return visibility
+    },
+    set visibility(value: string | undefined) {
+      visibility = value
+    },
+    get description_privacy() {
+      return description_privacy
+    },
+    set description_privacy(value: string | undefined) {
+      description_privacy = value
+    },
+    get name_privacy() {
+      return name_privacy
+    },
+    set name_privacy(value: string | undefined) {
+      name_privacy = value
+    },
+    get icon_privacy() {
+      return icon_privacy
+    },
+    set icon_privacy(value: string | undefined) {
+      icon_privacy = value
+    },
+    get metadata_privacy() {
+      return metadata_privacy
+    },
+    set metadata_privacy(value: string | undefined) {
+      metadata_privacy = value
+    },
+    get list_privacy() {
+      return list_privacy
+    },
+    set list_privacy(value: string | undefined) {
+      list_privacy = value
     },
   }
 }
