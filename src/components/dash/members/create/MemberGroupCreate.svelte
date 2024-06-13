@@ -148,3 +148,9 @@
     {/if}
   </ul>
 {/snippet}
+
+<style>
+  .option {
+    width: calc(100% + 0.5rem);
+  }
+</style>
