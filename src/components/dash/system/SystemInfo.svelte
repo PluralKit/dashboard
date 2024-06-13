@@ -93,8 +93,22 @@
           <li class="w-1/2">
             <span
               class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
+              ><b>Name:</b>
+              <PrivacyDisplay value={system.privacy.name_privacy} /></span
+            >
+          </li>
+          <li class="w-1/2">
+            <span
+              class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
               ><b>Description:</b>
               <PrivacyDisplay value={system.privacy.description_privacy} /></span
+            >
+          </li>
+          <li class="w-1/2">
+            <span
+              class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
+              ><b>Avatar:</b>
+              <PrivacyDisplay value={system.privacy.avatar_privacy} /></span
             >
           </li>
           <li class="w-1/2">
