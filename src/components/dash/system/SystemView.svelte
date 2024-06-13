@@ -93,6 +93,20 @@
               </span>
             </li>
           {/if}
+          {#if system.tag}
+            <li>
+              <span
+                class="items-start discord-markdown text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
+              >
+                <span class="flex flex-row justify-start gap-2"
+                  ><b>Tag:</b>
+                  <span><AwaitHtml htmlPromise={parseMarkdown(system.tag, { embed: true })} /></span
+                  >
+                </span>
+                <CopyField class="ml-auto" field="tag" value={system.tag} />
+              </span>
+            </li>
+          {/if}
         </ul>
         {#if system.pronouns || system.color}
           <ul class="menu bg-base-100 flex-1 rounded-box text-base">
