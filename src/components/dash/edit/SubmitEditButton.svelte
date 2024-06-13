@@ -117,8 +117,7 @@
           // if we're on the dash we need to replace the member in the list
           // if not, we just need to replace the member
           if (!opts.asPage) {
-            const toReplace = opts.list.list.raw.find((i) => i.uuid === response?.uuid) || {}
-            Object.assign(toReplace, response)
+            Object.assign(opts.item, response)
             opts.list.process(dash.groups.list.raw)
             opts.list.paginate()
           } else {
