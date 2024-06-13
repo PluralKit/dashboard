@@ -210,18 +210,6 @@
     </div>
   </div>
   <div class="bg-base-100 flex-1 rounded-box p-4 gap-2 flex flex-col">
-    <h5 class="text-lg">Formatted preview</h5>
-    {#if formattedGroups.length > 1000}
-      <span class="text-sm"
-        ><IconAlertTriangle class="text-warning inline-block mr-1" size={18} />The formatted groups
-        take up more than 1000 characters. It will be cut off when viewed via the bot.</span
-      >
-    {/if}
-    <div class="text-sm discord-markdown">
-      <AwaitHtml htmlPromise={parseMarkdown(formattedGroups, { embed: true })} />
-    </div>
-  </div>
-  <div class="bg-base-100 flex-1 rounded-box p-4 gap-2 flex flex-col">
     <h5 class="text-lg">Changes</h5>
     <div class="text-sm">
       {uuidSelection.length} groups total ({added.length} added, {removed.length} removed)
@@ -272,6 +260,18 @@
     {#if removed.length === 0 && added.length === 0}
       <div class="mt-3">No changes have been made yet.</div>
     {/if}
+  </div>
+  <div class="bg-base-100 flex-1 rounded-box p-4 gap-2 flex flex-col">
+    <h5 class="text-lg">Formatted preview</h5>
+    {#if formattedGroups.length > 1000}
+      <span class="text-sm"
+        ><IconAlertTriangle class="text-warning inline-block mr-1" size={18} />The formatted groups
+        take up more than 1000 characters. It will be cut off when viewed via the bot.</span
+      >
+    {/if}
+    <div class="text-sm discord-markdown">
+      <AwaitHtml htmlPromise={parseMarkdown(formattedGroups, { embed: true })} />
+    </div>
   </div>
 </div>
 {#if err.length > 0}
