@@ -2,6 +2,7 @@
   import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
   import ItemCollapse from "../ItemCollapse.svelte"
   import Pagination from "../Pagination.svelte"
+  import GroupCreate from "./create/GroupCreate.svelte"
 
   let fetching = $state(false)
 
@@ -26,6 +27,9 @@
     dash.settings.display?.forceControlsAtTop === true ? "" : "lg:flex-1"
   }`}
 >
+  {#if dash.privacyMode === PrivacyMode.PRIVATE}
+    <GroupCreate />
+  {/if}
   <div class="text-center">
     <p>
       {dash.groups.list.processed.length} groups ({dash.groups.list.paginated.length} shown)

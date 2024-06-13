@@ -84,8 +84,6 @@
           })
         }
 
-        list.list.raw.push(response)
-
         if (groupList) {
           if (itemPath === "members" && groupPath === "groups") {
             dash.groups.list.raw.forEach((g) => {
@@ -93,8 +91,12 @@
                 g.members?.push(response.uuid || "")
               }
             })
+          } else if (itemPath === "groups" && groupPath === "members") {
+            ;(response as Group).members = groupList
           }
         }
+
+        list.list.raw.push(response)
 
         dash.groups.process()
         dash.members.process()
@@ -123,7 +125,9 @@
   disabled={!item.name}
 >
   <IconDeviceFloppy /> Create
-  {#if item.name}
-    {item.name}
+  {#if itemPath === "members"}
+    member
+  {:else if itemPath === "groups"}
+    group
   {/if}
 </button>

@@ -1,5 +1,62 @@
 import type { Group, GroupPrivacy } from "$api/types"
 
+const defaultGroup: Group & {
+  privacy: GroupPrivacy
+} = {
+  privacy: {},
+}
+
+export const createGroupCreationState = (): Group & {
+  privacy: GroupPrivacy
+} => {
+  let view = $state(createViewEditState(defaultGroup))
+  let info = $state(createInfoEditState(defaultGroup))
+  return {
+    get name() {
+      return view.name
+    },
+    set name(value: string | undefined) {
+      view.name = value
+    },
+    get display_name() {
+      return view.display_name
+    },
+    set display_name(value: string | undefined) {
+      view.display_name = value
+    },
+    get description() {
+      return view.description
+    },
+    set description(value: string | undefined) {
+      view.description = value
+    },
+    get icon() {
+      return view.icon
+    },
+    set icon(value: string | undefined) {
+      view.icon = value
+    },
+    get banner() {
+      return view.banner
+    },
+    set banner(value: string | undefined) {
+      view.banner = value
+    },
+    get color() {
+      return view.color
+    },
+    set color(value: string | undefined) {
+      view.color = value
+    },
+    get privacy() {
+      return info.privacy
+    },
+    set privacy(value: GroupPrivacy) {
+      info.privacy = value
+    },
+  }
+}
+
 export const createViewEditState = (group: Group): Group => {
   let name = $state(group.name)
   let display_name = $state(group.display_name)
