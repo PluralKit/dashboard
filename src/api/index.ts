@@ -32,15 +32,18 @@ export default function apiClient(fetch: SvelteFetch, baseUrl?: string): ApiClie
     path: string,
     options?: ApiOptions
   ): Promise<T | undefined> {
-    const resp = await fetch(`${baseUrl ?? PUBLIC_BASE_API_URL}/v2/${path}`, {
-      method: (options && options.method) || "GET",
-      headers: {
-        ...(options && options.token ? { Authorization: options.token } : {}),
-        ...(options && options.headers ? options.headers : {}),
-        "Content-Type": "application/json",
-      },
-      body: options && options.body ? JSON.stringify(options.body) : null,
-    })
+    const resp = await fetch(
+      `${baseUrl ?? PUBLIC_BASE_API_URL ?? "https://api.pluralkit.me"}/v2/${path}`,
+      {
+        method: (options && options.method) || "GET",
+        headers: {
+          ...(options && options.token ? { Authorization: options.token } : {}),
+          ...(options && options.headers ? options.headers : {}),
+          "Content-Type": "application/json",
+        },
+        body: options && options.body ? JSON.stringify(options.body) : null,
+      }
+    )
 
     if (!resp.ok) await parseError(resp)
 
