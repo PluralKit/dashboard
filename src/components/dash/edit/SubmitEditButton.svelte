@@ -176,7 +176,14 @@
             }
           }
         } else if ((options as GroupMemberEditOptions).group) {
-          // TBA: group member editing
+          const opts = options as GroupMemberEditOptions
+
+          // edit the group like we would normally
+          opts.group.members = listBody
+          if (!opts.asPage) {
+            dash.groups.process(dash.groups.list.raw)
+            dash.groups.paginate()
+          }
         }
 
         success = true
