@@ -2,6 +2,7 @@
   import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
   import ItemCollapse from "../ItemCollapse.svelte"
   import Pagination from "../Pagination.svelte"
+  import MemberCreate from "./create/MemberCreate.svelte"
 
   let fetching = $state(false)
 
@@ -24,6 +25,9 @@
     dash.settings.display?.forceControlsAtTop === true ? "" : "lg:flex-1"
   }`}
 >
+  {#if dash.privacyMode === PrivacyMode.PRIVATE}
+    <MemberCreate />
+  {/if}
   <div class="text-center">
     <p>
       {dash.members.list.processed.length} members ({dash.members.list.paginated.length} shown)

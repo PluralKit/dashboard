@@ -9,7 +9,7 @@
     value = $bindable(),
     item,
   }: {
-    original: string | undefined
+    original: string | undefined | null
     value: string | undefined
     item: Member
   } = $props()
@@ -22,7 +22,7 @@
 <div class="flex flex-col">
   <span class="flex flex-row justify-between mb-1">
     <label for={`${item.uuid}-edit-color`}>Color</label>
-    {#if original !== value}
+    {#if original !== value && original !== null}
       <span title="edited">
         <IconPencil size={26} class="text-info" />
       </span>

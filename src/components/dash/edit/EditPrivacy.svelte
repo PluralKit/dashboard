@@ -8,7 +8,7 @@
     item,
     field,
   }: {
-    original: string | undefined
+    original: string | undefined | null
     value: string | undefined
     item: Member | Group | System
     field: string
@@ -20,7 +20,7 @@
     <span class="flex-1 flex flex-row gap-2 justify-between items-center">
       <label for={`${item.uuid}-privacy-${field}`}>{field}</label>
     </span>
-    {#if original !== value}
+    {#if original !== value && original !== null}
       <span title="edited">
         <IconPencil size={26} class="text-info" />
       </span>

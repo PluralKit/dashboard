@@ -11,7 +11,7 @@
     value = $bindable(),
     item,
   }: {
-    original: string | undefined
+    original: string | undefined | null
     value: string | undefined
     item: Member | Group | System
   } = $props()
@@ -26,8 +26,8 @@
     <label for={`${item.uuid}-edit-description`} class="text-lg">Description</label>
     <button onclick={() => popupElement.showModal()} class="btn btn-primary btn-xs">Preview</button>
     <span
-      title={original === value ? "" : "Edited"}
-      class={original === value ? "hidden" : "text-info"}
+      title={original === value || original === null ? "" : "Edited"}
+      class={original === value || original === null ? "hidden" : "text-info"}
     >
       <IconPencil size={26} />
     </span>

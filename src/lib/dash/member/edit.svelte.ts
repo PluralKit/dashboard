@@ -1,5 +1,87 @@
 import type { Member, MemberPrivacy, proxytag } from "$api/types"
 
+const blankMember: Member = {
+  proxy_tags: [],
+  privacy: {},
+}
+
+export const createMemberCreationState = (): Member & {
+  privacy: MemberPrivacy
+  proxy_tags: proxytag[]
+} => {
+  let view = $state(createViewEditState(blankMember))
+  let info = $state(createInfoEditState(blankMember))
+
+  return {
+    get name() {
+      return view.name
+    },
+    set name(value: string | undefined) {
+      view.name = value
+    },
+    get display_name() {
+      return view.display_name
+    },
+    set display_name(value: string | undefined) {
+      view.display_name = value
+    },
+    get pronouns() {
+      return view.pronouns
+    },
+    set pronouns(value: string | undefined) {
+      view.pronouns = value
+    },
+    get birthday() {
+      return view.birthday
+    },
+    set birthday(value: string | undefined) {
+      view.birthday = value
+    },
+    get description() {
+      return view.description
+    },
+    set description(value: string | undefined) {
+      view.description = value
+    },
+    get avatar_url() {
+      return view.avatar_url
+    },
+    set avatar_url(value: string | undefined) {
+      view.avatar_url = value
+    },
+    get webhook_avatar_url() {
+      return view.webhook_avatar_url
+    },
+    set webhook_avatar_url(value: string | undefined) {
+      view.webhook_avatar_url = value
+    },
+    get banner() {
+      return view.banner
+    },
+    set banner(value: string | undefined) {
+      view.banner = value
+    },
+    get color() {
+      return view.color
+    },
+    set color(value: string | undefined) {
+      view.color = value
+    },
+    get proxy_tags() {
+      return info.proxy_tags
+    },
+    set proxy_tags(value: proxytag[]) {
+      info.proxy_tags = value
+    },
+    get privacy() {
+      return info.privacy
+    },
+    set privacy(value: MemberPrivacy) {
+      info.privacy = value
+    },
+  }
+}
+
 export const createViewEditState = (member: Member): Member => {
   let name = $state(member.name)
   let display_name = $state(member.display_name)

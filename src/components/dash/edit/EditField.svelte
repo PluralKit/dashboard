@@ -14,7 +14,7 @@
   }: {
     maxLength?: number
     showCount?: boolean
-    original: string | undefined
+    original: string | undefined | null
     value: string | undefined
     item: Member | Group | System
     field: string
@@ -29,7 +29,7 @@
         <span class="text-xs">{value?.length ?? 0}/{maxLength}</span>
       {/if}
     </span>
-    {#if original !== value}
+    {#if original !== value && original !== null}
       <span title="edited">
         <IconPencil size={26} class="text-info" />
       </span>
