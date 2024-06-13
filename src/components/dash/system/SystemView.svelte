@@ -172,6 +172,6 @@
       </div>
     </div>
   {:else if mode === "edit"}
-    <SystemViewEdit bind:mode />
+    <SystemViewEdit bind:mode {system} />
   {/if}
 </div>

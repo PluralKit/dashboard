@@ -14,8 +14,6 @@
     IconSettings,
   } from "@tabler/icons-svelte"
   import { dash } from "$lib/dash/dash.svelte"
-
-  let user = dash.user
 </script>
 
 <div class="navbar bg-base-100">
@@ -60,13 +58,13 @@
     <a href="/settings#theme" class="mr-4 tooltip tooltip-left" data-tip="Change theme"
       ><IconPaint /></a
     >
-    {#if user}
+    {#if dash.user}
       <details class="dropdown dropdown-left">
         <summary class="mr-2 list-none">
-          {#if user.avatar_url}
+          {#if dash.user.avatar_url}
             <div class="avatar">
               <div class="w-12 rounded-full">
-                <img alt="your system avatar" src={user.avatar_url} />
+                <img alt="your system avatar" src={dash.user.avatar_url} />
               </div>
             </div>
           {:else}
@@ -80,10 +78,10 @@
         <ul
           class="menu menu-sm menu-dropdown dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-36"
         >
-          <li><a href={`/dash/${user?.id}?tab=overview`}><IconAdjustments /> Overview</a></li>
-          <li><a href={`/dash/${user?.id}?tab=system`}><IconAddressBook /> System</a></li>
-          <li><a href={`/dash/${user?.id}?tab=members`}><IconUsers /> Members</a></li>
-          <li><a href={`/dash/${user?.id}?tab=groups`}><IconBoxMultiple /> Groups</a></li>
+          <li><a href={`/dash/${dash.user?.id}?tab=overview`}><IconAdjustments /> Overview</a></li>
+          <li><a href={`/dash/${dash.user?.id}?tab=system`}><IconAddressBook /> System</a></li>
+          <li><a href={`/dash/${dash.user?.id}?tab=members`}><IconUsers /> Members</a></li>
+          <li><a href={`/dash/${dash.user?.id}?tab=groups`}><IconBoxMultiple /> Groups</a></li>
           <hr class="my-2" />
           <li><a href="/settings/general"><IconSettings /> Settings</a></li>
           <li>

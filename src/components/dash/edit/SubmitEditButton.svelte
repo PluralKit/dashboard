@@ -26,6 +26,10 @@
     body: string[]
     asPage: boolean
   }
+  type SystemEditOptions = {
+    system: System
+    body: System
+  }
 
   let {
     loading = $bindable(),
@@ -39,7 +43,7 @@
     success: boolean
     err: string[]
     path: string
-    options: ItemEditOptions | MemberGroupEditOptions | GroupMemberEditOptions
+    options: ItemEditOptions | MemberGroupEditOptions | GroupMemberEditOptions | SystemEditOptions
     onSuccess?: () => void
   } = $props()
 
@@ -48,7 +52,7 @@
     let body: (Member & Group & System) | null = null
     let listBody: string[] | null = null
 
-    if ((options as ItemEditOptions).item) {
+    if ((options as ItemEditOptions).item || (options as SystemEditOptions).system) {
       // first trim every field
       body = Object.fromEntries(
         Object.entries(options.body)
@@ -96,8 +100,8 @@
     const api = apiClient(fetch, dash.apiBaseUrl)
     loading = true
 
-    if (body && (options as ItemEditOptions).item) {
-      const opts = options as ItemEditOptions
+    if (body && ((options as ItemEditOptions).item || (options as SystemEditOptions).system)) {
+      let opts = options as ItemEditOptions | SystemEditOptions
 
       try {
         let response = await api<Member | Group | System>(path, {
@@ -107,7 +111,9 @@
         })
         success = true
 
-        if (response) {
+        if (response && (opts as ItemEditOptions).item) {
+          opts = opts as ItemEditOptions
+
           // if we're on the dash we need to replace the member in the list
           // if not, we just need to replace the member
           if (!opts.asPage) {
@@ -118,6 +124,13 @@
           } else {
             Object.assign(opts.item || {}, response)
           }
+        } else if (response && (opts as SystemEditOptions).system) {
+          // systems don't have a page of their own (for now)
+          // so replace the dash's system
+          Object.assign(dash.system || {}, response)
+
+          // replace the user also, to update the navbar
+          Object.assign(dash.user || {}, response)
         }
       } catch (e) {
         const error = e as ApiError
