@@ -8,11 +8,9 @@
 
   let {
     tab,
-    member = $bindable(),
     groups = $bindable(),
   }: {
     tab: "view" | "info" | "groups"
-    member: Member
     groups: string[]
   } = $props()
 

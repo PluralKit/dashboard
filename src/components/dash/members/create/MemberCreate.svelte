@@ -108,47 +108,47 @@
       <MemberViewCreate bind:member {tab} bind:avatar bind:proxyAvatar />
       <MemberInfoCreate bind:member {tab} bind:privacy={member.privacy} />
       {#if openedOnce && tabbedOnce}
-        <MemberGroupCreate bind:member {tab} bind:groups />
+        <MemberGroupCreate {tab} bind:groups />
       {/if}
-    </div>
-    {#if err.length > 0}
-      {#each err as e}
-        {#if e}
-          <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-error/20 mt-2">
-            {e}
-          </div>
-        {/if}
-      {/each}
-    {/if}
-    {#if success}
-      <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-success/20 mt-2">
-        Member successfully created
-      </div>
-    {/if}
-    <div class="flex flex-row items-center">
-      <div class="join mt-2">
-        {#if !loading}
-          <SubmitCreateButton
-            bind:loading
-            bind:err
-            bind:success
-            item={member}
-            itemPath="members"
-            groupPath="groups"
-            groupList={groups}
-            list={dash.members}
-            onSuccess={() => {
-              member = createMemberCreationState()
-              groups = []
-              avatar = ""
-              proxyAvatar = ""
-            }}
-          />
-        {:else}
-          <button class="btn btn-sm btn-neutral join-item" disabled>
-            <IconLoader /> Loading...
-          </button>
-        {/if}
+      {#if err.length > 0}
+        {#each err as e}
+          {#if e}
+            <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-error/20 mt-2">
+              {e}
+            </div>
+          {/if}
+        {/each}
+      {/if}
+      {#if success}
+        <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-success/20 mt-2">
+          Member successfully created
+        </div>
+      {/if}
+      <div class="flex flex-row items-center">
+        <div class="join mt-2">
+          {#if !loading}
+            <SubmitCreateButton
+              bind:loading
+              bind:err
+              bind:success
+              item={member}
+              itemPath="members"
+              groupPath="groups"
+              groupList={groups}
+              list={dash.members}
+              onSuccess={() => {
+                member = createMemberCreationState()
+                groups = []
+                avatar = ""
+                proxyAvatar = ""
+              }}
+            />
+          {:else}
+            <button class="btn btn-sm btn-neutral join-item" disabled>
+              <IconLoader /> Loading...
+            </button>
+          {/if}
+        </div>
       </div>
     </div>
   </div>
