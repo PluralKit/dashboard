@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Group } from "$api/types"
+  import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
   import EditColor from "$components/dash/edit/EditColor.svelte"
   import EditDescription from "$components/dash/edit/EditDescription.svelte"
   import EditField from "$components/dash/edit/EditField.svelte"
@@ -146,7 +147,5 @@
       </button>
     {/if}
   </div>
-  <button class="btn btn-sm btn-error mt-2 ml-auto">
-    <IconTrash /> Delete
-  </button>
+  <DeleteButton type="group" item={group} {asPage} />
 </div>

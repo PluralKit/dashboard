@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Member, MemberPrivacy } from "$api/types"
+  import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
   import EditPrivacy from "$components/dash/edit/EditPrivacy.svelte"
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
   import { dash } from "$lib/dash/dash.svelte"
@@ -305,4 +306,5 @@
       </button>
     {/if}
   </div>
+  <DeleteButton type="member" item={member} {asPage} />
 </div>

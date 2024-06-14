@@ -189,7 +189,12 @@ function createMemberListState() {
   return {
     get members() {
       return {
-        raw: members,
+        get raw() {
+          return members
+        },
+        set raw(value: Member[]) {
+          members = value
+        },
         processed: processedMembers,
         paginated: paginatedMembers,
         options: optionMembers,
@@ -257,7 +262,12 @@ function createGroupListState() {
   return {
     get groups() {
       return {
-        raw: groups,
+        get raw() {
+          return groups
+        },
+        set raw(value: Group[]) {
+          groups = value
+        },
         processed: processedGroups,
         paginated: paginatedGroups,
         options: optionGroups,

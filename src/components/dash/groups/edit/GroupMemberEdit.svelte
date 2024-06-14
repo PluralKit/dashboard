@@ -16,6 +16,7 @@
   import { fade } from "svelte/transition"
   import SimplePagination from "$components/dash/SimplePagination.svelte"
   import GroupMemberList from "../GroupMemberList.svelte"
+  import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
 
   let {
     membersCurrent,
@@ -323,6 +324,7 @@
       </button>
     {/if}
   </div>
+  <DeleteButton type="group" item={group} {asPage} />
 </div>
 
 {#snippet option(opt)}

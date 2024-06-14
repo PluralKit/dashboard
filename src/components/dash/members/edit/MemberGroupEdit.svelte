@@ -14,6 +14,7 @@
   import parseMarkdown from "$api/parseMarkdown"
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
   import { fade } from "svelte/transition"
+  import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
 
   let {
     groupsCurrent,
@@ -330,6 +331,7 @@
       </button>
     {/if}
   </div>
+  <DeleteButton type="member" item={member} {asPage} />
 </div>
 
 {#snippet option(opt)}
