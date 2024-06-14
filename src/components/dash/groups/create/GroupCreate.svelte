@@ -119,7 +119,7 @@
       {/if}
       {#if success}
         <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-success/20 mt-2">
-          Member successfully created
+          Group successfully created
         </div>
       {/if}
       <div class="flex flex-row items-center">
