@@ -42,7 +42,7 @@
     // check the fields that need a specific format
     if (body?.birthday) {
       // replace slashes with dashes
-      body.birthday.split("/").join("-")
+      body.birthday = body.birthday.split("/").join("-")
 
       // check if there's a year included, if not, we add 0004
       // we're just looking for the amount of dashes in the string
