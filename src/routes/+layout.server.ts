@@ -9,6 +9,8 @@ export async function load({ cookies }) {
   const token = cookies.get("pk-token")
   const apiBaseUrl = cookies.get("pk-api-url")
 
+  let error: string | null = null
+
   let system: System | null = null
   if (token) {
     const api = apiClient(fetch, apiBaseUrl)
@@ -20,18 +22,15 @@ export async function load({ cookies }) {
         maxAge: 60 * 60 * 24 * 90, // 90 days
       })
     } catch (err) {
-      return {
-        token,
-        system,
-        error: (err as Error).message,
-      }
+      error = (err as Error).message
     }
   }
 
   return {
-    system: system,
-    token: token,
-    theme: theme,
+    system,
+    token,
+    theme,
+    error,
     apiBaseUrl,
   }
 }
