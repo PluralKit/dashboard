@@ -3,7 +3,7 @@
   import { dash } from "$lib/dash/dash.svelte"
   import { getDashLink } from "$lib/dash/utils"
   import { cookieState } from "$lib/common/cookies.svelte"
-  import { IconFlask } from "@tabler/icons-svelte"
+  import { IconFlask, IconInfoCircle } from "@tabler/icons-svelte"
 
   export let data: PageData
   export let form: ActionData
@@ -12,44 +12,52 @@
 </script>
 
 <div class="hero bg-base-200">
-  {#if system}
-    <div class="hero-content my-8 flex-col lg:flex-row-reverse">
-      <div class="text-center lg:text-left">
+  <div
+    class="hero-content my-8 flex-col md:flex-row-reverse flex-wrap w-full max-w-5xl px-4 items-center md:items-stretch"
+  >
+    {#if !system}
+      <div class="w-full max-w-md md:max-w-none mb-4">
+        <div class="alert bg-base-100">
+          <IconInfoCircle class="text-info" />
+          <div>
+            <h3 class="text-lg font-bold">Token not working?</h3>
+            <p>
+              This preview version of the dashboard uses <b>the beta bot</b> by default.
+              <a href="/settings/general" class="link-primary">Visit the settings</a> to change it to
+              use the regular bot.
+            </p>
+          </div>
+        </div>
+      </div>
+    {/if}
+    <div class="text-center flex flex-col flex-1">
+      {#if system}
         {#if system.name}
           <h1 class="text-3xl font-bold">Welcome, {system.name}!</h1>
         {:else}
           <h1 class="text-3xl font-bold">Welcome!</h1>
         {/if}
-        <div class="alert my-4 bg-base-100 max-w-lg">
-          <IconFlask class="text-info" />
-          <p>
-            This is a complete rewrite of PluralKit's current dashboard, and hosted only for testing
-            purposes. This is a <b>work in progress</b>, many things aren't functional yet.
-            <span class="text-error">Proceed with caution.</span>
-          </p>
-        </div>
+      {:else}
+        <h1 class="text-3xl font-bold">Welcome to the new dashboard!</h1>
+      {/if}
+      <div class="alert mt-4 bg-base-100 max-w-md md:max-w-none flex-1">
+        <IconFlask class="text-info" />
+        <p>
+          This is a complete rewrite of PluralKit's current dashboard, and hosted only for testing
+          purposes. This is a <b>work in progress</b>, many things aren't functional yet.
+          <span class="text-error">Proceed with caution.</span>
+        </p>
       </div>
-      <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+    </div>
+    {#if system}
+      <div class="card flex-1 w-full max-w-md md:w-auto md:max-w-none shadow-2xl bg-base-100">
         <div class="card-body">
           <p class="pt-6">Enter the dashboard to edit your system, member and group information.</p>
           <a class="btn btn-primary" href={getDashLink(system.id || "", "")}>To the dash</a>
         </div>
       </div>
-    </div>
-  {:else}
-    <div class="hero-content my-8 flex-col lg:flex-row-reverse">
-      <div class="text-center lg:text-left">
-        <h1 class="text-5xl font-bold">Welcome to the new dashboard!</h1>
-        <div class="alert my-4 bg-base-100 max-w-lg">
-          <IconFlask class="text-info" />
-          <p>
-            This is a complete rewrite of PluralKit's current dashboard, and hosted only for testing
-            purposes. This is a <b>work in progress</b>, many things aren't functional yet.
-            <span class="text-error">Proceed with caution.</span>
-          </p>
-        </div>
-      </div>
-      <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+    {:else}
+      <div class="card flex-1 w-full max-w-md md:w-auto md:max-w-none shadow-2xl bg-base-100">
         <form class="card-body" action="/?/login" method="post">
           {#if data.error}
             <span class="text-error">{data.error}</span>
@@ -66,10 +74,10 @@
               class="input input-bordered"
             />
             <label class="label" for="token-input">
-              <span class="label-text-alt">You can get this by running pk;token</span>
+              <span class="text-sm">You can get this by running pk;token</span>
               {#if form?.error}
                 <br />
-                <span class="label-text-alt text-error">
+                <span class="text-sm text-error">
                   {form.error}
                 </span>
               {/if}
@@ -80,6 +88,6 @@
           </div>
         </form>
       </div>
-    </div>
-  {/if}
+    {/if}
+  </div>
 </div>
