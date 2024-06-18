@@ -2,7 +2,16 @@ import type { Member, MemberPrivacy, proxytag } from "$api/types"
 
 const blankMember: Member = {
   proxy_tags: [],
-  privacy: {},
+  privacy: {
+    name_privacy: "public",
+    visibility: "public",
+    metadata_privacy: "public",
+    description_privacy: "public",
+    avatar_privacy: "public",
+    birthday_privacy: "public",
+    pronoun_privacy: "public",
+    proxy_privacy: "public",
+  },
 }
 
 export const createMemberCreationState = (): Member & {

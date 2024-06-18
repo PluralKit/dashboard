@@ -3,7 +3,14 @@ import type { Group, GroupPrivacy } from "$api/types"
 const defaultGroup: Group & {
   privacy: GroupPrivacy
 } = {
-  privacy: {},
+  privacy: {
+    name_privacy: "public",
+    list_privacy: "public",
+    visibility: "public",
+    metadata_privacy: "public",
+    icon_privacy: "public",
+    description_privacy: "public",
+  },
 }
 
 export const createGroupCreationState = (): Group & {
