@@ -144,10 +144,10 @@
           <img class="rounded-xl w-full h-auto" src={group.banner} alt={`${group.name}'s banner`} />
         {/if}
       </div>
-      <div class="flex flex-row items-center justify-end gap-2 w-full">
-        <OpenEditButton class="mt-2" bind:mode />
-        <GroupLink item={group} {asPage} />
-      </div>
+    </div>
+    <div class="flex flex-row items-center justify-end gap-2 w-full">
+      <OpenEditButton class="mt-2" bind:mode />
+      <GroupLink item={group} {asPage} />
     </div>
   {:else if mode === "edit"}
     <GroupViewEdit {group} {asPage} bind:mode />
