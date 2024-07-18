@@ -76,6 +76,7 @@
           {/if}
         </summary>
         <ul
+          data-sveltekit-preload-data="tap"
           class="menu menu-sm menu-dropdown dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-36"
         >
           <li><a href={`/dash/${dash.user?.id}?tab=overview`}><IconAdjustments /> Overview</a></li>
