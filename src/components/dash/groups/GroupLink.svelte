@@ -6,9 +6,11 @@
   let {
     item,
     asPage = false,
+    color = "neutral",
   }: {
     item: Group
     asPage?: boolean
+    color?: "primary" | "neutral"
   } = $props()
 </script>
 
@@ -16,7 +18,7 @@
   {#if dash.group.group?.uuid !== item.uuid || !asPage}
     <a
       target="_blank"
-      class="btn btn-primary btn-sm mt-2"
+      class={`btn btn-sm mt-2 btn-${color}`}
       href={`/dash/g/${item.id}${$page.url.searchParams.get("public") ? "?public=true" : ""}`}
     >
       View page
@@ -24,7 +26,7 @@
   {:else}
     <a
       target="_blank"
-      class="btn btn-primary btn-sm mt-2"
+      class={`btn btn-sm mt-2 btn-${color}`}
       href={`/dash/${(item as Group).system}?tab=groups${$page.url.searchParams.get("public") ? "&public=true" : ""}`}
     >
       View system

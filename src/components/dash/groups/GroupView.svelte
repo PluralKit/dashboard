@@ -8,6 +8,7 @@
   import CopyField from "../CopyField.svelte"
   import GroupLink from "./GroupLink.svelte"
   import GroupViewEdit from "./edit/GroupViewEdit.svelte"
+  import OpenEditButton from "../edit/OpenEditButton.svelte"
 
   let {
     group,
@@ -29,9 +30,7 @@
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">General information</h4>
       {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.group.privacyMode !== PrivacyMode.PUBLIC)}
-        <button onclick={() => (mode = "edit")} class="btn btn-sm btn-primary p-2">
-          <IconEdit class="inline" size={18} /> Edit
-        </button>
+        <OpenEditButton bind:mode />
       {/if}
     </div>
     <div class={`flex flex-col gap-2 lg:gap-3 ${group.icon ? "sm:flex-row" : ""}`}>
@@ -145,8 +144,11 @@
           <img class="rounded-xl w-full h-auto" src={group.banner} alt={`${group.name}'s banner`} />
         {/if}
       </div>
+      <div class="flex flex-row items-center justify-end gap-2 w-full">
+        <OpenEditButton class="mt-2" bind:mode />
+        <GroupLink item={group} {asPage} />
+      </div>
     </div>
-    <GroupLink {asPage} item={group} />
   {:else if mode === "edit"}
     <GroupViewEdit {group} {asPage} bind:mode />
   {/if}

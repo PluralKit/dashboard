@@ -8,6 +8,7 @@
   import MemberLink from "./MemberLink.svelte"
   import MemberGroupEdit from "./edit/MemberGroupEdit.svelte"
   import MemberGroupList from "./MemberGroupList.svelte"
+  import OpenEditButton from "../edit/OpenEditButton.svelte"
 
   let {
     asPage = false,
@@ -52,9 +53,7 @@
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">Group list</h4>
       {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.member.privacyMode !== PrivacyMode.PUBLIC)}
-        <button class="btn btn-sm btn-primary p-2" onclick={() => (mode = "edit")}>
-          <IconEdit class="inline" size={18} /> Edit
-        </button>
+        <OpenEditButton bind:mode />
       {/if}
     </div>
     <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
@@ -74,9 +73,10 @@
           </div>
         </div>
       {/if}
-    </div>
-    <div class="flex flex-row justify-end items-center">
-      <MemberLink item={member} {asPage} />
+      <div class="flex flex-row items-center justify-end gap-2 w-full">
+        <OpenEditButton class="mt-2" bind:mode />
+        <MemberLink item={member} {asPage} />
+      </div>
     </div>
   {:else if mode === "edit"}
     <MemberGroupEdit bind:mode {member} groupsCurrent={groups} {asPage} />

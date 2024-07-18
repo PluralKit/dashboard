@@ -7,6 +7,7 @@
   import CopyField from "../CopyField.svelte"
   import GroupLink from "./GroupLink.svelte"
   import GroupInfoEdit from "./edit/GroupInfoEdit.svelte"
+  import OpenEditButton from "../edit/OpenEditButton.svelte"
 
   let {
     group,
@@ -26,9 +27,7 @@
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">Group details</h4>
       {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.group.privacyMode !== PrivacyMode.PUBLIC)}
-        <button class="btn btn-sm btn-primary p-2" onclick={() => (mode = "edit")}>
-          <IconEdit class="inline" size={18} /> Edit
-        </button>
+        <OpenEditButton bind:mode />
       {/if}
     </div>
     {#if dash.settings.devMode && group.uuid}
@@ -122,8 +121,11 @@
           </ul>
         </div>
       {/if}
+      <div class="flex flex-row items-center justify-end gap-2 w-full">
+        <OpenEditButton class="mt-2" bind:mode />
+        <GroupLink item={group} {asPage} />
+      </div>
     </div>
-    <GroupLink {asPage} item={group} />
   {:else if mode === "edit"}
     <GroupInfoEdit {group} bind:mode {asPage} />
   {/if}

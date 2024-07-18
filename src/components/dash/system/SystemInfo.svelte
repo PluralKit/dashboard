@@ -6,6 +6,7 @@
   import moment from "moment"
   import CopyField from "../CopyField.svelte"
   import SystemInfoEdit from "./edit/SystemInfoEdit.svelte"
+  import OpenEditButton from "../edit/OpenEditButton.svelte"
 
   let {
     system,
@@ -25,9 +26,7 @@
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">System details</h4>
       {#if !asPage && dash.privacyMode !== PrivacyMode.PUBLIC}
-        <button class="btn btn-sm btn-primary p-2" onclick={() => (mode = "edit")}>
-          <IconEdit class="inline" size={18} /> Edit
-        </button>
+        <OpenEditButton bind:mode />
       {/if}
     </div>
     {#if dash.settings.devMode && system.uuid}
@@ -136,6 +135,9 @@
               >
             </li>
           </ul>
+        </div>
+        <div class="flex flex-row items-center justify-end gap-2 w-full">
+          <OpenEditButton class="mt-2" bind:mode />
         </div>
       {/if}
     </div>

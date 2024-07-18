@@ -1,15 +1,14 @@
 <script lang="ts">
-  import { IconEdit } from "@tabler/icons-svelte"
   import type { Member } from "$api/types"
   import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
   import PrivacyDisplay from "../PrivacyDisplay.svelte"
   import moment from "moment"
-  import { copyToClipboard } from "$lib/dash/utils"
   import CopyField from "../CopyField.svelte"
   import MemberLink from "./MemberLink.svelte"
   import MemberInfoEdit from "./edit/MemberInfoEdit.svelte"
+  import OpenEditButton from "../edit/OpenEditButton.svelte"
 
   let {
     member,
@@ -29,9 +28,7 @@
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">Member details</h4>
       {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.member.privacyMode !== PrivacyMode.PUBLIC)}
-        <button onclick={() => (mode = "edit")} class="btn btn-sm btn-primary p-2">
-          <IconEdit class="inline" size={18} /> Edit
-        </button>
+        <OpenEditButton bind:mode />
       {/if}
     </div>
     {#if dash.settings.devMode && member.uuid}
@@ -181,9 +178,10 @@
           </ul>
         </div>
       {/if}
-    </div>
-    <div class="flex flex-row justify-end items-center">
-      <MemberLink item={member} {asPage} />
+      <div class="flex flex-row items-center justify-end gap-2 w-full">
+        <OpenEditButton class="mt-2" bind:mode />
+        <MemberLink item={member} {asPage} />
+      </div>
     </div>
   {:else if mode === "edit"}
     <MemberInfoEdit bind:mode {member} {asPage} />

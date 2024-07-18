@@ -6,16 +6,18 @@
   let {
     asPage,
     item,
+    color = "neutral",
   }: {
     asPage: boolean
     item: Member
+    color?: "primary" | "neutral"
   } = $props()
 </script>
 
 {#if dash.member.member?.uuid !== item.uuid || !asPage}
   <a
     target="_blank"
-    class="btn btn-primary btn-sm mt-2"
+    class={`btn btn-sm mt-2 btn-${color}`}
     href={`/dash/m/${item.id}${$page.url.searchParams.get("public") ? "?public=true" : ""}`}
   >
     View page
@@ -23,7 +25,7 @@
 {:else}
   <a
     target="_blank"
-    class="btn btn-primary btn-sm mt-2"
+    class={`btn btn-sm mt-2 btn-${color}`}
     href={`/dash/${(item as Member).system}?tab=members${$page.url.searchParams.get("public") ? "&public=true" : ""}`}
   >
     View system

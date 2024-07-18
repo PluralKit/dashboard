@@ -2,13 +2,11 @@
   import type { Group, Member } from "$api/types"
   import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
   import { IconEdit } from "@tabler/icons-svelte"
-  import AwaitHtml from "../AwaitHtml.svelte"
-  import parseMarkdown from "$api/parseMarkdown"
   import SimplePagination from "../SimplePagination.svelte"
-  import CopyField from "../CopyField.svelte"
   import GroupLink from "./GroupLink.svelte"
   import GroupMemberEdit from "./edit/GroupMemberEdit.svelte"
   import GroupMemberList from "./GroupMemberList.svelte"
+  import OpenEditButton from "../edit/OpenEditButton.svelte"
 
   let {
     asPage = false,
@@ -39,9 +37,7 @@
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">Member list</h4>
       {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.group.privacyMode !== PrivacyMode.PUBLIC)}
-        <button class="btn btn-sm btn-primary p-2" onclick={() => (mode = "edit")}>
-          <IconEdit class="inline" size={18} /> Edit
-        </button>
+        <OpenEditButton bind:mode />
       {/if}
     </div>
     <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
@@ -53,8 +49,11 @@
         </div>
         <GroupMemberList {members} bind:currentPage {itemsPerPage} />
       </div>
+      <div class="flex flex-row items-center justify-end gap-2 w-full">
+        <OpenEditButton class="mt-2" bind:mode />
+        <GroupLink item={group} {asPage} />
+      </div>
     </div>
-    <GroupLink {asPage} item={group} />
   {:else if mode === "edit"}
     <GroupMemberEdit membersCurrent={members} {group} {asPage} bind:mode />
   {/if}

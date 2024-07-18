@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { Member } from "$api/types"
-  import { IconEdit } from "@tabler/icons-svelte"
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
   import { getBirthday } from "$lib/dash/member/utils"
@@ -9,6 +8,7 @@
   import CopyField from "../CopyField.svelte"
   import MemberViewEdit from "./edit/MemberViewEdit.svelte"
   import MemberLink from "./MemberLink.svelte"
+  import OpenEditButton from "../edit/OpenEditButton.svelte"
 
   let {
     member,
@@ -30,9 +30,7 @@
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">General information</h4>
       {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.member.privacyMode !== PrivacyMode.PUBLIC)}
-        <button onclick={() => (mode = "edit")} class="btn btn-sm btn-primary p-2">
-          <IconEdit class="inline" size={18} /> Edit
-        </button>
+        <OpenEditButton bind:mode />
       {/if}
     </div>
     <div class={`flex flex-col gap-2 lg:gap-3 ${member.avatar_url ? "sm:flex-row" : ""}`}>
@@ -188,10 +186,11 @@
             alt={`${member.name}'s banner`}
           />
         {/if}
+        <div class="flex flex-row items-center justify-end gap-2 w-full">
+          <OpenEditButton class="mt-2" bind:mode />
+          <MemberLink item={member} {asPage} />
+        </div>
       </div>
-    </div>
-    <div class="flex flex-row justify-end items-center">
-      <MemberLink item={member} {asPage} />
     </div>
   {:else if mode === "edit"}
     <MemberViewEdit {member} bind:mode {asPage} />
