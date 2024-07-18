@@ -188,7 +188,7 @@
       <div>
         <h6 class="flex flex-row gap-1 items-center mb-1 mt-2">
           <IconPlus class="text-success" size={22} />
-          Groups added
+          Members added
           <button
             class="btn btn-warning btn-xs ml-auto"
             title="Reset added members"
@@ -209,7 +209,7 @@
       <div>
         <h6 class="flex flex-row gap-1 items-center mb-1 mt-2">
           <IconMinus class="text-error" size={22} />
-          Groups removed
+          Members removed
           <button
             class="btn btn-warning btn-xs ml-auto"
             title="Reset removed members"
