@@ -116,9 +116,9 @@
     <div class="flex flex-col md:flex-row gap-3">
       <div class="flex flex-col gap-2 flex-1">
         <div class="flex flex-row gap-2 items-center">
+          <label for={`${member.id}-add-group-input`}>Select groups to add</label>
           <button
-            class="btn btn-success btn-xs"
-            title="Add all"
+            class="btn btn-success btn-xs ml-auto"
             aria-label="Add all groups to member"
             onclick={() => {
               toAdd = allOptions.filter((opt) => !opt.included).map((g) => g.value || "")
@@ -128,21 +128,8 @@
             }}
           >
             <IconPlus size={18} class="inline" />
+            Add all groups
           </button>
-          <label for={`${member.id}-add-group-input`}>Add groups</label>
-          {#if added.length > 0}
-            <button
-              class="btn btn-warning btn-xs ml-auto"
-              title="Reset"
-              aria-label="Reset added groups"
-              onclick={() => {
-                uuidSelection = uuidSelection.filter((g) => uuidsCurrent.includes(g))
-                toAdd = []
-              }}
-            >
-              <IconRefresh size={18} class="inline" />
-            </button>
-          {/if}
         </div>
         <Svelecte
           inputId={`${member.id}-add-group-input`}
@@ -161,9 +148,9 @@
       </div>
       <div class="flex flex-col gap-2 flex-1">
         <div class="flex flex-row gap-2 items-center">
+          <label for={`${member.id}-remove-group-input`}>Remove groups</label>
           <button
-            class="btn btn-error btn-xs"
-            title="Remove all"
+            class="btn btn-error btn-xs ml-auto"
             aria-label="Remove all groups from member"
             onclick={() => {
               toRemove = allOptions.filter((opt) => opt.included).map((g) => g.value || "")
@@ -173,25 +160,8 @@
             }}
           >
             <IconMinus size={18} class="inline" />
+            Remove all groups
           </button>
-          <label for={`${member.id}-remove-group-input`}>Remove groups</label>
-
-          {#if removed.length > 0}
-            <button
-              class="btn btn-warning btn-xs ml-auto"
-              title="Reset"
-              aria-label="Reset removed groups"
-              onclick={() => {
-                uuidSelection = [
-                  ...uuidsCurrent,
-                  ...uuidSelection.filter((g) => !uuidsCurrent.includes(g)),
-                ]
-                toRemove = []
-              }}
-            >
-              <IconRefresh size={18} class="inline" />
-            </button>
-          {/if}
         </div>
         <Svelecte
           inputId={`${member.id}-remove-group-input`}
@@ -222,7 +192,7 @@
           Groups added
           <button
             class="btn btn-warning btn-xs ml-auto"
-            title="Reset"
+            title="Reset added groups"
             aria-label="Reset added groups"
             onclick={() => {
               uuidSelection = uuidSelection.filter((g) => uuidsCurrent.includes(g))
@@ -230,6 +200,7 @@
             }}
           >
             <IconRefresh size={18} class="inline" />
+            Reset
           </button>
         </h6>
         {@render joinGroups(added)}
@@ -242,7 +213,7 @@
           Groups removed
           <button
             class="btn btn-warning btn-xs ml-auto"
-            title="Reset"
+            title="Reset removed groups"
             aria-label="Reset removed groups"
             onclick={() => {
               uuidSelection = [
@@ -253,6 +224,7 @@
             }}
           >
             <IconRefresh size={18} class="inline" />
+            Reset
           </button>
         </h6>
         {@render joinGroups(removed)}
