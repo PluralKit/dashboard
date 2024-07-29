@@ -73,6 +73,33 @@
   .discord-markdown a {
     @apply link-primary;
   }
+
+  /* daisyUI applies some styling to lists in .menu that we don't want */
+  /* so we reset them here */
+  :where(.menu li),
+  :where(.menu ul) {
+    position: static;
+  }
+
+  .discord-markdown ul {
+    position: static;
+    white-space: normal;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+  }
+
+  .discord-markdown li {
+    position: static;
+    display: list-item;
+  }
+
+  .menu .discord-markdown :where(li:not(.menu-title) > :not(ul, details, .menu-title, .btn)),
+  .menu .discord-markdown :where(li:not(.menu-title) > details > summary:not(.menu-title)) {
+    display: unset;
+    padding: unset;
+  }
+
+  /* end of the .menu reset */
 }
 
 [data-theme="dark"],
