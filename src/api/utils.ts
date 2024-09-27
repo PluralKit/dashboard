@@ -2,7 +2,6 @@ import { ErrorType, type ApiError, type ApiClient, type ApiOptions } from "$api"
 import type { Cookies } from "@sveltejs/kit"
 import { env } from "$env/dynamic/private"
 import type { Member, System, Group } from "./types"
-import { PUBLIC_API_COOLDOWN } from "$env/static/public"
 
 export async function login(api: ApiClient, cookies: Cookies): Promise<System | null> {
   try {
@@ -53,7 +52,6 @@ export async function getDashInfo(api: ApiClient, sid: string, token?: string) {
     errors.system = e.message || "Unknown error while fetching system"
   }
 
-  await new Promise((resolve) => setTimeout(resolve, parseInt(PUBLIC_API_COOLDOWN)))
   let members: Member[] = []
   try {
     members = (await api<Member[]>(`systems/${sid}/members`, options)) || []
@@ -63,7 +61,6 @@ export async function getDashInfo(api: ApiClient, sid: string, token?: string) {
     errors.members = e.message || "Unknown error while fetching members"
   }
 
-  await new Promise((resolve) => setTimeout(resolve, parseInt(PUBLIC_API_COOLDOWN)))
   let groups: Group[] = []
   try {
     groups = (await api<Group[]>(`systems/${sid}/groups?with_members=true`, options)) || []

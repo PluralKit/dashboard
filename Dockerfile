@@ -10,12 +10,10 @@ FROM base AS deps
 RUN pnpm install --prod --frozen-lockfile
 
 FROM base AS build
-ARG api_cooldown=300
 ARG base_api_url=https://api.pluralkit.me
 ARG repository_url=https://github.com/PluralKit/dashboard
 RUN pnpm install --frozen-lockfile
-RUN PUBLIC_API_COOLDOWN=${api_cooldown} \
-  PUBLIC_REPOSITORY_URL=${repository_url} \
+RUN PUBLIC_REPOSITORY_URL=${repository_url} \
   PUBLIC_BASE_API_URL=${base_api_url} \
   pnpm build
 

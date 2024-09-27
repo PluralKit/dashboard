@@ -49,6 +49,8 @@ export default function apiClient(fetch: SvelteFetch, baseUrl?: string): ApiClie
 
     if (resp.status === 204) return undefined
 
+    await checkRateLimit(resp)
+
     const data = await resp.json()
     return data
   }
@@ -75,22 +77,21 @@ async function parseError(resp: Response): Promise<ApiError> {
   throw err
 }
 
-export async function queue(api: ApiClient, requests: { path: string; options: ApiOptions }[]) {
-  let errors: ApiError[] = []
-  let results: any[] = []
-  for (const req of requests) {
-    try {
-      let res = await api(req.path, req.options)
-      results.push(res)
-    } catch (err) {
-      let e = err as ApiError
-      errors.push(e)
-    }
+export async function checkRateLimit(resp: Response) {
+  let remaining: string | number | undefined =
+    resp.headers.get("X-RateLimit-Remaining") ?? undefined
+  let reset: string | number | undefined = resp.headers.get("X-RateLimit-Reset") ?? undefined
 
-    // await new Promise(resolve => setTimeout)
+  if (remaining && reset) {
+    remaining = parseInt(remaining)
+    reset = parseInt(reset)
+
+    if (remaining !== 0) return
+
+    if (!Number.isNaN(reset)) {
+      await new Promise((resolve) =>
+        setTimeout(resolve, Math.max(0, (reset as number) - Math.floor(Date.now() / 1000)))
+      )
+    }
   }
-  errors.forEach((e) => {
-    throw e
-  })
-  return results
 }

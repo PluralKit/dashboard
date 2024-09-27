@@ -74,6 +74,10 @@
     @apply link-primary;
   }
 
+  .discord-markdown small {
+    @apply block;
+  }
+
   /* daisyUI applies some styling to lists in .menu that we don't want */
   /* so we reset them here */
   :where(.menu li),

@@ -29,7 +29,6 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           build-args: |
-            "api_cooldown=330"
             "base_api_url=https://api.beta.pluralkit.me"
           tags: |
             ghcr.io/pluralkit/dashboard-v2:${{ env.BRANCH_NAME }}

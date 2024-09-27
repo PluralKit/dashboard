@@ -1,6 +1,5 @@
 import apiClient, { ErrorType, type ApiError, type ApiOptions } from "$api"
 import type { Group, Member } from "$api/types"
-import { PUBLIC_API_COOLDOWN } from "$env/static/public"
 import { PrivacyMode } from "$lib/dash/dash.svelte.js"
 import { error } from "@sveltejs/kit"
 
@@ -33,7 +32,6 @@ export async function load({ cookies, params, url }) {
       privacyMode = PrivacyMode.PRIVATE
       try {
         group = await api<Group>(`groups/${params.gid}`, options)
-        await new Promise((resolve) => setTimeout(resolve, parseInt(PUBLIC_API_COOLDOWN)))
         members = (await api<Member[]>(`groups/${params.gid}/members`, options)) || []
       } catch (err) {
         const e = err as ApiError
