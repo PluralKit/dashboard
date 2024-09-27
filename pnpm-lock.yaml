@@ -53,8 +53,8 @@ devDependencies:
     specifier: ^4.12.10
     version: 4.12.10(postcss@8.4.39)
   discord-markdown:
-    specifier: github:draconizations/discord-markdown#5ebd433c93f46839bbfed6a5ef97ea4485756c24
-    version: github.com/draconizations/discord-markdown/5ebd433c93f46839bbfed6a5ef97ea4485756c24
+    specifier: github:draconizations/discord-markdown#9d25e45015766779916baea52c37ae0fe12aac73
+    version: github.com/draconizations/discord-markdown/9d25e45015766779916baea52c37ae0fe12aac73
   dotenv:
     specifier: ^16.4.5
     version: 16.4.5
@@ -3133,8 +3133,8 @@ packages:
     resolution: {integrity: sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w==}
     dev: true
 
-  github.com/draconizations/discord-markdown/5ebd433c93f46839bbfed6a5ef97ea4485756c24:
-    resolution: {tarball: https://codeload.github.com/draconizations/discord-markdown/tar.gz/5ebd433c93f46839bbfed6a5ef97ea4485756c24}
+  github.com/draconizations/discord-markdown/9d25e45015766779916baea52c37ae0fe12aac73:
+    resolution: {tarball: https://codeload.github.com/draconizations/discord-markdown/tar.gz/9d25e45015766779916baea52c37ae0fe12aac73}
     name: discord-markdown
     version: 2.5.1
     dependencies:

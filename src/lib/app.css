@@ -75,7 +75,7 @@
   }
 
   .discord-markdown small {
-    @apply block;
+    @apply block text-muted;
   }
 
   /* daisyUI applies some styling to lists in .menu that we don't want */
