@@ -31,7 +31,7 @@
     "autoprefixer": "^10.4.19",
     "caniuse-lite": "^1.0.30001642",
     "daisyui": "^4.12.10",
-    "discord-markdown": "github:draconizations/discord-markdown#1f74a7094777d5bdfd123c0aac59d8b10db89b30",
+    "discord-markdown": "github:draconizations/discord-markdown#5ebd433c93f46839bbfed6a5ef97ea4485756c24",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^8.10.0",
