@@ -42,7 +42,7 @@
         previewValue = value
         if (onChange) onChange()
       }}
-      max={256}
+      maxlength={256}
     />
   </div>
   <div class="avatar w-12 h-12">

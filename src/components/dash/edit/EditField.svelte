@@ -41,6 +41,6 @@
     use:autoresize
     placeholder={original}
     class="w-full textarea resize-none textarea-bordered placeholder:text-base-content/40"
-    max={maxLength}
+    maxlength={maxLength}
   ></textarea>
 </div>
