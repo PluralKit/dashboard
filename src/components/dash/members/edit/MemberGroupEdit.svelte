@@ -35,6 +35,10 @@
   let uuidsCurrent: string[] = $derived(groupsCurrent.map((g) => g.uuid || ""))
   let uuidSelection: string[] = $state(groupsCurrent.map((g) => g.uuid || ""))
 
+  $effect(() => {
+    uuidSelection = groupsCurrent.map((g) => g.uuid || "")
+  })
+
   let groupSelection: Group[] = $derived(
     !asPage
       ? dash.groups.list.raw

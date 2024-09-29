@@ -6,8 +6,7 @@ import { dash, PrivacyMode } from "../dash.svelte"
 export async function deriveGroupsAsync(
   member: Member,
   current: Group[],
-  asPage: boolean,
-  done: boolean
+  asPage: boolean
 ): Promise<Group[]> {
   if (!asPage && dash.privacyMode !== PrivacyMode.PRIVATE) {
     // we're viewing the public list! we want to fetch the groups for the individual member

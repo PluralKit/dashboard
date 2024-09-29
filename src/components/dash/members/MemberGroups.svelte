@@ -8,7 +8,6 @@
   import MemberGroupEdit from "./edit/MemberGroupEdit.svelte"
   import MemberGroupList from "./MemberGroupList.svelte"
   import OpenEditButton from "../edit/OpenEditButton.svelte"
-  import { onMount } from "svelte"
   import { deriveGroupsAsync, deriveGroups } from "$lib/dash/group/utils"
   import type { ApiError } from "$api"
   import { IconAlertTriangle } from "@tabler/icons-svelte"
@@ -25,23 +24,22 @@
 
   let mode: "view" | "edit" = $state("view")
 
-  let done = $state(false)
   let err = $state("")
 
+  let list: Group[] = $derived(deriveGroups(member, asPage))
   let groups: Group[] = $state(deriveGroups(member, asPage))
+
   let groupPromise: Promise<Group[]> = $derived.by(async () => {
-    let g = groups
     try {
-      g = await deriveGroupsAsync(member, groups, asPage, done)
+      return await deriveGroupsAsync(member, list, asPage)
     } catch (e) {
       err = (e as ApiError).message ?? "unknown error."
     }
-    return g
+    return list
   })
 
-  onMount(async () => {
-    groups = await Promise.resolve(groupPromise)
-    done = true
+  $effect(() => {
+    Promise.resolve(groupPromise).then((g) => (groups = g))
   })
 
   let formattedGroups: string = $derived(
