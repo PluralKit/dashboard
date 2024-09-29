@@ -78,6 +78,11 @@
     @apply block text-muted;
   }
 
+  /* button styling! */
+  .btn {
+    @apply font-normal;
+  }
+
   /* daisyUI applies some styling to lists in .menu that we don't want */
   /* so we reset them here */
   :where(.menu li),
