@@ -154,6 +154,11 @@
   --sv-loader-border: none;
 }
 
+.group-control {
+  --sv-dropdown-active-bg: transparent;
+  --sv-item-wrap-padding: 0.25rem 0;
+}
+
 .sv-item--wrap {
   border-radius: 4px;
   padding: 0.25rem;
@@ -161,7 +166,7 @@
 }
 
 .sv-item--wrap.in-dropdown {
-  padding: 0.5rem;
+  padding: 0;
   position: relative;
 }
 

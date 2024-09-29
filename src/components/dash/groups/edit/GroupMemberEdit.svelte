@@ -8,6 +8,7 @@
   import SimplePagination from "$components/dash/SimplePagination.svelte"
   import GroupMemberList from "../GroupMemberList.svelte"
   import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
+  import type { Snippet } from "svelte"
 
   let {
     membersCurrent,
@@ -121,7 +122,7 @@
         </div>
         <Svelecte
           inputId={`${group.id}-add-member-input`}
-          class="svelecte-control-pk"
+          class="svelecte-control-pk group-control"
           options={allOptions.filter((opt) => !opt.included)}
           multiple
           collapseSelection="blur"
@@ -153,7 +154,7 @@
         </div>
         <Svelecte
           inputId={`${group.id}-remove-member-input`}
-          class="svelecte-control-pk"
+          class="svelecte-control-pk group-control"
           options={allOptions.filter((opt) => opt.included)}
           multiple
           collapseSelection="blur"
@@ -290,7 +291,7 @@
 
 {#snippet option(opt: any)}
   <div
-    class={`option flex flex-row justify-between rounded -m-1 p-1 ${
+    class={`option flex flex-row justify-between rounded -mx-1.5 -my-1 px-1.5 py-1 ${
       !opt.included ? "bg-success/10 hover:bg-success/25" : "bg-error/10 hover:bg-error/25"
     }`}
   >

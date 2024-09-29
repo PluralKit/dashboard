@@ -131,7 +131,7 @@
         </div>
         <Svelecte
           inputId={`${member.id}-add-group-input`}
-          class="svelecte-control-pk"
+          class="svelecte-control-pk group-control"
           options={allOptions.filter((opt) => !opt.included)}
           multiple
           collapseSelection="blur"
@@ -163,7 +163,7 @@
         </div>
         <Svelecte
           inputId={`${member.id}-remove-group-input`}
-          class="svelecte-control-pk"
+          class="svelecte-control-pk group-control"
           options={allOptions.filter((opt) => opt.included)}
           multiple
           collapseSelection="blur"
@@ -262,7 +262,7 @@
 <div class="flex flex-row items-center">
   <div class="join mt-2">
     {#if !loading}
-      {#if edited}
+      {#if added.length > 0 || removed.length > 0}
         <SubmitEditButton
           onSuccess={() => {
             toAdd = []
