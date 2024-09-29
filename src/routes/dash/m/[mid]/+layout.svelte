@@ -2,17 +2,24 @@
   import { dash } from "$lib/dash/dash.svelte"
   import { IconAlertTriangle, IconArrowLeft } from "@tabler/icons-svelte"
   import type { LayoutData } from "./$types"
+  import { page } from "$app/stores"
 
   export let data: LayoutData
 
   dash.member.member = data.member
   dash.member.groups = data.groups
   dash.member.privacyMode = data.privacyMode
+
+  let params = $page.url.searchParams
+  params.append("tab", "members")
 </script>
 
 <div class="container mx-auto px-4">
   <div class="flex flex-row mb-4 justify-center">
-    <a class="btn btn-ghost w-fit" href={`/dash/${dash.member.member?.system}`}>
+    <a
+      class="btn btn-ghost w-fit"
+      href={`/dash/${dash.member.member?.system}${params.toString().length > 0 ? `?${params.toString()}` : ""}`}
+    >
       <IconArrowLeft /> Back to system
     </a>
   </div>

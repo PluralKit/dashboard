@@ -25,10 +25,11 @@ export async function load({ cookies, params, url, parent }) {
     else error(e.code, e.message)
   }
 
-  if (sid && token && !url.searchParams.get("public")) options = { token }
+  if (sid && token && !url.searchParams.get("public") && !url.searchParams.get("api"))
+    options = { token }
 
   if (group) {
-    if (group.system === sid && !url.searchParams.get("public")) {
+    if (group.system === sid && !url.searchParams.get("public") && !url.searchParams.get("api")) {
       privacyMode = PrivacyMode.PRIVATE
       try {
         group = await api<Group>(`groups/${params.gid}`, options)

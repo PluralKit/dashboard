@@ -9,15 +9,16 @@
   dash.group.group = data.group
   dash.group.members = data.members
   dash.member.privacyMode = data.privacyMode
+
+  let params = $page.url.searchParams
+  params.append("tab", "groups")
 </script>
 
 <div class="container mx-auto px-4">
   <div class="flex flex-row mb-4 justify-center">
     <a
       class="btn btn-ghost w-fit"
-      href={`/dash/${dash.group.group?.system}?tab=groups${
-        $page.url.searchParams.get("public") ? "&public=true" : ""
-      }`}
+      href={`/dash/${dash.group.group?.system}${params.toString().length > 0 ? `?${params.toString()}` : ""}`}
     >
       <IconArrowLeft /> Back to system
     </a>

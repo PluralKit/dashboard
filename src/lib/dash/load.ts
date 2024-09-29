@@ -29,7 +29,7 @@ export async function loadDash(
     // if the param system id matches the cookie system id
     // AND we aren't forcing public mode
     // we can go ahead and fetch using the token
-    if (params.sid === sid && !url.searchParams.get("public")) {
+    if (params.sid === sid && !url.searchParams.get("public") && !url.searchParams.get("api")) {
       try {
         const { system, members, groups, errors, ratelimited } = await getDashInfo(
           api,
