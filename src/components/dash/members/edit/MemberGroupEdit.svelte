@@ -69,8 +69,6 @@
           .sort((a, b) => a.text.localeCompare(b.text))
   )
 
-  let edited = $derived(!$state.is(uuidSelection, uuidsCurrent))
-
   let toAdd: string[] = $state([])
   let toRemove: string[] = $state([])
 
@@ -87,7 +85,7 @@
 <div class="flex flex-row gap-2 justify-between items-center mb-3">
   <h4 class="text-2xl ml-3 font-medium">Editing member groups</h4>
   {#if !loading}
-    {#if edited}
+    {#if added.length > 0 || removed.length > 0}
       <button
         onclick={() => (mode = "view")}
         class="btn btn-sm btn-neutral join-item"
@@ -308,7 +306,7 @@
 
 {#snippet option(opt: any)}
   <div
-    class={`option flex flex-row justify-between rounded -m-1 p-1 ${
+    class={`option flex flex-row justify-between rounded px-2 py-1.5 ${
       !opt.included ? "bg-success/10 hover:bg-success/25" : "bg-error/10 hover:bg-error/25"
     }`}
   >

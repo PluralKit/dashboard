@@ -62,8 +62,6 @@
           .sort((a, b) => a.text.localeCompare(b.text))
   )
 
-  let edited = $derived(!$state.is(uuidSelection, uuidsCurrent))
-
   let toAdd: string[] = $state([])
   let toRemove: string[] = $state([])
 
@@ -77,7 +75,7 @@
 <div class="flex flex-row gap-2 justify-between items-center mb-3">
   <h4 class="text-2xl ml-3 font-medium">Editing group members</h4>
   {#if !loading}
-    {#if edited}
+    {#if added.length > 0 || removed.length > 0}
       <button
         onclick={() => (mode = "view")}
         class="btn btn-sm btn-neutral join-item"
@@ -248,7 +246,7 @@
 <div class="flex flex-row items-center">
   <div class="join mt-2">
     {#if !loading}
-      {#if edited}
+      {#if added.length > 0 || removed.length > 0}
         <SubmitEditButton
           onSuccess={() => {
             toAdd = []
