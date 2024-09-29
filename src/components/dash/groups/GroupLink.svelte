@@ -15,6 +15,9 @@
 
   let params = $page.url.searchParams
   params.delete("tab")
+
+  let systemParams = $page.url.searchParams
+  systemParams.append("tab", "groups")
 </script>
 
 <div class="flex flex-row justify-end items-center">
@@ -30,7 +33,7 @@
     <a
       target="_blank"
       class={`btn btn-sm mt-2 btn-${color}`}
-      href={`/dash/${(item as Group).system}?tab=groups${$page.url.searchParams.get("public") ? "&public=true" : ""}`}
+      href={`/dash/${(item as Group).system}${systemParams.toString().length > 0 ? `?${systemParams.toString()}` : ""}`}
     >
       View system
     </a>
