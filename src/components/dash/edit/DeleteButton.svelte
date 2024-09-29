@@ -1,5 +1,4 @@
 <script lang="ts">
-  import apiClient from "$api"
   import type { Group, Member } from "$api/types"
   import { browser } from "$app/environment"
   import { goto } from "$app/navigation"
@@ -20,10 +19,11 @@
   let idInput = $state("")
 
   async function submitDelete() {
-    const token = (browser && localStorage.getItem("pk-token")) || ""
-    const api = apiClient(fetch, dash.apiBaseUrl)
+    if (!browser) return
 
-    await api(`${type}s/${item.uuid}`, {
+    const token = localStorage.getItem("pk-token") ?? ""
+
+    await window.api(`${type}s/${item.uuid}`, {
       token,
       method: "DELETE",
     })

@@ -54,7 +54,6 @@ function createDash() {
   let errors: Record<string, string> = $state({})
 
   let settings: Record<string, any> = $state({})
-  let apiBaseUrl: string | undefined = $state()
   return {
     get members(): DashList<Member> {
       return {
@@ -116,14 +115,7 @@ function createDash() {
     get user() {
       return user
     },
-    init: (
-      system: System,
-      members: Member[],
-      groups: Group[],
-      mode: PrivacyMode,
-      baseUrl?: string
-    ) => {
-      apiBaseUrl = baseUrl
+    init: (system: System, members: Member[], groups: Group[], mode: PrivacyMode) => {
       systemData.init(system)
       memberList.init(members)
       groupList.init(groups)
@@ -134,12 +126,6 @@ function createDash() {
     },
     get settings() {
       return settings
-    },
-    get apiBaseUrl() {
-      return apiBaseUrl
-    },
-    set apiBaseUrl(baseUrl: string | undefined) {
-      apiBaseUrl = baseUrl
     },
     get ratelimited() {
       return ratelimited
@@ -222,12 +208,7 @@ function createMemberListState() {
       paginatedMembers = paginateList(processedMembers, listSettings)
     },
     fetch: async function (token?: string) {
-      members = await fetchList(
-        fetch,
-        `systems/${dash.system?.id || "exmpl"}/members`,
-        token,
-        dash.apiBaseUrl
-      )
+      members = await fetchList(`systems/${dash.system?.id || "exmpl"}/members`, token)
       processedMembers = processList(members, filters, sorts)
       paginatedMembers = paginateList(processedMembers, listSettings)
     },
@@ -296,10 +277,8 @@ function createGroupListState() {
     },
     fetch: async function (token?: string) {
       groups = await fetchList(
-        fetch,
         `systems/${dash.system?.id || "exmpl"}/groups?with_members=true`,
-        token,
-        dash.apiBaseUrl
+        token
       )
       processedGroups = processList(groups, filters, sorts)
       paginatedGroups = paginateList(processedGroups, listSettings)

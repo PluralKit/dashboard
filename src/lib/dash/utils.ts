@@ -1,4 +1,4 @@
-import apiClient, { type SvelteFetch } from "$api"
+import { browser } from "$app/environment"
 
 export function getDashLink(sid: string, page: string, params?: URLSearchParams) {
   return `/dash${sid ? `/${sid}` : ""}${sid && page ? `?tab=${page}` : ""}${
@@ -10,15 +10,11 @@ export function copyToClipboard(value?: string) {
   navigator.clipboard.writeText(value || "")
 }
 
-export async function fetchList<T>(
-  fetch: SvelteFetch,
-  path: string,
-  token?: string,
-  apiBaseUrl?: string
-): Promise<T[]> {
-  const api = apiClient(fetch, apiBaseUrl)
+export async function fetchList<T>(path: string, token?: string): Promise<T[]> {
+  if (!browser) return []
+
   return (
-    (await api<T[]>(path, {
+    (await window.api<T[]>(path, {
       token,
     })) || []
   )

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import apiClient, { type ApiError } from "$api"
+  import type { ApiError } from "$api"
   import type { Group, Member, System } from "$api/types"
   import { browser } from "$app/environment"
   import { dash, type DashList } from "$lib/dash/dash.svelte"
@@ -48,6 +48,8 @@
   } = $props()
 
   export async function submitEdit() {
+    if (!browser) return
+
     err = []
     let body: (Member & Group & System) | null = null
     let listBody: string[] | null = null
@@ -96,15 +98,14 @@
 
     if (err.length > 0) return
 
-    const token = (browser && localStorage.getItem("pk-token")) || ""
-    const api = apiClient(fetch, dash.apiBaseUrl)
+    const token = localStorage.getItem("pk-token") || ""
     loading = true
 
     if (body && ((options as ItemEditOptions).item || (options as SystemEditOptions).system)) {
       let opts = options as ItemEditOptions | SystemEditOptions
 
       try {
-        let response = await api<Member | Group | System>(path, {
+        let response = await window.api<Member | Group | System>(path, {
           token,
           method: "PATCH",
           body,
@@ -138,7 +139,7 @@
       }
     } else if (listBody) {
       try {
-        await api(path, {
+        await window.api(path, {
           token,
           method: "POST",
           body: listBody,

@@ -1,4 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
+
+import type { ApiClient } from "$api"
+
 // for information about these interfaces
 declare global {
   namespace App {
@@ -6,6 +9,10 @@ declare global {
     // interface Locals {}
     // interface PageData {}
     // interface Platform {}
+  }
+
+  interface Window {
+    api: ApiClient
   }
 }
 

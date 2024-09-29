@@ -10,8 +10,13 @@
   import { page } from "$app/stores"
   import { navigating } from "$app/stores"
   import nprogress from "nprogress"
+  import apiClient from "$api"
 
   export let data: LayoutData
+
+  if (browser) {
+    window.api = apiClient(fetch, data.apiBaseUrl)
+  }
 
   if (data.token && browser) {
     localStorage.setItem("pk-token", data.token)

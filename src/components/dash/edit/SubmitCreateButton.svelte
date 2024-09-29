@@ -1,5 +1,5 @@
 <script lang="ts">
-  import apiClient, { type ApiError } from "$api"
+  import type { ApiError } from "$api"
   import type { Group, Member } from "$api/types"
   import { browser } from "$app/environment"
   import { dash, type DashList } from "$lib/dash/dash.svelte"
@@ -29,6 +29,8 @@
   } = $props()
 
   async function submitCreate() {
+    if (!browser) return
+
     err = []
     success = false
 
@@ -66,12 +68,11 @@
 
     if (err.length > 0) return
 
-    const token = (browser && localStorage.getItem("pk-token")) || ""
-    const api = apiClient(fetch, dash.apiBaseUrl)
+    const token = localStorage.getItem("pk-token") || ""
     loading = true
 
     try {
-      let response = await api<Member | Group>(itemPath, {
+      let response = await window.api<Member | Group>(itemPath, {
         token,
         method: "POST",
         body,
@@ -79,7 +80,7 @@
 
       if (response) {
         if (groupPath && groupList && groupList.length > 0) {
-          await api(`${itemPath}/${response.uuid}/${groupPath}/overwrite`, {
+          await window.api(`${itemPath}/${response.uuid}/${groupPath}/overwrite`, {
             token,
             method: "POST",
             body: groupList,

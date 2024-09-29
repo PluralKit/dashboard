@@ -1,6 +1,5 @@
-import type { ApiError } from "$api"
-import apiClient from "$api"
 import type { Group, Member } from "$api/types"
+import { browser } from "$app/environment"
 import { dash, PrivacyMode } from "../dash.svelte"
 
 export async function deriveGroupsAsync(
@@ -9,10 +8,11 @@ export async function deriveGroupsAsync(
   asPage: boolean
 ): Promise<Group[]> {
   if (!asPage && dash.privacyMode !== PrivacyMode.PRIVATE) {
+    if (!browser) return current
+
     // we're viewing the public list! we want to fetch the groups for the individual member
     // any group with their member list privated will not show up here otherwise
-    const api = apiClient(fetch, dash.apiBaseUrl)
-    const groups = (await api<Group[]>(`members/${member.uuid}/groups`)) ?? []
+    const groups = (await window.api<Group[]>(`members/${member.uuid}/groups`)) ?? []
     return groups.sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
     // if not, just return the existing groups
   } else return current
