@@ -31,7 +31,7 @@
         ? dash.member.groups
             .filter((g) => g.members?.includes(member.uuid || ""))
             .sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
-        : dash.member.groups.sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
+        : [...dash.member.groups].sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
   )
   let formattedGroups: string = $derived(
     groups.length <= 5
