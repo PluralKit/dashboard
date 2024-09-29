@@ -1,17 +1,8 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
   import { dash } from "$lib/dash/dash.svelte"
-  import {
-    IconRefresh,
-    IconLoader,
-    IconMinus,
-    IconPlus,
-    IconX,
-    IconAlertTriangle,
-  } from "@tabler/icons-svelte"
+  import { IconRefresh, IconLoader, IconMinus, IconPlus, IconX } from "@tabler/icons-svelte"
   import Svelecte from "svelecte"
-  import AwaitHtml from "$components/dash/AwaitHtml.svelte"
-  import parseMarkdown from "$api/parseMarkdown"
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
   import { fade } from "svelte/transition"
   import SimplePagination from "$components/dash/SimplePagination.svelte"
@@ -35,7 +26,7 @@
   let loading = $state(false)
 
   let uuidsCurrent: string[] = $derived(membersCurrent.map((g) => g.uuid || ""))
-  let uuidSelection: string[] = $state(uuidsCurrent)
+  let uuidSelection: string[] = $state(membersCurrent.map((g) => g.uuid || ""))
 
   let memberSelection: Group[] = $derived(
     !asPage
@@ -299,7 +290,7 @@
   <DeleteButton type="group" item={group} {asPage} />
 </div>
 
-{#snippet option(opt)}
+{#snippet option(opt: any)}
   <div
     class={`option flex flex-row justify-between rounded -m-1 p-1 ${
       !opt.included ? "bg-success/10 hover:bg-success/25" : "bg-error/10 hover:bg-error/25"

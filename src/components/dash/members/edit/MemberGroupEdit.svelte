@@ -33,7 +33,7 @@
   let loading = $state(false)
 
   let uuidsCurrent: string[] = $derived(groupsCurrent.map((g) => g.uuid || ""))
-  let uuidSelection: string[] = $state(uuidsCurrent)
+  let uuidSelection: string[] = $state(groupsCurrent.map((g) => g.uuid || ""))
 
   let groupSelection: Group[] = $derived(
     !asPage
@@ -306,7 +306,7 @@
   <DeleteButton type="member" item={member} {asPage} />
 </div>
 
-{#snippet option(opt)}
+{#snippet option(opt: any)}
   <div
     class={`option flex flex-row justify-between rounded -m-1 p-1 ${
       !opt.included ? "bg-success/10 hover:bg-success/25" : "bg-error/10 hover:bg-error/25"
