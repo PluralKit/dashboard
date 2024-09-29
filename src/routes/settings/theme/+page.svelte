@@ -35,14 +35,43 @@
           <p class="text-error mb-3 mt-2 w-full">{form?.error}</p>
         {/if}
       </div>
-      <div class="flex-1 p-3 rounded-xl" data-theme={data.theme}>
-        <p class="mb-2">Theme preview - <b>{data.theme}</b></p>
+      <div
+        class="flex-1 p-3 rounded-xl border border-muted/40"
+        data-theme={data.theme}
+        aria-labelledby={`theme-preview-${data.theme}`}
+      >
+        <p class="mb-2" id={`theme-preview-${data.theme}`}>Theme preview - <b>{data.theme}</b></p>
         <div class="flex flex-row gap-3 flex-wrap">
-          <div class="bg-primary w-12 h-12 rounded-lg"></div>
-          <div class="bg-secondary w-12 h-12 rounded-lg"></div>
-          <div class="bg-accent w-12 h-12 rounded-lg"></div>
-          <div class="bg-neutral w-12 h-12 rounded-lg"></div>
-          <div class="bg-base-300 w-12 h-12 rounded-lg"></div>
+          <div
+            class="bg-primary text-primary-content w-12 h-12 rounded-lg shadow text-md flex items-center justify-center"
+            aria-label="primary color swatch"
+          >
+            Aa
+          </div>
+          <div
+            class="bg-secondary text-secondary-content w-12 h-12 rounded-lg shadow text-md flex items-center justify-center"
+            aria-label="secondary color swatch"
+          >
+            Aa
+          </div>
+          <div
+            class="bg-accent text-accent-content w-12 h-12 rounded-lg shadow text-md flex items-center justify-center"
+            aria-label="accent color swatch"
+          >
+            Aa
+          </div>
+          <div
+            class="bg-neutral text-neutral-content w-12 h-12 rounded-lg shadow text-md flex items-center justify-center"
+            aria-label="neutral color swatch"
+          >
+            Aa
+          </div>
+          <div
+            class="bg-base-300 text-base-content w-12 h-12 rounded-lg shadow text-md flex items-center justify-center"
+            aria-label="background color swatch"
+          >
+            Aa
+          </div>
         </div>
       </div>
     </div>
