@@ -4,10 +4,15 @@ import { error, type Cookies, redirect } from "@sveltejs/kit"
 import { PrivacyMode } from "./dash.svelte"
 import { getDashInfo } from "$api/utils"
 
-export async function loadDash(fetch: SvelteFetch, cookies: Cookies, url: URL, params?: any) {
+export async function loadDash(
+  fetch: SvelteFetch,
+  cookies: Cookies,
+  url: URL,
+  apiBaseUrl: string | undefined,
+  params?: any
+) {
   const token = cookies.get("pk-token")
   const sid = cookies.get("pk-sid")
-  const apiBaseUrl = cookies.get("pk-api-url")
 
   // if we don't have a system id, assume old dash link
   // redirect to the new dash link if we have a token

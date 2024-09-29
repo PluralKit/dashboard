@@ -17,11 +17,6 @@ export async function login(api: ApiClient, cookies: Cookies): Promise<System | 
     let e = err as ApiError
 
     if (e.type === ErrorType.InvalidToken) {
-      cookies.delete("pk-token", {
-        path: "/",
-        secure: env.NODE_ENV !== "development",
-      })
-
       throw Error("Invalid token.")
     } else {
       throw Error((err as Error).message)

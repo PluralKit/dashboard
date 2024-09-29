@@ -3,11 +3,19 @@ import type { System } from "$api/types"
 import { login } from "$api/utils"
 import { env } from "$env/dynamic/private"
 
-export async function load({ cookies }) {
+export async function load({ cookies, url }) {
   const theme = cookies.get("pk-theme") ?? "dark"
 
   const token = cookies.get("pk-token")
-  const apiBaseUrl = cookies.get("pk-api-url")
+  const getBaseUrl = () => {
+    const param = url.searchParams.get("api")
+    if (param === "prod" || param === "production") return "https://api.pluralkit.me"
+    if (param === "beta") return "https://api.beta.pluralkit.me"
+
+    return cookies.get("pk-api-url")
+  }
+
+  const apiBaseUrl = getBaseUrl()
 
   let error: string | null = null
 
@@ -22,7 +30,7 @@ export async function load({ cookies }) {
         maxAge: 60 * 60 * 24 * 90, // 90 days
       })
     } catch (err) {
-      if ((err as ApiError).type === ErrorType.InvalidToken) {
+      if ((err as ApiError).type === ErrorType.InvalidToken && !url.searchParams.get("api")) {
         cookies.delete("pk-token", {
           path: "/",
           secure: env.NODE_ENV !== "development",

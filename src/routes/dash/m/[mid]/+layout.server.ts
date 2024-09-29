@@ -3,11 +3,11 @@ import type { Group, Member } from "$api/types"
 import { PrivacyMode } from "$lib/dash/dash.svelte.js"
 import { error } from "@sveltejs/kit"
 
-export async function load({ cookies, params, url }) {
+export async function load({ cookies, params, url, parent }) {
   const token = cookies.get("pk-token")
   const sid = cookies.get("pk-sid")
-  const apiBaseUrl = cookies.get("pk-api-url")
 
+  const { apiBaseUrl } = await parent()
   const api = apiClient(fetch, apiBaseUrl)
 
   let options: ApiOptions = {}

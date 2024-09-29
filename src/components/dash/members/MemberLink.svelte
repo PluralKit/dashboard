@@ -12,13 +12,16 @@
     item: Member
     color?: "primary" | "neutral"
   } = $props()
+
+  let params = $page.url.searchParams
+  params.delete("tab")
 </script>
 
 {#if dash.member.member?.uuid !== item.uuid || !asPage}
   <a
     target="_blank"
     class={`btn btn-sm mt-2 btn-${color}`}
-    href={`/dash/m/${item.id}${$page.url.searchParams.get("public") ? "?public=true" : ""}`}
+    href={`/dash/m/${item.id}${params.toString().length > 0 ? `?${params.toString()}` : ""}`}
   >
     View page
   </a>
