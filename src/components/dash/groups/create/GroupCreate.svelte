@@ -1,6 +1,6 @@
 <script lang="ts">
   import { dash } from "$lib/dash/dash.svelte"
-  import { IconLoader, IconPlus } from "@tabler/icons-svelte"
+  import { IconLoader, IconPlus, IconAlertTriangle } from "@tabler/icons-svelte"
   import { untrack } from "svelte"
   import type { Group, GroupPrivacy } from "$api/types"
   import { fade } from "svelte/transition"
@@ -44,6 +44,10 @@
   let success: boolean = $state(false)
 
   let icon = $state("")
+
+  let duplicate = $derived(
+    dash.groups.list.raw.find((g) => g.name?.toLowerCase() === group.name?.toLowerCase())
+  )
 </script>
 
 <div
@@ -107,6 +111,17 @@
       <GroupInfoCreate bind:group {tab} bind:privacy={group.privacy} />
       {#if openedOnce && tabbedOnce}
         <GroupMemberCreate {tab} bind:members />
+      {/if}
+      {#if duplicate}
+        <div class="alert bg-warning/10 mb-2 w-full mx-auto px-5 py-3 mt-2">
+          <IconAlertTriangle class="text-warning" />
+          <div>
+            <div>
+              A group named <b>{duplicate.name}</b> already exists! Creating another group with this
+              name might lead to unexpected behavior.
+            </div>
+          </div>
+        </div>
       {/if}
       {#if err.length > 0}
         {#each err as e}
