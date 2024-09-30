@@ -1,12 +1,12 @@
 <script lang="ts">
-  import type { Member, MemberPrivacy } from "$api/types"
+  import type { Member, MemberPrivacy, proxytag } from "$api/types"
   import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
   import EditPrivacy from "$components/dash/edit/EditPrivacy.svelte"
   import EditProxyTag from "$components/dash/edit/EditProxyTag.svelte"
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
   import { dash } from "$lib/dash/dash.svelte"
   import { createInfoEditState } from "$lib/dash/member/edit.svelte"
-  import { IconLoader, IconPencil, IconPlus, IconTrash, IconX } from "@tabler/icons-svelte"
+  import { IconLoader, IconPencil, IconPlus, IconAlertTriangle, IconX } from "@tabler/icons-svelte"
   import { fade } from "svelte/transition"
 
   let {
@@ -60,6 +60,21 @@
   let err: string[] = $state([])
   let success = $state(false)
   let loading = $state(false)
+  let duplicate: (proxytag & {
+    member: string | undefined
+  })[] = $derived(
+    editedState.proxy_tags.flatMap((p) => {
+      const m = dash.members.list.raw.find((m) =>
+        m.proxy_tags?.some(
+          (t) =>
+            (t.suffix === p.suffix || (!t.suffix && !p.suffix)) &&
+            (t.prefix === p.prefix || (!t.prefix && !p.prefix))
+        )
+      )
+      if (m && m.name !== member.name) return { ...p, member: m.name }
+      else return []
+    })
+  )
 
   // we can't bind to the proxy tags directly
   // so we'll have to replace the whole array on edit
@@ -67,9 +82,11 @@
     const target = event.target as HTMLInputElement
     let tags = [...editedState.proxy_tags]
 
+    const tag = editedState.proxy_tags[index]
+
     tags.splice(index, 1, {
-      prefix: placement === "prefix" ? target.value : editedState.proxy_tags[index].prefix,
-      suffix: placement === "suffix" ? target.value : editedState.proxy_tags[index].suffix,
+      prefix: placement === "prefix" ? target.value : tag.prefix,
+      suffix: placement === "suffix" ? target.value : tag.suffix,
     })
 
     editedState.proxy_tags = tags
@@ -128,6 +145,19 @@
         </span>
       {/if}
     </div>
+    {#if duplicate.length > 0}
+      <div class="alert bg-warning/10 mb-2 w-full mx-auto px-5 py-3">
+        <IconAlertTriangle class="text-warning" />
+        <div>
+          {#each duplicate as dupe}
+            <div>
+              Member <b>{dupe.member}</b> already has the proxy tag
+              <b>{dupe.prefix}text{dupe.suffix}</b>
+            </div>
+          {/each}
+        </div>
+      </div>
+    {/if}
     <hr />
     <div class="flex flex-col md:flex-row w-full flex-wrap">
       {#each editedState.proxy_tags as tag, index}

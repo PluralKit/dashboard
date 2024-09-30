@@ -2,7 +2,8 @@
   import type { Member, MemberPrivacy, proxytag } from "$api/types"
   import EditPrivacy from "$components/dash/edit/EditPrivacy.svelte"
   import EditProxyTag from "$components/dash/edit/EditProxyTag.svelte"
-  import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-svelte"
+  import { dash } from "$lib/dash/dash.svelte"
+  import { IconPlus, IconAlertTriangle } from "@tabler/icons-svelte"
 
   let {
     tab,
@@ -31,6 +32,22 @@
     member.proxy_tags = tags
   }
 
+  let duplicate: (proxytag & {
+    member: string | undefined
+  })[] = $derived(
+    member.proxy_tags.flatMap((p) => {
+      const m = dash.members.list.raw.find((m) =>
+        m.proxy_tags?.some(
+          (t) =>
+            (t.suffix === p.suffix || (!t.suffix && !p.suffix)) &&
+            (t.prefix === p.prefix || (!t.prefix && !p.prefix))
+        )
+      )
+      if (m && m.name !== member.name) return { ...p, member: m.name }
+      else return []
+    })
+  )
+
   function changeAllPrivacy(event: Event) {
     const target = event.target as HTMLSelectElement
     if (target.value === "public" || target.value === "private") {
@@ -57,6 +74,19 @@
       <div class="flex flex-row gap-3 items-center">
         <h5 class="text-lg">Proxy Tags</h5>
       </div>
+      {#if duplicate.length > 0}
+        <div class="alert bg-warning/10 mb-2 w-full mx-auto px-5 py-3">
+          <IconAlertTriangle class="text-warning" />
+          <div>
+            {#each duplicate as dupe}
+              <div>
+                Member <b>{dupe.member}</b> already has the proxy tag
+                <b>{dupe.prefix}text{dupe.suffix}</b>
+              </div>
+            {/each}
+          </div>
+        </div>
+      {/if}
       <hr />
       <div class="flex flex-col md:flex-row w-full flex-wrap">
         {#each member.proxy_tags as tag, index}
