@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Member, MemberPrivacy, proxytag } from "$api/types"
   import EditPrivacy from "$components/dash/edit/EditPrivacy.svelte"
+  import EditProxyTag from "$components/dash/edit/EditProxyTag.svelte"
   import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-svelte"
 
   let {
@@ -59,30 +60,7 @@
       <hr />
       <div class="flex flex-col md:flex-row w-full flex-wrap">
         {#each member.proxy_tags as tag, index}
-          <ul class="flex flex-col w-full md:w-1/2 px-2 py-1">
-            <li class="join w-full">
-              <input
-                class="input input-bordered input-sm join-item w-full"
-                onchange={(e) => editProxyTag(e, index, "prefix")}
-                value={tag.prefix}
-              />
-              <div class="bg-base-300 join-item text-sm p-1 border border-base-content/20 px-4">
-                text
-              </div>
-              <input
-                class="input input-bordered input-sm join-item w-full"
-                onchange={(e) => editProxyTag(e, index, "suffix")}
-                value={tag.suffix}
-              />
-              <button
-                class="btn btn-sm btn-error join-item px-1"
-                title="Remove proxy tag"
-                onclick={() => member.proxy_tags.splice(index, 1)}
-              >
-                <IconTrash />
-              </button>
-            </li>
-          </ul>
+          <EditProxyTag {index} {tag} {editProxyTag} />
         {/each}
         <button
           class="btn btn-sm btn-success mx-2 my-1"
