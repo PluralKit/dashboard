@@ -55,7 +55,7 @@
     }
 
     if (filterMode === FilterMode.EMPTY || filterMode === FilterMode.NOTEMPTY) {
-      filterValue = ""
+      filterValue = null
     }
   }
 
