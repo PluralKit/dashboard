@@ -1,8 +1,8 @@
 <script lang="ts">
   import { browser } from "$app/environment"
   import NavBar from "$components/NavBar.svelte"
-  import "$lib/app.css"
-  import "$lib/nprogress.css"
+  import "$lib/app.scss"
+  import "$lib/nprogress.scss"
   import "$lib/highlightjs.scss"
   import type { LayoutData } from "./$types"
   import Footer from "$components/Footer.svelte"
