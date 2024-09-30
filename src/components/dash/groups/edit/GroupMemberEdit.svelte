@@ -291,8 +291,8 @@
 
 {#snippet option(opt: any)}
   <div
-    class={`option flex flex-row justify-between rounded -mx-1.5 -my-1 px-1.5 py-1 ${
-      !opt.included ? "bg-success/10 hover:bg-success/25" : "bg-error/10 hover:bg-error/25"
+    class={`option flex flex-row justify-between rounded px-1.5 py-1 ${
+      !opt.included ? "bg-success/10 hover:bg-success/20" : "bg-error/10 hover:bg-error/20"
     }`}
   >
     <span>{opt.text}</span>

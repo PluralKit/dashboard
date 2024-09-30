@@ -1,6 +1,6 @@
 <script lang="ts">
   import parseMarkdown from "$api/parseMarkdown"
-  import type { Group, Member } from "$api/types"
+  import type { Group } from "$api/types"
   import AwaitHtml from "$components/dash/AwaitHtml.svelte"
   import { dash } from "$lib/dash/dash.svelte"
   import { IconAlertTriangle, IconPlus, IconRefresh } from "@tabler/icons-svelte"
@@ -73,7 +73,7 @@
           </div>
           <Svelecte
             inputId={`create-member-group-input`}
-            class="svelecte-control-pk"
+            class="svelecte-control-pk group-control"
             options={allOptions}
             multiple
             collapseSelection="blur"
@@ -125,9 +125,9 @@
   </div>
 </div>
 
-{#snippet option(opt)}
+{#snippet option(opt: any)}
   <div
-    class={`option flex flex-row justify-between rounded -m-1 p-1 bg-success/10 hover:bg-success/25`}
+    class={`option flex flex-row justify-between rounded px-1.5 py-1 bg-success/10 hover:bg-success/20`}
   >
     <span>{opt.text}</span>
     <span title="Add group">
@@ -148,9 +148,3 @@
     {/if}
   </ul>
 {/snippet}
-
-<style>
-  .option {
-    width: calc(100% + 0.5rem);
-  }
-</style>

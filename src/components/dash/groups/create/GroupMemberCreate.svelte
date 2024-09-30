@@ -115,9 +115,9 @@
   </div>
 </div>
 
-{#snippet option(opt)}
+{#snippet option(opt: any)}
   <div
-    class={`option w-full flex flex-row justify-between rounded -m-1 p-1 bg-success/10 hover:bg-success/25`}
+    class={`option w-full flex flex-row justify-between rounded px-1.5 py-1 bg-success/10 hover:bg-success/20`}
   >
     <span>{opt.text}</span>
     <span title="Add member">
@@ -138,9 +138,3 @@
     {/if}
   </ul>
 {/snippet}
-
-<style>
-  .option {
-    width: calc(100% + 0.5rem);
-  }
-</style>

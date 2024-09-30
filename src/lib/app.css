@@ -152,11 +152,16 @@
   --sv-create-kbd-bg: transparent;
   --sv-create-disabled-bg: transparent;
   --sv-loader-border: none;
+  --sv-item-wrap-padding: 0.375rem 0.25rem;
 }
 
 .group-control {
   --sv-dropdown-active-bg: transparent;
   --sv-item-wrap-padding: 0.25rem 0;
+}
+
+.group-control .option {
+  width: calc(100% + 0.5rem);
 }
 
 .sv-item--wrap {
