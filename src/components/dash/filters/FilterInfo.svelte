@@ -56,8 +56,20 @@
       list.paginate()
     }}
   />
-  <!-- TODO: privacy filtering here -->
-  <!-- TODO: Same for proxy tags -->
+{:else if filter.privacy}
+  <select
+    class="input input-sm input-bordered"
+    onchange={(e) => {
+      filter.value = (e.target as HTMLSelectElement)?.value
+      list.process(dash.groups.list.raw)
+      list.paginate()
+    }}
+    value={filter.value}
+  >
+    <option value="public">public</option>
+    <option value="private">private</option>
+  </select>
+  <!-- TODO: Proxy tag filtering here -->
 {:else if filterFieldType(filter.field) === "date" && !(filter.mode === FilterMode.INCLUDES || filter.mode === FilterMode.EXCLUDES)}
   {#if filter.mode !== FilterMode.EMPTY && filter.mode !== FilterMode.NOTEMPTY}
     <input

@@ -69,6 +69,8 @@
           groups with a <b>members</b>
         {/if}
       </span>
+    {:else if filter.privacy}
+      {filter.privacy.fieldName} set to <b>{filter.value}</b>
     {:else if filterFieldType(filter.field) === "date"}
       <span class="text-sm">
         <b>{filter.fieldName}</b> that {filterModeText(filter.mode, filterFieldType(filter.field))

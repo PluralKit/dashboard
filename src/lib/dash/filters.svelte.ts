@@ -1,4 +1,4 @@
-import type { Group, Member } from "$api/types"
+import type { Group, GroupPrivacy, Member, MemberPrivacy } from "$api/types"
 import { randomId } from "./ids"
 
 export interface FilterGroup {
@@ -15,6 +15,10 @@ export type Filter = {
   fieldName: string
   id: string
   valueType: string
+  privacy?: {
+    field: string
+    fieldName: string
+  }
 }
 
 export type FilterValueType = string | number | null | string[]
@@ -35,6 +39,21 @@ export const filterFieldText = (raw: string) => {
     pronouns: "pronoun",
     birthday: "birthdays",
     created: "creation dates",
+  }
+
+  return text[raw] ?? raw
+}
+
+export const filterPrivacyText = (raw: string) => {
+  const text: Record<string, string> = {
+    avatar_privacy: "avatar",
+    icon_privacy: "icon",
+    name_privacy: "name",
+    list_privacy: "member list",
+    description_privacy: "description",
+    metadata_privacy: "metadata",
+    pronoun_privacy: "pronouns",
+    birthday_privacy: "birthday",
   }
 
   return text[raw] ?? raw
@@ -157,10 +176,14 @@ export function createFilterGroup(filter?: Filter[], drag: boolean = true): Filt
 }
 
 export function createFilter(
-  newField: string,
-  newName: string,
-  newMode: FilterMode,
-  newValue: FilterValueType
+  field: string,
+  name: string,
+  mode: FilterMode,
+  value: FilterValueType,
+  privacy?: {
+    field: string
+    fieldName: string
+  }
 ): Filter {
   const getValueType = (value: FilterValueType) => {
     if (Array.isArray(value)) return "array"
@@ -168,44 +191,58 @@ export function createFilter(
     return "null"
   }
 
-  let value: FilterValueType = $state(newValue)
-  let valueType: string = getValueType(newValue)
-  let mode: FilterMode = $state(newMode)
-  let field: string = $state(newField)
-  let fieldName: string = $state(newName)
-  let id: string = (Math.random() + 1).toString(36).slice(2, 5)
+  let _value: FilterValueType = $state(value)
+  let _valueType: string = getValueType(value)
+  let _mode: FilterMode = $state(mode)
+  let _field: string = $state(field)
+  let _fieldName: string = $state(name)
+  let _id: string = (Math.random() + 1).toString(36).slice(2, 7)
+  let _privacy = $state(privacy)
 
   return {
     get id() {
-      return id
+      return _id
     },
     get value() {
-      return value
+      return _value
     },
     get valueType() {
-      return valueType
+      return _valueType
     },
-    set value(newValue: FilterValueType) {
-      valueType = getValueType(newValue)
-      value = newValue
+    set value(value: FilterValueType) {
+      _valueType = getValueType(value)
+      _value = value
     },
     get mode() {
-      return mode
+      return _mode
     },
-    set mode(newMode: FilterMode) {
-      mode = newMode
+    set mode(mode: FilterMode) {
+      _mode = mode
     },
     get fieldName() {
-      return fieldName
+      return _fieldName
     },
-    set fieldName(newName: string) {
-      fieldName = newName
+    set fieldName(name: string) {
+      _fieldName = name
     },
     get field() {
-      return field
+      return _field
     },
-    set field(newField: string) {
-      field = newField
+    set field(field: string) {
+      _field = field
+    },
+    get privacy() {
+      return _privacy
+    },
+    set privacy(
+      privacy:
+        | {
+            field: string
+            fieldName: string
+          }
+        | undefined
+    ) {
+      _privacy = privacy
     },
   }
 }
@@ -246,8 +283,8 @@ function applyFilter<T>(list: T[], filter: Filter, groupList?: Group[]): T[] {
   const fieldType = filterFieldType(filter.field)
 
   // first handle filtering by groups and members since they're rather... special
-  if (fieldType === "group" && groupList) {
-    return filterMembersByGroup<T>(processedList, filter.mode, value, groupList)
+  if (fieldType === "group") {
+    return filterMembersByGroup<T>(processedList, filter.mode, value, groupList ?? [])
   }
 
   if (fieldType === "member") {
@@ -256,6 +293,10 @@ function applyFilter<T>(list: T[], filter: Filter, groupList?: Group[]): T[] {
 
   if (fieldType === "date") {
     return filterByDate<T>(processedList, filter)
+  }
+
+  if (field === "privacy" && filter.privacy) {
+    return filterByPrivacy(processedList as any, filter.privacy.field, value as string) as any
   }
 
   switch (filter.mode) {
@@ -383,9 +424,8 @@ function filterMembersByGroup<T>(
         if (groups.length === 0) return true
 
         if (
-          groups.every(
-            (uuid) =>
-              groupList.find((g) => g.uuid === uuid)?.members?.includes((i as Member).uuid ?? "")
+          groups.every((uuid) =>
+            groupList.find((g) => g.uuid === uuid)?.members?.includes((i as Member).uuid ?? "")
           )
         )
           return true
@@ -398,9 +438,8 @@ function filterMembersByGroup<T>(
         if (groups.length === 0) return true
 
         if (
-          groups.every(
-            (uuid) =>
-              groupList.find((g) => g.uuid === uuid)?.members?.includes((i as Member).uuid ?? "")
+          groups.every((uuid) =>
+            groupList.find((g) => g.uuid === uuid)?.members?.includes((i as Member).uuid ?? "")
           )
         )
           return false
@@ -574,4 +613,14 @@ function filterByDate<T>(list: T[], filter: Filter) {
   }
 
   return list
+}
+
+function filterByPrivacy<
+  T extends {
+    privacy: MemberPrivacy & GroupPrivacy
+  },
+>(list: T[], field: string, value: string): T[] {
+  if (typeof value !== "string") return list
+
+  return list.filter((i) => i.privacy[field as keyof MemberPrivacy] === value)
 }

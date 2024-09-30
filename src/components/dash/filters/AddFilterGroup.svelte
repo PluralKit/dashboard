@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
-  import { type DashList } from "$lib/dash/dash.svelte"
+  import { PrivacyMode, type DashList } from "$lib/dash/dash.svelte"
   import Svelecte from "svelecte"
   import {
     FilterMode,
@@ -11,6 +11,7 @@
     filterFieldType,
     createFilterGroup,
     groupArrayModes,
+    filterPrivacyText,
   } from "$lib/dash/filters.svelte"
   import { dash } from "$lib/dash/dash.svelte"
   import { IconPlus } from "@tabler/icons-svelte"
@@ -28,6 +29,7 @@
   let filterField = $state("")
   let filterMode: null | FilterMode = $state(null)
   let filterValue: null | string | number = $state(null)
+  let filterPrivacy: null | string = $state(null)
 
   let inputType: string = $derived.by(() => {
     if (filterMode === FilterMode.EMPTY || filterMode === FilterMode.NOTEMPTY) return "null"
@@ -70,8 +72,16 @@
       filterField,
       filterFieldText(filterField),
       filterMode ?? FilterMode.NOTEMPTY,
-      value
+      value,
+      filterPrivacy
+        ? {
+            field: filterPrivacy,
+            fieldName: filterPrivacyText(filterPrivacy),
+          }
+        : undefined
     )
+
+    console.log($state.snapshot(filter))
 
     // we want to add the filter to the last empty filter group
     // unless it's a non-draggable group
@@ -99,6 +109,7 @@
     dateWeekday = null
     dateMonth = null
     dateYear = null
+    filterPrivacy = null
   }
 
   let dateDay: number | null = $state(null)
@@ -150,60 +161,89 @@
         {:else if type === "groups"}
           <option value="member">members</option>
         {/if}
+        {#if dash.privacyMode === PrivacyMode.PRIVATE}
+          <option value="privacy">privacy</option>
+        {/if}
         <option value="created">created</option>
       </select>
     </div>
     <div class="flex flex-col">
-      <label class="text-sm mb-1" for={`${type}-new-filter-mode`}>Filter mode</label>
-      <select
-        id={`${type}-new-filter-mode`}
-        class="select select-sm select-bordered"
-        bind:value={filterMode}
-        disabled={!filterField}
-        onchange={() => changeFilterValue()}
-      >
-        {#if !filterField}
-          <option value={null} disabled>Select a field first</option>
-        {:else}
-          <option value={null} disabled>Filter mode...</option>
-          {#if filterField === "group" || filterField === "member"}
-            <option value={FilterMode.INCLUDES}>include any</option>
-            <option value={FilterMode.EXCLUDES}>exclude any</option>
-            <option value={FilterMode.EXACT}>match all</option>
-            <option value={FilterMode.NOTEXACT}>don't match all</option>
-            <option value={FilterMode.EMPTY}>empty</option>
-            <option value={FilterMode.NOTEMPTY}>not empty</option>
-            <option value={FilterMode.HIGHERTHAN}>more than</option>
-            <option value={FilterMode.LOWERTHAN}>less than</option>
-          {:else if filterFieldType(filterField) === "date"}
-            <option value={FilterMode.HIGHERTHAN}>after date</option>
-            <option value={FilterMode.LOWERTHAN}>before date</option>
-            <option value={FilterMode.EXACT}>match</option>
-            <option value={FilterMode.NOTEXACT}>don't match</option>
-            <option value={FilterMode.EMPTY}>empty</option>
-            <option value={FilterMode.NOTEMPTY}>not empty</option>
-            <option value={FilterMode.INCLUDES}>in time period</option>
-            <option value={FilterMode.EXCLUDES}>not in time period</option>
-          {:else if inputType === "number"}
-            <option value={FilterMode.EMPTY}>empty</option>
-            <option value={FilterMode.NOTEMPTY}>not empty</option>
-            <option value={FilterMode.HIGHERTHAN}>more than</option>
-            <option value={FilterMode.LOWERTHAN}>less than</option>
+      {#if filterField !== "privacy"}
+        <label class="text-sm mb-1" for={`${type}-new-filter-mode`}>Filter mode</label>
+        <select
+          id={`${type}-new-filter-mode`}
+          class="select select-sm select-bordered"
+          bind:value={filterMode}
+          disabled={!filterField}
+          onchange={() => changeFilterValue()}
+        >
+          {#if !filterField}
+            <option value={null} disabled>Select a field first</option>
           {:else}
-            <option value={FilterMode.INCLUDES}>include</option>
-            <option value={FilterMode.EXCLUDES}>exclude</option>
-            <option value={FilterMode.EXACT}>match</option>
-            <option value={FilterMode.NOTEXACT}>don't match</option>
-            <option value={FilterMode.EMPTY}>empty</option>
-            <option value={FilterMode.NOTEMPTY}>not empty</option>
-            <option value={FilterMode.HIGHERTHAN}>longer than</option>
-            <option value={FilterMode.LOWERTHAN}>shorter than</option>
+            <option value={null} disabled>Filter mode...</option>
+            {#if filterField === "group" || filterField === "member"}
+              <option value={FilterMode.INCLUDES}>include any</option>
+              <option value={FilterMode.EXCLUDES}>exclude any</option>
+              <option value={FilterMode.EXACT}>match all</option>
+              <option value={FilterMode.NOTEXACT}>don't match all</option>
+              <option value={FilterMode.EMPTY}>empty</option>
+              <option value={FilterMode.NOTEMPTY}>not empty</option>
+              <option value={FilterMode.HIGHERTHAN}>more than</option>
+              <option value={FilterMode.LOWERTHAN}>less than</option>
+            {:else if filterFieldType(filterField) === "date"}
+              <option value={FilterMode.HIGHERTHAN}>after date</option>
+              <option value={FilterMode.LOWERTHAN}>before date</option>
+              <option value={FilterMode.EXACT}>match</option>
+              <option value={FilterMode.NOTEXACT}>don't match</option>
+              <option value={FilterMode.EMPTY}>empty</option>
+              <option value={FilterMode.NOTEMPTY}>not empty</option>
+              <option value={FilterMode.INCLUDES}>in time period</option>
+              <option value={FilterMode.EXCLUDES}>not in time period</option>
+            {:else if inputType === "number"}
+              <option value={FilterMode.EMPTY}>empty</option>
+              <option value={FilterMode.NOTEMPTY}>not empty</option>
+              <option value={FilterMode.HIGHERTHAN}>more than</option>
+              <option value={FilterMode.LOWERTHAN}>less than</option>
+            {:else}
+              <option value={FilterMode.INCLUDES}>include</option>
+              <option value={FilterMode.EXCLUDES}>exclude</option>
+              <option value={FilterMode.EXACT}>match</option>
+              <option value={FilterMode.NOTEXACT}>don't match</option>
+              <option value={FilterMode.EMPTY}>empty</option>
+              <option value={FilterMode.NOTEMPTY}>not empty</option>
+              <option value={FilterMode.HIGHERTHAN}>longer than</option>
+              <option value={FilterMode.LOWERTHAN}>shorter than</option>
+            {/if}
           {/if}
-        {/if}
-      </select>
+        </select>
+      {:else}
+        <label class="text-sm mb-1" for="new-privacy-filter-field">Privacy field</label>
+        <select
+          id="new-privacy-filter-field"
+          class="select select-sm select-bordered"
+          bind:value={filterPrivacy}
+          onchange={() =>
+            filterValue !== "private" ? (filterValue = "public") : (filterValue = filterValue)}
+        >
+          <option disabled value={null}>Filter by...</option>
+          <option value="visibility">visibility</option>
+          <option value="name_privacy">name</option>
+          <option value="description_privacy">description</option>
+          {#if type === "members"}
+            <option value="avatar_privacy">avatar</option>
+            <option value="pronoun_privacy">pronouns</option>
+            <option value="birthday_privacy">birthday</option>
+            <option value="proxy_privacy">proxy tags</option>
+          {:else if type === "groups"}
+            <option value="list_privacy">member list</option>
+            <option value="icon_privacy">icon</option>
+          {/if}
+          <option value="metadata_privacy">metadata</option>
+        </select>
+      {/if}
     </div>
   </div>
-  {#if filterField && filterMode}
+  {#if filterField && filterMode && !filterPrivacy}
     {#if inputType !== "null"}
       <label class="text-sm mb-1 block mt-3" for={`${type}-new-filter-field`}>Value</label>
     {/if}
@@ -303,6 +343,21 @@
         class={`btn btn-success btn-sm ml-auto ${inputType === "null" ? "mt-3" : ""}`}
         onclick={() => addFilter()}
       >
+        <IconPlus size={14} /> add filter
+      </button>
+    </div>
+  {:else if filterField === "privacy" && filterPrivacy}
+    <label class="text-sm mb-1 block mt-3" for="new-filter-privacy-setting">Privacy level</label>
+    <div class="flex flex-row gap-3 flex-wrap">
+      <select
+        class="input input-bordered input-sm flex-1"
+        id="new-filter-privacy-setting"
+        bind:value={filterValue}
+      >
+        <option value="public">public</option>
+        <option value="private">private</option>
+      </select>
+      <button class="btn btn-success btn-sm ml-auto" onclick={() => addFilter()}>
         <IconPlus size={14} /> add filter
       </button>
     </div>
