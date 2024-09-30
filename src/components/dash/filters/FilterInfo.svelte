@@ -69,7 +69,20 @@
     <option value="public">public</option>
     <option value="private">private</option>
   </select>
-  <!-- TODO: Proxy tag filtering here -->
+{:else if filter.proxy && filter.field === "proxy"}
+  <Svelecte
+    class="svelecte-control-pk w-full"
+    options={dash.members.proxytags ? dash.members.proxytags : []}
+    multiple
+    bind:value={filter.proxy}
+    valueField="value"
+    labelField="text"
+    onChange={() => {
+      list.process(dash.groups.list.raw)
+      list.paginate()
+    }}
+    option={proxyOption}
+  />
 {:else if filterFieldType(filter.field) === "date" && !(filter.mode === FilterMode.INCLUDES || filter.mode === FilterMode.EXCLUDES)}
   {#if filter.mode !== FilterMode.EMPTY && filter.mode !== FilterMode.NOTEMPTY}
     <input
@@ -99,3 +112,10 @@
     onchange={(e) => changeValue(e)}
   />
 {/if}
+
+{#snippet proxyOption(opt: any)}
+  <span
+    >{opt.extra.prefix}<code class="px-0.5 bg-base-300 rounded-sm">text</code>{opt.extra
+      .suffix}</span
+  >
+{/snippet}

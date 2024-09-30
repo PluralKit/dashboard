@@ -1,4 +1,4 @@
-import type { Group, Member, System } from "$api/types"
+import type { Group, Member, proxytag, System } from "$api/types"
 import {
   FilterMode,
   createFilter,
@@ -26,6 +26,7 @@ export interface DashList<T> {
   filters: FilterGroup[]
   sorts: Sort[]
   settings: ListSettings
+  proxytags?: SvelecteOption[]
   process: (groupList?: Group[]) => void
   paginate: () => void
   fetch: (token?: string) => Promise<void>
@@ -34,7 +35,7 @@ export interface DashList<T> {
 export interface SvelecteOption {
   value: string | undefined
   text: string
-  extra: string | undefined
+  extra?: any
 }
 
 export let dash = createDash()
@@ -70,6 +71,7 @@ function createDash() {
         set sorts(sortList: Sort[]) {
           memberList.sorts = sortList
         },
+        proxytags: memberList.proxytags,
         settings: memberList.listSettings,
         process: memberList.processList,
         paginate: memberList.paginateList,
@@ -172,6 +174,22 @@ function createMemberListState() {
       .sort((a, b) => a.text.localeCompare(b.text))
   )
 
+  let proxyTags: SvelecteOption[] = $derived(
+    members
+      .flatMap((m) =>
+        m.proxy_tags
+          ? m.proxy_tags.map((t) => {
+              return {
+                extra: t,
+                text: `${t.prefix ? t.prefix : ""}text${t.suffix ? t.suffix : ""}`,
+                value: JSON.stringify(t),
+              }
+            })
+          : []
+      )
+      .sort((a, b) => a.text.localeCompare(b.text))
+  )
+
   return {
     get members() {
       return {
@@ -197,6 +215,9 @@ function createMemberListState() {
     },
     set sorts(newSorts: Sort[]) {
       sorts = newSorts
+    },
+    get proxytags() {
+      return proxyTags
     },
     get listSettings() {
       return listSettings

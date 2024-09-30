@@ -1,4 +1,4 @@
-import type { Group, GroupPrivacy, Member, MemberPrivacy } from "$api/types"
+import type { Group, GroupPrivacy, Member, MemberPrivacy, proxytag } from "$api/types"
 import { randomId } from "./ids"
 
 export interface FilterGroup {
@@ -19,6 +19,8 @@ export type Filter = {
     field: string
     fieldName: string
   }
+  proxy?: string[]
+  fullProxy: proxytag[]
 }
 
 export type FilterValueType = string | number | null | string[]
@@ -183,7 +185,8 @@ export function createFilter(
   privacy?: {
     field: string
     fieldName: string
-  }
+  },
+  proxy?: string[]
 ): Filter {
   const getValueType = (value: FilterValueType) => {
     if (Array.isArray(value)) return "array"
@@ -198,6 +201,7 @@ export function createFilter(
   let _fieldName: string = $state(name)
   let _id: string = (Math.random() + 1).toString(36).slice(2, 7)
   let _privacy = $state(privacy)
+  let _proxy: proxytag[] = $state(proxy ? proxy.map((p) => JSON.parse(p)) : [])
 
   return {
     get id() {
@@ -243,6 +247,15 @@ export function createFilter(
         | undefined
     ) {
       _privacy = privacy
+    },
+    get proxy() {
+      return _proxy?.map((p) => JSON.stringify(p))
+    },
+    set proxy(proxy: string[] | undefined) {
+      _proxy = proxy ? proxy.map((p) => JSON.parse(p)) : []
+    },
+    get fullProxy() {
+      return _proxy
     },
   }
 }
@@ -296,7 +309,16 @@ function applyFilter<T>(list: T[], filter: Filter, groupList?: Group[]): T[] {
   }
 
   if (field === "privacy" && filter.privacy) {
-    return filterByPrivacy(processedList as any, filter.privacy.field, value as string) as any
+    return filterByPrivacy(processedList as any, filter.privacy.field, value as string) as T[]
+  }
+
+  if (field === "proxy") {
+    return filterByProxy(
+      processedList as Member[],
+      filter.mode,
+      filter.fullProxy,
+      filter.value
+    ) as T[]
   }
 
   switch (filter.mode) {
@@ -623,4 +645,88 @@ function filterByPrivacy<
   if (typeof value !== "string") return list
 
   return list.filter((i) => i.privacy[field as keyof MemberPrivacy] === value)
+}
+
+function filterByProxy(list: Member[], mode: FilterMode, tags: proxytag[], value: FilterValueType) {
+  switch (mode) {
+    case FilterMode.INCLUDES:
+      list = list.filter((m) => {
+        if (tags.length === 0) return true
+        if (!m.proxy_tags || m.proxy_tags.length === 0) return false
+
+        for (const tag of tags) {
+          if (m.proxy_tags.some((t) => t.prefix === tag.prefix && t.suffix === tag.suffix))
+            return true
+        }
+        return false
+      })
+      break
+    case FilterMode.EXCLUDES:
+      list = list.filter((m) => {
+        if (tags.length === 0) return true
+        if (!m.proxy_tags || m.proxy_tags.length === 0) return true
+
+        for (const tag of tags) {
+          if (m.proxy_tags.some((t) => t.prefix === tag.prefix && t.suffix === tag.suffix))
+            return false
+        }
+        return true
+      })
+      break
+    case FilterMode.EXACT:
+      list = list.filter((m) => {
+        if (tags.length === 0) return true
+        if (!m.proxy_tags || m.proxy_tags.length === 0) return false
+
+        if (
+          tags.every((p) =>
+            m.proxy_tags?.some((t) => t.prefix === p.prefix && t.suffix === p.suffix)
+          )
+        )
+          return true
+
+        return false
+      })
+      break
+    case FilterMode.NOTEXACT:
+      list = list.filter((m) => {
+        if (tags.length === 0) return true
+        if (!m.proxy_tags || m.proxy_tags.length === 0) return true
+
+        if (
+          tags.every((p) =>
+            m.proxy_tags?.some((t) => t.prefix === p.prefix && t.suffix === p.suffix)
+          )
+        )
+          return false
+
+        return true
+      })
+      break
+    case FilterMode.HIGHERTHAN:
+      list = list.filter((i) => {
+        if (i.proxy_tags && i.proxy_tags.length > (value as number)) return true
+        return false
+      })
+      break
+    case FilterMode.LOWERTHAN:
+      list = list.filter((i) => {
+        if (!i.proxy_tags || i.proxy_tags.length < (value as number)) return true
+        return false
+      })
+      break
+    case FilterMode.NOTEMPTY:
+      list = list.filter((i) => {
+        if (i.proxy_tags && i.proxy_tags.length > 0) return true
+        return false
+      })
+      break
+    case FilterMode.EMPTY:
+      list = list.filter((i) => {
+        if (!i.proxy_tags || i.proxy_tags.length === 0) return true
+        return false
+      })
+      break
+  }
+  return list
 }

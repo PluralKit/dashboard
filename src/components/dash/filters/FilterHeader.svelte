@@ -69,6 +69,21 @@
           groups with a <b>members</b>
         {/if}
       </span>
+    {:else if filter.field === "proxy"}
+      <span class="text-sm">
+        {#if groupArrayModes.includes(filter.mode)}
+          members with <b>proxy tags</b> that {filterModeText(filter.mode, filter.valueType)
+            .verb}...
+        {:else if filter.mode === FilterMode.HIGHERTHAN}
+          members with more than {filter.value} <b>proxy tags</b>
+        {:else if filter.mode === FilterMode.LOWERTHAN}
+          members with less than {filter.value} <b>proxy tags</b>
+        {:else if filter.mode === FilterMode.EMPTY}
+          members without <b>proxy tags</b>
+        {:else if filter.mode === FilterMode.NOTEMPTY}
+          members with <b>proxy tags</b>
+        {/if}
+      </span>
     {:else if filter.privacy}
       {filter.privacy.fieldName} set to <b>{filter.value}</b>
     {:else if filterFieldType(filter.field) === "date"}

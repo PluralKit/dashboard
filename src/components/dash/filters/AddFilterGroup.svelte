@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Group, Member } from "$api/types"
+  import type { Group, Member, proxytag } from "$api/types"
   import { PrivacyMode, type DashList } from "$lib/dash/dash.svelte"
   import Svelecte from "svelecte"
   import {
@@ -30,6 +30,7 @@
   let filterMode: null | FilterMode = $state(null)
   let filterValue: null | string | number = $state(null)
   let filterPrivacy: null | string = $state(null)
+  let filterProxy: string[] = $state([])
 
   let inputType: string = $derived.by(() => {
     if (filterMode === FilterMode.EMPTY || filterMode === FilterMode.NOTEMPTY) return "null"
@@ -78,10 +79,9 @@
             field: filterPrivacy,
             fieldName: filterPrivacyText(filterPrivacy),
           }
-        : undefined
+        : undefined,
+      filterProxy.length > 0 ? filterProxy : undefined
     )
-
-    console.log($state.snapshot(filter))
 
     // we want to add the filter to the last empty filter group
     // unless it's a non-draggable group
@@ -110,6 +110,7 @@
     dateMonth = null
     dateYear = null
     filterPrivacy = null
+    filterProxy = []
   }
 
   let dateDay: number | null = $state(null)
@@ -158,6 +159,7 @@
         {/if}
         {#if type === "members"}
           <option value="group">groups</option>
+          <option value="proxy">proxy tags</option>
         {:else if type === "groups"}
           <option value="member">members</option>
         {/if}
@@ -181,7 +183,7 @@
             <option value={null} disabled>Select a field first</option>
           {:else}
             <option value={null} disabled>Filter mode...</option>
-            {#if filterField === "group" || filterField === "member"}
+            {#if filterField === "group" || filterField === "member" || (filterField === "proxy" && filterProxy)}
               <option value={FilterMode.INCLUDES}>include any</option>
               <option value={FilterMode.EXCLUDES}>exclude any</option>
               <option value={FilterMode.EXACT}>match all</option>
@@ -265,6 +267,16 @@
           bind:value={filterValue}
           valueField="value"
           labelField="text"
+        />
+      {:else if filterField === "proxy" && groupArrayModes.includes(filterMode)}
+        <Svelecte
+          class="svelecte-control-pk w-full"
+          options={dash.members.proxytags ? dash.members.proxytags : []}
+          multiple
+          bind:value={filterProxy}
+          valueField="value"
+          labelField="text"
+          option={proxyOption}
         />
       {:else if inputType !== "null" && filterFieldType(filterField) === "date"}
         {#if filterMode === FilterMode.INCLUDES || filterMode === FilterMode.EXCLUDES}
@@ -363,3 +375,10 @@
     </div>
   {/if}
 </div>
+
+{#snippet proxyOption(opt: any)}
+  <span
+    >{opt.extra.prefix}<code class="px-0.5 bg-base-300 rounded-sm">text</code>{opt.extra
+      .suffix}</span
+  >
+{/snippet}
