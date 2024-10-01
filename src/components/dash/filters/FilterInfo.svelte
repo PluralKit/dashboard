@@ -1,12 +1,13 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
-  import { dash, type DashList } from "$lib/dash/dash.svelte"
+  import { dash, type DashList, type SvelecteOption } from "$lib/dash/dash.svelte"
   import {
     FilterMode,
     filterFieldType,
     groupArrayModes,
     type Filter,
   } from "$lib/dash/filters.svelte"
+  import { proxyOptionFromString } from "$lib/dash/member/utils"
   import Svelecte from "svelecte"
 
   let {
@@ -18,6 +19,9 @@
   } = $props()
 
   let filterValue = $state(filter.value)
+
+  let proxyValue: string[] = $state(filter.proxy ? filter.proxy : [])
+  let proxyCreated: SvelecteOption | null = $state(null)
 
   const changeValue = (e: Event) => {
     const target = e.target as HTMLInputElement
@@ -72,14 +76,31 @@
 {:else if filter.proxy && filter.field === "proxy"}
   <Svelecte
     class="svelecte-control-pk w-full"
-    options={dash.members.proxytags ? dash.members.proxytags : []}
+    options={dash.members.proxytags ? [...dash.members.proxytags] : []}
     multiple
-    bind:value={filter.proxy}
+    bind:value={proxyValue}
     valueField="value"
     labelField="text"
     onChange={() => {
+      // we have to do it this way because svelecte doesn't automatically add created values to the selection...
+      if (proxyCreated) {
+        proxyValue.push(proxyCreated.value ? proxyCreated.value : "")
+        proxyCreated = null
+      }
+      filter.proxy = $state.snapshot(proxyValue)
+
       list.process(dash.groups.list.raw)
       list.paginate()
+    }}
+    strictMode={false}
+    creatable
+    createHandler={({ inputValue }) => {
+      const proxy = proxyOptionFromString(inputValue)
+      // only add the created value if it's not in the selection already
+      if (filter.proxy && !filter.proxy?.some((p) => p === proxy.value)) {
+        proxyCreated = proxy
+      }
+      return proxy
     }}
     option={proxyOption}
   />

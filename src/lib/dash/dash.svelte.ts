@@ -182,7 +182,7 @@ function createMemberListState() {
               return {
                 extra: t,
                 text: `${t.prefix ? t.prefix : ""}text${t.suffix ? t.suffix : ""}`,
-                value: JSON.stringify(t),
+                value: `${t.prefix ? t.prefix : ""}text${t.suffix ? t.suffix : ""}`,
               }
             })
           : []

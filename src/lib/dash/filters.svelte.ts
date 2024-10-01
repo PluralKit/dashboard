@@ -1,5 +1,6 @@
 import type { Group, GroupPrivacy, Member, MemberPrivacy, proxytag } from "$api/types"
 import { randomId } from "./ids"
+import { proxyOptionFromString } from "./member/utils"
 
 export interface FilterGroup {
   mode: "and" | "or"
@@ -20,7 +21,6 @@ export type Filter = {
     fieldName: string
   }
   proxy?: string[]
-  fullProxy: proxytag[]
 }
 
 export type FilterValueType = string | number | null | string[]
@@ -201,7 +201,7 @@ export function createFilter(
   let _fieldName: string = $state(name)
   let _id: string = (Math.random() + 1).toString(36).slice(2, 7)
   let _privacy = $state(privacy)
-  let _proxy: proxytag[] = $state(proxy ? proxy.map((p) => JSON.parse(p)) : [])
+  let _proxy: string[] | undefined = $state(proxy)
 
   return {
     get id() {
@@ -249,13 +249,10 @@ export function createFilter(
       _privacy = privacy
     },
     get proxy() {
-      return _proxy?.map((p) => JSON.stringify(p))
+      return _proxy
     },
     set proxy(proxy: string[] | undefined) {
-      _proxy = proxy ? proxy.map((p) => JSON.parse(p)) : []
-    },
-    get fullProxy() {
-      return _proxy
+      _proxy = proxy
     },
   }
 }
@@ -316,7 +313,7 @@ function applyFilter<T>(list: T[], filter: Filter, groupList?: Group[]): T[] {
     return filterByProxy(
       processedList as Member[],
       filter.mode,
-      filter.fullProxy,
+      filter.proxy ? filter.proxy : [],
       filter.value
     ) as T[]
   }
@@ -647,7 +644,22 @@ function filterByPrivacy<
   return list.filter((i) => i.privacy[field as keyof MemberPrivacy] === value)
 }
 
-function filterByProxy(list: Member[], mode: FilterMode, tags: proxytag[], value: FilterValueType) {
+function filterByProxy(
+  list: Member[],
+  mode: FilterMode,
+  proxytags: string[],
+  value: FilterValueType
+) {
+  const checkPartialTag = (filterTag: proxytag, memberTag: proxytag) => {
+    if (memberTag.prefix && filterTag.prefix && memberTag.prefix.includes(filterTag.prefix))
+      return true
+    else if (memberTag.suffix && filterTag.suffix && memberTag.suffix.includes(filterTag.suffix))
+      return true
+    return false
+  }
+
+  const tags = proxytags.map((t) => proxyOptionFromString(t))
+
   switch (mode) {
     case FilterMode.INCLUDES:
       list = list.filter((m) => {
@@ -655,8 +667,7 @@ function filterByProxy(list: Member[], mode: FilterMode, tags: proxytag[], value
         if (!m.proxy_tags || m.proxy_tags.length === 0) return false
 
         for (const tag of tags) {
-          if (m.proxy_tags.some((t) => t.prefix === tag.prefix && t.suffix === tag.suffix))
-            return true
+          if (m.proxy_tags.some((t) => checkPartialTag(tag.extra, t))) return true
         }
         return false
       })
@@ -667,8 +678,7 @@ function filterByProxy(list: Member[], mode: FilterMode, tags: proxytag[], value
         if (!m.proxy_tags || m.proxy_tags.length === 0) return true
 
         for (const tag of tags) {
-          if (m.proxy_tags.some((t) => t.prefix === tag.prefix && t.suffix === tag.suffix))
-            return false
+          if (m.proxy_tags.some((t) => checkPartialTag(tag.extra, t))) return false
         }
         return true
       })
@@ -678,12 +688,12 @@ function filterByProxy(list: Member[], mode: FilterMode, tags: proxytag[], value
         if (tags.length === 0) return true
         if (!m.proxy_tags || m.proxy_tags.length === 0) return false
 
-        if (
-          tags.every((p) =>
-            m.proxy_tags?.some((t) => t.prefix === p.prefix && t.suffix === p.suffix)
+        for (const tag of tags) {
+          if (
+            m.proxy_tags.some((t) => t.prefix === tag.extra.prefix && t.suffix === tag.extra.suffix)
           )
-        )
-          return true
+            return true
+        }
 
         return false
       })
@@ -693,12 +703,12 @@ function filterByProxy(list: Member[], mode: FilterMode, tags: proxytag[], value
         if (tags.length === 0) return true
         if (!m.proxy_tags || m.proxy_tags.length === 0) return true
 
-        if (
-          tags.every((p) =>
-            m.proxy_tags?.some((t) => t.prefix === p.prefix && t.suffix === p.suffix)
+        for (const tag of tags) {
+          if (
+            m.proxy_tags.some((t) => t.prefix === tag.extra.prefix && t.suffix === tag.extra.suffix)
           )
-        )
-          return false
+            return false
+        }
 
         return true
       })

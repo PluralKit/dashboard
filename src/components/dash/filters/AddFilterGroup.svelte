@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Group, Member, proxytag } from "$api/types"
-  import { PrivacyMode, type DashList } from "$lib/dash/dash.svelte"
+  import { PrivacyMode, type DashList, type SvelecteOption } from "$lib/dash/dash.svelte"
   import Svelecte from "svelecte"
   import {
     FilterMode,
@@ -15,6 +15,7 @@
   } from "$lib/dash/filters.svelte"
   import { dash } from "$lib/dash/dash.svelte"
   import { IconPlus } from "@tabler/icons-svelte"
+  import { proxyOptionFromString } from "$lib/dash/member/utils"
 
   let {
     list,
@@ -31,6 +32,11 @@
   let filterValue: null | string | number = $state(null)
   let filterPrivacy: null | string = $state(null)
   let filterProxy: string[] = $state([])
+
+  let proxyOptions: SvelecteOption[] = $state(
+    dash.members.proxytags ? [...dash.members.proxytags] : []
+  )
+  let proxyCreated: SvelecteOption | null = $state(null)
 
   let inputType: string = $derived.by(() => {
     if (filterMode === FilterMode.EMPTY || filterMode === FilterMode.NOTEMPTY) return "null"
@@ -271,11 +277,27 @@
       {:else if filterField === "proxy" && groupArrayModes.includes(filterMode)}
         <Svelecte
           class="svelecte-control-pk w-full"
-          options={dash.members.proxytags ? dash.members.proxytags : []}
+          options={proxyOptions}
           multiple
           bind:value={filterProxy}
           valueField="value"
           labelField="text"
+          onChange={() => {
+            // we have to do it this way because svelecte doesn't automatically add created values to the selection...
+            if (proxyCreated) {
+              filterProxy.push(proxyCreated.value ? proxyCreated.value : "")
+              proxyCreated = null
+            }
+          }}
+          creatable
+          createHandler={({ inputValue }) => {
+            const proxy = proxyOptionFromString(inputValue)
+            // only add the created value if it's not in the selection already
+            if (!filterProxy.some((p) => p === proxy.value)) {
+              proxyCreated = proxy
+            }
+            return proxy
+          }}
           option={proxyOption}
         />
       {:else if inputType !== "null" && filterFieldType(filterField) === "date"}
