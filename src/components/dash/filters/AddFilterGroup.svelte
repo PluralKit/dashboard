@@ -189,7 +189,7 @@
             <option value={null} disabled>Select a field first</option>
           {:else}
             <option value={null} disabled>Filter mode...</option>
-            {#if filterField === "group" || filterField === "member" || (filterField === "proxy" && filterProxy)}
+            {#if filterField === "group" || filterField === "member"}
               <option value={FilterMode.INCLUDES}>include any</option>
               <option value={FilterMode.EXCLUDES}>exclude any</option>
               <option value={FilterMode.EXACT}>match all</option>
