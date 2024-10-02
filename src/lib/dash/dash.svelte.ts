@@ -3,12 +3,13 @@ import {
   FilterMode,
   createFilter,
   createFilterGroup,
+  createSimpleFilters,
   filterList,
   type FilterGroup,
 } from "./filters.svelte"
 import { fetchList } from "./utils"
 import { createListSettings, paginateList, type ListSettings } from "./settings.svelte"
-import { SortMode, createSort, sortList, type Sort } from "./sorts.svelte"
+import { SortMode, createSimpleSorts, createSort, sortList, type Sort } from "./sorts.svelte"
 
 export enum PrivacyMode {
   PUBLIC,
@@ -25,9 +26,11 @@ export interface DashList<T> {
   }
   filters: FilterGroup[]
   sorts: Sort[]
+  simpleFilters: FilterGroup[]
+  simpleSorts: Sort[]
   settings: ListSettings
   proxytags?: SvelecteOption[]
-  process: (groupList?: Group[]) => void
+  process: (groupList?: Group[], filterGroups?: FilterGroup[], sorts?: Sort[]) => void
   paginate: () => void
   fetch: (token?: string) => Promise<void>
 }
@@ -70,6 +73,18 @@ function createDash() {
         },
         set sorts(sortList: Sort[]) {
           memberList.sorts = sortList
+        },
+        get simpleFilters() {
+          return memberList.simpleFilters
+        },
+        set simpleFilters(filterGroups: FilterGroup[]) {
+          memberList.simpleFilters = filterGroups
+        },
+        get simpleSorts() {
+          return memberList.simpleSorts
+        },
+        set simpleSorts(sortList: Sort[]) {
+          memberList.simpleSorts = sortList
         },
         proxytags: memberList.proxytags,
         settings: memberList.listSettings,
@@ -162,6 +177,9 @@ function createMemberListState() {
   ])
   let sorts: Sort[] = $state([createSort(SortMode.ALPHABETICAL, "name", "name", 1)])
 
+  let simpleFilters: FilterGroup[] = $state([createSimpleFilters()])
+  let simpleSorts: Sort[] = $state(createSimpleSorts())
+
   let members: Member[] = $state([])
   let processedMembers: Member[] = $state(processList(members, filters, sorts))
   let paginatedMembers: Member[] = $state(paginateList(processedMembers, listSettings))
@@ -216,14 +234,31 @@ function createMemberListState() {
     set sorts(newSorts: Sort[]) {
       sorts = newSorts
     },
+    get simpleFilters() {
+      return simpleFilters
+    },
+    set simpleFilters(groups: FilterGroup[]) {
+      simpleFilters = groups
+    },
+    get simpleSorts() {
+      return simpleSorts
+    },
+    set simpleSorts(newSorts: Sort[]) {
+      simpleSorts = newSorts
+    },
     get proxytags() {
       return proxyTags
     },
     get listSettings() {
       return listSettings
     },
-    processList: function (groupList?: Group[]) {
-      processedMembers = processList(members, filters, sorts, groupList)
+    processList: function (groupList?: Group[], filterGroups?: FilterGroup[], sortList?: Sort[]) {
+      processedMembers = processList(
+        members,
+        filterGroups ? filterGroups : filters,
+        sortList ? sortList : sorts,
+        groupList
+      )
     },
     paginateList: function () {
       paginatedMembers = paginateList(processedMembers, listSettings)

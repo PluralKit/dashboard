@@ -149,9 +149,13 @@ export const groupArrayModes = [
   FilterMode.NOTEXACT,
 ]
 
-export function createFilterGroup(filter?: Filter[], drag: boolean = true): FilterGroup {
+export function createFilterGroup(
+  filter?: Filter[],
+  groupId?: string,
+  drag: boolean = true
+): FilterGroup {
   let filters: Filter[] = $state(filter || [])
-  let id: string = randomId()
+  let id: string = groupId ? groupId : randomId()
   let mode: "and" | "or" = $state("and")
   let draggable: boolean = drag
 
@@ -186,7 +190,8 @@ export function createFilter(
     field: string
     fieldName: string
   },
-  proxy?: string[]
+  proxy?: string[],
+  id?: string
 ): Filter {
   const getValueType = (value: FilterValueType) => {
     if (Array.isArray(value)) return "array"
@@ -199,7 +204,7 @@ export function createFilter(
   let _mode: FilterMode = $state(mode)
   let _field: string = $state(field)
   let _fieldName: string = $state(name)
-  let _id: string = (Math.random() + 1).toString(36).slice(2, 7)
+  let _id: string = id ? id : randomId()
   let _privacy = $state(privacy)
   let _proxy: string[] | undefined = $state(proxy)
 
@@ -640,6 +645,7 @@ function filterByPrivacy<
   },
 >(list: T[], field: string, value: string): T[] {
   if (typeof value !== "string") return list
+  if (value === "all") return list
 
   return list.filter((i) => i.privacy[field as keyof MemberPrivacy] === value)
 }
@@ -739,4 +745,84 @@ function filterByProxy(
       break
   }
   return list
+}
+
+export function createSimpleFilters() {
+  let simpleNameFilter = $state(
+    createFilter(
+      "name",
+      "name",
+      FilterMode.INCLUDES,
+      "",
+      undefined,
+      undefined,
+      "simple-filter--name"
+    )
+  )
+  let simpleDisplayNameFilter = $state(
+    createFilter(
+      "display_name",
+      "display name",
+      FilterMode.INCLUDES,
+      "",
+      undefined,
+      undefined,
+      "simple-filter--display-name"
+    )
+  )
+  let simpleDescriptionFilter = $state(
+    createFilter(
+      "description",
+      "description name",
+      FilterMode.INCLUDES,
+      "",
+      undefined,
+      undefined,
+      "simple-filter--description"
+    )
+  )
+  let simpleIdFilter = $state(
+    createFilter("id", "id", FilterMode.INCLUDES, "", undefined, undefined, "simple-filter--id")
+  )
+  let simplePronounFilter = $state(
+    createFilter(
+      "pronouns",
+      "pronouns",
+      FilterMode.INCLUDES,
+      "",
+      undefined,
+      undefined,
+      "simple-filter--pronouns"
+    )
+  )
+
+  let simplePrivacyFilter = $state(
+    createFilter(
+      "privacy",
+      "privacy",
+      FilterMode.NOTEMPTY,
+      "all",
+      {
+        field: "visibility",
+        fieldName: "visibility",
+      },
+      undefined,
+      "simple-filter--visibility"
+    )
+  )
+
+  let simpleGroupFilter = $state(createFilter("group", "group", FilterMode.INCLUDES, []))
+
+  return createFilterGroup(
+    [
+      simpleNameFilter,
+      simpleDisplayNameFilter,
+      simpleDescriptionFilter,
+      simpleIdFilter,
+      simplePronounFilter,
+      simplePrivacyFilter,
+      simpleGroupFilter,
+    ],
+    "simple-filter--group"
+  )
 }

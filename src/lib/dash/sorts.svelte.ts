@@ -27,23 +27,38 @@ export const sortModeText = (mode: SortMode, type: string, withComma?: boolean) 
   }
 }
 
-export function createSort(mode: SortMode, field: string, fieldName: string, order: 1 | -1): Sort {
-  const sortMode: SortMode = mode
-  const sortField: string = field
-  const name: string = fieldName
+export function createSort(
+  mode: SortMode,
+  field: string,
+  fieldName: string,
+  order: 1 | -1,
+  sortId?: string
+): Sort {
+  let sortMode: SortMode = $state(mode)
+  let sortField: string = $state(field)
+  let name: string = $state(fieldName)
   let sortOrder: 1 | -1 = $state(order)
 
-  const id = randomId()
+  const id = sortId ? sortId : randomId()
 
   return {
     get mode() {
       return sortMode
     },
+    set mode(mode: SortMode) {
+      sortMode = mode
+    },
     get field() {
       return sortField
     },
+    set field(field: string) {
+      sortField = field
+    },
     get fieldName() {
       return name
+    },
+    set fieldName(fieldName: string) {
+      name = fieldName
     },
     get order() {
       return sortOrder
@@ -91,8 +106,8 @@ function applySort<T>(list: T[], sort: Sort): T[] {
             else result = (a[field] as string).length > (b[field] as string).length ? 1 : -1
           }
         } else if (typeof a[field] === "number" || typeof b[field] === "number") {
-          if (a[field] === null) result = 0
-          else if (b[field] === null) result = 0
+          if (!a[field]) result = 0
+          else if (!b[field]) result = 0
           else if (a[field] === b[field]) result = 0
           else result = a[field] > b[field] ? 1 : -1
         } else result = 0
@@ -179,4 +194,12 @@ function getColor(hex: string) {
   color.green = parseInt(hex.substring(2, 4), 16)
   color.blue = parseInt(hex.substring(4, 6), 16)
   return color
+}
+
+export function createSimpleSorts() {
+  let simpleNameSort = $state(
+    createSort(SortMode.ALPHABETICAL, "name", "name", 1, "simple-sort--name")
+  )
+
+  return [simpleNameSort]
 }

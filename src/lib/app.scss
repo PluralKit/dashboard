@@ -160,6 +160,15 @@
   --sv-item-wrap-padding: 0.375rem 0.25rem;
 }
 
+.join-item.svelecte-control-pk {
+  --sv-min-height: 2rem;
+
+  .sv-control {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
 .group-control {
   --sv-dropdown-active-bg: transparent;
   --sv-item-wrap-padding: 0.25rem 0;
