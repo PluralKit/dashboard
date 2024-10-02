@@ -18,9 +18,10 @@ export interface ListSettings {
   itemsPerPage: number
   currentPage: number
   filterMode: "simple" | "advanced"
+  extraFields: boolean
 }
 
-export function createListSettings() {
+export function createListSettings(): ListSettings {
   let availableViews: View[] = [
     {
       type: ViewType.COLLAPSE,
@@ -51,7 +52,9 @@ export function createListSettings() {
   let view: View = $state(availableViews[0])
   let itemsPerPage: number = $state(view.defaultItemsPerPage)
   let currentPage: number = $state(1)
+
   let filterMode: "simple" | "advanced" = $state("simple")
+  let extraFields = $state(false)
 
   return {
     get view() {
@@ -78,6 +81,12 @@ export function createListSettings() {
     },
     set filterMode(mode: "simple" | "advanced") {
       filterMode = mode
+    },
+    get extraFields() {
+      return extraFields
+    },
+    set extraFields(open: boolean) {
+      extraFields = open
     },
   }
 }

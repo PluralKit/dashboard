@@ -2,8 +2,6 @@
   import { dash } from "$lib/dash/dash.svelte"
   import { IconSearch } from "@tabler/icons-svelte"
   import Svelecte from "svelecte"
-
-  let showAdditionalFields = $state(false)
 </script>
 
 <div class="flex flex-col mb-3">
@@ -24,11 +22,11 @@
 <div class="flex flex-col mt-3">
   <button
     class="btn btn-neutral btn-sm mb-4"
-    onclick={() => (showAdditionalFields = !showAdditionalFields)}
+    onclick={() => (dash.members.settings.extraFields = !dash.members.settings.extraFields)}
   >
     Show additional fields
   </button>
-  {#if showAdditionalFields}
+  {#if dash.members.settings.extraFields}
     <div
       class={`mb-4 gap-2 grid grid-col-1 md:grid-cols-2 lg:grid-cols-2 ${
         dash.settings.display?.forceControlsAtTop === true ? "xl:grid-cols-2" : "xl:grid-cols-1"
