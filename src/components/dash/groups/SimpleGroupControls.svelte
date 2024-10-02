@@ -85,7 +85,7 @@
             dash.groups.process(dash.groups.list.raw)
             dash.groups.paginate()
           }}
-          placeholder="Search by description..."
+          placeholder="Search by ID..."
         />
       </div>
       <div class="join">
