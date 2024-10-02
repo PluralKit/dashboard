@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Group } from "$api/types"
   import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
+  import DuplicateName from "$components/dash/edit/DuplicateName.svelte"
   import EditColor from "$components/dash/edit/EditColor.svelte"
   import EditDescription from "$components/dash/edit/EditDescription.svelte"
   import EditField from "$components/dash/edit/EditField.svelte"
@@ -37,6 +38,12 @@
   let err: string[] = $state([])
   let success = $state(false)
   let loading = $state(false)
+
+  let duplicate = $derived(
+    dash.groups.list.raw
+      .filter((g) => g.name?.toLowerCase() === editedState.name?.toLowerCase())
+      .find((g) => g.name !== group.name)
+  )
 </script>
 
 <div class="flex flex-row gap-2 justify-between items-center mb-3">
@@ -95,6 +102,9 @@
   </div>
   <EditDescription item={group} bind:value={editedState.description} original={group.description} />
 </div>
+{#if duplicate}
+  <DuplicateName type="group" {duplicate} />
+{/if}
 {#if err.length > 0}
   {#each err as e}
     {#if e}

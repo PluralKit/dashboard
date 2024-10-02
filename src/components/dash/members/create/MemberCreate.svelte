@@ -1,7 +1,7 @@
 <script lang="ts">
   import { dash } from "$lib/dash/dash.svelte"
   import { createMemberCreationState } from "$lib/dash/member/edit.svelte"
-  import { IconLoader, IconPlus, IconAlertTriangle } from "@tabler/icons-svelte"
+  import { IconLoader, IconPlus } from "@tabler/icons-svelte"
   import { untrack } from "svelte"
   import MemberViewCreate from "./MemberViewCreate.svelte"
   import MemberInfoCreate from "./MemberInfoCreate.svelte"
@@ -9,6 +9,7 @@
   import type { Member, MemberPrivacy, proxytag } from "$api/types"
   import { fade } from "svelte/transition"
   import SubmitCreateButton from "$components/dash/edit/SubmitCreateButton.svelte"
+  import DuplicateName from "$components/dash/edit/DuplicateName.svelte"
 
   let {
     forceOpen = false,
@@ -115,15 +116,7 @@
         <MemberGroupCreate {tab} bind:groups />
       {/if}
       {#if duplicate}
-        <div class="alert bg-warning/10 mb-2 w-full mx-auto px-5 py-3 mt-2">
-          <IconAlertTriangle class="text-warning" />
-          <div>
-            <div>
-              A member named <b>{duplicate.name}</b> already exists! Creating another member with this
-              name might lead to unexpected behavior.
-            </div>
-          </div>
-        </div>
+        <DuplicateName type="member" {duplicate} />
       {/if}
       {#if err.length > 0}
         {#each err as e}

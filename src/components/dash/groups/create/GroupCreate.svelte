@@ -9,6 +9,7 @@
   import GroupViewCreate from "./GroupViewCreate.svelte"
   import GroupInfoCreate from "./GroupInfoCreate.svelte"
   import GroupMemberCreate from "./GroupMemberCreate.svelte"
+  import DuplicateName from "$components/dash/edit/DuplicateName.svelte"
 
   let {
     forceOpen = false,
@@ -113,15 +114,7 @@
         <GroupMemberCreate {tab} bind:members />
       {/if}
       {#if duplicate}
-        <div class="alert bg-warning/10 mb-2 w-full mx-auto px-5 py-3 mt-2">
-          <IconAlertTriangle class="text-warning" />
-          <div>
-            <div>
-              A group named <b>{duplicate.name}</b> already exists! Creating another group with this
-              name might lead to unexpected behavior.
-            </div>
-          </div>
-        </div>
+        <DuplicateName type="group" {duplicate} />
       {/if}
       {#if err.length > 0}
         {#each err as e}
