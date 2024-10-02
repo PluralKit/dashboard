@@ -20,28 +20,22 @@
   }
 </script>
 
-<div
-  class={`flex flex-col gap-3 sm:gap-4 ${
-    dash.settings.display?.forceControlsAtTop === true ? "" : "lg:flex-1"
-  }`}
->
-  {#if dash.privacyMode === PrivacyMode.PRIVATE}
-    <MemberCreate />
-  {/if}
-  <div class="text-center">
-    <p>
-      {dash.members.list.processed.length} members ({dash.members.list.paginated.length} shown)
-      <button disabled={fetching} class="btn btn-xs btn-primary ml-2" onclick={() => refreshList()}
-        >{fetching ? "Loading..." : "Refresh list"}</button
-      >
-    </p>
-  </div>
-  <Pagination class="mx-auto" bind:list={dash.members} />
-  {#each dash.members.list.paginated as member (member.uuid)}
-    <ItemCollapse item={member} type="member" />
-  {/each}
-  {#if dash.members.list.processed.length === 0}
-    <div class="alert bg-info/20 flex flex-col text-center">No members found.</div>
-  {/if}
-  <Pagination class="mx-auto" bind:list={dash.members} />
+{#if dash.privacyMode === PrivacyMode.PRIVATE}
+  <MemberCreate />
+{/if}
+<div class="text-center">
+  <p>
+    {dash.members.list.processed.length} members ({dash.members.list.paginated.length} shown)
+    <button disabled={fetching} class="btn btn-xs btn-primary ml-2" onclick={() => refreshList()}
+      >{fetching ? "Loading..." : "Refresh list"}</button
+    >
+  </p>
 </div>
+<Pagination class="mx-auto" bind:list={dash.members} />
+{#each dash.members.list.paginated as member (member.uuid)}
+  <ItemCollapse item={member} type="member" />
+{/each}
+{#if dash.members.list.processed.length === 0}
+  <div class="alert bg-info/20 flex flex-col text-center">No members found.</div>
+{/if}
+<Pagination class="mx-auto" bind:list={dash.members} />

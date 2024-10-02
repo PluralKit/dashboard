@@ -15,6 +15,18 @@
     dash.settings.display?.forceControlsAtTop === true ? "" : "xl:flex-row xl:max-w-7xl"
   }`}
 >
-  <MemberControls />
-  <MemberList />
+  <div
+    class={`box bg-base-100 h-min ${
+      dash.settings.display?.forceControlsAtTop === true ? "" : "xl:w-1/3"
+    }`}
+  >
+    <MemberControls />
+  </div>
+  <div
+    class={`flex flex-col gap-3 sm:gap-4 ${
+      dash.settings.display?.forceControlsAtTop === true ? "" : "lg:flex-1"
+    }`}
+  >
+    <MemberList />
+  </div>
 </div>
