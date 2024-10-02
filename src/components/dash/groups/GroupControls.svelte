@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { dash } from "$lib/dash/dash.svelte"
+  import { dash, type DashList } from "$lib/dash/dash.svelte"
   import { IconAdjustments, IconUsers } from "@tabler/icons-svelte"
   import FilterGroups from "../filters/FilterGroups.svelte"
   import AddFilterGroup from "../filters/AddFilterGroup.svelte"
@@ -7,14 +7,23 @@
   import AddSort from "../filters/AddSort.svelte"
   import { toggleSetting } from "$lib/dash/utils"
   import SimpleGroupControls from "./SimpleGroupControls.svelte"
+  import type { Group } from "$api/types"
 
-  let mode: "simple" | "advanced" = $state("simple")
+  let {
+    list,
+  }: {
+    list: DashList<Group>
+  } = $props()
 
   function changeMode() {
-    mode === "simple" ? (mode = "advanced") : (mode = "simple")
+    list.settings.filterMode === "simple"
+      ? (list.settings.filterMode = "advanced")
+      : (list.settings.filterMode = "simple")
 
-    dash.members.process(dash.groups.list.raw)
-    dash.members.paginate()
+    console.log(list.settings.filterMode)
+
+    list.process(list.list.raw)
+    list.paginate()
   }
 </script>
 
@@ -25,7 +34,7 @@
   <button class="btn btn-sm btn-primary mt-2 w-min h-10" onclick={() => changeMode()}>
     <div class="flex flex-row items-center gap-2">
       <IconAdjustments size={32} />
-      <span>{mode === "simple" ? "Advanced" : "Simple"} mode</span>
+      <span>{list.settings.filterMode === "simple" ? "Advanced" : "Simple"} mode</span>
     </div>
   </button>
 </div>
@@ -53,9 +62,9 @@
 </div>
 <hr class="my-2" />
 <p class="my-4">Some options will be moved at some point.</p>
-{#if mode === "simple"}
-  <SimpleGroupControls />
-{:else if mode === "advanced"}
+{#if list.settings.filterMode === "simple"}
+  <SimpleGroupControls {list} />
+{:else if list.settings.filterMode === "advanced"}
   <div
     class={`grid grid-cols-1 md:grid-cols-2 gap-4 ${
       dash.settings.display?.forceControlsAtTop === true ? "xl:grid-cols-2" : "xl:grid-cols-1"
@@ -64,14 +73,14 @@
     <div>
       <h3 class="text-xl">Filter list</h3>
       <hr class="my-2" />
-      <AddFilterGroup bind:filterGroups={dash.groups.filters} list={dash.groups} type="groups" />
-      <FilterGroups list={dash.groups} />
+      <AddFilterGroup bind:filterGroups={list.filters} {list} type="groups" />
+      <FilterGroups {list} />
     </div>
     <div>
       <h3 class="text-xl">Sort list</h3>
       <hr class="my-2" />
-      <AddSort bind:sorts={dash.groups.sorts} list={dash.groups} type="groups" />
-      <Sorts list={dash.groups} />
+      <AddSort bind:sorts={list.sorts} {list} type="groups" />
+      <Sorts {list} />
     </div>
   </div>
 {/if}

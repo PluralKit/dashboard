@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { dash } from "$lib/dash/dash.svelte"
+  import { dash, type DashList } from "$lib/dash/dash.svelte"
   import { IconAdjustments, IconUsers } from "@tabler/icons-svelte"
   import FilterGroups from "../filters/FilterGroups.svelte"
   import AddFilterGroup from "../filters/AddFilterGroup.svelte"
@@ -7,14 +7,21 @@
   import AddSort from "../filters/AddSort.svelte"
   import { toggleSetting } from "$lib/dash/utils"
   import SimpleMemberControls from "./SimpleMemberControls.svelte"
+  import type { Member } from "$api/types"
+
+  let {
+    list,
+  }: {
+    list: DashList<Member>
+  } = $props()
 
   function changeMode() {
-    dash.members.settings.filterMode === "simple"
-      ? (dash.members.settings.filterMode = "advanced")
-      : (dash.members.settings.filterMode = "simple")
+    list.settings.filterMode === "simple"
+      ? (list.settings.filterMode = "advanced")
+      : (list.settings.filterMode = "simple")
 
-    dash.members.process(dash.groups.list.raw)
-    dash.members.paginate()
+    list.process(dash.groups.list.raw)
+    list.paginate()
   }
 </script>
 
@@ -25,7 +32,7 @@
   <button class="btn btn-sm btn-primary mt-2 w-min h-10" onclick={() => changeMode()}>
     <div class="flex flex-row items-center gap-2">
       <IconAdjustments size={32} />
-      <span>{dash.members.settings.filterMode === "simple" ? "Advanced" : "Simple"} mode</span>
+      <span>{list.settings.filterMode === "simple" ? "Advanced" : "Simple"} mode</span>
     </div>
   </button>
 </div>
@@ -52,9 +59,9 @@
   </button>
 </div>
 <hr class="my-2" />
-{#if dash.members.settings.filterMode === "simple"}
-  <SimpleMemberControls />
-{:else if dash.members.settings.filterMode === "advanced"}
+{#if list.settings.filterMode === "simple"}
+  <SimpleMemberControls {list} />
+{:else if list.settings.filterMode === "advanced"}
   <div
     class={`grid grid-cols-1 md:grid-cols-2 gap-4 ${
       dash.settings.display?.forceControlsAtTop === true ? "xl:grid-cols-2" : "xl:grid-cols-1"
@@ -63,14 +70,14 @@
     <div>
       <h3 class="text-xl">Filter list</h3>
       <hr class="my-2" />
-      <AddFilterGroup bind:filterGroups={dash.members.filters} list={dash.members} type="members" />
-      <FilterGroups list={dash.members} />
+      <AddFilterGroup bind:filterGroups={list.filters} {list} type="members" />
+      <FilterGroups {list} />
     </div>
     <div>
       <h3 class="text-xl">Sort list</h3>
       <hr class="my-2" />
-      <AddSort bind:sorts={dash.members.sorts} list={dash.members} type="members" />
-      <Sorts list={dash.members} />
+      <AddSort bind:sorts={list.sorts} {list} type="members" />
+      <Sorts {list} />
     </div>
   </div>
 {/if}

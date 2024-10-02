@@ -20,13 +20,13 @@
       dash.settings.display?.forceControlsAtTop === true ? "" : "xl:w-1/3"
     }`}
   >
-    <MemberControls />
+    <MemberControls list={dash.members} />
   </div>
   <div
     class={`flex flex-col gap-3 sm:gap-4 ${
       dash.settings.display?.forceControlsAtTop === true ? "" : "lg:flex-1"
     }`}
   >
-    <MemberList />
+    <MemberList list={dash.members} />
   </div>
 </div>

@@ -20,13 +20,13 @@
       dash.settings.display?.forceControlsAtTop === true ? "" : "xl:w-1/3"
     }`}
   >
-    <GroupControls />
+    <GroupControls list={dash.groups} />
   </div>
   <div
     class={`flex flex-col gap-3 sm:gap-4 ${
       dash.settings.display?.forceControlsAtTop === true ? "" : "lg:flex-1"
     }`}
   >
-    <GroupList />
+    <GroupList list={dash.groups} />
   </div>
 </div>
