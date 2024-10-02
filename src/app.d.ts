@@ -6,7 +6,9 @@ import type { ApiClient } from "$api"
 declare global {
   namespace App {
     // interface Error {}
-    // interface Locals {}
+    interface Locals {
+      api: ApiClient
+    }
     // interface PageData {}
     // interface Platform {}
   }

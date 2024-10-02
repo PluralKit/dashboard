@@ -1,16 +1,10 @@
-import type { ApiError, SvelteFetch } from "$api"
+import type { ApiClient, ApiError, SvelteFetch } from "$api"
 import apiClient from "$api"
 import { error, type Cookies, redirect } from "@sveltejs/kit"
 import { PrivacyMode } from "./dash.svelte"
 import { getDashInfo } from "$api/utils"
 
-export async function loadDash(
-  fetch: SvelteFetch,
-  cookies: Cookies,
-  url: URL,
-  apiBaseUrl: string | undefined,
-  params?: any
-) {
+export async function loadDash(api: ApiClient, cookies: Cookies, url: URL, params?: any) {
   const token = cookies.get("pk-token")
   const sid = cookies.get("pk-sid")
 
@@ -24,7 +18,6 @@ export async function loadDash(
     }
   } else {
     // woo! we've got a new link
-    const api = apiClient(fetch, apiBaseUrl)
 
     // if the param system id matches the cookie system id
     // AND we aren't forcing public mode

@@ -3,27 +3,17 @@ import type { System } from "$api/types"
 import { login } from "$api/utils"
 import { env } from "$env/dynamic/private"
 
-export async function load({ cookies, url }) {
+export async function load({ cookies, url, locals }) {
   const theme = cookies.get("pk-theme") ?? "dark"
 
   const token = cookies.get("pk-token")
-  const getBaseUrl = () => {
-    const param = url.searchParams.get("api")
-    if (param === "prod" || param === "production") return "https://api.pluralkit.me"
-    if (param === "beta") return "https://api.beta.pluralkit.me"
-
-    return cookies.get("pk-api-url")
-  }
-
-  const apiBaseUrl = getBaseUrl()
 
   let error: string | null = null
 
   let system: System | null = null
   if (token) {
-    const api = apiClient(fetch, apiBaseUrl)
     try {
-      system = await login(api, cookies)
+      system = await login(locals.api, cookies)
       cookies.set("pk-sid", system?.id || "", {
         path: "/",
         secure: env.NODE_ENV !== "development",
@@ -49,6 +39,6 @@ export async function load({ cookies, url }) {
     token,
     theme,
     error,
-    apiBaseUrl,
+    apiBaseUrl: locals.apiBaseUrl,
   }
 }

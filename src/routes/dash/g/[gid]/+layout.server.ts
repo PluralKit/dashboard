@@ -1,14 +1,11 @@
-import apiClient, { ErrorType, type ApiError, type ApiOptions } from "$api"
+import { ErrorType, type ApiError, type ApiOptions } from "$api"
 import type { Group, Member } from "$api/types"
 import { PrivacyMode } from "$lib/dash/dash.svelte.js"
 import { error } from "@sveltejs/kit"
 
-export async function load({ cookies, params, url, parent }) {
+export async function load({ cookies, params, url, locals }) {
   const token = cookies.get("pk-token")
   const sid = cookies.get("pk-sid")
-
-  const { apiBaseUrl } = await parent()
-  const api = apiClient(fetch, apiBaseUrl)
 
   let options: ApiOptions = {}
 
@@ -18,6 +15,8 @@ export async function load({ cookies, params, url, parent }) {
   let groupMembers: Member[] = []
   let errs: string[] = []
   let privacyMode: PrivacyMode = PrivacyMode.PUBLIC
+
+  const api = locals.api
 
   try {
     group = await api<Group>(`groups/${params.gid}`)

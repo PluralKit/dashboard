@@ -3,12 +3,9 @@ import type { Group, Member } from "$api/types"
 import { PrivacyMode } from "$lib/dash/dash.svelte.js"
 import { error } from "@sveltejs/kit"
 
-export async function load({ cookies, params, url, parent }) {
+export async function load({ cookies, params, url, locals }) {
   const token = cookies.get("pk-token")
   const sid = cookies.get("pk-sid")
-
-  const { apiBaseUrl } = await parent()
-  const api = apiClient(fetch, apiBaseUrl)
 
   let options: ApiOptions = {}
 
@@ -18,6 +15,8 @@ export async function load({ cookies, params, url, parent }) {
   let memberGroups: Group[] = []
   let errs: string[] = []
   let privacyMode: PrivacyMode = PrivacyMode.PUBLIC
+
+  const api = locals.api
 
   try {
     member = await api<Member>(`members/${params.mid}`)
