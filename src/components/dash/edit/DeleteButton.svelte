@@ -2,17 +2,19 @@
   import type { Group, Member } from "$api/types"
   import { browser } from "$app/environment"
   import { goto } from "$app/navigation"
-  import { dash } from "$lib/dash/dash.svelte"
+  import { dash, type DashList } from "$lib/dash/dash.svelte"
   import { IconTrash } from "@tabler/icons-svelte"
 
   let {
     item,
     type,
     asPage,
+    list,
   }: {
     item: Member | Group
     type: "member" | "group"
     asPage: boolean
+    list: DashList<Member | Group>
   } = $props()
 
   let element: HTMLDialogElement
@@ -31,18 +33,10 @@
     element.close()
 
     if (!asPage) {
-      if (type === "member") {
-        dash.members.list.raw = dash.members.list.raw.filter((m) => m.uuid !== item.uuid)
-        dash.groups.list.raw.forEach((g) => g.members?.filter((m) => m !== item.uuid))
+      list.list.raw = list.list.raw.filter((g) => g.uuid !== item.uuid)
 
-        dash.members.process(dash.groups.list.raw)
-        dash.members.paginate()
-      } else if (type === "group") {
-        dash.groups.list.raw = dash.groups.list.raw.filter((g) => g.uuid !== item.uuid)
-
-        dash.groups.process()
-        dash.groups.paginate()
-      }
+      list.process()
+      list.paginate()
     } else {
       goto(`/dash/${dash.user?.id}?tab=${type}s`)
     }

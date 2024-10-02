@@ -2,13 +2,14 @@
   import type { Member, MemberPrivacy, proxytag } from "$api/types"
   import EditPrivacy from "$components/dash/edit/EditPrivacy.svelte"
   import EditProxyTag from "$components/dash/edit/EditProxyTag.svelte"
-  import { dash } from "$lib/dash/dash.svelte"
+  import type { DashList } from "$lib/dash/dash.svelte"
   import { IconPlus, IconAlertTriangle } from "@tabler/icons-svelte"
 
   let {
     tab,
     member = $bindable(),
     privacy = $bindable(),
+    list,
   }: {
     tab: "view" | "info" | "groups"
     member: Member & {
@@ -16,6 +17,7 @@
       proxy_tags: proxytag[]
     }
     privacy: MemberPrivacy
+    list: DashList<Member>
   } = $props()
 
   // we can't bind to the proxy tags directly
@@ -36,7 +38,7 @@
     member: string | undefined
   })[] = $derived(
     member.proxy_tags.flatMap((p) => {
-      const m = dash.members.list.raw.find((m) =>
+      const m = list.list.raw.find((m) =>
         m.proxy_tags?.some(
           (t) =>
             (t.suffix === p.suffix || (!t.suffix && !p.suffix)) &&

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
-  import { dash } from "$lib/dash/dash.svelte"
+  import { dash, type DashList } from "$lib/dash/dash.svelte"
   import { IconRefresh, IconLoader, IconMinus, IconPlus, IconX } from "@tabler/icons-svelte"
   import Svelecte from "svelecte"
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
@@ -8,18 +8,21 @@
   import SimplePagination from "$components/dash/SimplePagination.svelte"
   import GroupMemberList from "../GroupMemberList.svelte"
   import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
-  import type { Snippet } from "svelte"
 
   let {
     membersCurrent,
     group,
     mode = $bindable(),
     asPage = false,
+    groupList,
+    memberList,
   }: {
     membersCurrent: Member[]
     group: Group
     mode: "view" | "edit"
     asPage?: boolean
+    groupList: DashList<Group>
+    memberList: DashList<Member>
   } = $props()
 
   let err: string[] = $state([])
@@ -30,37 +33,22 @@
   let uuidSelection: string[] = $state(membersCurrent.map((g) => g.uuid || ""))
 
   let memberSelection: Group[] = $derived(
-    !asPage
-      ? dash.members.list.raw
-          .filter((m) => uuidSelection.includes(m.uuid || ""))
-          .sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
-      : dash.group.members
-          .filter((m) => uuidSelection.includes(m.uuid || ""))
-          .sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
+    memberList.list.raw
+      .filter((m) => uuidSelection.includes(m.uuid || ""))
+      .sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
   )
 
   let allOptions = $derived(
-    !asPage
-      ? dash.members.list.raw
-          .map((m) => {
-            return {
-              value: m.uuid,
-              text: `${m.name} (${m.id})`,
-              extra: m.display_name,
-              included: uuidsCurrent.includes(m.uuid || ""),
-            }
-          })
-          .sort((a, b) => a.text.localeCompare(b.text))
-      : dash.group.members
-          .map((m) => {
-            return {
-              value: m.uuid,
-              text: `${m.name} (${m.id})`,
-              extra: m.display_name,
-              included: uuidsCurrent.includes(m.uuid || ""),
-            }
-          })
-          .sort((a, b) => a.text.localeCompare(b.text))
+    memberList.list.raw
+      .map((m) => {
+        return {
+          value: m.uuid,
+          text: `${m.name} (${m.id})`,
+          extra: m.display_name,
+          included: uuidsCurrent.includes(m.uuid || ""),
+        }
+      })
+      .sort((a, b) => a.text.localeCompare(b.text))
   )
 
   let toAdd: string[] = $state([])
@@ -241,7 +229,7 @@
 {/if}
 {#if success}
   <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-success/20 mt-2">
-    Member successfully edited
+    Group successfully edited
   </div>
 {/if}
 <div class="flex flex-row items-center">
@@ -257,10 +245,11 @@
           bind:loading
           bind:err
           bind:success
+          {memberList}
+          {groupList}
           options={{
             group,
             body: uuidSelection,
-            asPage,
           }}
           path={`groups/${group.uuid}/members/overwrite`}
         />
@@ -286,7 +275,7 @@
       </button>
     {/if}
   </div>
-  <DeleteButton type="group" item={group} {asPage} />
+  <DeleteButton type="group" item={group} {asPage} list={groupList} />
 </div>
 
 {#snippet option(opt: any)}

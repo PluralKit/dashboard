@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { Group, Member } from "$api/types"
+  import type { Member } from "$api/types"
   import SimplePagination from "$components/dash/SimplePagination.svelte"
-  import { dash } from "$lib/dash/dash.svelte"
+  import type { DashList } from "$lib/dash/dash.svelte"
   import { IconPlus, IconRefresh } from "@tabler/icons-svelte"
   import Svelecte from "svelecte"
   import GroupMemberList from "../GroupMemberList.svelte"
@@ -9,13 +9,15 @@
   let {
     tab,
     members = $bindable(),
+    memberList,
   }: {
     tab: "view" | "info" | "groups"
     members: string[]
+    memberList: DashList<Member>
   } = $props()
 
   let allOptions = $derived(
-    dash.members.list.raw
+    memberList.list.raw
       .map((m) => {
         return {
           value: m.uuid,
@@ -27,7 +29,7 @@
   )
 
   let selectedMembers = $derived(
-    dash.members.list.raw
+    memberList.list.raw
       .filter((m) => members.includes(m.uuid || ""))
       .sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
   )
@@ -50,7 +52,7 @@
               class="btn btn-success btn-xs"
               title="Add all"
               aria-label="Add all members to group"
-              onclick={() => (members = dash.members.list.raw.map((g) => g.uuid || ""))}
+              onclick={() => (members = memberList.list.raw.map((g) => g.uuid || ""))}
             >
               <IconPlus size={18} class="inline" />
             </button>

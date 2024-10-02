@@ -10,7 +10,6 @@
     // base member/group edit
     body: Member | Group
     list: DashList<Member | Group>
-    asPage: boolean
     item: Member | Group
   }
 
@@ -18,13 +17,11 @@
     // member groups edit
     member: Member
     body: string[]
-    asPage: boolean
   }
   type GroupMemberEditOptions = {
     // group member list edit
     group: Group
     body: string[]
-    asPage: boolean
   }
   type SystemEditOptions = {
     system: System
@@ -38,6 +35,8 @@
     path,
     options,
     onSuccess,
+    memberList,
+    groupList,
   }: {
     loading: boolean
     success: boolean
@@ -45,6 +44,8 @@
     path: string
     options: ItemEditOptions | MemberGroupEditOptions | GroupMemberEditOptions | SystemEditOptions
     onSuccess?: () => void
+    memberList: DashList<Member>
+    groupList: DashList<Group>
   } = $props()
 
   export async function submitEdit() {
@@ -115,15 +116,9 @@
         if (response && (opts as ItemEditOptions).item) {
           opts = opts as ItemEditOptions
 
-          // if we're on the dash we need to replace the member in the list
-          // if not, we just need to replace the member
-          if (!opts.asPage) {
-            Object.assign(opts.item, response)
-            opts.list.process(dash.groups.list.raw)
-            opts.list.paginate()
-          } else {
-            Object.assign(opts.item || {}, response)
-          }
+          Object.assign(opts.item || {}, response)
+          opts.list.process(groupList.list.raw)
+          opts.list.paginate()
         } else if (response && (opts as SystemEditOptions).system) {
           // systems don't have a page of their own (for now)
           // so replace the dash's system
@@ -149,41 +144,27 @@
           const opts = options as MemberGroupEditOptions
 
           // add the member's uuid to each group added
-          if (!opts.asPage) {
-            for (const group of dash.groups.list.raw) {
-              const g = group as Group
-              if (listBody.includes(g.uuid || "")) {
-                if (g.members && !g.members.includes(opts.member.uuid || "")) {
-                  g.members = [...(g.members || []), opts.member.uuid || ""]
-                }
-              } else {
-                g.members = [...(g.members || [])].filter((m) => m !== opts.member.uuid)
+          for (const group of groupList.list.raw) {
+            const g = group as Group
+            if (listBody.includes(g.uuid || "")) {
+              if (g.members && !g.members.includes(opts.member.uuid || "")) {
+                g.members = [...(g.members || []), opts.member.uuid || ""]
               }
-            }
-            dash.groups.process(dash.groups.list.raw)
-            dash.members.process(dash.groups.list.raw)
-            dash.members.paginate()
-          } else {
-            for (const group of dash.member.groups) {
-              const g = group as Group
-              if (listBody.includes(g.uuid || "")) {
-                if (g.members && !g.members.includes(opts.member.uuid || "")) {
-                  g.members = [...(g.members || []), opts.member.uuid || ""]
-                }
-              } else {
-                g.members = [...(g.members || [])].filter((m) => m !== opts.member.uuid)
-              }
+            } else {
+              g.members = [...(g.members || [])].filter((m) => m !== opts.member.uuid)
             }
           }
+          groupList.process(groupList.list.raw)
+          memberList.process(groupList.list.raw)
+          memberList.paginate()
         } else if ((options as GroupMemberEditOptions).group) {
           const opts = options as GroupMemberEditOptions
 
           // edit the group like we would normally
           opts.group.members = listBody
-          if (!opts.asPage) {
-            dash.groups.process(dash.groups.list.raw)
-            dash.groups.paginate()
-          }
+
+          groupList.process(groupList.list.raw)
+          groupList.paginate()
         }
 
         success = true

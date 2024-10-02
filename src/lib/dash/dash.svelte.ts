@@ -367,18 +367,16 @@ function createGroupListState(): DashList<Group> {
       processedGroups = processList(
         groups,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
-        listSettings.filterMode === "simple" ? simpleSorts : sorts,
-        []
+        listSettings.filterMode === "simple" ? simpleSorts : sorts
       )
       paginatedGroups = paginateList(processedGroups, listSettings)
     },
-    init: function (data: Member[]) {
+    init: function (data: Group[]) {
       groups = data
-      processList(
+      processedGroups = processList(
         groups,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
-        listSettings.filterMode === "simple" ? simpleSorts : sorts,
-        groups
+        listSettings.filterMode === "simple" ? simpleSorts : sorts
       )
       paginatedGroups = paginateList(processedGroups, listSettings)
     },
@@ -388,6 +386,7 @@ function createGroupListState(): DashList<Group> {
 function createMemberState() {
   let member: Member | undefined = $state(undefined)
   let groups: DashList<Group> = $state(createGroupListState())
+  let members: DashList<Member> = $state(createMemberListState())
   let privacyMode: PrivacyMode = $state(PrivacyMode.PUBLIC)
 
   return {
@@ -399,6 +398,9 @@ function createMemberState() {
     },
     get groups() {
       return getDashList<Group>(groups)
+    },
+    get members() {
+      return getDashList<Member>(members)
     },
     get privacyMode() {
       return privacyMode
@@ -412,6 +414,7 @@ function createMemberState() {
 function createGroupState() {
   let group: Group | undefined = $state(undefined)
   let members: DashList<Member> = $state(createMemberListState())
+  let groups: DashList<Group> = $state(createGroupListState())
   let privacyMode: PrivacyMode = $state(PrivacyMode.PUBLIC)
 
   return {
@@ -423,6 +426,9 @@ function createGroupState() {
     },
     get members() {
       return getDashList<Member>(members)
+    },
+    get groups() {
+      return getDashList<Group>(groups)
     },
     get privacyMode() {
       return privacyMode

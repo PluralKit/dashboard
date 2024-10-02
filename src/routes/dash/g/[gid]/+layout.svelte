@@ -8,7 +8,8 @@
 
   dash.group.group = data.group
   dash.group.members.init(data.members)
-  dash.member.privacyMode = data.privacyMode
+  dash.group.groups.init(data.groups)
+  dash.group.privacyMode = data.privacyMode
 
   let params = $page.url.searchParams
   params.append("tab", "groups")

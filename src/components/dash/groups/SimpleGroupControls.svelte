@@ -6,8 +6,10 @@
 
   let {
     list = $bindable(),
+    wide = true,
   }: {
     list: DashList<Group>
+    wide?: boolean
   } = $props()
 </script>
 
@@ -36,7 +38,7 @@
   {#if list.settings.extraFields}
     <div
       class={`mb-4 gap-2 grid grid-col-1 md:grid-cols-2 lg:grid-cols-2 ${
-        dash.settings.display?.forceControlsAtTop === true ? "xl:grid-cols-2" : "xl:grid-cols-1"
+        wide === true ? "xl:grid-cols-2" : "xl:grid-cols-1"
       }`}
     >
       <div class="join">
@@ -117,7 +119,7 @@
   <hr />
   <div
     class={`grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4 ${
-      dash.settings.display?.forceControlsAtTop === true ? "xl:grid-cols-3" : "xl:grid-cols-2"
+      wide === true ? "xl:grid-cols-3" : "xl:grid-cols-2"
     }`}
   >
     <div class="join">

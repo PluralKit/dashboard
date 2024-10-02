@@ -14,6 +14,7 @@ export async function load({ cookies, params, url, parent }) {
 
   let group: Group | undefined = undefined
   let members: Member[] = []
+  let groups: Group[] = []
   let errs: string[] = []
   let privacyMode: PrivacyMode = PrivacyMode.PUBLIC
 
@@ -25,29 +26,21 @@ export async function load({ cookies, params, url, parent }) {
     else error(e.code, e.message)
   }
 
-  if (sid && token && !url.searchParams.get("public") && !url.searchParams.get("api"))
+  if (sid && token && !url.searchParams.get("public") && !url.searchParams.get("api")) {
     options = { token }
+    privacyMode = PrivacyMode.PRIVATE
+  }
 
   if (group) {
-    if (group.system === sid && !url.searchParams.get("public") && !url.searchParams.get("api")) {
-      privacyMode = PrivacyMode.PRIVATE
-      try {
-        group = await api<Group>(`groups/${params.gid}`, options)
-        members = (await api<Member[]>(`groups/${params.gid}/members`, options)) || []
-      } catch (err) {
-        const e = err as ApiError
-        if (e.type === ErrorType.RateLimit) errs.push(e.message || e.code.toString())
-        else error(e.code, e.message)
-      }
-    } else {
-      try {
-        members = (await api<Member[]>(`groups/${params.gid}/members`)) || []
-      } catch (err) {
-        const e = err as ApiError
-        if (e.type === ErrorType.RateLimit) errs.push(e.message || e.code.toString())
-        else if (e.type === ErrorType.Forbidden) errs.push("Member list is private")
-        else error(e.code, e.message)
-      }
+    try {
+      group = await api<Group>(`groups/${params.gid}`, options)
+      members = (await api<Member[]>(`systems/${group?.system}/members`, options)) || []
+      groups =
+        (await api<Group[]>(`systems/${group?.system}/groups?with_members=true`, options)) || []
+    } catch (err) {
+      const e = err as ApiError
+      if (e.type === ErrorType.RateLimit) errs.push(e.message || e.code.toString())
+      else error(e.code, e.message)
     }
   }
 
@@ -56,6 +49,7 @@ export async function load({ cookies, params, url, parent }) {
     errors: errs,
     group: group as Group,
     members,
+    groups,
     meta: {
       title: group?.name || "Dash",
       color: group?.color,

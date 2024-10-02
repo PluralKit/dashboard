@@ -8,6 +8,7 @@
 
   dash.member.member = data.member
   dash.member.groups.init(data.groups)
+  dash.member.members.init(data.members)
   dash.member.privacyMode = data.privacyMode
 
   let params = $page.url.searchParams

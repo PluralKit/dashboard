@@ -1,13 +1,13 @@
 import type { Group, Member } from "$api/types"
 import { browser } from "$app/environment"
-import { dash, PrivacyMode } from "../dash.svelte"
+import { PrivacyMode, type DashList } from "../dash.svelte"
 
 export async function deriveGroupsAsync(
   member: Member,
   current: Group[],
-  asPage: boolean
+  privacyMode: PrivacyMode
 ): Promise<Group[]> {
-  if (!asPage && dash.privacyMode !== PrivacyMode.PRIVATE) {
+  if (privacyMode !== PrivacyMode.PRIVATE) {
     if (!browser) return current
 
     // we're viewing the public list! we want to fetch the groups for the individual member
@@ -18,14 +18,13 @@ export async function deriveGroupsAsync(
   } else return current
 }
 
-export function deriveGroups(member: Member, asPage: boolean) {
-  if (!asPage) return filterGroups(dash.groups.list.raw, member)
-
-  return filterGroups(
-    dash.member.groups.list.raw,
-    member,
-    dash.member.privacyMode === PrivacyMode.PRIVATE
-  )
+export function deriveGroups(
+  member: Member,
+  asPage: boolean,
+  groupList: DashList<Group>,
+  privacyMode: PrivacyMode
+) {
+  return filterGroups(groupList.list.raw, member, privacyMode === PrivacyMode.PRIVATE)
 }
 
 function filterGroups(list: Group[], member: Member, filter = true) {

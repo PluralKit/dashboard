@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { Group, GroupPrivacy } from "$api/types"
+  import type { Group, GroupPrivacy, Member } from "$api/types"
   import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
   import EditPrivacy from "$components/dash/edit/EditPrivacy.svelte"
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
-  import { dash } from "$lib/dash/dash.svelte"
+  import { dash, type DashList } from "$lib/dash/dash.svelte"
   import { createInfoEditState } from "$lib/dash/group/edit.svelte"
   import { IconLoader, IconPencil, IconPlus, IconTrash, IconX } from "@tabler/icons-svelte"
   import { fade } from "svelte/transition"
@@ -12,10 +12,14 @@
     mode = $bindable(),
     group,
     asPage,
+    list,
+    memberList,
   }: {
     mode: "view" | "edit"
     group: Group
     asPage: boolean
+    list: DashList<Group>
+    memberList: DashList<Member>
   } = $props()
 
   let editedState = $derived(createInfoEditState(group))
@@ -175,7 +179,7 @@
 {/if}
 {#if success}
   <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-success/20 mt-2">
-    Member successfully edited
+    Group successfully edited
   </div>
 {/if}
 <div class="flex flex-row items-center">
@@ -189,9 +193,10 @@
           options={{
             item: group,
             body: edited,
-            list: dash.groups,
-            asPage,
+            list,
           }}
+          {memberList}
+          groupList={list}
           path={`groups/${group.uuid}`}
         />
         <button
@@ -216,5 +221,5 @@
       </button>
     {/if}
   </div>
-  <DeleteButton type="group" item={group} {asPage} />
+  <DeleteButton type="group" item={group} {asPage} {list} />
 </div>

@@ -2,20 +2,22 @@
   import parseMarkdown from "$api/parseMarkdown"
   import type { Group } from "$api/types"
   import AwaitHtml from "$components/dash/AwaitHtml.svelte"
-  import { dash } from "$lib/dash/dash.svelte"
+  import { type DashList } from "$lib/dash/dash.svelte"
   import { IconAlertTriangle, IconPlus, IconRefresh } from "@tabler/icons-svelte"
   import Svelecte from "svelecte"
 
   let {
     tab,
     groups = $bindable(),
+    groupList,
   }: {
     tab: "view" | "info" | "groups"
     groups: string[]
+    groupList: DashList<Group>
   } = $props()
 
   let allOptions = $derived(
-    dash.groups.list.raw
+    groupList.list.raw
       .map((g) => {
         return {
           value: g.uuid,
@@ -27,7 +29,7 @@
   )
 
   let selectedGroups = $derived(
-    dash.groups.list.raw
+    groupList.list.raw
       .filter((g) => groups.includes(g.uuid || ""))
       .sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
   )
@@ -53,7 +55,7 @@
               class="btn btn-success btn-xs"
               title="Add all"
               aria-label="Add all groups to member"
-              onclick={() => (groups = dash.groups.list.raw.map((g) => g.uuid || ""))}
+              onclick={() => (groups = groupList.list.raw.map((g) => g.uuid || ""))}
             >
               <IconPlus size={18} class="inline" />
             </button>

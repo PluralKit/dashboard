@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Member } from "$api/types"
-  import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
+  import type { Group, Member } from "$api/types"
+  import { PrivacyMode, dash, type DashList } from "$lib/dash/dash.svelte"
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
   import PrivacyDisplay from "../PrivacyDisplay.svelte"
@@ -14,10 +14,16 @@
     member,
     tab,
     asPage,
+    groupList,
+    memberList,
+    privacyMode,
   }: {
     member: Member
     tab: string
     asPage: boolean
+    privacyMode: PrivacyMode
+    groupList: DashList<Group>
+    memberList: DashList<Member>
   } = $props()
 
   let mode: "view" | "edit" = $state("view")
@@ -27,9 +33,7 @@
   {#if mode === "view"}
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">Member details</h4>
-      {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.member.privacyMode !== PrivacyMode.PUBLIC)}
-        <OpenEditButton bind:mode />
-      {/if}
+      <OpenEditButton bind:mode {privacyMode} />
     </div>
     {#if dash.settings.devMode && member.uuid}
       <div class="flex flex-col h-min mb-2 lg:mb-3">
@@ -179,11 +183,11 @@
         </div>
       {/if}
       <div class="flex flex-row items-center justify-end gap-2 w-full">
-        <OpenEditButton class="mt-2" bind:mode />
+        <OpenEditButton {privacyMode} class="mt-2" bind:mode />
         <MemberLink item={member} {asPage} />
       </div>
     </div>
   {:else if mode === "edit"}
-    <MemberInfoEdit bind:mode {member} {asPage} />
+    <MemberInfoEdit {groupList} list={memberList} bind:mode {member} {asPage} />
   {/if}
 </div>

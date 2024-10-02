@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { page } from "$app/stores"
   import type { Group, Member, MemberPrivacy, System } from "$api/types"
-  import { dash } from "$lib/dash/dash.svelte"
+  import { dash, PrivacyMode, type DashList } from "$lib/dash/dash.svelte"
   import { IconLock, IconShare, IconUser } from "@tabler/icons-svelte"
   import MemberView from "./members/MemberView.svelte"
   import MemberInfo from "./members/MemberInfo.svelte"
@@ -12,7 +11,6 @@
   import SystemView from "./system/SystemView.svelte"
   import SystemInfo from "./system/SystemInfo.svelte"
   import { untrack } from "svelte"
-  import { fail } from "@sveltejs/kit"
 
   let {
     type,
@@ -20,12 +18,18 @@
     forceOpen = false,
     asPage = false,
     open = $bindable(false),
+    privacyMode,
+    memberList,
+    groupList,
   }: {
     type: "member" | "group" | "system"
     item: Member | Group | System
     open?: boolean
     asPage?: boolean
     forceOpen?: boolean
+    privacyMode: PrivacyMode
+    memberList: DashList<Member>
+    groupList: DashList<Group>
   } = $props()
 
   let tab: "view" | "info" | "groups" = $state("view")
@@ -124,10 +128,10 @@
 
 {#snippet memberTabs(member: Member, tab: "view" | "info" | "groups")}
   {#if openedOnce}
-    <MemberView {member} {tab} open={isOpen} {asPage} />
-    <MemberInfo {member} {tab} {asPage} />
+    <MemberView {privacyMode} {memberList} {groupList} {member} {tab} open={isOpen} {asPage} />
+    <MemberInfo {privacyMode} {memberList} {groupList} {member} {tab} {asPage} />
     {#if tabbedOnce}
-      <MemberGroups {member} {tab} {asPage} />
+      <MemberGroups {privacyMode} {memberList} {groupList} {member} {tab} {asPage} />
     {/if}
   {/if}
 {/snippet}
@@ -139,10 +143,10 @@
 
 {#snippet groupTabs(group: Group, tab: "view" | "info" | "groups")}
   {#if openedOnce}
-    <GroupView {group} {tab} open={isOpen} {asPage} />
-    <GroupInfo {group} {tab} {asPage} />
+    <GroupView {memberList} {privacyMode} list={groupList} {group} {tab} open={isOpen} {asPage} />
+    <GroupInfo {memberList} {privacyMode} list={groupList} {group} {tab} {asPage} />
     {#if tabbedOnce}
-      <GroupMembers {group} {tab} {asPage} />
+      <GroupMembers {privacyMode} {memberList} {groupList} {group} {tab} {asPage} />
     {/if}
   {/if}
 {/snippet}

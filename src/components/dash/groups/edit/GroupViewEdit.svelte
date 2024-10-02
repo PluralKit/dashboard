@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Group } from "$api/types"
+  import type { Group, Member } from "$api/types"
   import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
   import DuplicateName from "$components/dash/edit/DuplicateName.svelte"
   import EditColor from "$components/dash/edit/EditColor.svelte"
@@ -7,19 +7,23 @@
   import EditField from "$components/dash/edit/EditField.svelte"
   import EditImage from "$components/dash/edit/EditImage.svelte"
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
-  import { dash } from "$lib/dash/dash.svelte"
+  import { type DashList } from "$lib/dash/dash.svelte"
   import { createViewEditState } from "$lib/dash/group/edit.svelte"
-  import { IconLoader, IconTrash, IconX } from "@tabler/icons-svelte"
+  import { IconLoader, IconX } from "@tabler/icons-svelte"
   import { fade } from "svelte/transition"
 
   let {
     mode = $bindable(),
     group,
     asPage,
+    list,
+    memberList,
   }: {
     mode: "view" | "edit"
     group: Group
     asPage: boolean
+    list: DashList<Group>
+    memberList: DashList<Member>
   } = $props()
 
   let editedState: Group = $derived(createViewEditState(group))
@@ -40,7 +44,7 @@
   let loading = $state(false)
 
   let duplicate = $derived(
-    dash.groups.list.raw
+    list.list.raw
       .filter((g) => g.name?.toLowerCase() === editedState.name?.toLowerCase())
       .find((g) => g.name !== group.name)
   )
@@ -127,11 +131,12 @@
           bind:loading
           bind:err
           bind:success
+          {memberList}
+          groupList={list}
           options={{
             item: group,
             body: edited,
-            list: dash.groups,
-            asPage,
+            list,
           }}
           path={`groups/${group.uuid}`}
         />
@@ -157,5 +162,5 @@
       </button>
     {/if}
   </div>
-  <DeleteButton type="group" item={group} {asPage} />
+  <DeleteButton type="group" item={group} {asPage} {list} />
 </div>

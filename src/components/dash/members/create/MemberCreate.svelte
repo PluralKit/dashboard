@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { dash } from "$lib/dash/dash.svelte"
+  import { dash, type DashList } from "$lib/dash/dash.svelte"
   import { createMemberCreationState } from "$lib/dash/member/edit.svelte"
   import { IconLoader, IconPlus } from "@tabler/icons-svelte"
   import { untrack } from "svelte"
   import MemberViewCreate from "./MemberViewCreate.svelte"
   import MemberInfoCreate from "./MemberInfoCreate.svelte"
   import MemberGroupCreate from "./MemberGroupCreate.svelte"
-  import type { Member, MemberPrivacy, proxytag } from "$api/types"
+  import type { Group, Member, MemberPrivacy, proxytag } from "$api/types"
   import { fade } from "svelte/transition"
   import SubmitCreateButton from "$components/dash/edit/SubmitCreateButton.svelte"
   import DuplicateName from "$components/dash/edit/DuplicateName.svelte"
@@ -14,9 +14,13 @@
   let {
     forceOpen = false,
     open = $bindable(false),
+    groupList,
+    memberList,
   }: {
     forceOpen?: boolean
     open?: boolean
+    groupList: DashList<Group>
+    memberList: DashList<Member>
   } = $props()
 
   let member: Member & {
@@ -49,7 +53,7 @@
   let proxyAvatar = $state("")
 
   let duplicate = $derived(
-    dash.members.list.raw.find((m) => m.name?.toLowerCase() === member.name?.toLowerCase())
+    memberList.list.raw.find((m) => m.name?.toLowerCase() === member.name?.toLowerCase())
   )
 </script>
 
@@ -111,9 +115,9 @@
     </div>
     <div class="tab-contents flex flex-col rounded-b-lg p-2 lg:p-4 bg-base-200">
       <MemberViewCreate bind:member {tab} bind:avatar bind:proxyAvatar />
-      <MemberInfoCreate bind:member {tab} bind:privacy={member.privacy} />
+      <MemberInfoCreate bind:member {tab} bind:privacy={member.privacy} list={memberList} />
       {#if openedOnce && tabbedOnce}
-        <MemberGroupCreate {tab} bind:groups />
+        <MemberGroupCreate {groupList} {tab} bind:groups />
       {/if}
       {#if duplicate}
         <DuplicateName type="member" {duplicate} />
@@ -142,8 +146,10 @@
               item={member}
               itemPath="members"
               groupPath="groups"
-              groupList={groups}
-              list={dash.members}
+              {groups}
+              {groupList}
+              {memberList}
+              list={memberList}
               onSuccess={() => {
                 member = createMemberCreationState()
                 groups = []

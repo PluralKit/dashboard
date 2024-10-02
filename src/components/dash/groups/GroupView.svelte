@@ -1,10 +1,9 @@
 <script lang="ts">
-  import type { Group } from "$api/types"
-  import { IconEdit } from "@tabler/icons-svelte"
+  import type { Group, Member } from "$api/types"
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
   import ImageModal from "../ImageModal.svelte"
-  import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
+  import { PrivacyMode, dash, type DashList } from "$lib/dash/dash.svelte"
   import CopyField from "../CopyField.svelte"
   import GroupLink from "./GroupLink.svelte"
   import GroupViewEdit from "./edit/GroupViewEdit.svelte"
@@ -15,11 +14,17 @@
     tab,
     open,
     asPage,
+    privacyMode,
+    list,
+    memberList,
   }: {
     group: Group
     tab: string
     open: boolean
     asPage: boolean
+    privacyMode: PrivacyMode
+    list: DashList<Group>
+    memberList: DashList<Member>
   } = $props()
 
   let mode: "view" | "edit" = $state("view")
@@ -29,9 +34,7 @@
   {#if mode === "view"}
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">General information</h4>
-      {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.group.privacyMode !== PrivacyMode.PUBLIC)}
-        <OpenEditButton bind:mode />
-      {/if}
+      <OpenEditButton bind:mode {privacyMode} />
     </div>
     <div class={`flex flex-col gap-2 lg:gap-3 ${group.icon ? "sm:flex-row" : ""}`}>
       {#if group.icon || group.banner}
@@ -146,10 +149,10 @@
       </div>
     </div>
     <div class="flex flex-row items-center justify-end gap-2 w-full">
-      <OpenEditButton class="mt-2" bind:mode />
+      <OpenEditButton class="mt-2" bind:mode {privacyMode} />
       <GroupLink item={group} {asPage} />
     </div>
   {:else if mode === "edit"}
-    <GroupViewEdit {group} {asPage} bind:mode />
+    <GroupViewEdit {memberList} {list} {group} {asPage} bind:mode />
   {/if}
 </div>

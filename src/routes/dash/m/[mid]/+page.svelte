@@ -4,5 +4,13 @@
 </script>
 
 <div class="flex flex-col gap-8 mx-auto w-full max-w-4xl">
-  <ItemCollapse asPage={true} forceOpen={true} type="member" item={dash.member.member ?? {}} />
+  <ItemCollapse
+    privacyMode={dash.member.privacyMode}
+    memberList={dash.member.members}
+    groupList={dash.member.groups}
+    asPage={true}
+    forceOpen={true}
+    type="member"
+    item={dash.member.member ?? {}}
+  />
 </div>

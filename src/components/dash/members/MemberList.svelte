@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Member } from "$api/types"
+  import type { Group, Member } from "$api/types"
   import { PrivacyMode, dash, type DashList } from "$lib/dash/dash.svelte"
   import ItemCollapse from "../ItemCollapse.svelte"
   import Pagination from "../Pagination.svelte"
@@ -7,8 +7,12 @@
 
   let {
     list,
+    groupList,
+    privacyMode,
   }: {
     list: DashList<Member>
+    groupList: DashList<Group>
+    privacyMode: PrivacyMode
   } = $props()
 
   let fetching = $state(false)
@@ -27,8 +31,8 @@
   }
 </script>
 
-{#if dash.privacyMode === PrivacyMode.PRIVATE}
-  <MemberCreate />
+{#if privacyMode === PrivacyMode.PRIVATE}
+  <MemberCreate memberList={list} {groupList} />
 {/if}
 <div class="text-center">
   <p>
@@ -40,7 +44,7 @@
 </div>
 <Pagination class="mx-auto" bind:list />
 {#each list.list.paginated as member (member.uuid)}
-  <ItemCollapse item={member} type="member" />
+  <ItemCollapse {privacyMode} {groupList} memberList={list} item={member} type="member" />
 {/each}
 {#if list.list.processed.length === 0}
   <div class="alert bg-info/20 flex flex-col text-center">No members found.</div>

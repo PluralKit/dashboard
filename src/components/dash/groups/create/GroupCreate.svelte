@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { dash } from "$lib/dash/dash.svelte"
+  import { dash, type DashList } from "$lib/dash/dash.svelte"
   import { IconLoader, IconPlus, IconAlertTriangle } from "@tabler/icons-svelte"
   import { untrack } from "svelte"
-  import type { Group, GroupPrivacy } from "$api/types"
+  import type { Group, GroupPrivacy, Member } from "$api/types"
   import { fade } from "svelte/transition"
   import SubmitCreateButton from "$components/dash/edit/SubmitCreateButton.svelte"
   import { createGroupCreationState } from "$lib/dash/group/edit.svelte"
@@ -14,9 +14,13 @@
   let {
     forceOpen = false,
     open = $bindable(false),
+    groupList,
+    memberList,
   }: {
     forceOpen?: boolean
     open?: boolean
+    groupList: DashList<Group>
+    memberList: DashList<Member>
   } = $props()
 
   let group: Group & {
@@ -47,7 +51,7 @@
   let icon = $state("")
 
   let duplicate = $derived(
-    dash.groups.list.raw.find((g) => g.name?.toLowerCase() === group.name?.toLowerCase())
+    groupList.list.raw.find((g) => g.name?.toLowerCase() === group.name?.toLowerCase())
   )
 </script>
 
@@ -111,7 +115,7 @@
       <GroupViewCreate bind:group {tab} bind:icon />
       <GroupInfoCreate bind:group {tab} bind:privacy={group.privacy} />
       {#if openedOnce && tabbedOnce}
-        <GroupMemberCreate {tab} bind:members />
+        <GroupMemberCreate {memberList} {tab} bind:members />
       {/if}
       {#if duplicate}
         <DuplicateName type="group" {duplicate} />
@@ -140,8 +144,10 @@
               item={group}
               itemPath="groups"
               groupPath="members"
-              groupList={members}
-              list={dash.groups}
+              {groupList}
+              {memberList}
+              groups={members}
+              list={groupList}
               onSuccess={() => {
                 group = createGroupCreationState()
                 members = []

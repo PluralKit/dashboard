@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
-  import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
+  import { PrivacyMode, dash, type DashList } from "$lib/dash/dash.svelte"
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
   import SimplePagination from "../SimplePagination.svelte"
@@ -16,22 +16,28 @@
     asPage = false,
     member,
     tab,
+    groupList,
+    memberList,
+    privacyMode,
   }: {
     asPage?: boolean
     member: Member
     tab: string
+    groupList: DashList<Group>
+    memberList: DashList<Member>
+    privacyMode: PrivacyMode
   } = $props()
 
   let mode: "view" | "edit" = $state("view")
 
   let err = $state("")
 
-  let list: Group[] = $derived(deriveGroups(member, asPage))
-  let groups: Group[] = $state(deriveGroups(member, asPage))
+  let list: Group[] = $derived(deriveGroups(member, asPage, groupList, privacyMode))
+  let groups: Group[] = $state(deriveGroups(member, asPage, groupList, privacyMode))
 
   let groupPromise: Promise<Group[]> = $derived.by(async () => {
     try {
-      return await deriveGroupsAsync(member, list, asPage)
+      return await deriveGroupsAsync(member, list, privacyMode)
     } catch (e) {
       err = (e as ApiError).message ?? "unknown error."
     }
@@ -61,9 +67,7 @@
   {#if mode === "view"}
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">Group list</h4>
-      {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.member.privacyMode !== PrivacyMode.PUBLIC)}
-        <OpenEditButton bind:mode />
-      {/if}
+      <OpenEditButton bind:mode {privacyMode} />
     </div>
     <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
       {#if err}
@@ -100,11 +104,11 @@
         </div>
       {/if}
       <div class="flex flex-row items-center justify-end gap-2 w-full">
-        <OpenEditButton class="mt-2" bind:mode />
+        <OpenEditButton {privacyMode} class="mt-2" bind:mode />
         <MemberLink item={member} {asPage} />
       </div>
     </div>
   {:else if mode === "edit"}
-    <MemberGroupEdit bind:mode {member} groupsCurrent={groups} {asPage} />
+    <MemberGroupEdit {memberList} {groupList} bind:mode {member} groupsCurrent={groups} {asPage} />
   {/if}
 </div>

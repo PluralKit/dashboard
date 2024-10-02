@@ -28,9 +28,7 @@
   {#if mode === "view"}
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">General information</h4>
-      {#if !asPage && dash.privacyMode !== PrivacyMode.PUBLIC}
-        <OpenEditButton bind:mode />
-      {/if}
+      <OpenEditButton privacyMode={dash.privacyMode} bind:mode />
     </div>
     <div class={`flex flex-col gap-2 lg:gap-3 ${system.avatar_url ? "sm:flex-row" : ""}`}>
       {#if system.avatar_url || system.banner}
@@ -169,7 +167,7 @@
           />
         {/if}
         <div class="flex flex-row items-center justify-end gap-2 w-full">
-          <OpenEditButton class="mt-2" bind:mode />
+          <OpenEditButton privacyMode={dash.privacyMode} class="mt-2" bind:mode />
         </div>
       </div>
     </div>

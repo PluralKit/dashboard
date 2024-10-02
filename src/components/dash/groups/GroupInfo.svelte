@@ -1,7 +1,7 @@
 <script lang="ts">
   import { IconEdit } from "@tabler/icons-svelte"
-  import type { Group } from "$api/types"
-  import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
+  import type { Group, Member } from "$api/types"
+  import { PrivacyMode, dash, type DashList } from "$lib/dash/dash.svelte"
   import PrivacyDisplay from "../PrivacyDisplay.svelte"
   import moment from "moment"
   import CopyField from "../CopyField.svelte"
@@ -13,10 +13,16 @@
     group,
     tab,
     asPage,
+    privacyMode,
+    list,
+    memberList,
   }: {
     group: Group
     tab: string
     asPage: boolean
+    privacyMode: PrivacyMode
+    list: DashList<Group>
+    memberList: DashList<Member>
   } = $props()
 
   let mode: "view" | "edit" = $state("view")
@@ -26,9 +32,7 @@
   {#if mode === "view"}
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">Group details</h4>
-      {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.group.privacyMode !== PrivacyMode.PUBLIC)}
-        <OpenEditButton bind:mode />
-      {/if}
+      <OpenEditButton {privacyMode} bind:mode />
     </div>
     {#if dash.settings.devMode && group.uuid}
       <div class="flex flex-col h-min mb-2 lg:mb-3">
@@ -122,11 +126,11 @@
         </div>
       {/if}
       <div class="flex flex-row items-center justify-end gap-2 w-full">
-        <OpenEditButton class="mt-2" bind:mode />
+        <OpenEditButton {privacyMode} class="mt-2" bind:mode />
         <GroupLink item={group} {asPage} />
       </div>
     </div>
   {:else if mode === "edit"}
-    <GroupInfoEdit {group} bind:mode {asPage} />
+    <GroupInfoEdit {memberList} {list} {group} bind:mode {asPage} />
   {/if}
 </div>

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { Member, MemberPrivacy, proxytag } from "$api/types"
+  import type { Group, Member, MemberPrivacy, proxytag } from "$api/types"
   import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
   import EditPrivacy from "$components/dash/edit/EditPrivacy.svelte"
   import EditProxyTag from "$components/dash/edit/EditProxyTag.svelte"
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
-  import { dash } from "$lib/dash/dash.svelte"
+  import { type DashList } from "$lib/dash/dash.svelte"
   import { createInfoEditState } from "$lib/dash/member/edit.svelte"
   import { IconLoader, IconPencil, IconPlus, IconAlertTriangle, IconX } from "@tabler/icons-svelte"
   import { fade } from "svelte/transition"
@@ -13,10 +13,14 @@
     mode = $bindable(),
     member,
     asPage,
+    list,
+    groupList,
   }: {
     mode: "view" | "edit"
     member: Member
     asPage: boolean
+    list: DashList<Member>
+    groupList: DashList<Group>
   } = $props()
 
   let editedState = $derived(createInfoEditState(member))
@@ -64,7 +68,7 @@
     member: string | undefined
   })[] = $derived(
     editedState.proxy_tags.flatMap((p) => {
-      const m = dash.members.list.raw.find((m) =>
+      const m = list.list.raw.find((m) =>
         m.proxy_tags?.some(
           (t) =>
             (t.suffix === p.suffix || (!t.suffix && !p.suffix)) &&
@@ -281,14 +285,15 @@
     {#if !loading}
       {#if Object.keys(edited).length > 0}
         <SubmitEditButton
+          {groupList}
+          memberList={list}
           bind:loading
           bind:err
           bind:success
           options={{
             item: member,
             body: edited,
-            list: dash.members,
-            asPage,
+            list,
           }}
           path={`members/${member.uuid}`}
         />
@@ -314,5 +319,5 @@
       </button>
     {/if}
   </div>
-  <DeleteButton type="member" item={member} {asPage} />
+  <DeleteButton type="member" item={member} {asPage} {list} />
 </div>

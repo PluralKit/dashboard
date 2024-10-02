@@ -25,9 +25,7 @@
   {#if mode === "view"}
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">System details</h4>
-      {#if !asPage && dash.privacyMode !== PrivacyMode.PUBLIC}
-        <OpenEditButton bind:mode />
-      {/if}
+      <OpenEditButton privacyMode={dash.privacyMode} bind:mode />
     </div>
     {#if dash.settings.devMode && system.uuid}
       <div class="flex flex-col h-min mb-2 lg:mb-3">
@@ -137,7 +135,7 @@
           </ul>
         </div>
         <div class="flex flex-row items-center justify-end gap-2 w-full">
-          <OpenEditButton class="mt-2" bind:mode />
+          <OpenEditButton privacyMode={dash.privacyMode} class="mt-2" bind:mode />
         </div>
       {/if}
     </div>

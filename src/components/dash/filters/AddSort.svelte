@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
-  import { dash, type DashList } from "$lib/dash/dash.svelte"
+  import { type DashList } from "$lib/dash/dash.svelte"
   import { filterFieldText, filterFieldType } from "$lib/dash/filters.svelte"
   import { createSort, SortMode, type Sort } from "$lib/dash/sorts.svelte"
   import { IconPlus } from "@tabler/icons-svelte"
@@ -9,10 +9,12 @@
     type,
     list,
     sorts = $bindable(),
+    groupList,
   }: {
     type: "members" | "groups"
     list: DashList<Member | Group>
     sorts: Sort[]
+    groupList: DashList<Group>
   } = $props()
 
   let sortMode: SortMode | null = $state(null)
@@ -36,7 +38,7 @@
     sortMode = null
     sortOrder = 1
 
-    list.process(dash.groups.list.raw)
+    list.process(groupList.list.raw)
     list.paginate()
   }
 </script>

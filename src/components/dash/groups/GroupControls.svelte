@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { dash, type DashList } from "$lib/dash/dash.svelte"
+  import { dash, PrivacyMode, type DashList } from "$lib/dash/dash.svelte"
   import { IconAdjustments, IconUsers } from "@tabler/icons-svelte"
   import FilterGroups from "../filters/FilterGroups.svelte"
   import AddFilterGroup from "../filters/AddFilterGroup.svelte"
@@ -11,8 +11,10 @@
 
   let {
     list,
+    privacyMode,
   }: {
     list: DashList<Group>
+    privacyMode: PrivacyMode
   } = $props()
 
   function changeMode() {
@@ -63,7 +65,7 @@
 <hr class="my-2" />
 <p class="my-4">Some options will be moved at some point.</p>
 {#if list.settings.filterMode === "simple"}
-  <SimpleGroupControls {list} />
+  <SimpleGroupControls {list} wide={dash.settings.display?.forceControlsAtTop === true} />
 {:else if list.settings.filterMode === "advanced"}
   <div
     class={`grid grid-cols-1 md:grid-cols-2 gap-4 ${
@@ -73,14 +75,20 @@
     <div>
       <h3 class="text-xl">Filter list</h3>
       <hr class="my-2" />
-      <AddFilterGroup bind:filterGroups={list.filters} {list} type="groups" />
-      <FilterGroups {list} />
+      <AddFilterGroup
+        {privacyMode}
+        groupList={list}
+        bind:filterGroups={list.filters}
+        {list}
+        type="groups"
+      />
+      <FilterGroups groupList={list} {list} />
     </div>
     <div>
       <h3 class="text-xl">Sort list</h3>
       <hr class="my-2" />
-      <AddSort bind:sorts={list.sorts} {list} type="groups" />
-      <Sorts {list} />
+      <AddSort groupList={list} bind:sorts={list.sorts} {list} type="groups" />
+      <Sorts groupList={list} {list} />
     </div>
   </div>
 {/if}

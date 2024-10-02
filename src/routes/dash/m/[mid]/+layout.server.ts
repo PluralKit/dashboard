@@ -14,6 +14,7 @@ export async function load({ cookies, params, url, parent }) {
 
   let member: Member | undefined = undefined
   let groups: Group[] = []
+  let members: Member[] = []
   let errs: string[] = []
   let privacyMode: PrivacyMode = PrivacyMode.PUBLIC
 
@@ -25,30 +26,23 @@ export async function load({ cookies, params, url, parent }) {
     else error(e.code, e.message)
   }
 
-  if (sid && token && !url.searchParams.get("public") && !url.searchParams.get("api"))
+  if (sid && token && !url.searchParams.get("public") && !url.searchParams.get("api")) {
     options = { token }
+    privacyMode = PrivacyMode.PRIVATE
+  }
 
   if (member) {
-    if (member.system === sid && !url.searchParams.get("public") && !url.searchParams.get("api")) {
-      privacyMode = PrivacyMode.PRIVATE
-      try {
-        member = await api<Member>(`members/${params.mid}`, options)
+    try {
+      member = await api<Member>(`members/${params.mid}`, options)
 
-        // fetch all the groups in the system so people can edit that member's groups on the page
-        groups = (await api<Group[]>(`systems/${sid}/groups?with_members=true`, options)) || []
-      } catch (err) {
-        const e = err as ApiError
-        if (e.type === ErrorType.RateLimit) errs.push(e.message || e.code.toString())
-        else error(e.code, e.message)
-      }
-    } else {
-      try {
-        groups = (await api<Group[]>(`members/${params.mid}/groups`)) || []
-      } catch (err) {
-        const e = err as ApiError
-        if (e.type === ErrorType.RateLimit) errs.push(e.message || e.code.toString())
-        else error(e.code, e.message)
-      }
+      // fetch all the groups in the system so people can edit that member's groups on the page
+      groups =
+        (await api<Group[]>(`systems/${member?.system}/groups?with_members=true`, options)) || []
+      members = (await api<Member[]>(`systems/${member?.system}/members`, options)) || []
+    } catch (err) {
+      const e = err as ApiError
+      if (e.type === ErrorType.RateLimit) errs.push(e.message || e.code.toString())
+      else error(e.code, e.message)
     }
   }
 
@@ -57,6 +51,7 @@ export async function load({ cookies, params, url, parent }) {
     errors: errs,
     member: member as Member,
     groups,
+    members,
     meta: {
       title: member?.name || "Dash",
       color: member?.color,

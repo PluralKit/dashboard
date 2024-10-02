@@ -1,13 +1,17 @@
 <script lang="ts">
-  import type { Member } from "$api/types"
-  import { dash, type DashList } from "$lib/dash/dash.svelte"
+  import type { Group, Member } from "$api/types"
+  import { type DashList } from "$lib/dash/dash.svelte"
   import { IconSearch } from "@tabler/icons-svelte"
   import Svelecte from "svelecte"
 
   let {
     list,
+    groupList,
+    wide = true,
   }: {
     list: DashList<Member>
+    groupList: DashList<Group>
+    wide?: boolean
   } = $props()
 </script>
 
@@ -20,7 +24,7 @@
     type="text"
     bind:value={list.simpleFilters[0].filters[0].value}
     oninput={(e) => {
-      list.process(dash.groups.list.raw)
+      list.process(groupList.list.raw)
       list.paginate()
     }}
     placeholder="Search by name..."
@@ -36,7 +40,7 @@
   {#if list.settings.extraFields}
     <div
       class={`mb-4 gap-2 grid grid-col-1 md:grid-cols-2 lg:grid-cols-2 ${
-        dash.settings.display?.forceControlsAtTop === true ? "xl:grid-cols-2" : "xl:grid-cols-1"
+        wide === true ? "xl:grid-cols-2" : "xl:grid-cols-1"
       }`}
     >
       <div class="join">
@@ -51,7 +55,7 @@
           value={list.simpleFilters[0].filters[1].value}
           oninput={(e) => {
             list.simpleFilters[0].filters[1].value = (e.target as HTMLInputElement).value
-            list.process(dash.groups.list.raw)
+            list.process(groupList.list.raw)
             list.paginate()
           }}
           placeholder="Search by display name..."
@@ -69,7 +73,7 @@
           value={list.simpleFilters[0].filters[2].value}
           oninput={(e) => {
             list.simpleFilters[0].filters[2].value = (e.target as HTMLInputElement).value
-            list.process(dash.groups.list.raw)
+            list.process(groupList.list.raw)
             list.paginate()
           }}
           placeholder="Search by description..."
@@ -87,7 +91,7 @@
           value={list.simpleFilters[0].filters[3].value}
           oninput={(e) => {
             list.simpleFilters[0].filters[3].value = (e.target as HTMLInputElement).value
-            list.process(dash.groups.list.raw)
+            list.process(groupList.list.raw)
             list.paginate()
           }}
           placeholder="Search by ID..."
@@ -105,7 +109,7 @@
           value={list.simpleFilters[0].filters[4].value}
           oninput={(e) => {
             list.simpleFilters[0].filters[4].value = (e.target as HTMLInputElement).value
-            list.process(dash.groups.list.raw)
+            list.process(groupList.list.raw)
             list.paginate()
           }}
           placeholder="Search by pronouns..."
@@ -118,13 +122,13 @@
         >
         <Svelecte
           class="svelecte-control-pk join-item w-full text-sm"
-          options={dash.groups.list.options}
+          options={groupList.list.options}
           multiple
           valueField="value"
           labelField="text"
           bind:value={list.simpleFilters[0].filters[6].value}
           onChange={() => {
-            list.process(dash.groups.list.raw)
+            list.process(groupList.list.raw)
             list.paginate()
           }}
         />
@@ -134,7 +138,7 @@
   <hr />
   <div
     class={`grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4 ${
-      dash.settings.display?.forceControlsAtTop === true ? "xl:grid-cols-3" : "xl:grid-cols-2"
+      wide === true ? "xl:grid-cols-3" : "xl:grid-cols-2"
     }`}
   >
     <div class="join">
@@ -163,7 +167,7 @@
         id="member-list-sort-by"
         bind:value={list.simpleSorts[0].field}
         onchange={() => {
-          list.process(dash.groups.list.raw)
+          list.process(groupList.list.raw)
           list.paginate()
         }}
       >
@@ -186,7 +190,7 @@
         id="member-list-sort-order"
         bind:value={list.simpleSorts[0].order}
         onchange={() => {
-          list.process(dash.groups.list.raw)
+          list.process(groupList.list.raw)
           list.paginate()
         }}
       >
@@ -204,7 +208,7 @@
         id="member-list-filter-privacy"
         bind:value={list.simpleFilters[0].filters[5].value}
         onchange={() => {
-          list.process(dash.groups.list.raw)
+          list.process(groupList.list.raw)
           list.paginate()
         }}
       >

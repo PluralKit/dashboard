@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { Member } from "$api/types"
+  import type { Group, Member } from "$api/types"
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
   import { getBirthday } from "$lib/dash/member/utils"
   import ImageModal from "../ImageModal.svelte"
-  import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
+  import { PrivacyMode, dash, type DashList } from "$lib/dash/dash.svelte"
   import CopyField from "../CopyField.svelte"
   import MemberViewEdit from "./edit/MemberViewEdit.svelte"
   import MemberLink from "./MemberLink.svelte"
@@ -15,11 +15,17 @@
     tab,
     open,
     asPage,
+    privacyMode,
+    memberList,
+    groupList,
   }: {
     member: Member
     tab: string
     open: boolean
     asPage: boolean
+    privacyMode: PrivacyMode
+    memberList: DashList<Member>
+    groupList: DashList<Group>
   } = $props()
 
   let mode: "view" | "edit" = $state("view")
@@ -29,9 +35,7 @@
   {#if mode === "view"}
     <div class="flex flex-row gap-2 justify-between items-center mb-3">
       <h4 class="text-2xl ml-3 font-medium">General information</h4>
-      {#if (!asPage && dash.privacyMode !== PrivacyMode.PUBLIC) || (asPage && dash.member.privacyMode !== PrivacyMode.PUBLIC)}
-        <OpenEditButton bind:mode />
-      {/if}
+      <OpenEditButton {privacyMode} bind:mode />
     </div>
     <div class={`flex flex-col gap-2 lg:gap-3 ${member.avatar_url ? "sm:flex-row" : ""}`}>
       {#if member.avatar_url || member.banner || member.webhook_avatar_url}
@@ -187,12 +191,12 @@
           />
         {/if}
         <div class="flex flex-row items-center justify-end gap-2 w-full">
-          <OpenEditButton class="mt-2" bind:mode />
+          <OpenEditButton {privacyMode} class="mt-2" bind:mode />
           <MemberLink item={member} {asPage} />
         </div>
       </div>
     </div>
   {:else if mode === "edit"}
-    <MemberViewEdit {member} bind:mode {asPage} />
+    <MemberViewEdit {groupList} list={memberList} {member} bind:mode {asPage} />
   {/if}
 </div>

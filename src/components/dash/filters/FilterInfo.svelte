@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
-  import { dash, type DashList, type SvelecteOption } from "$lib/dash/dash.svelte"
+  import { type DashList, type SvelecteOption } from "$lib/dash/dash.svelte"
   import {
     FilterMode,
     filterFieldType,
@@ -13,9 +13,11 @@
   let {
     filter,
     list,
+    groupList,
   }: {
     filter: Filter
     list: DashList<Member | Group>
+    groupList: DashList<Group>
   } = $props()
 
   let filterValue = $state(filter.value)
@@ -26,7 +28,7 @@
   const changeValue = (e: Event) => {
     const target = e.target as HTMLInputElement
     filter.value = filter.valueType === "number" ? parseInt(target.value) : target.value
-    list.process(dash.groups.list.raw)
+    list.process(groupList.list.raw)
     list.paginate()
   }
 </script>
@@ -35,28 +37,28 @@
 {#if filter.field === "group" && groupArrayModes.includes(filter.mode)}
   <Svelecte
     class="svelecte-control-pk w-full"
-    options={dash.groups.list.options}
+    options={groupList.list.options}
     multiple
     valueField="value"
     labelField="text"
     bind:value={filterValue}
     onChange={() => {
       filter.value = $state.snapshot(filterValue)
-      list.process(dash.groups.list.raw)
+      list.process(groupList.list.raw)
       list.paginate()
     }}
   />
 {:else if filter.field === "member" && groupArrayModes.includes(filter.mode)}
   <Svelecte
     class="svelecte-control-pk w-full"
-    options={dash.members.list.options}
+    options={list.list.options}
     multiple
     valueField="value"
     labelField="text"
     bind:value={filterValue}
     onChange={() => {
       filter.value = $state.snapshot(filterValue)
-      list.process(dash.groups.list.raw)
+      list.process(groupList.list.raw)
       list.paginate()
     }}
   />
@@ -65,7 +67,7 @@
     class="input input-sm input-bordered"
     onchange={(e) => {
       filter.value = (e.target as HTMLSelectElement)?.value
-      list.process(dash.groups.list.raw)
+      list.process(groupList.list.raw)
       list.paginate()
     }}
     value={filter.value}
@@ -76,7 +78,7 @@
 {:else if filter.proxy && filter.field === "proxy"}
   <Svelecte
     class="svelecte-control-pk w-full"
-    options={dash.members.proxytags ? [...dash.members.proxytags] : []}
+    options={list.proxytags ? [...list.proxytags] : []}
     multiple
     bind:value={proxyValue}
     valueField="value"
@@ -89,7 +91,7 @@
       }
       filter.proxy = $state.snapshot(proxyValue)
 
-      list.process(dash.groups.list.raw)
+      list.process(groupList.list.raw)
       list.paginate()
     }}
     strictMode={false}

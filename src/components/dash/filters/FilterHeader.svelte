@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
-  import { dash, type DashList } from "$lib/dash/dash.svelte"
+  import { type DashList } from "$lib/dash/dash.svelte"
   import {
     FilterMode,
     filterFieldType,
@@ -15,10 +15,12 @@
     filter,
     group,
     list,
+    groupList,
   }: {
     filter: Filter
     group: FilterGroup
     list: DashList<Member | Group>
+    groupList: DashList<Group>
   } = $props()
 
   function getDateValue(value: string) {
@@ -107,7 +109,7 @@
     class="text-muted hover:text-error hover:scale-110 transition-all focus:text-error focus:scale-110 btn-circle btn-xs"
     onclick={() => {
       group.filters = group.filters.filter((f) => f.id !== filter.id)
-      list.process(dash.groups.list.raw)
+      list.process(groupList.list.raw)
       list.paginate()
     }}
     aria-label="Delete filter"

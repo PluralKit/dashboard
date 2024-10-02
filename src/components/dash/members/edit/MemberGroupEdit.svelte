@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
-  import { dash } from "$lib/dash/dash.svelte"
+  import { type DashList } from "$lib/dash/dash.svelte"
   import {
     IconRefresh,
     IconLoader,
@@ -21,11 +21,15 @@
     member,
     mode = $bindable(),
     asPage = false,
+    memberList,
+    groupList,
   }: {
     groupsCurrent: Group[]
     member: Member
     mode: "view" | "edit"
     asPage?: boolean
+    memberList: DashList<Member>
+    groupList: DashList<Group>
   } = $props()
 
   let err: string[] = $state([])
@@ -40,37 +44,22 @@
   })
 
   let groupSelection: Group[] = $derived(
-    !asPage
-      ? dash.groups.list.raw
-          .filter((g) => uuidSelection.includes(g.uuid || ""))
-          .sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
-      : dash.member.groups
-          .filter((g) => uuidSelection.includes(g.uuid || ""))
-          .sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
+    groupList.list.raw
+      .filter((g) => uuidSelection.includes(g.uuid || ""))
+      .sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
   )
 
   let allOptions = $derived(
-    !asPage
-      ? dash.groups.list.raw
-          .map((g) => {
-            return {
-              value: g.uuid,
-              text: `${g.name} (${g.id})`,
-              extra: g.display_name,
-              included: uuidsCurrent.includes(g.uuid || ""),
-            }
-          })
-          .sort((a, b) => a.text.localeCompare(b.text))
-      : dash.member.groups
-          .map((g) => {
-            return {
-              value: g.uuid,
-              text: `${g.name} (${g.id})`,
-              extra: g.display_name,
-              included: uuidsCurrent.includes(g.uuid || ""),
-            }
-          })
-          .sort((a, b) => a.text.localeCompare(b.text))
+    groupList.list.raw
+      .map((g) => {
+        return {
+          value: g.uuid,
+          text: `${g.name} (${g.id})`,
+          extra: g.display_name,
+          included: uuidsCurrent.includes(g.uuid || ""),
+        }
+      })
+      .sort((a, b) => a.text.localeCompare(b.text))
   )
 
   let toAdd: string[] = $state([])
@@ -276,10 +265,11 @@
           bind:loading
           bind:err
           bind:success
+          {memberList}
+          {groupList}
           options={{
             member,
             body: uuidSelection,
-            asPage,
           }}
           path={`members/${member.uuid}/groups/overwrite`}
         />
@@ -305,7 +295,7 @@
       </button>
     {/if}
   </div>
-  <DeleteButton type="member" item={member} {asPage} />
+  <DeleteButton type="member" item={member} {asPage} list={memberList} />
 </div>
 
 {#snippet option(opt: any)}

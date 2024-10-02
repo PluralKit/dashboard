@@ -13,7 +13,6 @@
     groupArrayModes,
     filterPrivacyText,
   } from "$lib/dash/filters.svelte"
-  import { dash } from "$lib/dash/dash.svelte"
   import { IconPlus } from "@tabler/icons-svelte"
   import { proxyOptionFromString } from "$lib/dash/member/utils"
 
@@ -21,10 +20,14 @@
     list,
     filterGroups = $bindable(),
     type,
+    privacyMode,
+    groupList,
   }: {
     list: DashList<Group | Member>
     type: "members" | "groups"
     filterGroups: FilterGroup[]
+    groupList: DashList<Group>
+    privacyMode: PrivacyMode
   } = $props()
 
   let filterField = $state("")
@@ -33,9 +36,7 @@
   let filterPrivacy: null | string = $state(null)
   let filterProxy: string[] = $state([])
 
-  let proxyOptions: SvelecteOption[] = $state(
-    dash.members.proxytags ? [...dash.members.proxytags] : []
-  )
+  let proxyOptions: SvelecteOption[] = $state(list.proxytags ? [...list.proxytags] : [])
   let proxyCreated: SvelecteOption | null = $state(null)
 
   let inputType: string = $derived.by(() => {
@@ -105,7 +106,7 @@
       else existingGroup.filters = [...existingGroup.filters, filter]
     }
 
-    list.process(dash.groups.list.raw)
+    list.process(groupList.list.raw)
     list.paginate()
 
     filterField = ""
@@ -169,7 +170,7 @@
         {:else if type === "groups"}
           <option value="member">members</option>
         {/if}
-        {#if dash.privacyMode === PrivacyMode.PRIVATE}
+        {#if privacyMode === PrivacyMode.PRIVATE}
           <option value="privacy">privacy</option>
         {/if}
         <option value="created">created</option>
@@ -259,7 +260,7 @@
       {#if filterField === "group" && groupArrayModes.includes(filterMode)}
         <Svelecte
           class="svelecte-control-pk w-full"
-          options={dash.groups.list.options}
+          options={groupList.list.options}
           multiple
           bind:value={filterValue}
           valueField="value"
@@ -268,7 +269,7 @@
       {:else if filterField === "member" && groupArrayModes.includes(filterMode)}
         <Svelecte
           class="svelecte-control-pk w-full"
-          options={dash.members.list.options}
+          options={list.list.options}
           multiple
           bind:value={filterValue}
           valueField="value"

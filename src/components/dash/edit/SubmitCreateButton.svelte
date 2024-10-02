@@ -2,13 +2,15 @@
   import type { ApiError } from "$api"
   import type { Group, Member } from "$api/types"
   import { browser } from "$app/environment"
-  import { dash, type DashList } from "$lib/dash/dash.svelte"
+  import { type DashList } from "$lib/dash/dash.svelte"
   import { IconDeviceFloppy } from "@tabler/icons-svelte"
   import moment from "moment"
 
   let {
     item,
     list,
+    groups,
+    memberList,
     groupList,
     itemPath,
     groupPath,
@@ -19,7 +21,9 @@
   }: {
     list: DashList<Member | Group>
     item: Member | Group
-    groupList?: string[]
+    groups?: string[]
+    groupList: DashList<Group>
+    memberList: DashList<Member>
     loading: boolean
     success: boolean
     err: string[]
@@ -79,30 +83,30 @@
       })
 
       if (response) {
-        if (groupPath && groupList && groupList.length > 0) {
+        if (groupPath && groups && groups.length > 0) {
           await window.api(`${itemPath}/${response.uuid}/${groupPath}/overwrite`, {
             token,
             method: "POST",
-            body: groupList,
+            body: groups,
           })
         }
 
-        if (groupList) {
+        if (groups) {
           if (itemPath === "members" && groupPath === "groups") {
-            dash.groups.list.raw.forEach((g) => {
-              if (groupList.includes(g.uuid || "")) {
+            groupList.list.raw.forEach((g) => {
+              if (groups.includes(g.uuid ?? "")) {
                 g.members?.push(response.uuid || "")
               }
             })
           } else if (itemPath === "groups" && groupPath === "members") {
-            ;(response as Group).members = groupList
+            ;(response as Group).members = groups
           }
         }
 
         list.list.raw.push(response)
 
-        dash.groups.process()
-        dash.members.process()
+        groupList.process()
+        memberList.process()
         list.paginate()
       }
     } catch (e) {

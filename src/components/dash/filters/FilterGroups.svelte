@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { dash, type DashList } from "$lib/dash/dash.svelte"
+  import { type DashList } from "$lib/dash/dash.svelte"
   import FilterGroupHeader from "./FilterGroupHeader.svelte"
   import type { Group, Member } from "$api/types"
   import { IconChevronDown, IconChevronUp } from "@tabler/icons-svelte"
@@ -11,8 +11,10 @@
 
   let {
     list,
+    groupList,
   }: {
     list: DashList<Member | Group>
+    groupList: DashList<Group>
   } = $props()
 
   const moveGroup = (group: FilterGroup, shift: 1 | -1) => {
@@ -22,7 +24,7 @@
 
     list.filters.splice(to, 0, list.filters.splice(from, 1)[0])
 
-    list.process(dash.groups.list.raw)
+    list.process(groupList.list.raw)
     list.paginate()
   }
 
@@ -52,7 +54,7 @@
     const moved = list.filters[groupFrom].filters.splice(filterFrom, 1)[0]
     list.filters[groupTo].filters.splice(filterTo, 0, moved)
 
-    list.process(dash.groups.list.raw)
+    list.process(groupList.list.raw)
     list.paginate()
   }
 </script>
