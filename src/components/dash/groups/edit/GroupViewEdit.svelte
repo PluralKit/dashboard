@@ -7,9 +7,10 @@
   import EditField from "$components/dash/edit/EditField.svelte"
   import EditImage from "$components/dash/edit/EditImage.svelte"
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
+  import Spinny from "$components/Spinny.svelte"
   import { type DashList } from "$lib/dash/dash.svelte"
   import { createViewEditState } from "$lib/dash/group/edit.svelte"
-  import { IconLoader, IconX } from "@tabler/icons-svelte"
+  import { IconX } from "@tabler/icons-svelte"
   import { fade } from "svelte/transition"
 
   let {
@@ -72,7 +73,7 @@
     {/if}
   {:else}
     <button onclick={() => (mode = "view")} class="btn btn-sm btn-neutral join-item" disabled>
-      <IconLoader /> Loading...
+      <Spinny /> Loading...
     </button>
   {/if}
 </div>
@@ -158,7 +159,7 @@
       {/if}
     {:else}
       <button onclick={() => (mode = "view")} class="btn btn-sm btn-neutral join-item" disabled>
-        <IconLoader /> Loading...
+        <Spinny /> Loading...
       </button>
     {/if}
   </div>

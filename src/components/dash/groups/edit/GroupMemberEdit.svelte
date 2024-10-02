@@ -1,13 +1,14 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
-  import { dash, type DashList } from "$lib/dash/dash.svelte"
-  import { IconRefresh, IconLoader, IconMinus, IconPlus, IconX } from "@tabler/icons-svelte"
+  import { type DashList } from "$lib/dash/dash.svelte"
+  import { IconRefresh, IconMinus, IconPlus, IconX } from "@tabler/icons-svelte"
   import Svelecte from "svelecte"
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
   import { fade } from "svelte/transition"
   import SimplePagination from "$components/dash/SimplePagination.svelte"
   import GroupMemberList from "../GroupMemberList.svelte"
   import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
+  import Spinny from "$components/Spinny.svelte"
 
   let {
     membersCurrent,
@@ -83,7 +84,7 @@
     {/if}
   {:else}
     <button class="btn btn-sm btn-neutral join-item" disabled>
-      <IconLoader /> Loading...
+      <Spinny /> Loading...
     </button>
   {/if}
 </div>
@@ -271,7 +272,7 @@
       {/if}
     {:else}
       <button onclick={() => (mode = "view")} class="btn btn-sm btn-neutral join-item" disabled>
-        <IconLoader /> Loading...
+        <Spinny /> Loading...
       </button>
     {/if}
   </div>

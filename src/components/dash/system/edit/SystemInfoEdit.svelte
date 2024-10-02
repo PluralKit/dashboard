@@ -2,9 +2,9 @@
   import type { System, SystemPrivacy } from "$api/types"
   import EditPrivacy from "$components/dash/edit/EditPrivacy.svelte"
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
-  import { dash } from "$lib/dash/dash.svelte"
+  import Spinny from "$components/Spinny.svelte"
   import { createInfoEditState } from "$lib/dash/system/edit.svelte"
-  import { IconLoader, IconX } from "@tabler/icons-svelte"
+  import { IconX } from "@tabler/icons-svelte"
   import { fade } from "svelte/transition"
 
   let {
@@ -86,7 +86,7 @@
     {/if}
   {:else}
     <button class="btn btn-sm btn-neutral join-item" disabled>
-      <IconLoader /> Loading...
+      <Spinny /> Loading...
     </button>
   {/if}
 </div>
@@ -223,7 +223,7 @@
       {/if}
     {:else}
       <button onclick={() => (mode = "view")} class="btn btn-sm btn-neutral join-item" disabled>
-        <IconLoader /> Loading...
+        <Spinny /> Loading...
       </button>
     {/if}
   </div>

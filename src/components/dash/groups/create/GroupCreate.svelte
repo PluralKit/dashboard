@@ -1,6 +1,6 @@
 <script lang="ts">
   import { dash, type DashList } from "$lib/dash/dash.svelte"
-  import { IconLoader, IconPlus, IconAlertTriangle } from "@tabler/icons-svelte"
+  import { IconPlus } from "@tabler/icons-svelte"
   import { untrack } from "svelte"
   import type { Group, GroupPrivacy, Member } from "$api/types"
   import { fade } from "svelte/transition"
@@ -10,6 +10,7 @@
   import GroupInfoCreate from "./GroupInfoCreate.svelte"
   import GroupMemberCreate from "./GroupMemberCreate.svelte"
   import DuplicateName from "$components/dash/edit/DuplicateName.svelte"
+  import Spinny from "$components/Spinny.svelte"
 
   let {
     forceOpen = false,
@@ -158,7 +159,7 @@
             />
           {:else}
             <button class="btn btn-sm btn-neutral join-item" disabled>
-              <IconLoader /> Loading...
+              <Spinny /> Loading...
             </button>
           {/if}
         </div>

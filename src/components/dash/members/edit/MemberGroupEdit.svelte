@@ -15,6 +15,7 @@
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
   import { fade } from "svelte/transition"
   import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
+  import Spinny from "$components/Spinny.svelte"
 
   let {
     groupsCurrent,
@@ -97,7 +98,7 @@
     {/if}
   {:else}
     <button class="btn btn-sm btn-neutral join-item" disabled>
-      <IconLoader /> Loading...
+      <Spinny /> Loading...
     </button>
   {/if}
 </div>
@@ -291,7 +292,7 @@
       {/if}
     {:else}
       <button onclick={() => (mode = "view")} class="btn btn-sm btn-neutral join-item" disabled>
-        <IconLoader /> Loading...
+        <Spinny /> Loading...
       </button>
     {/if}
   </div>
