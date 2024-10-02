@@ -7,7 +7,7 @@
   export let data: LayoutData
 
   dash.member.member = data.member
-  dash.member.groups = data.groups
+  dash.member.groups.init(data.groups)
   dash.member.privacyMode = data.privacyMode
 
   let params = $page.url.searchParams

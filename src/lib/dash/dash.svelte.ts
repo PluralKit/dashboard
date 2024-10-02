@@ -33,12 +33,53 @@ export interface DashList<T> {
   process: (groupList?: Group[]) => void
   paginate: () => void
   fetch: (token?: string) => Promise<void>
+  init: (data: Member[] | Group[]) => void
 }
 
 export interface SvelecteOption {
   value: string | undefined
   text: string
   extra?: any
+}
+
+const getDashList = <T>(g: DashList<T>) => {
+  return {
+    list: g.list,
+    get filters() {
+      return g.filters
+    },
+    set filters(filterGroups: FilterGroup[]) {
+      g.filters = filterGroups
+    },
+    get sorts() {
+      return g.sorts
+    },
+    set sorts(sortList: Sort[]) {
+      g.sorts = sortList
+    },
+    get simpleFilters() {
+      return g.simpleFilters
+    },
+    set simpleFilters(filterGroups: FilterGroup[]) {
+      g.simpleFilters = filterGroups
+    },
+    get simpleSorts() {
+      return g.simpleSorts
+    },
+    set simpleSorts(sortList: Sort[]) {
+      g.simpleSorts = sortList
+    },
+    get settings() {
+      return g.settings
+    },
+    set settings(settings: ListSettings) {
+      g.settings = settings
+    },
+    process: g.process,
+    paginate: g.paginate,
+    fetch: g.fetch,
+    init: g.init,
+  }
 }
 
 export let dash = createDash()
@@ -60,71 +101,10 @@ function createDash() {
   let settings: Record<string, any> = $state({})
   return {
     get members(): DashList<Member> {
-      return {
-        list: memberList.members,
-        get filters() {
-          return memberList.filters
-        },
-        set filters(filterGroups: FilterGroup[]) {
-          memberList.filters = filterGroups
-        },
-        get sorts() {
-          return memberList.sorts
-        },
-        set sorts(sortList: Sort[]) {
-          memberList.sorts = sortList
-        },
-        get simpleFilters() {
-          return memberList.simpleFilters
-        },
-        set simpleFilters(filterGroups: FilterGroup[]) {
-          memberList.simpleFilters = filterGroups
-        },
-        get simpleSorts() {
-          return memberList.simpleSorts
-        },
-        set simpleSorts(sortList: Sort[]) {
-          memberList.simpleSorts = sortList
-        },
-        proxytags: memberList.proxytags,
-        settings: memberList.listSettings,
-        process: memberList.processList,
-        paginate: memberList.paginateList,
-        fetch: memberList.fetch,
-      }
+      return getDashList<Member>(memberList)
     },
     get groups() {
-      return {
-        list: groupList.groups,
-        get filters() {
-          return groupList.filters
-        },
-        set filters(filterGroups: FilterGroup[]) {
-          groupList.filters = filterGroups
-        },
-        get sorts() {
-          return groupList.sorts
-        },
-        set sorts(sortList: Sort[]) {
-          groupList.sorts = sortList
-        },
-        get simpleFilters() {
-          return groupList.simpleFilters
-        },
-        set simpleFilters(filterGroups: FilterGroup[]) {
-          groupList.simpleFilters = filterGroups
-        },
-        get simpleSorts() {
-          return groupList.simpleSorts
-        },
-        set simpleSorts(sortList: Sort[]) {
-          groupList.simpleSorts = sortList
-        },
-        settings: groupList.listSettings,
-        process: groupList.processList,
-        paginate: groupList.paginateList,
-        fetch: groupList.fetch,
-      }
+      return getDashList<Group>(groupList)
     },
     get system() {
       return systemData.system
@@ -181,7 +161,7 @@ function createSystemState() {
   }
 }
 
-function createMemberListState() {
+function createMemberListState(): DashList<Member> {
   let listSettings: ListSettings = $state(createListSettings())
 
   let filters: FilterGroup[] = $state([
@@ -221,7 +201,7 @@ function createMemberListState() {
   )
 
   return {
-    get members() {
+    get list() {
       return {
         get raw() {
           return members
@@ -261,10 +241,13 @@ function createMemberListState() {
     get proxytags() {
       return proxyTags
     },
-    get listSettings() {
+    get settings() {
       return listSettings
     },
-    processList: function (groupList?: Group[]) {
+    set settings(settings: ListSettings) {
+      listSettings = settings
+    },
+    process: function (groupList?: Group[]) {
       processedMembers = processList(
         members,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
@@ -272,23 +255,33 @@ function createMemberListState() {
         groupList
       )
     },
-    paginateList: function () {
+    paginate: function () {
       paginatedMembers = paginateList(processedMembers, listSettings)
     },
-    fetch: async function (token?: string) {
+    fetch: async function (token?: string, groups?: Group[]) {
       members = await fetchList(`systems/${dash.system?.id || "exmpl"}/members`, token)
-      processedMembers = processList(members, filters, sorts)
+      processedMembers = processList(
+        members,
+        listSettings.filterMode === "simple" ? simpleFilters : filters,
+        listSettings.filterMode === "simple" ? simpleSorts : sorts,
+        groups
+      )
       paginatedMembers = paginateList(processedMembers, listSettings)
     },
-    init: function (data: Member[]) {
+    init: function (data: Member[], groups?: Group[]) {
       members = data
-      processedMembers = processList(members, filters, sorts)
+      processedMembers = processList(
+        members,
+        listSettings.filterMode === "simple" ? simpleFilters : filters,
+        listSettings.filterMode === "simple" ? simpleSorts : sorts,
+        groups
+      )
       paginatedMembers = paginateList(processedMembers, listSettings)
     },
   }
 }
 
-function createGroupListState() {
+function createGroupListState(): DashList<Group> {
   let listSettings: ListSettings = $state(createListSettings())
 
   let filters: FilterGroup[] = $state([
@@ -312,7 +305,7 @@ function createGroupListState() {
   )
 
   return {
-    get groups() {
+    get list() {
       return {
         get raw() {
           return groups
@@ -349,10 +342,13 @@ function createGroupListState() {
     set simpleSorts(newSorts: Sort[]) {
       simpleSorts = newSorts
     },
-    get listSettings() {
+    get settings() {
       return listSettings
     },
-    processList: function (groupList?: Group[]) {
+    set settings(settings: ListSettings) {
+      listSettings = settings
+    },
+    process: function (groupList?: Group[]) {
       processedGroups = processList(
         groups,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
@@ -360,7 +356,7 @@ function createGroupListState() {
         groupList
       )
     },
-    paginateList: function () {
+    paginate: function () {
       paginatedGroups = paginateList(processedGroups, listSettings)
     },
     fetch: async function (token?: string) {
@@ -368,12 +364,22 @@ function createGroupListState() {
         `systems/${dash.system?.id || "exmpl"}/groups?with_members=true`,
         token
       )
-      processedGroups = processList(groups, filters, sorts)
+      processedGroups = processList(
+        groups,
+        listSettings.filterMode === "simple" ? simpleFilters : filters,
+        listSettings.filterMode === "simple" ? simpleSorts : sorts,
+        []
+      )
       paginatedGroups = paginateList(processedGroups, listSettings)
     },
     init: function (data: Member[]) {
       groups = data
-      processedGroups = processList(groups, filters, sorts)
+      processList(
+        groups,
+        listSettings.filterMode === "simple" ? simpleFilters : filters,
+        listSettings.filterMode === "simple" ? simpleSorts : sorts,
+        groups
+      )
       paginatedGroups = paginateList(processedGroups, listSettings)
     },
   }
@@ -381,7 +387,7 @@ function createGroupListState() {
 
 function createMemberState() {
   let member: Member | undefined = $state(undefined)
-  let groups: Group[] = $state([])
+  let groups: DashList<Group> = $state(createGroupListState())
   let privacyMode: PrivacyMode = $state(PrivacyMode.PUBLIC)
 
   return {
@@ -392,10 +398,7 @@ function createMemberState() {
       member = m
     },
     get groups() {
-      return groups
-    },
-    set groups(g: Group[]) {
-      groups = g
+      return getDashList<Group>(groups)
     },
     get privacyMode() {
       return privacyMode
@@ -408,7 +411,7 @@ function createMemberState() {
 
 function createGroupState() {
   let group: Group | undefined = $state(undefined)
-  let members: Member[] = $state([])
+  let members: DashList<Member> = $state(createMemberListState())
   let privacyMode: PrivacyMode = $state(PrivacyMode.PUBLIC)
 
   return {
@@ -419,10 +422,7 @@ function createGroupState() {
       group = g
     },
     get members() {
-      return members
-    },
-    set members(m: Member[]) {
-      members = m
+      return getDashList<Member>(members)
     },
     get privacyMode() {
       return privacyMode

@@ -21,7 +21,11 @@ export async function deriveGroupsAsync(
 export function deriveGroups(member: Member, asPage: boolean) {
   if (!asPage) return filterGroups(dash.groups.list.raw, member)
 
-  return filterGroups(dash.member.groups, member, dash.member.privacyMode === PrivacyMode.PRIVATE)
+  return filterGroups(
+    dash.member.groups.list.raw,
+    member,
+    dash.member.privacyMode === PrivacyMode.PRIVATE
+  )
 }
 
 function filterGroups(list: Group[], member: Member, filter = true) {
