@@ -3,6 +3,8 @@
   import { type DashList } from "$lib/dash/dash.svelte"
   import { IconSearch } from "@tabler/icons-svelte"
   import Svelecte from "svelecte"
+  // @ts-ignore
+  import { autoresize } from "svelte-textarea-autoresize"
 
   let {
     list,
@@ -19,16 +21,16 @@
   <label class="label justify-start gap-2" for="member-list-name-search"
     ><IconSearch /> Member search</label
   >
-  <input
-    class="input input-bordered"
-    type="text"
+  <textarea
+    class="input input-bordered resize-none p-2"
+    use:autoresize
     bind:value={list.simpleFilters[0].filters[0].value}
-    oninput={(e) => {
+    oninput={() => {
       list.process(groupList.list.raw)
       list.paginate()
     }}
     placeholder="Search by name..."
-  />
+  ></textarea>
 </div>
 <div class="flex flex-col mt-3">
   <button
@@ -48,72 +50,68 @@
           class="input input-disabled input-bordered input-sm w-fit join-item"
           for="member-list-dn-search">Display name</label
         >
-        <input
-          class="input input-bordered input-sm flex-1 join-item"
-          type="text"
+        <textarea
+          use:autoresize
+          class="input input-bordered input-sm flex-1 join-item resize-none"
           id="member-list-dn-search"
-          value={list.simpleFilters[0].filters[1].value}
-          oninput={(e) => {
-            list.simpleFilters[0].filters[1].value = (e.target as HTMLInputElement).value
+          bind:value={list.simpleFilters[0].filters[1].value}
+          oninput={() => {
             list.process(groupList.list.raw)
             list.paginate()
           }}
           placeholder="Search by display name..."
-        />
+        ></textarea>
       </div>
       <div class="join">
         <label
           class="input input-disabled input-bordered input-sm w-fit join-item"
           for="member-list-desc-search">Description</label
         >
-        <input
-          class="input input-bordered input-sm flex-1 join-item"
-          type="text"
+        <textarea
+          class="input input-bordered input-sm flex-1 join-item resize-none"
+          use:autoresize
           id="member-list-desc-search"
-          value={list.simpleFilters[0].filters[2].value}
-          oninput={(e) => {
-            list.simpleFilters[0].filters[2].value = (e.target as HTMLInputElement).value
+          bind:value={list.simpleFilters[0].filters[2].value}
+          oninput={() => {
             list.process(groupList.list.raw)
             list.paginate()
           }}
           placeholder="Search by description..."
-        />
+        ></textarea>
       </div>
       <div class="join">
         <label
           class="input input-disabled input-bordered input-sm w-fit join-item"
           for="member-list-id-search">ID</label
         >
-        <input
-          class="input input-bordered input-sm flex-1 join-item"
-          type="text"
+        <textarea
+          use:autoresize
+          class="input input-bordered input-sm flex-1 join-item resize-none"
           id="member-list-id-search"
-          value={list.simpleFilters[0].filters[3].value}
-          oninput={(e) => {
-            list.simpleFilters[0].filters[3].value = (e.target as HTMLInputElement).value
+          bind:value={list.simpleFilters[0].filters[3].value}
+          oninput={() => {
             list.process(groupList.list.raw)
             list.paginate()
           }}
           placeholder="Search by ID..."
-        />
+        ></textarea>
       </div>
       <div class="join">
         <label
           class="input input-disabled input-bordered input-sm w-fit join-item"
           for="member-list-prns-search">Pronouns</label
         >
-        <input
-          class="input input-bordered input-sm flex-1 join-item"
-          type="text"
+        <textarea
+          use:autoresize
+          class="input input-bordered input-sm flex-1 join-item resize-none"
           id="member-list-prns-search"
-          value={list.simpleFilters[0].filters[4].value}
-          oninput={(e) => {
-            list.simpleFilters[0].filters[4].value = (e.target as HTMLInputElement).value
+          bind:value={list.simpleFilters[0].filters[4].value}
+          oninput={() => {
             list.process(groupList.list.raw)
             list.paginate()
           }}
           placeholder="Search by pronouns..."
-        />
+        ></textarea>
       </div>
       <div class="join">
         <label

@@ -3,6 +3,8 @@
   import { dash, type DashList } from "$lib/dash/dash.svelte"
   import { IconSearch } from "@tabler/icons-svelte"
   import Svelecte from "svelecte"
+  // @ts-ignore
+  import { autoresize } from "svelte-textarea-autoresize"
 
   let {
     list = $bindable(),
@@ -17,16 +19,16 @@
   <label class="label justify-start gap-2" for="group-list-name-search"
     ><IconSearch /> Group search</label
   >
-  <input
-    class="input input-bordered"
-    type="text"
+  <textarea
+    use:autoresize
+    class="input input-bordered resize-none p-2"
     bind:value={list.simpleFilters[0].filters[0].value}
     oninput={() => {
       list.process(list.list.raw)
       list.paginate()
     }}
     placeholder="Search by name..."
-  />
+  ></textarea>
 </div>
 <div class="flex flex-col mt-3">
   <button
@@ -46,27 +48,25 @@
           class="input input-disabled input-bordered input-sm w-fit join-item"
           for="group-list-dn-search">Display name</label
         >
-        <input
-          class="input input-bordered input-sm flex-1 join-item"
-          type="text"
+        <textarea
+          use:autoresize
+          class="input input-bordered input-sm flex-1 join-item resize-none"
           id="group-list-dn-search"
-          value={list.simpleFilters[0].filters[1].value}
-          oninput={(e) => {
-            list.simpleFilters[0].filters[1].value = (e.target as HTMLInputElement).value
+          bind:value={list.simpleFilters[0].filters[1].value}
+          oninput={() => {
             list.process(list.list.raw)
             list.paginate()
           }}
           placeholder="Search by display name..."
-        />
+        ></textarea>
       </div>
       <div class="join">
         <label
           class="input input-disabled input-bordered input-sm w-fit join-item"
           for="group-list-desc-search">Description</label
         >
-        <input
-          class="input input-bordered input-sm flex-1 join-item"
-          type="text"
+        <textarea
+          class="input input-bordered input-sm flex-1 join-item resize-none"
           id="group-list-desc-search"
           value={list.simpleFilters[0].filters[2].value}
           oninput={(e) => {
@@ -75,25 +75,24 @@
             list.paginate()
           }}
           placeholder="Search by description..."
-        />
+        ></textarea>
       </div>
       <div class="join">
         <label
           class="input input-disabled input-bordered input-sm w-fit join-item"
           for="group-list-id-search">ID</label
         >
-        <input
-          class="input input-bordered input-sm flex-1 join-item"
-          type="text"
+        <textarea
+          class="input input-bordered input-sm flex-1 join-item resize-none"
           id="group-list-id-search"
-          value={list.simpleFilters[0].filters[3].value}
-          oninput={(e) => {
-            list.simpleFilters[0].filters[3].value = (e.target as HTMLInputElement).value
+          bind:value={list.simpleFilters[0].filters[3].value}
+          use:autoresize
+          oninput={() => {
             list.process(list.list.raw)
             list.paginate()
           }}
           placeholder="Search by ID..."
-        />
+        ></textarea>
       </div>
       <div class="join">
         <label
