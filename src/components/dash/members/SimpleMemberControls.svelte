@@ -192,6 +192,11 @@
       >
         <option value="name">Name</option>
         <option value="display_name">Display Name</option>
+        <option value="ID">ID</option>
+        <option value="description">Description</option>
+        <option value="pronouns">Pronouns</option>
+        <option value="color">Color</option>
+        <option value="created">Created</option>
       </select>
     </div>
     <div class="join">
