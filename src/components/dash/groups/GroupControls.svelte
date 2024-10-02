@@ -13,15 +13,7 @@
   function changeMode() {
     mode === "simple" ? (mode = "advanced") : (mode = "simple")
 
-    if (mode === "simple") {
-      dash.members.process(
-        dash.groups.list.raw,
-        dash.members.simpleFilters,
-        dash.members.simpleSorts
-      )
-    } else {
-      dash.members.process(dash.groups.list.raw)
-    }
+    dash.members.process(dash.groups.list.raw)
     dash.members.paginate()
   }
 </script>

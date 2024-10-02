@@ -15,11 +15,7 @@
     type="text"
     bind:value={dash.members.simpleFilters[0].filters[0].value}
     oninput={(e) => {
-      dash.members.process(
-        dash.groups.list.raw,
-        dash.members.simpleFilters,
-        dash.members.simpleSorts
-      )
+      dash.members.process(dash.groups.list.raw)
       dash.members.paginate()
     }}
     placeholder="Search by name..."
@@ -50,11 +46,7 @@
           value={dash.members.simpleFilters[0].filters[1].value}
           oninput={(e) => {
             dash.members.simpleFilters[0].filters[1].value = (e.target as HTMLInputElement).value
-            dash.members.process(
-              dash.groups.list.raw,
-              dash.members.simpleFilters,
-              dash.members.simpleSorts
-            )
+            dash.members.process(dash.groups.list.raw)
             dash.members.paginate()
           }}
           placeholder="Search by display name..."
@@ -72,11 +64,7 @@
           value={dash.members.simpleFilters[0].filters[2].value}
           oninput={(e) => {
             dash.members.simpleFilters[0].filters[2].value = (e.target as HTMLInputElement).value
-            dash.members.process(
-              dash.groups.list.raw,
-              dash.members.simpleFilters,
-              dash.members.simpleSorts
-            )
+            dash.members.process(dash.groups.list.raw)
             dash.members.paginate()
           }}
           placeholder="Search by description..."
@@ -94,11 +82,7 @@
           value={dash.members.simpleFilters[0].filters[3].value}
           oninput={(e) => {
             dash.members.simpleFilters[0].filters[3].value = (e.target as HTMLInputElement).value
-            dash.members.process(
-              dash.groups.list.raw,
-              dash.members.simpleFilters,
-              dash.members.simpleSorts
-            )
+            dash.members.process(dash.groups.list.raw)
             dash.members.paginate()
           }}
           placeholder="Search by description..."
@@ -116,11 +100,7 @@
           value={dash.members.simpleFilters[0].filters[4].value}
           oninput={(e) => {
             dash.members.simpleFilters[0].filters[4].value = (e.target as HTMLInputElement).value
-            dash.members.process(
-              dash.groups.list.raw,
-              dash.members.simpleFilters,
-              dash.members.simpleSorts
-            )
+            dash.members.process(dash.groups.list.raw)
             dash.members.paginate()
           }}
           placeholder="Search by description..."
@@ -139,11 +119,7 @@
           labelField="text"
           bind:value={dash.members.simpleFilters[0].filters[6].value}
           onChange={() => {
-            dash.members.process(
-              dash.groups.list.raw,
-              dash.members.simpleFilters,
-              dash.members.simpleSorts
-            )
+            dash.members.process(dash.groups.list.raw)
             dash.members.paginate()
           }}
         />
@@ -182,11 +158,7 @@
         id="member-list-sort-by"
         bind:value={dash.members.simpleSorts[0].field}
         onchange={() => {
-          dash.members.process(
-            dash.groups.list.raw,
-            dash.members.simpleFilters,
-            dash.members.simpleSorts
-          )
+          dash.members.process(dash.groups.list.raw)
           dash.members.paginate()
         }}
       >
@@ -209,11 +181,7 @@
         id="member-list-sort-order"
         bind:value={dash.members.simpleSorts[0].order}
         onchange={() => {
-          dash.members.process(
-            dash.groups.list.raw,
-            dash.members.simpleFilters,
-            dash.members.simpleSorts
-          )
+          dash.members.process(dash.groups.list.raw)
           dash.members.paginate()
         }}
       >
@@ -231,11 +199,7 @@
         id="member-list-filter-privacy"
         bind:value={dash.members.simpleFilters[0].filters[5].value}
         onchange={() => {
-          dash.members.process(
-            dash.groups.list.raw,
-            dash.members.simpleFilters,
-            dash.members.simpleSorts
-          )
+          dash.members.process(dash.groups.list.raw)
           dash.members.paginate()
         }}
       >

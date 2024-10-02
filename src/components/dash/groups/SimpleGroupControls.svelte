@@ -15,7 +15,7 @@
     type="text"
     bind:value={dash.groups.simpleFilters[0].filters[0].value}
     oninput={(e) => {
-      dash.groups.process(dash.groups.list.raw, dash.groups.simpleFilters, dash.groups.simpleSorts)
+      dash.groups.process(dash.groups.list.raw)
       dash.groups.paginate()
     }}
     placeholder="Search by name..."
@@ -46,11 +46,7 @@
           value={dash.groups.simpleFilters[0].filters[1].value}
           oninput={(e) => {
             dash.groups.simpleFilters[0].filters[1].value = (e.target as HTMLInputElement).value
-            dash.groups.process(
-              dash.groups.list.raw,
-              dash.groups.simpleFilters,
-              dash.groups.simpleSorts
-            )
+            dash.groups.process(dash.groups.list.raw)
             dash.groups.paginate()
           }}
           placeholder="Search by display name..."
@@ -68,11 +64,7 @@
           value={dash.groups.simpleFilters[0].filters[2].value}
           oninput={(e) => {
             dash.groups.simpleFilters[0].filters[2].value = (e.target as HTMLInputElement).value
-            dash.groups.process(
-              dash.groups.list.raw,
-              dash.groups.simpleFilters,
-              dash.groups.simpleSorts
-            )
+            dash.groups.process(dash.groups.list.raw)
             dash.groups.paginate()
           }}
           placeholder="Search by description..."
@@ -90,11 +82,7 @@
           value={dash.groups.simpleFilters[0].filters[3].value}
           oninput={(e) => {
             dash.groups.simpleFilters[0].filters[3].value = (e.target as HTMLInputElement).value
-            dash.groups.process(
-              dash.groups.list.raw,
-              dash.groups.simpleFilters,
-              dash.groups.simpleSorts
-            )
+            dash.groups.process(dash.groups.list.raw)
             dash.groups.paginate()
           }}
           placeholder="Search by description..."
@@ -114,11 +102,7 @@
           inputId="group-list-member-search"
           bind:value={dash.groups.simpleFilters[0].filters[5].value}
           onChange={() => {
-            dash.groups.process(
-              dash.groups.list.raw,
-              dash.groups.simpleFilters,
-              dash.groups.simpleSorts
-            )
+            dash.groups.process(dash.groups.list.raw)
             dash.groups.paginate()
           }}
         />
@@ -157,11 +141,7 @@
         id="group-list-sort-by"
         bind:value={dash.groups.simpleSorts[0].field}
         onchange={() => {
-          dash.groups.process(
-            dash.groups.list.raw,
-            dash.groups.simpleFilters,
-            dash.groups.simpleSorts
-          )
+          dash.groups.process(dash.groups.list.raw)
           dash.groups.paginate()
         }}
       >
@@ -183,11 +163,7 @@
         id="group-list-sort-order"
         bind:value={dash.groups.simpleSorts[0].order}
         onchange={() => {
-          dash.groups.process(
-            dash.groups.list.raw,
-            dash.groups.simpleFilters,
-            dash.groups.simpleSorts
-          )
+          dash.groups.process(dash.groups.list.raw)
           dash.groups.paginate()
         }}
       >
@@ -205,11 +181,7 @@
         id="group-list-filter-privacy"
         bind:value={dash.groups.simpleFilters[0].filters[4].value}
         onchange={() => {
-          dash.groups.process(
-            dash.groups.list.raw,
-            dash.groups.simpleFilters,
-            dash.groups.simpleSorts
-          )
+          dash.groups.process(dash.groups.list.raw)
           dash.groups.paginate()
         }}
       >

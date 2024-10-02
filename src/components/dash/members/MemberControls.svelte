@@ -8,20 +8,12 @@
   import { toggleSetting } from "$lib/dash/utils"
   import SimpleMemberControls from "./SimpleMemberControls.svelte"
 
-  let mode: "simple" | "advanced" = $state("simple")
-
   function changeMode() {
-    mode === "simple" ? (mode = "advanced") : (mode = "simple")
+    dash.members.settings.filterMode === "simple"
+      ? (dash.members.settings.filterMode = "advanced")
+      : (dash.members.settings.filterMode = "simple")
 
-    if (mode === "simple") {
-      dash.members.process(
-        dash.groups.list.raw,
-        dash.members.simpleFilters,
-        dash.members.simpleSorts
-      )
-    } else {
-      dash.members.process(dash.groups.list.raw)
-    }
+    dash.members.process(dash.groups.list.raw)
     dash.members.paginate()
   }
 </script>
@@ -38,7 +30,7 @@
     <button class="btn btn-sm btn-primary mt-2 w-min h-10" onclick={() => changeMode()}>
       <div class="flex flex-row items-center gap-2">
         <IconAdjustments size={32} />
-        <span>{mode === "simple" ? "Advanced" : "Simple"} mode</span>
+        <span>{dash.members.settings.filterMode === "simple" ? "Advanced" : "Simple"} mode</span>
       </div>
     </button>
   </div>
@@ -65,9 +57,9 @@
     </button>
   </div>
   <hr class="my-2" />
-  {#if mode === "simple"}
+  {#if dash.members.settings.filterMode === "simple"}
     <SimpleMemberControls />
-  {:else if mode === "advanced"}
+  {:else if dash.members.settings.filterMode === "advanced"}
     <div
       class={`grid grid-cols-1 md:grid-cols-2 gap-4 ${
         dash.settings.display?.forceControlsAtTop === true ? "xl:grid-cols-2" : "xl:grid-cols-1"

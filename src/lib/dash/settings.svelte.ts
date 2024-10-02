@@ -17,6 +17,7 @@ export interface ListSettings {
   changeView: (type: ViewType) => void
   itemsPerPage: number
   currentPage: number
+  filterMode: "simple" | "advanced"
 }
 
 export function createListSettings() {
@@ -50,6 +51,7 @@ export function createListSettings() {
   let view: View = $state(availableViews[0])
   let itemsPerPage: number = $state(view.defaultItemsPerPage)
   let currentPage: number = $state(1)
+  let filterMode: "simple" | "advanced" = $state("simple")
 
   return {
     get view() {
@@ -70,6 +72,12 @@ export function createListSettings() {
     },
     set currentPage(page: number) {
       currentPage = page
+    },
+    get filterMode() {
+      return filterMode
+    },
+    set filterMode(mode: "simple" | "advanced") {
+      filterMode = mode
     },
   }
 }

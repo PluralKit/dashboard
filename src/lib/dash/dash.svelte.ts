@@ -30,7 +30,7 @@ export interface DashList<T> {
   simpleSorts: Sort[]
   settings: ListSettings
   proxytags?: SvelecteOption[]
-  process: (groupList?: Group[], filterGroups?: FilterGroup[], sorts?: Sort[]) => void
+  process: (groupList?: Group[]) => void
   paginate: () => void
   fetch: (token?: string) => Promise<void>
 }
@@ -264,11 +264,11 @@ function createMemberListState() {
     get listSettings() {
       return listSettings
     },
-    processList: function (groupList?: Group[], filterGroups?: FilterGroup[], sortList?: Sort[]) {
+    processList: function (groupList?: Group[]) {
       processedMembers = processList(
         members,
-        filterGroups ? filterGroups : filters,
-        sortList ? sortList : sorts,
+        listSettings.filterMode === "simple" ? simpleFilters : filters,
+        listSettings.filterMode === "simple" ? simpleSorts : sorts,
         groupList
       )
     },
@@ -352,11 +352,11 @@ function createGroupListState() {
     get listSettings() {
       return listSettings
     },
-    processList: function (groupList?: Group[], filterGroups?: FilterGroup[], sortList?: Sort[]) {
+    processList: function (groupList?: Group[]) {
       processedGroups = processList(
         groups,
-        filterGroups ? filterGroups : filters,
-        sortList ? sortList : sorts,
+        listSettings.filterMode === "simple" ? simpleFilters : filters,
+        listSettings.filterMode === "simple" ? simpleSorts : sorts,
         groupList
       )
     },
