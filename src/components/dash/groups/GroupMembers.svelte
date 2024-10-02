@@ -28,7 +28,9 @@
 
   let members: Member[] = $derived(
     memberList.list.raw
-      .filter((m) => group.members?.includes(m.uuid || ""))
+      .filter((m) =>
+        groupList.list.raw.find((g) => g.uuid === group.uuid)?.members?.includes(m.uuid || "")
+      )
       .sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
   )
 
