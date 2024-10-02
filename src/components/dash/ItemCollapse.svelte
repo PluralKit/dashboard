@@ -122,24 +122,28 @@
   </div>
 </div>
 
-{#snippet memberTabs(member: Member, tab: "view"|"info"|"groups")}
-  <MemberView {member} {tab} open={isOpen} {asPage} />
-  <MemberInfo {member} {tab} {asPage} />
-  {#if openedOnce && tabbedOnce}
-    <MemberGroups {member} {tab} {asPage} />
+{#snippet memberTabs(member: Member, tab: "view" | "info" | "groups")}
+  {#if openedOnce}
+    <MemberView {member} {tab} open={isOpen} {asPage} />
+    <MemberInfo {member} {tab} {asPage} />
+    {#if tabbedOnce}
+      <MemberGroups {member} {tab} {asPage} />
+    {/if}
   {/if}
 {/snippet}
 
-{#snippet systemTabs(system: System, tab: "view"|"info"|"groups")}
+{#snippet systemTabs(system: System, tab: "view" | "info" | "groups")}
   <SystemView {system} {tab} open={isOpen} {asPage} />
   <SystemInfo {system} {tab} {asPage} />
 {/snippet}
 
-{#snippet groupTabs(group: Group, tab: "view"|"info"|"groups")}
-  <GroupView {group} {tab} open={isOpen} {asPage} />
-  <GroupInfo {group} {tab} {asPage} />
-  {#if openedOnce && tabbedOnce}
-    <GroupMembers {group} {tab} {asPage} />
+{#snippet groupTabs(group: Group, tab: "view" | "info" | "groups")}
+  {#if openedOnce}
+    <GroupView {group} {tab} open={isOpen} {asPage} />
+    <GroupInfo {group} {tab} {asPage} />
+    {#if tabbedOnce}
+      <GroupMembers {group} {tab} {asPage} />
+    {/if}
   {/if}
 {/snippet}
 
