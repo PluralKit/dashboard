@@ -21,7 +21,7 @@ export function proxyOptionFromString(inputValue: string) {
   } else {
     const tag = {
       prefix: inputValue.slice(0, inputValue.indexOf("text")),
-      suffix: inputValue.slice(inputValue.indexOf("text") + 4, inputValue.length - 1),
+      suffix: inputValue.slice(inputValue.indexOf("text") + 4),
     }
 
     const value = {
