@@ -747,7 +747,7 @@ function filterByProxy(
   return list
 }
 
-export function createSimpleFilters() {
+export function createSimpleFilters(type = "member") {
   let simpleNameFilter = $state(
     createFilter(
       "name",
@@ -813,16 +813,32 @@ export function createSimpleFilters() {
 
   let simpleGroupFilter = $state(createFilter("group", "group", FilterMode.INCLUDES, []))
 
-  return createFilterGroup(
-    [
-      simpleNameFilter,
-      simpleDisplayNameFilter,
-      simpleDescriptionFilter,
-      simpleIdFilter,
-      simplePronounFilter,
-      simplePrivacyFilter,
-      simpleGroupFilter,
-    ],
-    "simple-filter--group"
-  )
+  let simpleMemberFilter = $state(createFilter("member", "member", FilterMode.INCLUDES, []))
+
+  if (type === "member")
+    return createFilterGroup(
+      [
+        simpleNameFilter,
+        simpleDisplayNameFilter,
+        simpleDescriptionFilter,
+        simpleIdFilter,
+        simplePronounFilter,
+        simplePrivacyFilter,
+        simpleGroupFilter,
+      ],
+      "simple-filter--group"
+    )
+  else if (type === "group")
+    return createFilterGroup(
+      [
+        simpleNameFilter,
+        simpleDisplayNameFilter,
+        simpleDescriptionFilter,
+        simpleIdFilter,
+        simplePrivacyFilter,
+        simpleMemberFilter,
+      ],
+      "simple-filter--group"
+    )
+  else return createFilterGroup([])
 }

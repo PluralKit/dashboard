@@ -1,13 +1,29 @@
 <script lang="ts">
   import { dash } from "$lib/dash/dash.svelte"
-  import { IconSettings, IconUsers } from "@tabler/icons-svelte"
+  import { IconAdjustments, IconUsers } from "@tabler/icons-svelte"
   import FilterGroups from "../filters/FilterGroups.svelte"
   import AddFilterGroup from "../filters/AddFilterGroup.svelte"
   import Sorts from "../filters/Sorts.svelte"
   import AddSort from "../filters/AddSort.svelte"
   import { toggleSetting } from "$lib/dash/utils"
+  import SimpleGroupControls from "./SimpleGroupControls.svelte"
 
-  let mode: "simple" | "advanced" = $state("advanced")
+  let mode: "simple" | "advanced" = $state("simple")
+
+  function changeMode() {
+    mode === "simple" ? (mode = "advanced") : (mode = "simple")
+
+    if (mode === "simple") {
+      dash.members.process(
+        dash.groups.list.raw,
+        dash.members.simpleFilters,
+        dash.members.simpleSorts
+      )
+    } else {
+      dash.members.process(dash.groups.list.raw)
+    }
+    dash.members.paginate()
+  }
 </script>
 
 <div
@@ -19,8 +35,11 @@
     <h2 class="text-xl">
       <IconUsers class="inline mr-2" /> Group list options
     </h2>
-    <button class="btn btn-sm btn-primary p-2 ml-2">
-      <IconSettings class="inline" size={16} /> Settings
+    <button class="btn btn-sm btn-primary mt-2 w-min h-10" onclick={() => changeMode()}>
+      <div class="flex flex-row items-center gap-2">
+        <IconAdjustments size={32} />
+        <span>{mode === "simple" ? "Advanced" : "Simple"} mode</span>
+      </div>
     </button>
   </div>
   <div class="text-sm mt-2">
@@ -47,7 +66,9 @@
   </div>
   <hr class="my-2" />
   <p class="my-4">Some options will be moved at some point.</p>
-  {#if mode === "advanced"}
+  {#if mode === "simple"}
+    <SimpleGroupControls />
+  {:else if mode === "advanced"}
     <div
       class={`grid grid-cols-1 md:grid-cols-2 gap-4 ${
         dash.settings.display?.forceControlsAtTop === true ? "xl:grid-cols-2" : "xl:grid-cols-1"

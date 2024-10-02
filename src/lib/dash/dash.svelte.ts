@@ -108,6 +108,18 @@ function createDash() {
         set sorts(sortList: Sort[]) {
           groupList.sorts = sortList
         },
+        get simpleFilters() {
+          return groupList.simpleFilters
+        },
+        set simpleFilters(filterGroups: FilterGroup[]) {
+          groupList.simpleFilters = filterGroups
+        },
+        get simpleSorts() {
+          return groupList.simpleSorts
+        },
+        set simpleSorts(sortList: Sort[]) {
+          groupList.simpleSorts = sortList
+        },
         settings: groupList.listSettings,
         process: groupList.processList,
         paginate: groupList.paginateList,
@@ -284,6 +296,9 @@ function createGroupListState() {
   ])
   let sorts: Sort[] = $state([createSort(SortMode.ALPHABETICAL, "name", "name", 1)])
 
+  let simpleFilters: FilterGroup[] = $state([createSimpleFilters("group")])
+  let simpleSorts: Sort[] = $state(createSimpleSorts())
+
   let groups: Group[] = $state([])
   let processedGroups: Group[] = $state(processList(groups, filters, sorts))
   let paginatedGroups: Group[] = $state(paginateList(processedGroups, listSettings))
@@ -322,11 +337,28 @@ function createGroupListState() {
     set sorts(newSorts: Sort[]) {
       sorts = newSorts
     },
+    get simpleFilters() {
+      return simpleFilters
+    },
+    set simpleFilters(groups: FilterGroup[]) {
+      simpleFilters = groups
+    },
+    get simpleSorts() {
+      return simpleSorts
+    },
+    set simpleSorts(newSorts: Sort[]) {
+      simpleSorts = newSorts
+    },
     get listSettings() {
       return listSettings
     },
-    processList: function (groupList?: Group[]) {
-      processedGroups = processList(groups, filters, sorts, groupList)
+    processList: function (groupList?: Group[], filterGroups?: FilterGroup[], sortList?: Sort[]) {
+      processedGroups = processList(
+        groups,
+        filterGroups ? filterGroups : filters,
+        sortList ? sortList : sorts,
+        groupList
+      )
     },
     paginateList: function () {
       paginatedGroups = paginateList(processedGroups, listSettings)
