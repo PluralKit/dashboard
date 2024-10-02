@@ -9,10 +9,12 @@
     list,
     groupList,
     privacyMode,
+    initialGroups = [],
   }: {
     list: DashList<Member>
     groupList: DashList<Group>
     privacyMode: PrivacyMode
+    initalGroups?: Group[]
   } = $props()
 
   let fetching = $state(false)
@@ -32,7 +34,7 @@
 </script>
 
 {#if privacyMode === PrivacyMode.PRIVATE}
-  <MemberCreate memberList={list} {groupList} />
+  <MemberCreate memberList={list} {groupList} {initialGroups} />
 {/if}
 <div class="text-center">
   <p>

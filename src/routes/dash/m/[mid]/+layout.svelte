@@ -7,6 +7,8 @@
   export let data: LayoutData
 
   dash.member.member = data.member
+  dash.member.groups.filter = data.memberGroups.map((m) => m.uuid || "")
+  dash.member.groups.page = data.member
   dash.member.groups.init(data.groups)
   dash.member.members.init(data.members)
   dash.member.privacyMode = data.privacyMode

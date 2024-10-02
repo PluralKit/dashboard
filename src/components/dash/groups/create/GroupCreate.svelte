@@ -16,17 +16,19 @@
     open = $bindable(false),
     groupList,
     memberList,
+    initialMembers = [],
   }: {
     forceOpen?: boolean
     open?: boolean
     groupList: DashList<Group>
     memberList: DashList<Member>
+    initialMembers?: Member[]
   } = $props()
 
   let group: Group & {
     privacy: GroupPrivacy
   } = $state(createGroupCreationState())
-  let members: string[] = $state([])
+  let members: string[] = $state(initialMembers.map((m) => m.uuid || ""))
 
   let tab: "view" | "info" | "groups" = $state("view")
 

@@ -1,5 +1,7 @@
 <script lang="ts">
   import ItemCollapse from "$components/dash/ItemCollapse.svelte"
+  import MemberControls from "$components/dash/members/MemberControls.svelte"
+  import MemberList from "$components/dash/members/MemberList.svelte"
   import { dash } from "$lib/dash/dash.svelte"
 </script>
 
@@ -13,4 +15,23 @@
     type="group"
     item={dash.group.group ?? {}}
   />
+
+  <div class={`box bg-base-100 h-min`}>
+    <MemberControls
+      wide={true}
+      simpleOnly={true}
+      groupList={dash.group.groups}
+      list={dash.group.members}
+      privacyMode={dash.group.privacyMode}
+    />
+  </div>
+
+  <div class="flex flex-col gap-3 sm:gap-4">
+    <MemberList
+      list={dash.group.members}
+      groupList={dash.group.groups}
+      privacyMode={dash.group.privacyMode}
+      initialGroups={dash.group.group ? [dash.group.group] : undefined}
+    />
+  </div>
 </div>

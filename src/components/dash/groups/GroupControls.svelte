@@ -12,9 +12,13 @@
   let {
     list,
     privacyMode,
+    simpleOnly = false,
+    wide = false,
   }: {
     list: DashList<Group>
     privacyMode: PrivacyMode
+    simpleOnly?: boolean
+    wide?: boolean
   } = $props()
 
   function changeMode() {
@@ -33,12 +37,14 @@
   <h2 class="text-xl">
     <IconUsers class="inline mr-2" /> Group list options
   </h2>
-  <button class="btn btn-sm btn-primary mt-2 w-min h-10" onclick={() => changeMode()}>
-    <div class="flex flex-row items-center gap-2">
-      <IconAdjustments size={32} />
-      <span>{list.settings.filterMode === "simple" ? "Advanced" : "Simple"} mode</span>
-    </div>
-  </button>
+  {#if !simpleOnly}
+    <button class="btn btn-sm btn-primary mt-2 w-min h-10" onclick={() => changeMode()}>
+      <div class="flex flex-row items-center gap-2">
+        <IconAdjustments size={32} />
+        <span>{list.settings.filterMode === "simple" ? "Advanced" : "Simple"} mode</span>
+      </div>
+    </button>
+  {/if}
 </div>
 <div class="text-sm mt-2">
   <button
@@ -64,12 +70,14 @@
 </div>
 <hr class="my-2" />
 <p class="my-4">Some options will be moved at some point.</p>
-{#if list.settings.filterMode === "simple"}
-  <SimpleGroupControls {list} wide={dash.settings.display?.forceControlsAtTop === true} />
+{#if simpleOnly || list.settings.filterMode === "simple"}
+  <SimpleGroupControls {list} wide={wide || dash.settings.display?.forceControlsAtTop === true} />
 {:else if list.settings.filterMode === "advanced"}
   <div
     class={`grid grid-cols-1 md:grid-cols-2 gap-4 ${
-      dash.settings.display?.forceControlsAtTop === true ? "xl:grid-cols-2" : "xl:grid-cols-1"
+      wide || dash.settings.display?.forceControlsAtTop === true
+        ? "xl:grid-cols-2"
+        : "xl:grid-cols-1"
     }`}
   >
     <div>

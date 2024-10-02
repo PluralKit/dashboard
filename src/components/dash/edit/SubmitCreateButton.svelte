@@ -101,6 +101,10 @@
           } else if (itemPath === "groups" && groupPath === "members") {
             ;(response as Group).members = groups
           }
+
+          if (list.filter && list.page) {
+            if (groups.includes(list.page.uuid || "")) list.filter.push(response.uuid || "")
+          }
         }
 
         list.list.raw.push(response)

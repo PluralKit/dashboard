@@ -15,6 +15,7 @@ export async function load({ cookies, params, url, parent }) {
   let member: Member | undefined = undefined
   let groups: Group[] = []
   let members: Member[] = []
+  let memberGroups: Group[] = []
   let errs: string[] = []
   let privacyMode: PrivacyMode = PrivacyMode.PUBLIC
 
@@ -39,6 +40,7 @@ export async function load({ cookies, params, url, parent }) {
       groups =
         (await api<Group[]>(`systems/${member?.system}/groups?with_members=true`, options)) || []
       members = (await api<Member[]>(`systems/${member?.system}/members`, options)) || []
+      memberGroups = (await api<Group[]>(`members/${params.mid}/groups`, options)) || []
     } catch (err) {
       const e = err as ApiError
       if (e.type === ErrorType.RateLimit) errs.push(e.message || e.code.toString())
@@ -52,6 +54,7 @@ export async function load({ cookies, params, url, parent }) {
     member: member as Member,
     groups,
     members,
+    memberGroups,
     meta: {
       title: member?.name || "Dash",
       color: member?.color,

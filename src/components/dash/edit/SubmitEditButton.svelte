@@ -154,14 +154,52 @@
               g.members = [...(g.members || [])].filter((m) => m !== opts.member.uuid)
             }
           }
-          groupList.process(groupList.list.raw)
+
+          // if on the group page: remove self from list if no longer in group
+          if (memberList.filter && memberList.page) {
+            if (
+              listBody.includes(opts.member.uuid || "") &&
+              !memberList.filter.includes(opts.member.uuid || "")
+            ) {
+              memberList.filter.push(opts.member.uuid || "")
+            } else memberList.filter = memberList.filter.filter((m) => m !== opts.member.uuid)
+          }
+
+          // if on the member page: filter out groups that no longer belong to this member
+          if (groupList.filter && groupList.page) {
+            groupList.filter = listBody
+
+            groupList.process(groupList.list.raw)
+            groupList.paginate()
+          } else {
+            groupList.process(groupList.list.raw)
+          }
           memberList.process(groupList.list.raw)
           memberList.paginate()
         } else if ((options as GroupMemberEditOptions).group) {
           const opts = options as GroupMemberEditOptions
 
           // edit the group like we would normally
-          opts.group.members = listBody
+          const group = groupList.list.raw.find((g) => g.uuid === opts.group.uuid)
+          if (group) group.members = listBody
+
+          // if on the member page: remove self from list if no longer containing member
+          if (groupList.filter && groupList.page) {
+            if (
+              listBody.includes(opts.group.uuid || "") &&
+              !groupList.filter.includes(opts.group.uuid || "")
+            ) {
+              groupList.filter.push(opts.group.uuid || "")
+            } else groupList.filter = groupList.filter.filter((m) => m !== opts.group.uuid)
+          }
+
+          // if on the group page: filter out members that no longer belong in this group
+          if (memberList.filter && memberList.page) {
+            memberList.filter = listBody
+
+            memberList.process(groupList.list.raw)
+            memberList.paginate()
+          }
 
           groupList.process(groupList.list.raw)
           groupList.paginate()

@@ -30,6 +30,8 @@ export interface DashList<T> {
   simpleSorts: Sort[]
   settings: ListSettings
   proxytags?: SvelecteOption[]
+  filter: string[] | undefined
+  page: Member | Group | undefined
   process: (groupList?: Group[]) => void
   paginate: () => void
   fetch: (token?: string) => Promise<void>
@@ -42,43 +44,55 @@ export interface SvelecteOption {
   extra?: any
 }
 
-const getDashList = <T>(g: DashList<T>) => {
+const getDashList = <T>(l: DashList<T>) => {
   return {
-    list: g.list,
+    list: l.list,
     get filters() {
-      return g.filters
+      return l.filters
     },
     set filters(filterGroups: FilterGroup[]) {
-      g.filters = filterGroups
+      l.filters = filterGroups
     },
     get sorts() {
-      return g.sorts
+      return l.sorts
     },
     set sorts(sortList: Sort[]) {
-      g.sorts = sortList
+      l.sorts = sortList
     },
     get simpleFilters() {
-      return g.simpleFilters
+      return l.simpleFilters
     },
     set simpleFilters(filterGroups: FilterGroup[]) {
-      g.simpleFilters = filterGroups
+      l.simpleFilters = filterGroups
     },
     get simpleSorts() {
-      return g.simpleSorts
+      return l.simpleSorts
     },
     set simpleSorts(sortList: Sort[]) {
-      g.simpleSorts = sortList
+      l.simpleSorts = sortList
     },
     get settings() {
-      return g.settings
+      return l.settings
     },
     set settings(settings: ListSettings) {
-      g.settings = settings
+      l.settings = settings
     },
-    process: g.process,
-    paginate: g.paginate,
-    fetch: g.fetch,
-    init: g.init,
+    get filter() {
+      return l.filter
+    },
+    set filter(f: string[] | undefined) {
+      l.filter = f
+    },
+    get page() {
+      return l.page
+    },
+    set page(p: Member | Group | undefined) {
+      l.page = p
+    },
+    process: l.process,
+    paginate: l.paginate,
+    fetch: l.fetch,
+    init: l.init,
   }
 }
 
@@ -176,6 +190,9 @@ function createMemberListState(): DashList<Member> {
   let processedMembers: Member[] = $state(processList(members, filters, sorts))
   let paginatedMembers: Member[] = $state(paginateList(processedMembers, listSettings))
 
+  let groupFilter: string[] | undefined = $state(undefined)
+  let page: Group | undefined = $state(undefined)
+
   let optionMembers: SvelecteOption[] = $derived(
     members
       .map((g) => {
@@ -247,9 +264,21 @@ function createMemberListState(): DashList<Member> {
     set settings(settings: ListSettings) {
       listSettings = settings
     },
+    get filter() {
+      return groupFilter
+    },
+    set filter(g: string[] | undefined) {
+      groupFilter = g
+    },
+    get page() {
+      return page
+    },
+    set page(p: Group | undefined) {
+      page = p
+    },
     process: function (groupList?: Group[]) {
       processedMembers = processList(
-        members,
+        groupFilter ? members.filter((m) => groupFilter?.find((g) => g === m.uuid)) : members,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
         listSettings.filterMode === "simple" ? simpleSorts : sorts,
         groupList
@@ -261,7 +290,7 @@ function createMemberListState(): DashList<Member> {
     fetch: async function (token?: string, groups?: Group[]) {
       members = await fetchList(`systems/${dash.system?.id || "exmpl"}/members`, token)
       processedMembers = processList(
-        members,
+        groupFilter ? members.filter((m) => groupFilter?.find((g) => g === m.uuid)) : members,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
         listSettings.filterMode === "simple" ? simpleSorts : sorts,
         groups
@@ -271,7 +300,7 @@ function createMemberListState(): DashList<Member> {
     init: function (data: Member[], groups?: Group[]) {
       members = data
       processedMembers = processList(
-        members,
+        groupFilter ? members.filter((m) => groupFilter?.find((g) => g === m.uuid)) : members,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
         listSettings.filterMode === "simple" ? simpleSorts : sorts,
         groups
@@ -295,6 +324,9 @@ function createGroupListState(): DashList<Group> {
   let groups: Group[] = $state([])
   let processedGroups: Group[] = $state(processList(groups, filters, sorts))
   let paginatedGroups: Group[] = $state(paginateList(processedGroups, listSettings))
+
+  let memberFilter: string[] | undefined = $state(undefined)
+  let page: Member | undefined = $state(undefined)
 
   let optionGroups: SvelecteOption[] = $derived(
     groups
@@ -348,9 +380,21 @@ function createGroupListState(): DashList<Group> {
     set settings(settings: ListSettings) {
       listSettings = settings
     },
+    get filter() {
+      return memberFilter
+    },
+    set filter(m: string[] | undefined) {
+      memberFilter = m
+    },
+    get page() {
+      return page
+    },
+    set page(p: Member | undefined) {
+      page = p
+    },
     process: function (groupList?: Group[]) {
       processedGroups = processList(
-        groups,
+        memberFilter ? groups.filter((g) => memberFilter?.find((m) => m === g.uuid)) : groups,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
         listSettings.filterMode === "simple" ? simpleSorts : sorts,
         groupList
@@ -365,7 +409,7 @@ function createGroupListState(): DashList<Group> {
         token
       )
       processedGroups = processList(
-        groups,
+        memberFilter ? groups.filter((g) => memberFilter?.find((m) => m === g.uuid)) : groups,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
         listSettings.filterMode === "simple" ? simpleSorts : sorts
       )
@@ -374,7 +418,7 @@ function createGroupListState(): DashList<Group> {
     init: function (data: Group[]) {
       groups = data
       processedGroups = processList(
-        groups,
+        memberFilter ? groups.filter((g) => memberFilter?.find((m) => m === g.uuid)) : groups,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
         listSettings.filterMode === "simple" ? simpleSorts : sorts
       )
