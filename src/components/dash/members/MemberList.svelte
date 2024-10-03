@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
   import { PrivacyMode, dash, type DashList } from "$lib/dash/dash.svelte"
+  import { ViewType } from "$lib/dash/settings.svelte"
   import ItemCollapse from "../ItemCollapse.svelte"
   import Pagination from "../Pagination.svelte"
   import MemberCreate from "./create/MemberCreate.svelte"
@@ -14,7 +15,7 @@
     list: DashList<Member>
     groupList: DashList<Group>
     privacyMode: PrivacyMode
-    initalGroups?: Group[]
+    initialGroups?: Group[]
   } = $props()
 
   let fetching = $state(false)
@@ -45,9 +46,18 @@
   </p>
 </div>
 <Pagination class="mx-auto" bind:list />
-{#each list.list.paginated as member (member.uuid)}
-  <ItemCollapse {privacyMode} {groupList} memberList={list} item={member} type="member" />
-{/each}
+{#if list.settings.view.type === ViewType.COLLAPSE || list.settings.view.type === ViewType.OPEN}
+  {#each list.list.paginated as member (member.uuid)}
+    <ItemCollapse
+      {privacyMode}
+      {groupList}
+      memberList={list}
+      item={member}
+      type="member"
+      forceOpen={list.settings.view.type === ViewType.OPEN}
+    />
+  {/each}
+{/if}
 {#if list.list.processed.length === 0}
   <div class="alert bg-info/20 flex flex-col text-center">No members found.</div>
 {/if}

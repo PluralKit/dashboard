@@ -1,9 +1,10 @@
-enum ViewType {
+export enum ViewType {
   COLLAPSE = "collapse",
   OPEN = "open",
   CARD = "card",
   TINY = "tiny",
   TEXT = "text",
+  DISCORD = "discord",
 }
 
 interface View {
@@ -11,6 +12,39 @@ interface View {
   itemsPerPageSelection: number[]
   defaultItemsPerPage: number
 }
+
+let availableViews: View[] = [
+  {
+    type: ViewType.COLLAPSE,
+    itemsPerPageSelection: [10, 25, 50],
+    defaultItemsPerPage: 25,
+  },
+  {
+    type: ViewType.OPEN,
+    itemsPerPageSelection: [5, 10, 25],
+    defaultItemsPerPage: 10,
+  },
+  {
+    type: ViewType.CARD,
+    itemsPerPageSelection: [24, 36, 48, 60],
+    defaultItemsPerPage: 36,
+  },
+  {
+    type: ViewType.TINY,
+    itemsPerPageSelection: [24, 36, 48, 60],
+    defaultItemsPerPage: 36,
+  },
+  {
+    type: ViewType.TEXT,
+    itemsPerPageSelection: [10, 25, 50, 100],
+    defaultItemsPerPage: 25,
+  },
+  {
+    type: ViewType.DISCORD,
+    itemsPerPageSelection: [10, 25],
+    defaultItemsPerPage: 25,
+  },
+]
 
 export interface ListSettings {
   readonly view: View
@@ -22,33 +56,6 @@ export interface ListSettings {
 }
 
 export function createListSettings(): ListSettings {
-  let availableViews: View[] = [
-    {
-      type: ViewType.COLLAPSE,
-      itemsPerPageSelection: [10, 25, 50],
-      defaultItemsPerPage: 25,
-    },
-    {
-      type: ViewType.OPEN,
-      itemsPerPageSelection: [5, 10, 25],
-      defaultItemsPerPage: 10,
-    },
-    {
-      type: ViewType.CARD,
-      itemsPerPageSelection: [24, 36, 48, 60],
-      defaultItemsPerPage: 36,
-    },
-    {
-      type: ViewType.TINY,
-      itemsPerPageSelection: [24, 36, 48, 60],
-      defaultItemsPerPage: 36,
-    },
-    {
-      type: ViewType.TEXT,
-      itemsPerPageSelection: [10, 25, 50, 100],
-      defaultItemsPerPage: 25,
-    },
-  ]
   let view: View = $state(availableViews[0])
   let itemsPerPage: number = $state(view.defaultItemsPerPage)
   let currentPage: number = $state(1)
@@ -61,7 +68,8 @@ export function createListSettings(): ListSettings {
       return view
     },
     changeView: (type: ViewType) => {
-      view = availableViews.find((v) => view.type === type) || availableViews[0]
+      view = availableViews.find((v) => v.type === type) || availableViews[0]
+      itemsPerPage = view.defaultItemsPerPage
       currentPage = 1
     },
     get itemsPerPage() {

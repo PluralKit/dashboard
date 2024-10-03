@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
   import { PrivacyMode, dash, type DashList } from "$lib/dash/dash.svelte"
+  import { ViewType } from "$lib/dash/settings.svelte"
   import ItemCollapse from "../ItemCollapse.svelte"
   import Pagination from "../Pagination.svelte"
   import GroupCreate from "./create/GroupCreate.svelte"
@@ -47,9 +48,18 @@
   </p>
 </div>
 <Pagination class="mx-auto" bind:list />
-{#each list.list.paginated as group (group.uuid)}
-  <ItemCollapse {privacyMode} groupList={list} {memberList} item={group} type="group" />
-{/each}
+{#if list.settings.view.type === ViewType.COLLAPSE || list.settings.view.type === ViewType.OPEN}
+  {#each list.list.paginated as group (group.uuid)}
+    <ItemCollapse
+      {privacyMode}
+      groupList={list}
+      {memberList}
+      item={group}
+      type="group"
+      forceOpen={list.settings.view.type === ViewType.OPEN}
+    />
+  {/each}
+{/if}
 {#if list.list.processed.length === 0}
   <div class="alert bg-info/20 flex flex-col text-center">No groups found.</div>
 {/if}

@@ -142,22 +142,6 @@
     <div class="join">
       <label
         class="input input-disabled input-bordered input-sm w-fit join-item"
-        for="member-list-page-length">Page length</label
-      >
-      <select
-        class="input input-sm input-bordered join-item flex-1"
-        id="member-list-page-length"
-        bind:value={list.settings.itemsPerPage}
-        onchange={() => list.paginate()}
-      >
-        <option value={10}>10</option>
-        <option value={25}>25</option>
-        <option value={50}>50</option>
-      </select>
-    </div>
-    <div class="join">
-      <label
-        class="input input-disabled input-bordered input-sm w-fit join-item"
         for="member-list-sort-by">Sort by</label
       >
       <select

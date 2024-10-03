@@ -8,6 +8,7 @@
   import { toggleSetting } from "$lib/dash/utils"
   import SimpleMemberControls from "./SimpleMemberControls.svelte"
   import type { Group, Member } from "$api/types"
+  import { ViewType } from "$lib/dash/settings.svelte"
 
   let {
     list,
@@ -67,6 +68,63 @@
   >
     Show colors
   </button>
+  |
+  <button
+    class="text-secondary hover:text-primary cursor-pointer transition-all"
+    onclick={() => {
+      toggleSetting(dash, "display", "keepOpen")
+
+      if (list.settings.view.type === ViewType.COLLAPSE && dash.settings.display?.keepOpen === true)
+        list.settings.changeView(ViewType.OPEN)
+      else if (list.settings.view.type === ViewType.OPEN && !dash.settings.display?.keepOpen)
+        list.settings.changeView(ViewType.COLLAPSE)
+
+      list.paginate()
+    }}
+  >
+    Force open
+  </button>
+</div>
+<div
+  class={`grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4 ${
+    wide === true ? "xl:grid-cols-3" : "xl:grid-cols-2"
+  }`}
+>
+  <div class="join">
+    <label
+      class="input input-disabled input-bordered input-sm w-fit join-item"
+      for="member-list-page-length">Page length</label
+    >
+    <select
+      class="input input-sm input-bordered join-item flex-1"
+      id="member-list-page-length"
+      bind:value={list.settings.itemsPerPage}
+      onchange={() => list.paginate()}
+    >
+      {#each list.settings.view.itemsPerPageSelection as option}
+        <option value={option}>{option}</option>
+      {/each}
+    </select>
+  </div>
+  <div class="join flex-1">
+    <label
+      class="input input-disabled input-bordered input-sm w-fit join-item"
+      for="member-list-view">View mode</label
+    >
+    <select
+      class="input input-sm input-bordered join-item flex-1"
+      id="member-list-view"
+      onchange={(e: Event) => {
+        list.settings.changeView((e.target as HTMLSelectElement).value as ViewType)
+        list.paginate()
+      }}
+    >
+      <option value={dash.settings.display?.keepOpen === true ? ViewType.OPEN : ViewType.COLLAPSE}
+        >List</option
+      >
+      <option value={ViewType.TINY}>Tiny</option>
+    </select>
+  </div>
 </div>
 <hr class="my-2" />
 {#if simpleOnly || list.settings.filterMode === "simple"}
