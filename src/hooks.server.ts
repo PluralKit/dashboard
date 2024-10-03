@@ -11,6 +11,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   }
   const apiBaseUrl = getBaseUrl()
   event.locals.api = apiClient(event.fetch, apiBaseUrl)
+  event.locals.apiBaseUrl = apiBaseUrl
 
   const response = await resolve(event)
   return response

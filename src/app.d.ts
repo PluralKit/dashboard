@@ -8,6 +8,7 @@ declare global {
     // interface Error {}
     interface Locals {
       api: ApiClient
+      apiBaseUrl?: string
     }
     // interface PageData {}
     // interface Platform {}
