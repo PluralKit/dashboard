@@ -14,10 +14,8 @@
   } = $props()
 
   let params = $page.url.searchParams
-  params.delete("tab")
-
-  let systemParams = $page.url.searchParams
-  systemParams.append("tab", "groups")
+  if (!asPage) params.delete("tab")
+  else params.append("tab", "groups")
 </script>
 
 <div class="flex flex-row justify-end items-center">
@@ -33,7 +31,7 @@
     <a
       target="_blank"
       class={`btn btn-sm mt-2 btn-${color}`}
-      href={`/dash/${(item as Group).system}${systemParams.toString().length > 0 ? `?${systemParams.toString()}` : ""}`}
+      href={`/dash/${(item as Group).system}${params.toString().length > 0 ? `?${params.toString()}` : ""}`}
     >
       View system
     </a>
