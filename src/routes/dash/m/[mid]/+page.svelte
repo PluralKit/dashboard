@@ -18,6 +18,7 @@
 
   <div class={`box bg-base-100 h-min`}>
     <GroupControls
+      memberList={dash.member.members}
       wide={true}
       simpleOnly={true}
       list={dash.member.groups}

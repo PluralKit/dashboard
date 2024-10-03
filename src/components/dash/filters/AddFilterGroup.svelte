@@ -22,11 +22,13 @@
     type,
     privacyMode,
     groupList,
+    memberList,
   }: {
     list: DashList<Group | Member>
     type: "members" | "groups"
     filterGroups: FilterGroup[]
     groupList: DashList<Group>
+    memberList: DashList<Member>
     privacyMode: PrivacyMode
   } = $props()
 
@@ -93,7 +95,7 @@
     // we want to add the filter to the last empty filter group
     // unless it's a non-draggable group
     let group = createFilterGroup([filter])
-    if (filterGroups.length === 0) filterGroups = [...filterGroups, group]
+    if (filterGroups.length === 0) filterGroups.push(group)
     else {
       let existingGroup: FilterGroup | null = null
       for (let i = filterGroups.length - 1; i >= 0; i--) {
@@ -102,8 +104,8 @@
           break
         }
       }
-      if (!existingGroup) filterGroups = [...filterGroups, group]
-      else existingGroup.filters = [...existingGroup.filters, filter]
+      if (!existingGroup) filterGroups.push(group)
+      else existingGroup.filters.push(filter)
     }
 
     list.process(groupList.list.raw)
@@ -269,7 +271,7 @@
       {:else if filterField === "member" && groupArrayModes.includes(filterMode)}
         <Svelecte
           class="svelecte-control-pk w-full"
-          options={list.list.options}
+          options={memberList.list.options}
           multiple
           bind:value={filterValue}
           valueField="value"

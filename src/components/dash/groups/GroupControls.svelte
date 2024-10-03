@@ -7,16 +7,18 @@
   import AddSort from "../filters/AddSort.svelte"
   import { toggleSetting } from "$lib/dash/utils"
   import SimpleGroupControls from "./SimpleGroupControls.svelte"
-  import type { Group } from "$api/types"
+  import type { Group, Member } from "$api/types"
   import { ViewType } from "$lib/dash/settings.svelte"
 
   let {
     list,
+    memberList,
     privacyMode,
     simpleOnly = false,
     wide = false,
   }: {
     list: DashList<Group>
+    memberList: DashList<Member>
     privacyMode: PrivacyMode
     simpleOnly?: boolean
     wide?: boolean
@@ -150,11 +152,12 @@
       <AddFilterGroup
         {privacyMode}
         groupList={list}
+        {memberList}
         bind:filterGroups={list.filters}
         {list}
         type="groups"
       />
-      <FilterGroups groupList={list} {list} />
+      <FilterGroups groupList={list} {list} {memberList} />
     </div>
     <div>
       <h3 class="text-xl">Sort list</h3>

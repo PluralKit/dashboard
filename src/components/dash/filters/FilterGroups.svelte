@@ -11,9 +11,11 @@
 
   let {
     list,
+    memberList,
     groupList,
   }: {
     list: DashList<Member | Group>
+    memberList: DashList<Member>
     groupList: DashList<Group>
   } = $props()
 
@@ -88,7 +90,7 @@
           {/if}
         </div>
         <ul class="flex flex-col p-2 rounded-r-lg gap-2 flex-1">
-          <FilterGroupHeader {list} {group} />
+          <FilterGroupHeader {list} {group} {groupList} />
           {#if group.filters.length === 0}
             <div class="text-sm text-muted">
               <span>No filters in this group.</span>
@@ -124,8 +126,8 @@
                 {/if}
               </div>
               <div class="flex flex-col p-2 gap-2 flex-1">
-                <StaticFilterHeader {list} {filter} {group} />
-                <FilterInfo {filter} {list} />
+                <StaticFilterHeader {list} {filter} {group} {groupList} />
+                <FilterInfo {filter} {list} {memberList} {groupList} />
               </div>
             </li>
           {/each}

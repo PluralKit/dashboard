@@ -14,10 +14,12 @@
     filter,
     list,
     groupList,
+    memberList,
   }: {
     filter: Filter
     list: DashList<Member | Group>
     groupList: DashList<Group>
+    memberList: DashList<Member>
   } = $props()
 
   let filterValue = $state(filter.value)
@@ -51,7 +53,7 @@
 {:else if filter.field === "member" && groupArrayModes.includes(filter.mode)}
   <Svelecte
     class="svelecte-control-pk w-full"
-    options={list.list.options}
+    options={memberList.list.options}
     multiple
     valueField="value"
     labelField="text"

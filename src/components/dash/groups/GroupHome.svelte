@@ -20,7 +20,7 @@
       dash.settings.display?.forceControlsAtTop === true ? "" : "xl:w-1/3"
     }`}
   >
-    <GroupControls privacyMode={dash.privacyMode} list={dash.groups} />
+    <GroupControls privacyMode={dash.privacyMode} list={dash.groups} memberList={dash.members} />
   </div>
   <div
     class={`flex flex-col gap-3 sm:gap-4 ${

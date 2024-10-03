@@ -152,12 +152,13 @@
       <hr class="my-2" />
       <AddFilterGroup
         {privacyMode}
+        memberList={list}
         {groupList}
         bind:filterGroups={list.filters}
         {list}
         type="members"
       />
-      <FilterGroups {groupList} {list} />
+      <FilterGroups {groupList} {list} memberList={list} />
     </div>
     <div>
       <h3 class="text-xl">Sort list</h3>
