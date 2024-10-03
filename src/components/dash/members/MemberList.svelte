@@ -5,17 +5,20 @@
   import ItemCollapse from "../ItemCollapse.svelte"
   import Pagination from "../Pagination.svelte"
   import MemberCreate from "./create/MemberCreate.svelte"
+  import MemberTiny from "./MemberTiny.svelte"
 
   let {
     list,
     groupList,
     privacyMode,
     initialGroups = [],
+    wide = dash.settings.display?.forceControlsAtTop === true,
   }: {
     list: DashList<Member>
     groupList: DashList<Group>
     privacyMode: PrivacyMode
     initialGroups?: Group[]
+    wide?: boolean
   } = $props()
 
   let fetching = $state(false)
@@ -57,6 +60,16 @@
       forceOpen={list.settings.view.type === ViewType.OPEN}
     />
   {/each}
+{:else if list.settings.view.type === ViewType.TINY}
+  <div class="flex justify-center">
+    <div
+      class={`grid justify-start mx-auto w-full gap-3 grid-cols-2 max-w-96 sm:max-w-none sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 ${!wide ? "xl:grid-cols-4" : ""}`}
+    >
+      {#each list.list.paginated as member (member.uuid)}
+        <MemberTiny {member} asPage={false} />
+      {/each}
+    </div>
+  </div>
 {/if}
 {#if list.list.processed.length === 0}
   <div class="alert bg-info/20 flex flex-col text-center">No members found.</div>

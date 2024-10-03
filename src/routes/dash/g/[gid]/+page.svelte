@@ -32,6 +32,7 @@
       groupList={dash.group.groups}
       privacyMode={dash.group.privacyMode}
       initialGroups={dash.group.group ? [dash.group.group] : undefined}
+      wide={true}
     />
   </div>
 </div>

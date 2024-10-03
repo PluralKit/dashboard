@@ -74,10 +74,15 @@
     onclick={() => {
       toggleSetting(dash, "display", "keepOpen")
 
-      if (list.settings.view.type === ViewType.COLLAPSE && dash.settings.display?.keepOpen === true)
-        list.settings.changeView(ViewType.OPEN)
-      else if (list.settings.view.type === ViewType.OPEN && !dash.settings.display?.keepOpen)
-        list.settings.changeView(ViewType.COLLAPSE)
+      if (
+        list.settings.view.type === ViewType.COLLAPSE &&
+        dash.settings.display?.keepOpen === true
+      ) {
+        list.settings.viewType = ViewType.OPEN
+      } else if (list.settings.view.type === ViewType.OPEN && !dash.settings.display?.keepOpen) {
+        list.settings.viewType = ViewType.COLLAPSE
+      }
+      list.settings.changeView()
 
       list.paginate()
     }}
@@ -114,8 +119,9 @@
     <select
       class="input input-sm input-bordered join-item flex-1"
       id="member-list-view"
-      onchange={(e: Event) => {
-        list.settings.changeView((e.target as HTMLSelectElement).value as ViewType)
+      bind:value={list.settings.viewType}
+      onchange={() => {
+        list.settings.changeView()
         list.paginate()
       }}
     >

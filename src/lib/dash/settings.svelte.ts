@@ -1,3 +1,5 @@
+import { dash } from "./dash.svelte"
+
 export enum ViewType {
   COLLAPSE = "collapse",
   OPEN = "open",
@@ -31,8 +33,8 @@ let availableViews: View[] = [
   },
   {
     type: ViewType.TINY,
-    itemsPerPageSelection: [24, 36, 48, 60],
-    defaultItemsPerPage: 36,
+    itemsPerPageSelection: [20, 30, 60],
+    defaultItemsPerPage: 30,
   },
   {
     type: ViewType.TEXT,
@@ -48,7 +50,8 @@ let availableViews: View[] = [
 
 export interface ListSettings {
   readonly view: View
-  changeView: (type: ViewType) => void
+  viewType: ViewType
+  changeView: () => void
   itemsPerPage: number
   currentPage: number
   filterMode: "simple" | "advanced"
@@ -56,7 +59,12 @@ export interface ListSettings {
 }
 
 export function createListSettings(): ListSettings {
-  let view: View = $state(availableViews[0])
+  let viewType: ViewType = $state(ViewType.COLLAPSE)
+  let view: View = $derived.by(() => {
+    const vv = availableViews.find((v) => v.type === viewType)
+    if (!vv) return dash?.settings.display?.keepOpen ? availableViews[1] : availableViews[0]
+    else return vv
+  })
   let itemsPerPage: number = $state(view.defaultItemsPerPage)
   let currentPage: number = $state(1)
 
@@ -67,8 +75,13 @@ export function createListSettings(): ListSettings {
     get view() {
       return view
     },
-    changeView: (type: ViewType) => {
-      view = availableViews.find((v) => v.type === type) || availableViews[0]
+    get viewType() {
+      return viewType
+    },
+    set viewType(type: ViewType) {
+      viewType = type
+    },
+    changeView: () => {
       itemsPerPage = view.defaultItemsPerPage
       currentPage = 1
     },

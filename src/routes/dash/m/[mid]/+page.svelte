@@ -20,8 +20,8 @@
     <GroupControls
       wide={true}
       simpleOnly={true}
-      list={dash.group.members}
-      privacyMode={dash.group.privacyMode}
+      list={dash.member.groups}
+      privacyMode={dash.member.privacyMode}
     />
   </div>
 
@@ -31,6 +31,7 @@
       memberList={dash.member.members}
       privacyMode={dash.member.privacyMode}
       initialMembers={dash.member.member ? [dash.member.member] : undefined}
+      wide={true}
     />
   </div>
 </div>
