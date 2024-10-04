@@ -320,5 +320,5 @@
       </button>
     {/if}
   </div>
-  <DeleteButton type="member" item={member} {asPage} {list} />
+  <DeleteButton type="member" item={member} {asPage} {list} {groupList} />
 </div>

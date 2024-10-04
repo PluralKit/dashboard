@@ -163,5 +163,5 @@
       </button>
     {/if}
   </div>
-  <DeleteButton type="group" item={group} {asPage} {list} />
+  <DeleteButton type="group" item={group} {asPage} {list} groupList={list} />
 </div>

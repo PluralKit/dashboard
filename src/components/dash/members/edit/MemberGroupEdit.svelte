@@ -296,7 +296,7 @@
       </button>
     {/if}
   </div>
-  <DeleteButton type="member" item={member} {asPage} list={memberList} />
+  <DeleteButton type="member" item={member} {asPage} list={memberList} {groupList} />
 </div>
 
 {#snippet option(opt: any)}

@@ -10,11 +10,13 @@
     type,
     asPage,
     list,
+    groupList,
   }: {
     item: Member | Group
     type: "member" | "group"
     asPage: boolean
     list: DashList<Member | Group>
+    groupList: DashList<Group>
   } = $props()
 
   let element: HTMLDialogElement
@@ -35,7 +37,7 @@
     if (!asPage) {
       list.list.raw = list.list.raw.filter((g) => g.uuid !== item.uuid)
 
-      list.process()
+      list.process(groupList.list.raw)
       list.paginate()
     } else {
       goto(`/dash/${dash.user?.id}?tab=${type}s`)
