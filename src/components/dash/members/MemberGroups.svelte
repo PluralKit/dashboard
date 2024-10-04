@@ -3,7 +3,7 @@
   import { PrivacyMode, dash, type DashList } from "$lib/dash/dash.svelte"
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
-  import SimplePagination from "../SimplePagination.svelte"
+  import Pagination from "../Pagination.svelte"
   import MemberLink from "./MemberLink.svelte"
   import MemberGroupEdit from "./edit/MemberGroupEdit.svelte"
   import MemberGroupList from "./MemberGroupList.svelte"
@@ -86,7 +86,7 @@
         {:then}
           <div class="flex flex-row justify-between gap-2 items-start">
             <p class="mb-3">{groups.length} total groups</p>
-            <SimplePagination {itemsPerPage} rawList={groups} bind:currentPage />
+            <Pagination {itemsPerPage} rawList={groups} bind:currentPage />
           </div>
           <MemberGroupList {groups} bind:currentPage {itemsPerPage} />
         {/await}

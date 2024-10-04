@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Member } from "$api/types"
-  import SimplePagination from "$components/dash/SimplePagination.svelte"
+  import Pagination from "$components/dash/Pagination.svelte"
   import type { DashList } from "$lib/dash/dash.svelte"
   import { IconPlus, IconRefresh } from "@tabler/icons-svelte"
   import Svelecte from "svelecte"
@@ -111,7 +111,7 @@
     </div>
     <div class="bg-base-100 flex-1 rounded-box p-4 gap-2 flex flex-col">
       <h5 class="text-lg">Member list</h5>
-      <SimplePagination {itemsPerPage} rawList={selectedMembers} bind:currentPage />
+      <Pagination {itemsPerPage} rawList={selectedMembers} bind:currentPage />
       <GroupMemberList members={selectedMembers} bind:currentPage {itemsPerPage} small={true} />
     </div>
   </div>

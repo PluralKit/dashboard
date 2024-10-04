@@ -2,7 +2,7 @@
   import type { Group, Member } from "$api/types"
   import { PrivacyMode, dash, type DashList } from "$lib/dash/dash.svelte"
   import { IconEdit } from "@tabler/icons-svelte"
-  import SimplePagination from "../SimplePagination.svelte"
+  import Pagination from "../Pagination.svelte"
   import GroupLink from "./GroupLink.svelte"
   import GroupMemberEdit from "./edit/GroupMemberEdit.svelte"
   import GroupMemberList from "./GroupMemberList.svelte"
@@ -49,7 +49,7 @@
         <h5 class="text-lg mb-2">Member info</h5>
         <div class="flex flex-row justify-between gap-2 items-start">
           <p class="mb-3">{members.length} total members</p>
-          <SimplePagination {itemsPerPage} rawList={members} bind:currentPage />
+          <Pagination {itemsPerPage} rawList={members} bind:currentPage />
         </div>
         <GroupMemberList {members} bind:currentPage {itemsPerPage} />
       </div>

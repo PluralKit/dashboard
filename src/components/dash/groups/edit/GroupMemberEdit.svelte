@@ -5,7 +5,7 @@
   import Svelecte from "svelecte"
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
   import { fade } from "svelte/transition"
-  import SimplePagination from "$components/dash/SimplePagination.svelte"
+  import Pagination from "$components/dash/Pagination.svelte"
   import GroupMemberList from "../GroupMemberList.svelte"
   import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
   import Spinny from "$components/Spinny.svelte"
@@ -214,7 +214,7 @@
   </div>
   <div class="bg-base-100 flex-1 rounded-box p-4 gap-2 flex flex-col">
     <h5 class="text-lg">Member list</h5>
-    <SimplePagination {itemsPerPage} rawList={memberSelection} bind:currentPage />
+    <Pagination {itemsPerPage} rawList={memberSelection} bind:currentPage />
     <GroupMemberList members={memberSelection} bind:currentPage {itemsPerPage} small={true} />
   </div>
 </div>

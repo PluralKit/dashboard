@@ -48,7 +48,15 @@
     >
   </p>
 </div>
-<Pagination class="mx-auto" bind:list />
+<Pagination
+  class="mx-auto"
+  size="sm"
+  rawList={list.list.processed}
+  paginate={list.paginate}
+  itemsPerPage={list.settings.itemsPerPage}
+  bind:currentPage={list.settings.currentPage}
+/>
+
 {#if list.settings.view.type === ViewType.COLLAPSE || list.settings.view.type === ViewType.OPEN}
   {#each list.list.paginated as member (member.uuid)}
     <ItemCollapse
@@ -72,4 +80,11 @@
 {#if list.list.processed.length === 0}
   <div class="alert bg-info/20 flex flex-col text-center">No members found.</div>
 {/if}
-<Pagination class="mx-auto" bind:list />
+<Pagination
+  class="mx-auto"
+  rawList={list.list.processed}
+  paginate={list.paginate}
+  size="sm"
+  itemsPerPage={list.settings.itemsPerPage}
+  bind:currentPage={list.settings.currentPage}
+/>
