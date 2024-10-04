@@ -50,9 +50,9 @@
    - OR -
    skip fowards + 1 isn't visible
 
-   ALWAYS invisible if there's less than 4 pages and we're not on page 4
+   ALWAYS invisible if there's less than 5 pages
    -->
-    {#if (pageAmount > 4 || currentPage === 4) && ((currentPage - 1 > 2 && !(currentPage - 1 > 3)) || !(currentPage + 1 < pageAmount - 1))}
+    {#if pageAmount > 4 && ((currentPage - 1 > 2 && !(currentPage - 1 > 3)) || !(currentPage + 1 < pageAmount - 1))}
       <button
         aria-label={`Go to second page (page 2)`}
         class={`btn btn-${size} join-item btn-neutral`}
@@ -168,9 +168,9 @@
       visible if next page < second to last page AND skip forward ISN'T visible
       OR
       visible if skip backwards - 1 isn't visible
-      always invisible if there's less than 5 pages and we're not on page 1
+      always invisible if there's less than 5 pages
       -->
-    {#if (pageAmount > 4 || currentPage === 1) && ((currentPage + 1 < pageAmount - 1 && !(currentPage + 1 < pageAmount - 2)) || !(currentPage - 1 > 2))}
+    {#if pageAmount > 4 && ((currentPage + 1 < pageAmount - 1 && !(currentPage + 1 < pageAmount - 2)) || !(currentPage - 1 > 2))}
       <button
         aria-label={`Go to second to last page ${pageAmount - 1}`}
         class={`btn btn-${size} join-item btn-neutral`}
