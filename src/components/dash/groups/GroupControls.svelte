@@ -29,8 +29,6 @@
       ? (list.settings.filterMode = "advanced")
       : (list.settings.filterMode = "simple")
 
-    console.log(list.settings.filterMode)
-
     list.process(list.list.raw)
     list.paginate()
   }
