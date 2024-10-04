@@ -43,6 +43,7 @@ export async function load({ cookies, params, url, locals }) {
     } catch (err) {
       const e = err as ApiError
       if (e.type === ErrorType.RateLimit) errs.push(e.message || e.code.toString())
+      if (e.type === ErrorType.Forbidden) errs.push(e.message || e.code.toString())
       else error(e.code, e.message)
     }
   }
