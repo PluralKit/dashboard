@@ -14,7 +14,7 @@ export async function load({ cookies, url, locals }) {
   if (token) {
     try {
       system = await login(locals.api, cookies)
-      cookies.set("pk-sid", system?.uuid || "", {
+      cookies.set("pk-sid", system?.id || "", {
         path: "/",
         secure: env.NODE_ENV !== "development",
         maxAge: 60 * 60 * 24 * 90, // 90 days
