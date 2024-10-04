@@ -104,6 +104,13 @@ function applySort<T>(list: T[], sort: Sort, groupList: Group[]): T[] {
         if (ag === bg) result = 0
         else result = ag > bg ? 1 : -1
         return result * sort.order
+      case "members":
+        let am = (a as Group).members || []
+        let bm = (b as Group).members || []
+
+        if (am.length === bm.length) result = 0
+        else result = am.length > bm.length ? 1 : -1
+        return result * sort.order
       default:
         if (typeof a[field] === "string" || typeof b[field] === "string") {
           if (!a[field]) result = 0

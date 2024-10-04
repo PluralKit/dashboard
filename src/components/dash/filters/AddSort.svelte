@@ -68,6 +68,8 @@
           <option value="birthday">birthday</option>
           <option value="message_count">message count</option>
           <option value="groups">groups</option>
+        {:else if type === "groups"}
+          <option value="members">members</option>
         {/if}
         <option value="created">created</option>
       </select>
