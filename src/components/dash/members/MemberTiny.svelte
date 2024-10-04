@@ -1,14 +1,17 @@
 <script lang="ts">
   import type { Member } from "$api/types"
   import { page } from "$app/stores"
+  import { dash } from "$lib/dash/dash.svelte"
   import { IconLock, IconShare, IconUser } from "@tabler/icons-svelte"
 
   let {
     member,
     asPage,
+    wide = dash.settings.display?.forceControlsAtTop === true,
   }: {
     member: Member
     asPage: boolean
+    wide?: boolean
   } = $props()
 
   let params = $page.url.searchParams
@@ -24,12 +27,15 @@
 </script>
 
 <a
-  class={`self-stretch flex flex-col`}
+  class={`
+    center-small
+    self-stretch flex flex-col w-1/2 sm:w-1/4 md:w-1/5 lg:w-1/6 ${!wide ? "xl:w-1/5" : ""}
+  `}
   href={link()}
   aria-label={asPage ? "View member list" : "View member page"}
 >
   <div
-    class="box rounded-lg flex flex-col gap-2 p-0 transition-all hover:scale-105 h-full"
+    class="box rounded-lg m-1 flex flex-col gap-2 p-0 transition-all hover:scale-105 h-full"
     style={member.color ? `border: 4px solid #${member.color}` : ""}
   >
     {#if member.avatar_url || member.webhook_avatar_url}
@@ -59,3 +65,13 @@
     </div>
   </div>
 </a>
+
+<style>
+  @media (max-width: 399px) {
+    .center-small {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 10rem;
+    }
+  }
+</style>

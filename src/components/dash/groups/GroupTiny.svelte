@@ -1,14 +1,17 @@
 <script lang="ts">
   import type { Group } from "$api/types"
   import { page } from "$app/stores"
+  import { dash } from "$lib/dash/dash.svelte"
   import { IconLock, IconShare, IconUser } from "@tabler/icons-svelte"
 
   let {
     group,
     asPage,
+    wide = dash.settings.display?.forceControlsAtTop === true,
   }: {
     group: Group
     asPage: boolean
+    wide?: boolean
   } = $props()
 
   let params = $page.url.searchParams
@@ -24,12 +27,15 @@
 </script>
 
 <a
-  class={`max-w-32 self-stretch flex flex-col`}
+  class={`
+    center-small
+    self-stretch flex flex-col w-1/2 sm:w-1/4 md:w-1/5 lg:w-1/6 ${!wide ? "xl:w-1/5" : ""}
+  `}
   href={link()}
   aria-label={asPage ? "View group list" : "View group page"}
 >
   <div
-    class="box rounded-lg flex flex-col gap-2 p-0 transition-all hover:scale-105 h-full"
+    class="box rounded-lg m-1 flex flex-col gap-2 p-0 transition-all hover:scale-105 h-full"
     style={group.color ? `border: 4px solid #${group.color}` : ""}
   >
     {#if group.icon}
@@ -55,3 +61,13 @@
     </div>
   </div>
 </a>
+
+<style>
+  @media (max-width: 399px) {
+    .center-small {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 10rem;
+    }
+  }
+</style>

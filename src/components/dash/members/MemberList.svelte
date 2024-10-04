@@ -61,12 +61,10 @@
     />
   {/each}
 {:else if list.settings.view.type === ViewType.TINY}
-  <div class="flex justify-center">
-    <div
-      class={`grid justify-start mx-auto w-full gap-3 grid-cols-2 max-w-96 sm:max-w-none sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 ${!wide ? "xl:grid-cols-4" : ""}`}
-    >
+  <div class="max-w-96 sm:max-w-none mx-auto px-8 sm:px-0">
+    <div class="w-full justify-start flex flex-wrap">
       {#each list.list.paginated as member (member.uuid)}
-        <MemberTiny {member} asPage={false} />
+        <MemberTiny {member} asPage={false} {wide} />
       {/each}
     </div>
   </div>
