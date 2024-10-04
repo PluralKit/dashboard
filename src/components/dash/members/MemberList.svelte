@@ -29,7 +29,7 @@
     try {
       const token =
         (dash.privacyMode === PrivacyMode.PRIVATE && localStorage.getItem("pk-token")) || undefined
-      await list.fetch(token)
+      await list.fetch(token, groupList.list.raw)
     } catch (e) {
       dash.errors.members = (e as Error).message
     }

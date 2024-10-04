@@ -3,6 +3,7 @@
   import type { Group, Member, System } from "$api/types"
   import { browser } from "$app/environment"
   import { dash, type DashList } from "$lib/dash/dash.svelte"
+  import { groupCount } from "$lib/dash/member/utils"
   import { IconDeviceFloppy } from "@tabler/icons-svelte"
   import moment from "moment"
 
@@ -142,17 +143,20 @@
 
         if ((options as MemberGroupEditOptions).member) {
           const opts = options as MemberGroupEditOptions
+          const member = memberList.list.raw.find((m) => opts.member.uuid === m.uuid) || opts.member
 
           // add the member's uuid to each group added
           for (const group of groupList.list.raw) {
             const g = group as Group
             if (listBody.includes(g.uuid || "")) {
-              if (g.members && !g.members.includes(opts.member.uuid || "")) {
-                g.members = [...(g.members || []), opts.member.uuid || ""]
+              if (g.members && !g.members.includes(member.uuid || "")) {
+                g.members = [...(g.members || []), member.uuid || ""]
               }
             } else {
-              g.members = [...(g.members || [])].filter((m) => m !== opts.member.uuid)
+              g.members = [...(g.members || [])].filter((m) => m !== member.uuid)
             }
+
+            member.group_count = listBody.length
           }
 
           // if on the group page: remove self from list if no longer in group
@@ -179,6 +183,22 @@
         } else if ((options as GroupMemberEditOptions).group) {
           const opts = options as GroupMemberEditOptions
 
+          // update the group count for each member added
+          for (const mid of listBody) {
+            if (!opts.group.members?.includes(mid) || false) {
+              const member = memberList.list.raw.find((m) => m.uuid === mid)
+              if (member?.group_count) member.group_count += 1
+            }
+          }
+
+          // and those removed
+          for (const mid of opts.group.members || []) {
+            if (!listBody.includes(mid)) {
+              const member = memberList.list.raw.find((m) => m.uuid === mid)
+              if (member?.group_count) member.group_count -= 1
+            }
+          }
+
           // edit the group like we would normally
           const group = groupList.list.raw.find((g) => g.uuid === opts.group.uuid)
           if (group) group.members = listBody
@@ -196,13 +216,13 @@
           // if on the group page: filter out members that no longer belong in this group
           if (memberList.filter && memberList.page) {
             memberList.filter = listBody
-
-            memberList.process(groupList.list.raw)
-            memberList.paginate()
           }
 
           groupList.process(groupList.list.raw)
           groupList.paginate()
+
+          memberList.process(groupList.list.raw)
+          memberList.paginate()
         }
 
         success = true

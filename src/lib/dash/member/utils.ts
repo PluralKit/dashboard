@@ -1,3 +1,4 @@
+import type { Group, Member } from "$api/types"
 import moment from "moment"
 
 export function getBirthday(birthday: string) {
@@ -32,4 +33,15 @@ export function proxyOptionFromString(inputValue: string) {
 
     return value
   }
+}
+
+export function mapMemberGroups(members: Member[], groups: Group[]) {
+  return members.map((m) => ({
+    ...m,
+    group_count: groups.filter((g) => g.members?.includes(m.uuid || "") || false).length,
+  }))
+}
+
+export function groupCount(mid: string, groups: Group[]) {
+  return groups.filter((g) => g.members?.includes(mid || "") || false).length
 }

@@ -10,6 +10,7 @@ import {
 import { fetchList } from "./utils"
 import { createListSettings, paginateList, type ListSettings } from "./settings.svelte"
 import { SortMode, createSimpleSorts, createSort, sortList, type Sort } from "./sorts.svelte"
+import { mapMemberGroups } from "./member/utils"
 
 export enum PrivacyMode {
   PUBLIC,
@@ -34,8 +35,8 @@ export interface DashList<T> {
   page: Member | Group | undefined
   process: (groupList?: Group[]) => void
   paginate: () => void
-  fetch: (token?: string) => Promise<void>
-  init: (data: Member[] | Group[]) => void
+  fetch: (token?: string, groups?: Group[]) => Promise<void>
+  init: (data: Member[] | Group[], groups?: Group[]) => void
 }
 
 export interface SvelecteOption {
@@ -140,7 +141,7 @@ function createDash() {
     },
     init: (system: System, members: Member[], groups: Group[], mode: PrivacyMode) => {
       systemData.init(system)
-      memberList.init(members)
+      memberList.init(members, groups)
       groupList.init(groups)
       privacyMode = mode
     },
@@ -288,7 +289,10 @@ function createMemberListState(): DashList<Member> {
       paginatedMembers = paginateList(processedMembers, listSettings)
     },
     fetch: async function (token?: string, groups?: Group[]) {
-      members = await fetchList(`systems/${dash.system?.id || "exmpl"}/members`, token)
+      members = mapMemberGroups(
+        await fetchList(`systems/${dash.system?.id || "exmpl"}/members`, token),
+        groups || []
+      )
       processedMembers = processList(
         groupFilter ? members.filter((m) => groupFilter?.find((g) => g === m.uuid)) : members,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
@@ -298,7 +302,7 @@ function createMemberListState(): DashList<Member> {
       paginatedMembers = paginateList(processedMembers, listSettings)
     },
     init: function (data: Member[], groups?: Group[]) {
-      members = data
+      members = mapMemberGroups(data, groups || [])
       processedMembers = processList(
         groupFilter ? members.filter((m) => groupFilter?.find((g) => g === m.uuid)) : members,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
@@ -485,5 +489,5 @@ function createGroupState() {
 
 function processList<T>(raw: T[], filters: FilterGroup[], sorts: Sort[], groupList?: Group[]) {
   let processed = filterList(raw, filters, groupList)
-  return sortList(processed, sorts)
+  return sortList(processed, sorts, groupList || [])
 }

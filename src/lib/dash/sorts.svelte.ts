@@ -1,3 +1,4 @@
+import type { Group, Member } from "$api/types"
 import { randomId } from "./ids"
 
 export interface Sort {
@@ -74,26 +75,36 @@ export function createSort(
 
 type Color = Record<string, number | string>
 
-export function sortList<T>(list: T[], sorts: Sort[]): T[] {
+export function sortList<T>(list: T[], sorts: Sort[], groupList: Group[]): T[] {
   let processedList: T[] = [...list]
   for (const sort of sorts) {
-    processedList = applySort(processedList, sort)
+    processedList = applySort(processedList, sort, groupList)
   }
   return processedList
 }
 
-function applySort<T>(list: T[], sort: Sort): T[] {
+function applySort<T>(list: T[], sort: Sort, groupList: Group[]): T[] {
   let processedList: T[] = [...list]
   const field = sort.field as keyof T
 
   processedList.sort((a, b) => {
+    let result = 0
+
     switch (field) {
       // first handle the special cases where a simple comparison won't work
       case "color":
         return sortColor(a, b) * sort.order
       // these should just work with a string/number comparison
+      case "groups":
+        let ag = (a as Member).group_count
+        let bg = (b as Member).group_count
+        if (!ag) ag = 0
+        if (!bg) bg = 0
+
+        if (ag === bg) result = 0
+        else result = ag > bg ? 1 : -1
+        return result * sort.order
       default:
-        let result = 0
         if (typeof a[field] === "string" || typeof b[field] === "string") {
           if (!a[field]) result = 0
           else if (!b[field]) result = 0

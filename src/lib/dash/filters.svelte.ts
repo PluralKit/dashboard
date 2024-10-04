@@ -68,6 +68,8 @@ export const filterFieldType = (raw: string): FilterFieldType => {
     birthday: "date",
     group: "group",
     member: "member",
+    groups: "number", // used for sorting instead
+    members: "number", // used for sorting instead
   }
 
   return type[raw] ?? "string"

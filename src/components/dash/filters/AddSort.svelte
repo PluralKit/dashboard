@@ -21,6 +21,8 @@
   let sortField: string = $state("")
   let sortOrder: 1 | -1 = $state(1)
 
+  const modeDisabled = ["color", "date", "members", "groups"]
+
   function addSort() {
     let mode = sortMode
     if (filterFieldType(sortField) === "number") mode = SortMode.SIZE
@@ -65,6 +67,7 @@
         {#if type === "members"}
           <option value="birthday">birthday</option>
           <option value="message_count">message count</option>
+          <option value="groups">groups</option>
         {/if}
         <option value="created">created</option>
       </select>
@@ -75,7 +78,7 @@
         id={`${type}-new-sort-mode`}
         class="select select-sm select-bordered"
         bind:value={sortMode}
-        disabled={!sortField || sortField === "color" || sortField === "date"}
+        disabled={!sortField || modeDisabled.includes(sortField)}
       >
         {#if !sortField}
           <option value={null} disabled>Select a field first</option>
@@ -95,7 +98,7 @@
       </select>
     </div>
   </div>
-  {#if (sortField && (sortMode || sortField === "color" || filterFieldType(sortField) === "number")) || filterFieldType(sortField) === "date"}
+  {#if sortField && (sortMode || modeDisabled.includes(sortField) || filterFieldType(sortField) === "number")}
     <label class="mt-3" for={`${type}-new-sort-order`}>Order</label>
     <div class="flex flex-row gap-3">
       <select bind:value={sortOrder} class="flex-1 select select-sm select-bordered">
