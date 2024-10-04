@@ -475,37 +475,32 @@ function filterMembersByGroup<T>(
     case FilterMode.HIGHERTHAN:
       // include any member that is in MORE groups than...
       list = list.filter((i) => {
-        if (
-          groupList.filter((g) => g.members?.includes((i as Member).uuid || "")).length >
-          (value as number)
-        )
-          return true
+        const count = (i as Member)?.group_count || 0
+        if (count > (value as number)) return true
         return false
       })
       break
     case FilterMode.LOWERTHAN:
       // include any member that is in MORE groups than...
       list = list.filter((i) => {
-        if (
-          groupList.filter((g) => g.members?.includes((i as Member).uuid || "")).length <
-          (value as number)
-        )
-          return true
-        return false
+        const count = (i as Member)?.group_count || 0
+        if (count < (value as number)) return false
       })
       break
     case FilterMode.NOTEMPTY:
       // include any member a group
       list = list.filter((i) => {
-        if (groupList.some((g) => g.members?.includes((i as Member).uuid || ""))) return true
-        return false
+        const count = (i as Member)?.group_count || 0
+        if (count === 0) return false
+        return true
       })
       break
     case FilterMode.EMPTY:
       // include any member without a group
       list = list.filter((i) => {
-        if (groupList.some((g) => g.members?.includes((i as Member).uuid || ""))) return false
-        return true
+        const count = (i as Member)?.group_count || 0
+        if (count === 0) return true
+        return false
       })
       break
   }
