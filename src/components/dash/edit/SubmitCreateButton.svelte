@@ -109,8 +109,8 @@
 
         list.list.raw.push(response)
 
-        groupList.process()
-        memberList.process()
+        groupList.process(groupList.list.raw)
+        memberList.process(groupList.list.raw)
         list.paginate()
       }
     } catch (e) {
