@@ -66,7 +66,7 @@
     onclick={() => (open = !open)}
     class="collapse-title px-2 py-2 lg:px-4 text-xl font-medium flex justify-between items-center"
   >
-    <div class="flex items-center">
+    <div class="flex items-center min-w-0">
       <div class="mr-3">
         {#if !item.privacy || !(item.privacy as MemberPrivacy).visibility}
           <IconUser />
@@ -76,7 +76,9 @@
           <IconShare />
         {/if}
       </div>
-      <span class="h-min">{item.name} <span class="font-light">({item.id})</span></span>
+      <div class="h-min min-w-0 text-left">
+        <span class="break-words">{item.name}</span> <span class="font-light">({item.id})</span>
+      </div>
     </div>
     <div class="h-14 ml-3">
       {#if type === "member"}
