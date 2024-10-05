@@ -9,6 +9,10 @@
   let { data } = $props()
   let tab = $state($page.url.searchParams.get("tab") || data.tab || "overview")
 
+  $effect(() => {
+    tab = data.tab
+  })
+
   function changeTab(newTab: string) {
     let params = $page.url.searchParams
     params.delete("tab")
