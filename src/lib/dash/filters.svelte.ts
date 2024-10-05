@@ -474,19 +474,21 @@ function filterMembersByGroup<T>(
       break
     case FilterMode.HIGHERTHAN:
       // include any member that is in MORE groups than...
-      list = list.filter((i) => {
-        const count = (i as Member)?.group_count || 0
-        if (count > (value as number)) return true
-        return false
-      })
+      if (!Number.isNaN(value))
+        list = list.filter((i) => {
+          const count = (i as Member)?.group_count || 0
+          if (count > (value as number)) return true
+          return false
+        })
       break
     case FilterMode.LOWERTHAN:
       // include any member that is in MORE groups than...
-      list = list.filter((i) => {
-        const count = (i as Member)?.group_count || 0
-        if (count < (value as number)) return true
-        return false
-      })
+      if (!Number.isNaN(value))
+        list = list.filter((i) => {
+          const count = (i as Member)?.group_count || 0
+          if (count < (value as number)) return true
+          return false
+        })
       break
     case FilterMode.NOTEMPTY:
       // include any member a group

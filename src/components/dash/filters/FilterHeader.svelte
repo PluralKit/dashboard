@@ -48,9 +48,9 @@
         {#if groupArrayModes.includes(filter.mode)}
           members with <b>groups</b> that {filterModeText(filter.mode, filter.valueType).verb}...
         {:else if filter.mode === FilterMode.HIGHERTHAN}
-          members with more than {filter.value} <b>groups</b>
+          members with more than {!Number.isNaN(filter.value) ? filter.value : "..."} <b>groups</b>
         {:else if filter.mode === FilterMode.LOWERTHAN}
-          members with less than {filter.value} <b>groups</b>
+          members with less than {!Number.isNaN(filter.value) ? filter.value : "..."} <b>groups</b>
         {:else if filter.mode === FilterMode.EMPTY}
           members without a <b>group</b>
         {:else if filter.mode === FilterMode.NOTEMPTY}
@@ -98,7 +98,7 @@
     {:else}
       <span class="text-sm">
         <b>{filter.fieldName}s</b> that {filterModeText(filter.mode, filter.valueType).verb}
-        {filter.value !== null && filter.value !== ""
+        {filter.value !== null && filter.value !== "" && !Number.isNaN(filter.value)
           ? `${filter.valueType === "string" ? `"${filter.value}"` : filter.value}`
           : "..."}
         {filterModeText(filter.mode, filterFieldType(filter.field)).afterVerb}
