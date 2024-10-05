@@ -85,7 +85,7 @@
     <!-- third to last page
    ONLY visible if we're on the last page
    -->
-    {#if currentPage === pageAmount}
+    {#if currentPage === pageAmount && pageAmount > 3}
       <button
         aria-label={`Go to third page (page ${pageAmount - 2})`}
         class={`btn btn-${size} join-item btn-neutral`}
