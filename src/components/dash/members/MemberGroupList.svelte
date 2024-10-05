@@ -3,6 +3,7 @@
   import type { Group } from "$api/types"
   import AwaitHtml from "../AwaitHtml.svelte"
   import CopyField from "../CopyField.svelte"
+  import GroupLink from "../groups/GroupLink.svelte"
 
   let {
     groups,
@@ -27,13 +28,15 @@
 >
   {#each paginatedGroups as group, i (group.uuid)}
     <li class="list-item border-b border-muted/50">
-      <span class="hover:bg-transparent hover:cursor-default flex flex-row">
-        <div class="flex flex-row w-full justify-between">
+      <span class="hover:bg-transparent hover:cursor-default flex flex-row px-1">
+        <div class="flex flex-row w-full">
+          <GroupLink class="mr-2" item={group} style="icon" asPage={false} />
           <span
             >[<code class="bg-base-200">{group.id}</code>] <AwaitHtml
               htmlPromise={parseMarkdown(group.name || "", { embed: true })}
             />
-          </span><CopyField class="ml-auto" field="group id" value={group.id} />
+          </span>
+          <CopyField class="ml-auto" field="group id" value={group.id} />
         </div>
       </span>
     </li>
