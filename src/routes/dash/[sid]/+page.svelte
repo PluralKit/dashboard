@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { replaceState } from "$app/navigation"
+  import { goto, pushState } from "$app/navigation"
   import { page } from "$app/stores"
   import GroupHome from "$components/dash/groups/GroupHome.svelte"
   import MemberHome from "$components/dash/members/MemberHome.svelte"
@@ -7,15 +7,13 @@
   import SystemHome from "$components/dash/system/SystemHome.svelte"
 
   let { data } = $props()
-  let tab = $state(data.tab || "overview")
-  $effect(() => {
-    tab = data.tab
-  })
+  let tab = $state($page.url.searchParams.get("tab") || data.tab || "overview")
 
   function changeTab(newTab: string) {
-    let params = $page.url.searchParams.toString()
-    params = params.replace(/tab=.*(?:$|&)/g, "")
-    replaceState(`?tab=${newTab}${params ? "&" + params : ""}`, {})
+    let params = $page.url.searchParams
+    params.delete("tab")
+    params.append("tab", newTab)
+    goto(`?${params.toString()}`, {})
     tab = newTab
   }
 </script>
