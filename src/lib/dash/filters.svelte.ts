@@ -484,7 +484,8 @@ function filterMembersByGroup<T>(
       // include any member that is in MORE groups than...
       list = list.filter((i) => {
         const count = (i as Member)?.group_count || 0
-        if (count < (value as number)) return false
+        if (count < (value as number)) return true
+        return false
       })
       break
     case FilterMode.NOTEMPTY:
