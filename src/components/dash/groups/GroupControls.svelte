@@ -133,7 +133,6 @@
   </div>
 </div>
 <hr class="my-2" />
-<p class="my-4">Some options will be moved at some point.</p>
 {#if simpleOnly || list.settings.filterMode === "simple"}
   <SimpleGroupControls {list} wide={wide || dash.settings.display?.forceControlsAtTop === true} />
 {:else if list.settings.filterMode === "advanced"}
