@@ -69,7 +69,7 @@
     />
   {/each}
 {:else if list.settings.view.type === ViewType.TINY}
-  <div class="max-w-96 sm:max-w-none mx-auto px-8 sm:px-0">
+  <div class="w-full max-w-96 sm:max-w-none mx-auto px-8 sm:px-0">
     <div class="w-full justify-start flex flex-wrap">
       {#each list.list.paginated as member (member.uuid)}
         <MemberTiny {member} asPage={false} {wide} />
