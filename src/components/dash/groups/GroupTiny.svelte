@@ -38,11 +38,11 @@
     class="box rounded-lg m-1 flex flex-col gap-2 p-0 transition-all hover:scale-105 h-full"
     style={group.color ? `border: 4px solid #${group.color}` : ""}
   >
-    {#if group.icon}
-      <img class="rounded-t-md" src={group.icon} alt="Default avatar" />
-    {:else}
-      <img class="rounded-t-md" src="/discord_icon.svg" alt="Default avatar" />
-    {/if}
+    <img
+      class="rounded-t-md aspect-square object-cover"
+      src={group.icon ?? "/discord_icon.svg"}
+      alt={group.icon ? `${group.name}'s icon` : "Default icon"}
+    />
     <div class="text-sm relative">
       <div class="absolute -top-4 left-0 right-0 w-full flex">
         <button class="btn btn-neutral btn-sm btn-circle mx-auto">
