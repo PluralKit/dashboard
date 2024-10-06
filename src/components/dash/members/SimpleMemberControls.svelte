@@ -161,6 +161,7 @@
         <option value="birthday">Birthday</option>
         <option value="color">Color</option>
         <option value="message_count">Message Count</option>
+        <option value="groups">Group Count</option>
         <option value="created">Created</option>
       </select>
     </div>
