@@ -19,7 +19,6 @@
   <div class={`box bg-base-100 h-min`}>
     <MemberControls
       wide={true}
-      simpleOnly={true}
       groupList={dash.group.groups}
       list={dash.group.members}
       privacyMode={dash.group.privacyMode}

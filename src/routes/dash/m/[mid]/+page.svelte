@@ -20,7 +20,6 @@
     <GroupControls
       memberList={dash.member.members}
       wide={true}
-      simpleOnly={true}
       list={dash.member.groups}
       privacyMode={dash.member.privacyMode}
     />
