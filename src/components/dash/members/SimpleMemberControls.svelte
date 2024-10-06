@@ -158,7 +158,9 @@
         <option value="ID">ID</option>
         <option value="description">Description</option>
         <option value="pronouns">Pronouns</option>
+        <option value="birthday">Birthday</option>
         <option value="color">Color</option>
+        <option value="message_count">Message Count</option>
         <option value="created">Created</option>
       </select>
     </div>
