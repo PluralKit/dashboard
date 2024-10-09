@@ -43,31 +43,39 @@ export default function apiClient(fetch: SvelteFetch, baseUrl?: string): ApiClie
       setTimeout(run, 0)
     } else {
       const { options, resolve, reject } = scheduled.shift() as (typeof scheduled)[0]
-      const resp = await fetch(
-        `${baseUrl ?? PUBLIC_BASE_API_URL ?? "https://api.pluralkit.me"}/v2/${options.path}`,
-        {
-          method: (options && options.method) || "GET",
-          headers: {
-            ...(options && options.token ? { Authorization: options.token } : {}),
-            ...(options && options.headers ? options.headers : {}),
-            "Content-Type": "application/json",
-          },
-          body: options && options.body ? JSON.stringify(options.body) : null,
+      try {
+        const resp = await fetch(
+          `${baseUrl ?? PUBLIC_BASE_API_URL ?? "https://api.pluralkit.me"}/v2/${options.path}`,
+          {
+            method: (options && options.method) || "GET",
+            headers: {
+              ...(options && options.token ? { Authorization: options.token } : {}),
+              ...(options && options.headers ? options.headers : {}),
+              "Content-Type": "application/json",
+            },
+            body: options && options.body ? JSON.stringify(options.body) : null,
+          }
+        )
+
+        const delay = checkRateLimit(resp)
+
+        if (!resp.ok) {
+          await parseError(resp, reject)
+        } else if (resp.status === 204) {
+          resolve(undefined)
+        } else {
+          const data = await resp.json()
+          resolve(data)
         }
-      )
 
-      const delay = checkRateLimit(resp)
+        setTimeout(run, delay)
+      } catch (e) {
+        reject({
+          message: (e as Error).message,
+        })
 
-      if (!resp.ok) {
-        await parseError(resp, reject)
-      } else if (resp.status === 204) {
-        resolve(undefined)
-      } else {
-        const data = await resp.json()
-        resolve(data)
+        setTimeout(run, 0)
       }
-
-      setTimeout(run, delay)
     }
   }
 
