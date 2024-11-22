@@ -119,6 +119,12 @@
             <li class="w-1/2">
               <span
                 class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
+                ><b>Banner:</b> <PrivacyDisplay value={group.privacy.banner_privacy} /></span
+              >
+            </li>
+            <li class="w-1/2">
+              <span
+                class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
                 ><b>Metadata:</b> <PrivacyDisplay value={group.privacy.metadata_privacy} /></span
               >
             </li>

@@ -194,6 +194,7 @@ const createPrivacyEditState = (member: Member): MemberPrivacy => {
   let avatar_privacy = $state(member.privacy?.avatar_privacy)
   let metadata_privacy = $state(member.privacy?.metadata_privacy)
   let proxy_privacy = $state(member.privacy?.proxy_privacy)
+  let banner_privacy = $state(member.privacy?.banner_privacy)
   return {
     get visibility() {
       return visibility
@@ -242,6 +243,12 @@ const createPrivacyEditState = (member: Member): MemberPrivacy => {
     },
     set proxy_privacy(value: string | undefined) {
       proxy_privacy = value
+    },
+    get banner_privacy() {
+      return banner_privacy
+    },
+    set banner_privacy(value: string | undefined) {
+      banner_privacy = value
     },
   }
 }

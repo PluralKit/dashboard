@@ -136,6 +136,7 @@ const createPrivacyEditState = (group: Group): GroupPrivacy => {
   let icon_privacy = $state(group.privacy?.icon_privacy)
   let metadata_privacy = $state(group.privacy?.metadata_privacy)
   let list_privacy = $state(group.privacy?.list_privacy)
+  let banner_privacy = $state(group.privacy?.banner_privacy)
   return {
     get visibility() {
       return visibility
@@ -172,6 +173,12 @@ const createPrivacyEditState = (group: Group): GroupPrivacy => {
     },
     set list_privacy(value: string | undefined) {
       list_privacy = value
+    },
+    get banner_privacy() {
+      return banner_privacy
+    },
+    set banner_privacy(value: string | undefined) {
+      banner_privacy = value
     },
   }
 }

@@ -161,6 +161,14 @@
       <li class="w-full md:w-1/2 px-2 py-1">
         <EditPrivacy
           item={group}
+          bind:value={editedState.privacy.banner_privacy}
+          original={group.privacy?.banner_privacy}
+          field="Banner"
+        />
+      </li>
+      <li class="w-full md:w-1/2 px-2 py-1">
+        <EditPrivacy
+          item={group}
           bind:value={editedState.privacy.metadata_privacy}
           original={group.privacy?.metadata_privacy}
           field="Metadata"

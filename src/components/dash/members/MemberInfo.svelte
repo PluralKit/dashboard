@@ -158,6 +158,12 @@
             <li class="w-1/2">
               <span
                 class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
+                ><b>Banner:</b> <PrivacyDisplay value={member.privacy.banner_privacy} /></span
+              >
+            </li>
+            <li class="w-1/2">
+              <span
+                class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
                 ><b>Pronouns:</b> <PrivacyDisplay value={member.privacy.pronoun_privacy} /></span
               >
             </li>

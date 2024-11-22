@@ -235,6 +235,14 @@
       <li class="w-full md:w-1/2 px-2 py-1">
         <EditPrivacy
           item={member}
+          bind:value={editedState.privacy.banner_privacy}
+          original={member.privacy?.banner_privacy}
+          field="Banner"
+        />
+      </li>
+      <li class="w-full md:w-1/2 px-2 py-1">
+        <EditPrivacy
+          item={member}
           bind:value={editedState.privacy.pronoun_privacy}
           original={member.privacy?.pronoun_privacy}
           field="Pronouns"

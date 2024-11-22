@@ -7,6 +7,7 @@ export interface SystemPrivacy {
   pronoun_privacy?: string
   name_privacy?: string
   avatar_privacy?: string
+  banner_privacy?: string
 }
 
 export interface System {
@@ -44,6 +45,7 @@ export interface MemberPrivacy {
   avatar_privacy?: string
   metadata_privacy?: string
   proxy_privacy?: string
+  banner_privacy?: string
 }
 
 export interface proxytag {
@@ -79,6 +81,7 @@ export interface GroupPrivacy {
   visibility?: string
   name_privacy?: string
   metadata_privacy?: string
+  banner_privacy?: string
 }
 
 export interface Group {

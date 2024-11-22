@@ -81,6 +81,7 @@ const createPrivacyEditState = (system: System): SystemPrivacy => {
   let pronoun_privacy = $state(system.privacy?.pronoun_privacy)
   let front_privacy = $state(system.privacy?.front_privacy)
   let front_history_privacy = $state(system.privacy?.front_history_privacy)
+  let banner_privacy = $state(system.privacy?.banner_privacy)
   return {
     get member_list_privacy() {
       return member_list_privacy
@@ -129,6 +130,12 @@ const createPrivacyEditState = (system: System): SystemPrivacy => {
     },
     set front_history_privacy(value: string | undefined) {
       front_history_privacy = value
+    },
+    get banner_privacy() {
+      return banner_privacy
+    },
+    set banner_privacy(value: string | undefined) {
+      banner_privacy = value
     },
   }
 }
