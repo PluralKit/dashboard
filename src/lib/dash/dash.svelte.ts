@@ -308,6 +308,7 @@ function createMemberListState(): DashList<Member> {
           filters = view.m[0]
           sorts = view.m[1]
           if (view.m.length > 2) this.settings.view.type = view.m[2]
+          this.settings.filterMode = "advanced"
         }
       }
       processedMembers = processList(
@@ -433,6 +434,7 @@ function createGroupListState(): DashList<Group> {
           filters = view.g[0]
           sorts = view.g[1]
           if (view.g.length > 2) this.settings.view.type === view.g[2]
+          this.settings.filterMode = "advanced"
         }
       }
       processedGroups = processList(
