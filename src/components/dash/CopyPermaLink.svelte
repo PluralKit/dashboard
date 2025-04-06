@@ -3,6 +3,7 @@
   import { Base64 } from "js-base64"
   import CopyField from "./CopyField.svelte"
   import { page } from "$app/state"
+  import { IconInfoCircle } from "@tabler/icons-svelte"
 
   let {
     tab,
@@ -16,14 +17,8 @@
         system: dash.user?.id,
         public: dash.privacyMode !== PrivacyMode.PRIVATE,
         tab,
-        m:
-          dash.members.settings.filterMode === "advanced"
-            ? [dash.members.filters, dash.members.sorts]
-            : [dash.members.simpleFilters, dash.members.simpleSorts],
-        g:
-          dash.groups.settings.filterMode === "advanced"
-            ? [dash.groups.filters, dash.groups.sorts]
-            : [dash.groups.simpleFilters, dash.groups.simpleSorts],
+        m: [dash.members.filters, dash.members.sorts],
+        g: [dash.groups.filters, dash.groups.sorts],
       })
     )
   )
@@ -45,5 +40,9 @@
         visible
       />
     </div>
+    <span class="text-muted text-sm block mt-2"
+      ><IconInfoCircle class="inline" /> This will copy a link to your current dashboard view, including
+      filters.</span
+    >
   </div>
 </div>
