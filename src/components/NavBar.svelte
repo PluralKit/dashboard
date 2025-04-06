@@ -51,10 +51,10 @@
         </li>
       </ul>
     </details>
-    <a href="/" class="btn btn-ghost text-xl">PluralKit</a>
+    <a href="/" class="hidden text-xl btn btn-ghost md:inline-flex">PluralKit</a>
   </div>
-  <div class="navbar-center hidden md:flex">
-    <ul class="menu menu-horizontal px-1">
+  <div class="hidden navbar-center md:flex">
+    <ul class="px-1 menu menu-horizontal">
       <li>
         <a
           href="https://discord.com/oauth2/authorize?client_id=466378653216014359&scope=bot%20applications.commands&permissions=536995904"
