@@ -20,8 +20,8 @@
     <div class="box bg-base-100 h-min">
       <GroupControls privacyMode={dash.privacyMode} list={dash.groups} memberList={dash.members} />
     </div>
-    {#if dash.members.settings.filterMode === "advanced"}
-      <CopyPermaLink tab="members" />
+    {#if dash.groups.settings.filterMode === "advanced"}
+      <CopyPermaLink tab="groups" />
     {/if}
   </div>
   <div
