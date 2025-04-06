@@ -112,10 +112,29 @@
       )
     }
   }
+
+  async function submitEdit(token: string) {
+    success = false
+    err = []
+    const body = edited
+
+    if (err.length > 0) return
+
+    const response = await window.api(`members/${member.uuid}`, {
+      token,
+      method: "PATCH",
+      body: body,
+    })
+    Object.assign(member || {}, response)
+    list.process(groupList.list.raw)
+    list.paginate()
+
+    success = true
+  }
 </script>
 
-<div class="flex flex-row gap-2 justify-between items-center mb-3">
-  <h4 class="text-2xl ml-3 font-medium">Editing details</h4>
+<div class="flex flex-row items-center justify-between gap-2 mb-3">
+  <h4 class="ml-3 text-2xl font-medium">Editing details</h4>
   {#if !loading}
     {#if Object.keys(edited).length > 0}
       <button
@@ -140,9 +159,9 @@
     </button>
   {/if}
 </div>
-<div class="flex flex-col h-min gap-2 lg:gap-3">
-  <div class="bg-base-100 flex-1 rounded-box p-4 gap-2 flex flex-col">
-    <div class="flex flex-row gap-3 items-center">
+<div class="flex flex-col gap-2 h-min lg:gap-3">
+  <div class="flex flex-col flex-1 gap-2 p-4 bg-base-100 rounded-box">
+    <div class="flex flex-row items-center gap-3">
       <h5 class="text-lg">Proxy Tags</h5>
       {#if edited.proxy_tags}
         <span title="edited">
@@ -151,7 +170,7 @@
       {/if}
     </div>
     {#if duplicate.length > 0}
-      <div class="alert bg-warning/10 mb-2 w-full mx-auto px-5 py-3">
+      <div class="w-full px-5 py-3 mx-auto mb-2 alert bg-warning/10">
         <IconAlertTriangle class="text-warning" />
         <div>
           {#each duplicate as dupe}
@@ -164,12 +183,12 @@
       </div>
     {/if}
     <hr />
-    <div class="flex flex-col md:flex-row w-full flex-wrap">
+    <div class="flex flex-col flex-wrap w-full md:flex-row">
       {#each editedState.proxy_tags as tag, index}
         <EditProxyTag {editedState} {index} {tag} {editProxyTag} />
       {/each}
       <button
-        class="btn btn-sm btn-success mx-2 my-1"
+        class="mx-2 my-1 btn btn-sm btn-success"
         onclick={() => {
           editedState.proxy_tags.push({
             prefix: "",
@@ -181,11 +200,11 @@
       </button>
     </div>
   </div>
-  <div class="bg-base-100 flex-1 rounded-box p-4 gap-2 flex flex-col">
+  <div class="flex flex-col flex-1 gap-2 p-4 bg-base-100 rounded-box">
     <h5 class="text-lg">Privacy</h5>
     <hr />
     <ul class="flex flex-row flex-wrap">
-      <li class="w-full px-2 py-1 flex flex-col">
+      <li class="flex flex-col w-full px-2 py-1">
         <label class="mb-1" for={`${member.uuid}-privacy-all`}>Set all to</label>
         <select
           class="input input-bordered input-sm"
@@ -198,7 +217,7 @@
           <option value="nope">Reset to current</option>
         </select>
       </li>
-      <li class="w-full md:w-1/2 px-2 py-1">
+      <li class="w-full px-2 py-1 md:w-1/2">
         <div class="flex flex-col">
           <EditPrivacy
             item={member}
@@ -208,7 +227,7 @@
           />
         </div>
       </li>
-      <li class="w-full md:w-1/2 px-2 py-1">
+      <li class="w-full px-2 py-1 md:w-1/2">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.name_privacy}
@@ -216,7 +235,7 @@
           field="Name"
         />
       </li>
-      <li class="w-full md:w-1/2 px-2 py-1">
+      <li class="w-full px-2 py-1 md:w-1/2">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.description_privacy}
@@ -224,7 +243,7 @@
           field="Description"
         />
       </li>
-      <li class="w-full md:w-1/2 px-2 py-1">
+      <li class="w-full px-2 py-1 md:w-1/2">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.avatar_privacy}
@@ -232,7 +251,7 @@
           field="Avatar"
         />
       </li>
-      <li class="w-full md:w-1/2 px-2 py-1">
+      <li class="w-full px-2 py-1 md:w-1/2">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.banner_privacy}
@@ -240,7 +259,7 @@
           field="Banner"
         />
       </li>
-      <li class="w-full md:w-1/2 px-2 py-1">
+      <li class="w-full px-2 py-1 md:w-1/2">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.pronoun_privacy}
@@ -248,7 +267,7 @@
           field="Pronouns"
         />
       </li>
-      <li class="w-full md:w-1/2 px-2 py-1">
+      <li class="w-full px-2 py-1 md:w-1/2">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.birthday_privacy}
@@ -256,7 +275,7 @@
           field="Birthday"
         />
       </li>
-      <li class="w-full md:w-1/2 px-2 py-1">
+      <li class="w-full px-2 py-1 md:w-1/2">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.proxy_privacy}
@@ -264,7 +283,7 @@
           field="Proxy tags"
         />
       </li>
-      <li class="w-full md:w-1/2 px-2 py-1">
+      <li class="w-full px-2 py-1 md:w-1/2">
         <EditPrivacy
           item={member}
           bind:value={editedState.privacy.metadata_privacy}
@@ -278,34 +297,22 @@
 {#if err.length > 0}
   {#each err as e}
     {#if e}
-      <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-error/20 mt-2">
+      <div transition:fade={{ duration: 400 }} role="alert" class="mt-2 alert bg-error/20">
         {e}
       </div>
     {/if}
   {/each}
 {/if}
 {#if success}
-  <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-success/20 mt-2">
+  <div transition:fade={{ duration: 400 }} role="alert" class="mt-2 alert bg-success/20">
     Member successfully edited
   </div>
 {/if}
 <div class="flex flex-row items-center">
-  <div class="join mt-2">
+  <div class="mt-2 join">
     {#if !loading}
       {#if Object.keys(edited).length > 0}
-        <SubmitEditButton
-          {groupList}
-          memberList={list}
-          bind:loading
-          bind:err
-          bind:success
-          options={{
-            item: member,
-            body: edited,
-            list,
-          }}
-          path={`members/${member.uuid}`}
-        />
+        <SubmitEditButton bind:err {submitEdit} />
         <button
           onclick={() => (mode = "view")}
           class="btn btn-sm btn-neutral join-item"

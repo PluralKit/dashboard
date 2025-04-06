@@ -60,10 +60,60 @@
 
   let itemsPerPage = 10
   let currentPage = $state(1)
+
+  async function submitEdit(token: string) {
+    const listBody = uuidSelection
+
+    await window.api(`groups/${group.uuid}/members/overwrite`, {
+      token,
+      method: "POST",
+      body: listBody,
+    })
+    for (const mid of listBody) {
+      if (!group.members?.includes(mid) || false) {
+        const member = memberList.list.raw.find((m) => m.uuid === mid)
+        if (member?.group_count) member.group_count += 1
+      }
+    }
+
+    // and those removed
+    for (const mid of group.members || []) {
+      if (!listBody.includes(mid)) {
+        const member = memberList.list.raw.find((m) => m.uuid === mid)
+        if (member?.group_count) member.group_count -= 1
+      }
+    }
+
+    group.members = listBody
+
+    // if on the member page: remove self from list if no longer containing member
+    if (groupList.filter && groupList.page) {
+      if (listBody.includes(group.uuid || "") && !groupList.filter.includes(group.uuid || "")) {
+        groupList.filter.push(group.uuid || "")
+      } else groupList.filter = groupList.filter.filter((m) => m !== group.uuid)
+    }
+
+    // if on the group page: filter out members that no longer belong in this group
+    if (memberList.filter && memberList.page) {
+      memberList.filter = listBody
+    }
+
+    groupList.process(groupList.list.raw)
+    groupList.paginate()
+
+    memberList.process(groupList.list.raw)
+    memberList.paginate()
+
+    toAdd = []
+    toRemove = []
+    uuidSelection = uuidsCurrent
+
+    success = true
+  }
 </script>
 
-<div class="flex flex-row gap-2 justify-between items-center mb-3">
-  <h4 class="text-2xl ml-3 font-medium">Editing group members</h4>
+<div class="flex flex-row items-center justify-between gap-2 mb-3">
+  <h4 class="ml-3 text-2xl font-medium">Editing group members</h4>
   {#if !loading}
     {#if added.length > 0 || removed.length > 0}
       <button
@@ -88,15 +138,15 @@
     </button>
   {/if}
 </div>
-<div class="flex flex-col h-min md:flex-row gap-2 lg:gap-3 flex-wrap">
-  <div class="bg-base-100 w-full rounded-box p-4 gap-2 flex flex-col">
+<div class="flex flex-col flex-wrap gap-2 h-min md:flex-row lg:gap-3">
+  <div class="flex flex-col w-full gap-2 p-4 bg-base-100 rounded-box">
     <h5 class="text-lg">Edit members</h5>
-    <div class="flex flex-col md:flex-row gap-3">
-      <div class="flex flex-col gap-2 flex-1">
-        <div class="flex flex-row gap-2 items-center">
+    <div class="flex flex-col gap-3 md:flex-row">
+      <div class="flex flex-col flex-1 gap-2">
+        <div class="flex flex-row items-center gap-2">
           <label for={`${group.id}-add-member-input`}>Add members</label>
           <button
-            class="btn btn-success btn-xs ml-auto"
+            class="ml-auto btn btn-success btn-xs"
             aria-label="Add all members to group"
             onclick={() => {
               toAdd = allOptions.filter((opt) => !opt.included).map((m) => m.value || "")
@@ -124,11 +174,11 @@
           {option}
         />
       </div>
-      <div class="flex flex-col gap-2 flex-1">
-        <div class="flex flex-row gap-2 items-center">
+      <div class="flex flex-col flex-1 gap-2">
+        <div class="flex flex-row items-center gap-2">
           <label for={`${group.id}-remove-member-input`}>Remove members</label>
           <button
-            class="btn btn-error btn-xs ml-auto"
+            class="ml-auto btn btn-error btn-xs"
             aria-label="Remove all members from group"
             onclick={() => {
               toRemove = allOptions.filter((opt) => opt.included).map((m) => m.value || "")
@@ -158,18 +208,18 @@
       </div>
     </div>
   </div>
-  <div class="bg-base-100 flex-1 rounded-box p-4 gap-2 flex flex-col">
+  <div class="flex flex-col flex-1 gap-2 p-4 bg-base-100 rounded-box">
     <h5 class="text-lg">Changes</h5>
     <div class="text-sm">
       {uuidSelection.length} groups total ({added.length} added, {removed.length} removed)
     </div>
     {#if added.length > 0}
       <div>
-        <h6 class="flex flex-row gap-1 items-center mb-1 mt-2">
+        <h6 class="flex flex-row items-center gap-1 mt-2 mb-1">
           <IconPlus class="text-success" size={22} />
           Members added
           <button
-            class="btn btn-warning btn-xs ml-auto"
+            class="ml-auto btn btn-warning btn-xs"
             title="Reset added members"
             aria-label="Reset added members"
             onclick={() => {
@@ -186,11 +236,11 @@
     {/if}
     {#if removed.length > 0}
       <div>
-        <h6 class="flex flex-row gap-1 items-center mb-1 mt-2">
+        <h6 class="flex flex-row items-center gap-1 mt-2 mb-1">
           <IconMinus class="text-error" size={22} />
           Members removed
           <button
-            class="btn btn-warning btn-xs ml-auto"
+            class="ml-auto btn btn-warning btn-xs"
             title="Reset removed members"
             aria-label="Reset removed members"
             onclick={() => {
@@ -212,7 +262,7 @@
       <div class="mt-3">No changes have been made yet.</div>
     {/if}
   </div>
-  <div class="bg-base-100 flex-1 rounded-box p-4 gap-2 flex flex-col">
+  <div class="flex flex-col flex-1 gap-2 p-4 bg-base-100 rounded-box">
     <h5 class="text-lg">Member list</h5>
     <Pagination {itemsPerPage} rawList={memberSelection} bind:currentPage />
     <GroupMemberList members={memberSelection} bind:currentPage {itemsPerPage} small={true} />
@@ -222,38 +272,22 @@
 {#if err.length > 0}
   {#each err as e}
     {#if e}
-      <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-error/20 mt-2">
+      <div transition:fade={{ duration: 400 }} role="alert" class="mt-2 alert bg-error/20">
         {e}
       </div>
     {/if}
   {/each}
 {/if}
 {#if success}
-  <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-success/20 mt-2">
+  <div transition:fade={{ duration: 400 }} role="alert" class="mt-2 alert bg-success/20">
     Group successfully edited
   </div>
 {/if}
 <div class="flex flex-row items-center">
-  <div class="join mt-2">
+  <div class="mt-2 join">
     {#if !loading}
       {#if added.length > 0 || removed.length > 0}
-        <SubmitEditButton
-          onSuccess={() => {
-            toAdd = []
-            toRemove = []
-            uuidSelection = uuidsCurrent
-          }}
-          bind:loading
-          bind:err
-          bind:success
-          {memberList}
-          {groupList}
-          options={{
-            group,
-            body: uuidSelection,
-          }}
-          path={`groups/${group.uuid}/members/overwrite`}
-        />
+        <SubmitEditButton bind:err {submitEdit} />
         <button
           onclick={() => (mode = "view")}
           class="btn btn-sm btn-neutral join-item"
@@ -299,7 +333,7 @@
 {/snippet}
 
 {#snippet joinMembers(members: Member[])}
-  <ul class="discord-markdown text-sm flex flex-row flex-wrap gap-y-1 gap-x-2">
+  <ul class="flex flex-row flex-wrap text-sm discord-markdown gap-y-1 gap-x-2">
     {#each members as member, i}
       {#if i <= 10}
         <li>[<code>{member.id}</code>] {member.name}{i < members.length - 1 ? ", " : ""}</li>

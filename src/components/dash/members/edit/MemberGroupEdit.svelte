@@ -74,10 +74,59 @@
 
   let added = $derived(groupSelection.filter((g) => !uuidsCurrent.includes(g.uuid || "")))
   let removed = $derived(groupsCurrent.filter((g) => !uuidSelection.includes(g.uuid || "")))
+
+  async function submitEdit(token: string) {
+    const listBody = uuidSelection
+
+    await window.api(`members/${member.uuid}/groups/overwrite`, {
+      token,
+      method: "POST",
+      body: listBody,
+    })
+
+    // add the member's uuid to each group added
+    for (const group of groupList.list.raw) {
+      const g = group as Group
+      if (listBody.includes(g.uuid || "")) {
+        if (g.members && !g.members.includes(member.uuid || "")) {
+          g.members = [...(g.members || []), member.uuid || ""]
+        }
+      } else {
+        g.members = [...(g.members || [])].filter((m) => m !== member.uuid)
+      }
+
+      member.group_count = listBody.length
+    }
+
+    // if on the group page: remove self from list if no longer in group
+    if (memberList.filter && memberList.page) {
+      if (listBody.includes(member.uuid || "") && !memberList.filter.includes(member.uuid || "")) {
+        memberList.filter.push(member.uuid || "")
+      } else memberList.filter = memberList.filter.filter((m) => m !== member.uuid)
+    }
+
+    // if on the member page: filter out groups that no longer belong to this member
+    if (groupList.filter && groupList.page) {
+      groupList.filter = listBody
+
+      groupList.process(groupList.list.raw)
+      groupList.paginate()
+    } else {
+      groupList.process(groupList.list.raw)
+    }
+
+    memberList.process(groupList.list.raw)
+    memberList.paginate()
+    toAdd = []
+    toRemove = []
+    uuidSelection = uuidsCurrent
+
+    success = true
+  }
 </script>
 
-<div class="flex flex-row gap-2 justify-between items-center mb-3">
-  <h4 class="text-2xl ml-3 font-medium">Editing member groups</h4>
+<div class="flex flex-row items-center justify-between gap-2 mb-3">
+  <h4 class="ml-3 text-2xl font-medium">Editing member groups</h4>
   {#if !loading}
     {#if added.length > 0 || removed.length > 0}
       <button
@@ -102,15 +151,15 @@
     </button>
   {/if}
 </div>
-<div class="flex flex-col h-min md:flex-row gap-2 lg:gap-3 flex-wrap">
-  <div class="bg-base-100 w-full rounded-box p-4 gap-2 flex flex-col">
+<div class="flex flex-col flex-wrap gap-2 h-min md:flex-row lg:gap-3">
+  <div class="flex flex-col w-full gap-2 p-4 bg-base-100 rounded-box">
     <h5 class="text-lg">Edit groups</h5>
-    <div class="flex flex-col md:flex-row gap-3">
-      <div class="flex flex-col gap-2 flex-1">
-        <div class="flex flex-row gap-2 items-center">
+    <div class="flex flex-col gap-3 md:flex-row">
+      <div class="flex flex-col flex-1 gap-2">
+        <div class="flex flex-row items-center gap-2">
           <label for={`${member.id}-add-group-input`}>Select groups to add</label>
           <button
-            class="btn btn-success btn-xs ml-auto"
+            class="ml-auto btn btn-success btn-xs"
             aria-label="Add all groups to member"
             onclick={() => {
               toAdd = allOptions.filter((opt) => !opt.included).map((g) => g.value || "")
@@ -138,11 +187,11 @@
           {option}
         />
       </div>
-      <div class="flex flex-col gap-2 flex-1">
-        <div class="flex flex-row gap-2 items-center">
+      <div class="flex flex-col flex-1 gap-2">
+        <div class="flex flex-row items-center gap-2">
           <label for={`${member.id}-remove-group-input`}>Remove groups</label>
           <button
-            class="btn btn-error btn-xs ml-auto"
+            class="ml-auto btn btn-error btn-xs"
             aria-label="Remove all groups from member"
             onclick={() => {
               toRemove = allOptions.filter((opt) => opt.included).map((g) => g.value || "")
@@ -172,18 +221,18 @@
       </div>
     </div>
   </div>
-  <div class="bg-base-100 flex-1 rounded-box p-4 gap-2 flex flex-col">
+  <div class="flex flex-col flex-1 gap-2 p-4 bg-base-100 rounded-box">
     <h5 class="text-lg">Changes</h5>
     <div class="text-sm">
       {uuidSelection.length} groups total ({added.length} added, {removed.length} removed)
     </div>
     {#if added.length > 0}
       <div>
-        <h6 class="flex flex-row gap-1 items-center mb-1 mt-2">
+        <h6 class="flex flex-row items-center gap-1 mt-2 mb-1">
           <IconPlus class="text-success" size={22} />
           Groups added
           <button
-            class="btn btn-warning btn-xs ml-auto"
+            class="ml-auto btn btn-warning btn-xs"
             title="Reset added groups"
             aria-label="Reset added groups"
             onclick={() => {
@@ -200,11 +249,11 @@
     {/if}
     {#if removed.length > 0}
       <div>
-        <h6 class="flex flex-row gap-1 items-center mb-1 mt-2">
+        <h6 class="flex flex-row items-center gap-1 mt-2 mb-1">
           <IconMinus class="text-error" size={22} />
           Groups removed
           <button
-            class="btn btn-warning btn-xs ml-auto"
+            class="ml-auto btn btn-warning btn-xs"
             title="Reset removed groups"
             aria-label="Reset removed groups"
             onclick={() => {
@@ -226,11 +275,11 @@
       <div class="mt-3">No changes have been made yet.</div>
     {/if}
   </div>
-  <div class="bg-base-100 flex-1 rounded-box p-4 gap-2 flex flex-col">
+  <div class="flex flex-col flex-1 gap-2 p-4 bg-base-100 rounded-box">
     <h5 class="text-lg">Formatted preview</h5>
     {#if formattedGroups.length > 1000}
       <span class="text-sm"
-        ><IconAlertTriangle class="text-warning inline-block mr-1" size={18} />The formatted groups
+        ><IconAlertTriangle class="inline-block mr-1 text-warning" size={18} />The formatted groups
         take up more than 1000 characters. It will be cut off when viewed via the bot.</span
       >
     {/if}
@@ -242,38 +291,22 @@
 {#if err.length > 0}
   {#each err as e}
     {#if e}
-      <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-error/20 mt-2">
+      <div transition:fade={{ duration: 400 }} role="alert" class="mt-2 alert bg-error/20">
         {e}
       </div>
     {/if}
   {/each}
 {/if}
 {#if success}
-  <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-success/20 mt-2">
+  <div transition:fade={{ duration: 400 }} role="alert" class="mt-2 alert bg-success/20">
     Member successfully edited
   </div>
 {/if}
 <div class="flex flex-row items-center">
-  <div class="join mt-2">
+  <div class="mt-2 join">
     {#if !loading}
       {#if added.length > 0 || removed.length > 0}
-        <SubmitEditButton
-          onSuccess={() => {
-            toAdd = []
-            toRemove = []
-            uuidSelection = uuidsCurrent
-          }}
-          bind:loading
-          bind:err
-          bind:success
-          {memberList}
-          {groupList}
-          options={{
-            member,
-            body: uuidSelection,
-          }}
-          path={`members/${member.uuid}/groups/overwrite`}
-        />
+        <SubmitEditButton bind:err {submitEdit} />
         <button
           onclick={() => (mode = "view")}
           class="btn btn-sm btn-neutral join-item"
@@ -319,7 +352,7 @@
 {/snippet}
 
 {#snippet joinGroups(groups: Group[])}
-  <ul class="discord-markdown text-sm flex flex-row flex-wrap gap-y-1 gap-x-2">
+  <ul class="flex flex-row flex-wrap text-sm discord-markdown gap-y-1 gap-x-2">
     {#each groups as group, i}
       {#if i <= 10}
         <li>[<code>{group.id}</code>] {group.name}{i < groups.length - 1 ? ", " : ""}</li>
