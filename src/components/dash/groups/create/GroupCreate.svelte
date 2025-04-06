@@ -65,7 +65,7 @@
     : ""}
 >
   <button
-    aria-label={`Open or close ${group.name}'s card`}
+    aria-label="Create new group"
     onclick={() => (open = !open)}
     class="flex items-center justify-between w-full px-2 py-2 text-xl font-medium collapse-title lg:px-4"
   >
