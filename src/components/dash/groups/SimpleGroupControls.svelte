@@ -115,7 +115,6 @@
       </div>
     </div>
   {/if}
-  <hr />
   <div
     class={`grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4 ${
       wide === true ? "xl:grid-cols-3" : "xl:grid-cols-2"

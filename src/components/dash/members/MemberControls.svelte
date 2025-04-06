@@ -91,7 +91,7 @@
   </button>
 </div>
 <div
-  class={`grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4 ${
+  class={`grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4 mb-2 ${
     wide === true ? "xl:grid-cols-3" : "xl:grid-cols-2"
   }`}
 >
@@ -132,7 +132,6 @@
     </select>
   </div>
 </div>
-<hr class="my-2" />
 {#if simpleOnly || list.settings.filterMode === "simple"}
   <SimpleMemberControls
     {groupList}
@@ -141,15 +140,14 @@
   />
 {:else if list.settings.filterMode === "advanced"}
   <div
-    class={`grid grid-cols-1 md:grid-cols-2 gap-4 ${
+    class={`grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 ${
       wide || dash.settings.display?.forceControlsAtTop === true
         ? "xl:grid-cols-2"
         : "xl:grid-cols-1"
     }`}
   >
-    <div>
+    <div class="flex flex-col gap-2">
       <h3 class="text-xl">Filter list</h3>
-      <hr class="my-2" />
       <AddFilterGroup
         {privacyMode}
         memberList={list}
@@ -160,9 +158,8 @@
       />
       <FilterGroups {groupList} {list} memberList={list} />
     </div>
-    <div>
+    <div class="flex flex-col gap-2">
       <h3 class="text-xl">Sort list</h3>
-      <hr class="my-2" />
       <AddSort {groupList} bind:sorts={list.sorts} {list} type="members" />
       <Sorts {groupList} {list} />
     </div>
