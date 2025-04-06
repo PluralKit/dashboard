@@ -12,18 +12,15 @@
   let element: HTMLDialogElement
 </script>
 
-<button class="btn btn-neutral btn-sm w-full" onclick={() => element.showModal()}
+<button class="w-full btn btn-neutral btn-sm" onclick={() => element.showModal()}
   >View {imageType}</button
 >
-<dialog tabindex="-1" bind:this={element} class="modal">
+<dialog bind:this={element} class="modal">
   <form method="dialog" class="w-full h-full">
-    <button
-      tabindex="-1"
-      class="w-full h-full grid justify-center items-center p-4 max-h-screen max-w-screen"
-    >
-      <div class="max-w-3xl h-full flex flex-col">
+    <button class="grid items-center justify-center w-full h-full max-h-screen p-4 max-w-screen">
+      <div class="flex flex-col h-full max-w-3xl">
         <img
-          class="rounded-xl m-auto w-auto h-auto max-h-full"
+          class="w-auto h-auto max-h-full m-auto rounded-xl"
           src={url}
           alt={`${itemName}'s ${imageType}`}
         />

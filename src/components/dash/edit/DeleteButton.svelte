@@ -50,14 +50,14 @@
   }
 </script>
 
-<button class="btn btn-sm btn-error mt-2 ml-auto" onclick={() => element.showModal()}>
+<button class="mt-2 ml-auto btn btn-sm btn-error" onclick={() => element.showModal()}>
   <IconTrash /> Delete
 </button>
 
-<dialog tabindex="-1" bind:this={element} class="modal">
-  <div class="modal-box max-w-xl">
+<dialog bind:this={element} class="modal">
+  <div class="max-w-xl modal-box">
     <form method="dialog">
-      <button class="btn text-lg btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      <button class="absolute text-lg btn btn-circle btn-ghost right-2 top-2">✕</button>
     </form>
     <h3 class="text-xl">
       Delete {type} (<b>{item.name}</b>)
@@ -70,12 +70,12 @@
       type="text"
       maxlength={10}
       bind:value={idInput}
-      class="input input-bordered w-full placeholder-base-content/30"
+      class="w-full input input-bordered placeholder-base-content/30"
       placeholder={`Enter "${item.id}" here...`}
     />
     <div class="flex flex-row items-center mt-2">
       <button
-        class="btn btn-error btn-sm ml-auto"
+        class="ml-auto btn btn-error btn-sm"
         disabled={!checkId()}
         onclick={() => submitDelete()}
       >

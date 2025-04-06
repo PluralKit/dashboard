@@ -21,7 +21,7 @@
 
 <div class="flex flex-col w-full">
   <div
-    class="mx-4 px-4 pt-2 pb-1 rounded-t-xl bg-base-100 w-fit font-bold flex flex-row gap-3 items-center flex-wrap"
+    class="flex flex-row flex-wrap items-center gap-3 px-4 pt-2 pb-1 mx-4 font-bold rounded-t-xl bg-base-100 w-fit"
   >
     <label for={`${item.uuid}-edit-description`} class="text-lg">Description</label>
     <button onclick={() => popupElement.showModal()} class="btn btn-primary btn-xs">Preview</button>
@@ -31,11 +31,11 @@
     >
       <IconPencil size={26} />
     </span>
-    <span class="font-normal text-sm">
+    <span class="text-sm font-normal">
       {value?.length ?? 0}/1000
     </span>
   </div>
-  <div class="rounded-xl bg-base-100 p-4">
+  <div class="p-4 rounded-xl bg-base-100">
     <textarea
       id={`${item.uuid}-edit-description`}
       bind:value
@@ -43,27 +43,27 @@
       rows={5}
       placeholder={original}
       maxlength={1000}
-      class="w-full textarea resize-none textarea-bordered placeholder:text-base-content/40"
+      class="w-full resize-none textarea textarea-bordered placeholder:text-base-content/40"
     ></textarea>
   </div>
 </div>
 
-<dialog tabindex="-1" bind:this={popupElement} class="modal">
-  <div class="modal-box w-11/12 max-w-3xl">
+<dialog bind:this={popupElement} class="modal">
+  <div class="w-11/12 max-w-3xl modal-box">
     <h3 class="text-lg">Description preview</h3>
     <form method="dialog">
       <button
-        class="btn btn-sm btn-circle btn-ghost absolute right-4 top-4"
+        class="absolute btn btn-sm btn-circle btn-ghost right-4 top-4"
         aria-label="Close modal"
       >
         <IconX size={24} />
       </button>
     </form>
-    <div class="my-2 discord-markdown border-muted border p-5 rounded-lg">
+    <div class="p-5 my-2 border rounded-lg discord-markdown border-muted">
       <AwaitHtml htmlPromise={parseMarkdown(value || "", { embed: true })} />
     </div>
   </div>
   <form method="dialog" class="modal-backdrop">
-    <button tabindex="-1">close</button>
+    <button>close</button>
   </form>
 </dialog>
