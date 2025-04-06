@@ -31,8 +31,8 @@ export async function loadDash(api: ApiClient, cookies: Cookies, url: URL, param
           Array.isArray(data.m) &&
           data.g &&
           Array.isArray(data.g) &&
-          data.m.length === 2 &&
-          data.g.length === 2
+          data.m.length >= 2 &&
+          data.g.length >= 2
         ) {
           // okay, looks like we have a valid URI object.
           // (Unless someone did something really weird with the URI)

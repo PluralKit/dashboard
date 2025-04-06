@@ -304,10 +304,10 @@ function createMemberListState(): DashList<Member> {
     init: function (data: Member[], groups?: Group[], view?: any) {
       members = mapMemberGroups(data, groups || [])
       if (view && view.m) {
-        if (Array.isArray(view.m) && view.m.length === 2) {
+        if (Array.isArray(view.m) && view.m.length >= 2) {
           filters = view.m[0]
           sorts = view.m[1]
-          this.settings.filterMode = "advanced"
+          if (view.m.length > 2) this.settings.view.type = view.m[2]
         }
       }
       processedMembers = processList(
@@ -429,10 +429,10 @@ function createGroupListState(): DashList<Group> {
     init: function (data: Group[], view?: any) {
       groups = data
       if (view && view.g) {
-        if (Array.isArray(view.g) && view.g.length === 2) {
+        if (Array.isArray(view.g) && view.g.length >= 2) {
           filters = view.g[0]
           sorts = view.g[1]
-          this.settings.filterMode = "advanced"
+          if (view.g.length > 2) this.settings.view.type === view.g[2]
         }
       }
       processedGroups = processList(

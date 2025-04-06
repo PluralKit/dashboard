@@ -17,8 +17,8 @@
         system: dash.user?.id,
         public: dash.privacyMode !== PrivacyMode.PRIVATE,
         tab,
-        m: [dash.members.filters, dash.members.sorts],
-        g: [dash.groups.filters, dash.groups.sorts],
+        m: [dash.members.filters, dash.members.sorts, dash.members.settings.view.type],
+        g: [dash.groups.filters, dash.groups.sorts, dash.groups.settings.view.type],
       })
     )
   )
@@ -35,7 +35,7 @@
         value={viewUrl}
       />
       <CopyField
-        value={`https://${page.url.host}/view/${viewUrl}`}
+        value={`${page.url.protocol}//${page.url.host}/view?uri=${viewUrl}`}
         field="permanent link"
         visible
       />
