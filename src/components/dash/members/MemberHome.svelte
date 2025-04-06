@@ -3,6 +3,7 @@
   import { IconAlertTriangle } from "@tabler/icons-svelte"
   import MemberControls from "./MemberControls.svelte"
   import MemberList from "./MemberList.svelte"
+  import CopyPermaLink from "../CopyPermaLink.svelte"
 </script>
 
 {#if dash.errors.members}
@@ -15,12 +16,13 @@
     dash.settings.display?.forceControlsAtTop === true ? "" : "xl:flex-row xl:max-w-7xl"
   }`}
 >
-  <div
-    class={`box bg-base-100 h-min ${
-      dash.settings.display?.forceControlsAtTop === true ? "" : "xl:w-1/3"
-    }`}
-  >
-    <MemberControls privacyMode={dash.privacyMode} groupList={dash.groups} list={dash.members} />
+  <div class={dash.settings.display?.forceControlsAtTop === true ? "" : "xl:w-1/3"}>
+    <div class="box bg-base-100 h-min">
+      <MemberControls privacyMode={dash.privacyMode} groupList={dash.groups} list={dash.members} />
+    </div>
+    {#if dash.settings.devMode}
+      <CopyPermaLink tab="members" />
+    {/if}
   </div>
   <div
     class={`flex flex-col gap-3 sm:gap-4 ${

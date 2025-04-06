@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { browser } from "$app/environment"
   import { goto } from "$app/navigation"
   import { page } from "$app/state"
   import GroupHome from "$components/dash/groups/GroupHome.svelte"
@@ -8,15 +9,15 @@
   import { dash, PrivacyMode } from "$lib/dash/dash.svelte.js"
 
   let { data } = $props()
-  let tab = $state(
-    page.url.searchParams.get("tab") || data.tab || dash.privacyMode === PrivacyMode.PRIVATE
-      ? "overview"
-      : "system"
+  let tab: string = $state(
+    page.url.searchParams.get("tab") !== null
+      ? page.url.searchParams.get("tab")
+      : data.tab
+        ? data.tab
+        : dash.privacyMode === PrivacyMode.PRIVATE
+          ? "overview"
+          : "system"
   )
-
-  $effect(() => {
-    tab = data.tab
-  })
 
   function changeTab(newTab: string) {
     let params = page.url.searchParams
@@ -25,6 +26,11 @@
     goto(`?${params.toString()}`, {})
     tab = newTab
   }
+
+  const p = page.url.searchParams
+  p.delete("uri")
+
+  if (browser) goto(`?${p.toString()}`)
 </script>
 
 <div class="container px-4 mx-auto">

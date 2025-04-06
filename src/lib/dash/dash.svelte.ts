@@ -36,7 +36,7 @@ export interface DashList<T> {
   process: (groupList?: Group[]) => void
   paginate: () => void
   fetch: (token?: string, groups?: Group[]) => Promise<void>
-  init: (data: Member[] | Group[], groups?: Group[]) => void
+  init: (data: Member[] | Group[], groups?: Group[], view?: any) => void
 }
 
 export interface SvelecteOption {
@@ -139,10 +139,10 @@ function createDash() {
     get user() {
       return user
     },
-    init: (system: System, members: Member[], groups: Group[], mode: PrivacyMode) => {
+    init: (system: System, members: Member[], groups: Group[], mode: PrivacyMode, view?: any) => {
       systemData.init(system)
-      memberList.init(members, groups)
-      groupList.init(groups)
+      memberList.init(members, groups, view)
+      groupList.init(groups, view)
       privacyMode = mode
     },
     initUser: (system: System | null) => {
@@ -301,8 +301,15 @@ function createMemberListState(): DashList<Member> {
       )
       paginatedMembers = paginateList(processedMembers, listSettings)
     },
-    init: function (data: Member[], groups?: Group[]) {
+    init: function (data: Member[], groups?: Group[], view?: any) {
       members = mapMemberGroups(data, groups || [])
+      if (view && view.m) {
+        if (Array.isArray(view.m) && view.m.length === 2) {
+          filters = view.m[0]
+          sorts = view.m[1]
+          this.settings.filterMode = "advanced"
+        }
+      }
       processedMembers = processList(
         groupFilter ? members.filter((m) => groupFilter?.find((g) => g === m.uuid)) : members,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
@@ -419,8 +426,15 @@ function createGroupListState(): DashList<Group> {
       )
       paginatedGroups = paginateList(processedGroups, listSettings)
     },
-    init: function (data: Group[]) {
+    init: function (data: Group[], view?: any) {
       groups = data
+      if (view && view.g) {
+        if (Array.isArray(view.g) && view.g.length === 2) {
+          filters = view.g[0]
+          sorts = view.g[1]
+          this.settings.filterMode = "advanced"
+        }
+      }
       processedGroups = processList(
         memberFilter ? groups.filter((g) => memberFilter?.find((m) => m === g.uuid)) : groups,
         listSettings.filterMode === "simple" ? simpleFilters : filters,

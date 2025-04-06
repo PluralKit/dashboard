@@ -7,10 +7,12 @@
     value,
     field,
     class: className,
+    visible = false,
   }: {
     class?: string
     field: string
     value?: string
+    visible?: boolean
   } = $props()
 
   let copied = $state(false)
@@ -23,7 +25,7 @@
   }
 </script>
 
-{#if dash.settings.devMode}
+{#if dash.settings.devMode || visible}
   <button
     title="copy"
     onclick={() => copy()}
