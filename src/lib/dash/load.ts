@@ -57,7 +57,7 @@ export async function loadDash(api: ApiClient, cookies: Cookies, url: URL, param
         return {
           errors,
           ratelimited,
-          tab: url.searchParams.get("tab") ?? "overview",
+          tab: url.searchParams.get("tab") ?? "system",
           system: system || {},
           members: members || [],
           groups: groups || [],

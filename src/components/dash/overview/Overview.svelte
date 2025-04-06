@@ -1,19 +1,112 @@
 <script lang="ts">
-  import { PrivacyMode, dash } from "$lib/dash/dash.svelte"
+  import { type System } from "$api/types"
+  import { dash } from "$lib/dash/dash.svelte"
+  import { Base64 } from "js-base64"
+  import AwaitHtml from "../AwaitHtml.svelte"
+  import parseMarkdown from "$api/parseMarkdown"
+
+  const createUrl = () => {
+    return Base64.encodeURI(
+      JSON.stringify({
+        members: [dash.members.filters, dash.members.sorts],
+        groups: [dash.groups.filters, dash.groups.sorts],
+      })
+    )
+  }
 </script>
 
-<main class="prose">
-  <p>
-    {#if dash.privacyMode === PrivacyMode.PRIVATE}
-      You currently have registered
-    {:else}
-      This system currently has registered
-    {/if}
-    {dash.members.list.raw.length} members and {dash.groups.list.raw.length} groups!
-    {#if dash.privacyMode === PrivacyMode.PRIVATE}
-      <a target="_blank" class="link-primary" href={`/dash/${dash.system?.id}?public=true`}
-        >Visit public profile</a
-      >
-    {/if}
-  </p>
-</main>
+<div
+  class="grid max-w-6xl grid-cols-1 gap-4 mx-auto sm:grid-cols-2 md:grid-cols-3 auto-cols-fr auto-rows-auto"
+>
+  <div class="box bg-base-100 sm:col-span-2 md:row-span-2 md:col-span-1">
+    <div class="prose max-w-none">
+      <h2>This is the dashboard!</h2>
+      <p>You can view and edit your system, members and groups using the tabs right above.</p>
+      <p>
+        <b>Need help with anything?</b> You can
+        <a class="text-primary" href="https://discord.gg/PczBt78"
+          >find the support server over here</a
+        >, or with the link in the header bar. The <i>#website</i> channel is where questions about the
+        dashboard should go.
+      </p>
+    </div>
+  </div>
+  <div class="flex flex-col box bg-base-100">
+    <div class="flex flex-col flex-1 gap-3 md:flex-row">
+      {#if dash.user}
+        <div class="flex flex-row flex-1 gap-2">
+          {@render systemIcon(dash.user)}
+          <div class="flex flex-col flex-1 gap-1">
+            <h3 class="text-lg font-semibold">
+              {#if dash.user.name}
+                <AwaitHtml htmlPromise={parseMarkdown(dash.user.name)}></AwaitHtml>
+                <span class="font-normal text-muted">
+                  ({dash.user.id})
+                </span>
+              {:else}
+                System ID: {dash.user.id}
+              {/if}
+            </h3>
+            <ul class="flex-1 text-sm">
+              {#if !dash.errors.members}
+                <li>
+                  <span class="font-semibold">Member count:</span>
+                  {dash.members.list.raw.length}
+                </li>
+              {/if}
+              {#if !dash.errors.groups}
+                <li>
+                  <span class="font-semibold">Group count:</span>
+                  {dash.groups.list.raw.length}
+                </li>
+              {/if}
+            </ul>
+          </div>
+        </div>
+      {:else}
+        <div class="prose">
+          <p>No info found about this user (this shouldn't even happen?)</p>
+        </div>
+      {/if}
+    </div>
+  </div>
+  <div class="box bg-base-100">
+    <h3 class="text-xl font-semibold">Statistics</h3>
+    <p>Some cool stuff will go here.</p>
+  </div>
+  <div class="box bg-base-100 sm:col-span-2 md:row-span-2">
+    <div class="prose max-w-none">
+      <h3>Some useful tips</h3>
+      <ul>
+        <li>
+          You can view your public system while logged in <a
+            target="_blank"
+            class="text-primary"
+            href={`?public=true`}>by clicking this link</a
+          >!
+        </li>
+        <li>
+          There is an advanced filtering mode for powerusers, click the button on the top right of
+          the filter panel to toggle.
+        </li>
+        <li>You can easily copy and paste anything by toggling dev mode.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+{#snippet systemIcon(system: System)}
+  {#if system.avatar_url}
+    <div class="avatar w-14 h-14">
+      {@render iconImage(system.avatar_url || "", `Avatar of ${system.name ?? "this system"}`)}
+    </div>
+  {:else}
+    <div class="avatar w-14 h-14">
+      {@render iconImage("/discord_icon.svg", "Default avatar")}
+    </div>
+  {/if}
+{/snippet}
+
+{#snippet iconImage(url: string, altText: string)}
+  <img class="object-cover rounded-full item-icon" src={url} alt={altText} />
+{/snippet}
