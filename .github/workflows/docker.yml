@@ -6,7 +6,10 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        runner: [ubuntu-latest, ubuntu-24.04-arm]
     permissions:
       contents: read
       packages: write
@@ -19,18 +22,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v4
       - run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          platforms: linux/amd64,linux/arm64
-          build-args: |
-            "base_api_url=https://api.beta.pluralkit.me"
-          tags: |
-            ghcr.io/pluralkit/dashboard-v2:${{ env.BRANCH_NAME }}
-            ghcr.io/pluralkit/dashboard-v2:${{ github.sha }}
-            ghcr.io/pluralkit/dashboard-v2:latest
+      - name: Build docker image
+        run: |
+          docker build \
+          -t ghcr.io/pluralkit/dashboard-v2:${{ env.BRANCH_NAME }} \
+          -t ghcr.io/pluralkit/dashboard-v2:${{ github.sha }} \
+          -t ghcr.io/pluralkit/dashboard-v2:latest \
+          --build-arg base_api_url=https://api.beta.pluralkit.me \
+          --push \
+          .
