@@ -61,7 +61,7 @@
 </script>
 
 <div
-  class="bg-base-100 rounded-lg"
+  class="rounded-lg bg-base-100"
   style={member.color && dash.settings.display?.fullColorBorder
     ? `border-color: #${member.color}; border-left-width: 6px;`
     : ""}
@@ -69,7 +69,7 @@
   <button
     aria-label={`Open or close ${member.name}'s card`}
     onclick={() => (open = !open)}
-    class="collapse-title px-2 py-2 lg:px-4 text-xl font-medium flex justify-between items-center"
+    class="flex items-center justify-between w-full px-2 py-2 text-xl font-medium collapse-title lg:px-4"
   >
     <div class="flex items-center">
       <div class="mr-3">
@@ -84,7 +84,7 @@
         </span>
       </span>
     </div>
-    <div class="h-14 ml-3">
+    <div class="ml-3 h-14">
       {#if proxyAvatar || avatar}
         <div class="avatar w-14 h-14">
           {@render iconImage(proxyAvatar || avatar || "", `${member.name}'s avatar'`)}
@@ -116,7 +116,7 @@
         onclick={() => (tab = "groups")}>Groups</button
       >
     </div>
-    <div class="tab-contents flex flex-col rounded-b-lg p-2 lg:p-4 bg-base-200">
+    <div class="flex flex-col p-2 rounded-b-lg tab-contents lg:p-4 bg-base-200">
       <MemberViewCreate bind:member {tab} bind:avatar bind:proxyAvatar />
       <MemberInfoCreate bind:member {tab} bind:privacy={member.privacy} list={memberList} />
       {#if openedOnce && tabbedOnce}
@@ -128,19 +128,19 @@
       {#if err.length > 0}
         {#each err as e}
           {#if e}
-            <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-error/20 mt-2">
+            <div transition:fade={{ duration: 400 }} role="alert" class="mt-2 alert bg-error/20">
               {e}
             </div>
           {/if}
         {/each}
       {/if}
       {#if success}
-        <div transition:fade={{ duration: 400 }} role="alert" class="alert bg-success/20 mt-2">
+        <div transition:fade={{ duration: 400 }} role="alert" class="mt-2 alert bg-success/20">
           Member successfully created
         </div>
       {/if}
       <div class="flex flex-row items-center">
-        <div class="join mt-2">
+        <div class="mt-2 join">
           {#if !loading}
             <SubmitCreateButton
               bind:loading
@@ -172,5 +172,5 @@
 </div>
 
 {#snippet iconImage(url: string, altText: string)}
-  <img class="item-icon object-cover rounded-full" src={url} alt={altText} />
+  <img class="object-cover rounded-full item-icon" src={url} alt={altText} />
 {/snippet}

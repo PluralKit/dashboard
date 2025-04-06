@@ -56,7 +56,7 @@
 </script>
 
 <div
-  class="bg-base-100 rounded-lg"
+  class="rounded-lg bg-base-100"
   style={item.color && dash.settings.display?.fullColorBorder
     ? `border-color: #${item.color}; border-left-width: 6px;`
     : ""}
@@ -64,7 +64,7 @@
   <button
     aria-label={`Open or close ${item.name}'s card`}
     onclick={() => (open = !open)}
-    class="collapse-title px-2 py-2 lg:px-4 text-xl font-medium flex justify-between items-center"
+    class="flex items-center justify-between w-full px-2 py-2 text-xl font-medium collapse-title lg:px-4"
   >
     <div class="flex items-center min-w-0">
       <div class="mr-3">
@@ -76,11 +76,11 @@
           <IconShare />
         {/if}
       </div>
-      <div class="h-min min-w-0 text-left">
+      <div class="min-w-0 text-left h-min">
         <span class="break-words">{item.name}</span> <span class="font-light">({item.id})</span>
       </div>
     </div>
-    <div class="h-14 ml-3">
+    <div class="ml-3 h-14">
       {#if type === "member"}
         {@render memberIcon(item)}
       {:else if type === "system"}
@@ -116,7 +116,7 @@
         >
       {/if}
     </div>
-    <div class="tab-contents flex flex-col rounded-b-lg p-2 lg:p-4 bg-base-200">
+    <div class="flex flex-col p-2 rounded-b-lg tab-contents lg:p-4 bg-base-200">
       {#if type === "member"}
         {@render memberTabs(item, tab)}
       {:else if type === "system"}
@@ -193,7 +193,7 @@
 {/snippet}
 
 {#snippet iconImage(url: string, altText: string)}
-  <img class="item-icon object-cover rounded-full" src={url} alt={altText} />
+  <img class="object-cover rounded-full item-icon" src={url} alt={altText} />
 {/snippet}
 
 <style>
