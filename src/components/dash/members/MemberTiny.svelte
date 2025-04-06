@@ -35,7 +35,7 @@
   aria-label={asPage ? "View member list" : "View member page"}
 >
   <div
-    class="box rounded-lg m-1 flex flex-col gap-2 p-0 transition-all hover:scale-105 h-full"
+    class="box rounded-lg m-1 flex flex-col gap-2 p-0 transition-all hover:scale-105 h-full bg-base-100"
     style={member.color ? `border: 4px solid #${member.color}` : ""}
   >
     <img
