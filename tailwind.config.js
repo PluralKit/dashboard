@@ -5,7 +5,7 @@ import { light, dark, night, autumn, coffee, halloween, pastel } from "daisyui/s
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{html,js,svelte,ts}"],
-  plugins: [typography(), daisyui],
+  plugins: [typography, daisyui],
   theme: {
     extend: {
       colors: {
