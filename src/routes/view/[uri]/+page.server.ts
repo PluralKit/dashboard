@@ -6,8 +6,10 @@ export function load({ params, url }) {
   let tab: string = "members"
   let isPublic = false
 
+  const uri = params.uri.slice(0, params.uri.indexOf("&"))
+
   try {
-    const json = Base64.decode(params.uri)
+    const json = Base64.decode(uri)
     const data = JSON.parse(json)
     if (data.system) {
       system = data.system
@@ -28,7 +30,7 @@ export function load({ params, url }) {
   if (system)
     redirect(
       302,
-      `/dash/${system}?${isPublic ? `public=true&` : ""}uri=${params.uri}&tab=${tab}${url.searchParams.toString()}`
+      `/dash/${system}?${isPublic ? `public=true&` : ""}uri=${uri}&tab=${tab}&${url.searchParams.toString()}`
     )
   else error(404)
 }
