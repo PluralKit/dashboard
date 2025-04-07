@@ -4,6 +4,7 @@
   import { Base64 } from "js-base64"
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
+  import { IconEyeOff, IconSettings } from "@tabler/icons-svelte"
 
   const createUrl = () => {
     return Base64.encodeURI(
@@ -92,6 +93,23 @@
         <li>You can easily copy and paste anything by toggling dev mode.</li>
       </ul>
     </div>
+  </div>
+  <div class="box bg-base-100">
+    <h3 class="font-semibold text-xl">Quick Links</h3>
+    <ul class="mt-2 gap-1 flex flex-col">
+      <li>
+        <a class="btn btn-neutral btn-sm w-full" href={`./${dash.user?.id}/bulk-privacy`}>
+          <IconEyeOff size={18} /> Bulk privacy settings
+        </a>
+      </li>
+      <li></li>
+      <li>
+        <a class="btn btn-neutral btn-sm w-full" href={`./${dash.user?.id}/config`}>
+          <IconSettings size={18} /> Config Settings
+        </a>
+      </li>
+      <li></li>
+    </ul>
   </div>
 </div>
 
