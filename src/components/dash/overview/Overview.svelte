@@ -27,8 +27,8 @@
         <b>Need help with anything?</b> You can
         <a class="text-primary" href="https://discord.gg/PczBt78"
           >find the support server over here</a
-        >, or with the link in the header bar. The <i>#website</i> channel is where questions about the
-        dashboard should go.
+        >, or with the link in the header bar. The <i>#dashboard-website</i> channel is where questions
+        about the dashboard should go.
       </p>
     </div>
   </div>
