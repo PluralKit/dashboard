@@ -307,7 +307,11 @@ function createMemberListState(): DashList<Member> {
         if (Array.isArray(view.m) && view.m.length >= 2) {
           filters = view.m[0]
           sorts = view.m[1]
-          if (view.m.length > 2) this.settings.view.type = view.m[2]
+          if (view.m.length > 2) {
+            this.settings.viewType = view.m[2]
+            console.log(this.settings.viewType, view.m[2])
+            this.settings.changeView()
+          }
           this.settings.filterMode = "advanced"
         }
       }
@@ -433,7 +437,10 @@ function createGroupListState(): DashList<Group> {
         if (Array.isArray(view.g) && view.g.length >= 2) {
           filters = view.g[0]
           sorts = view.g[1]
-          if (view.g.length > 2) this.settings.view.type === view.g[2]
+          if (view.g.length > 2) {
+            this.settings.viewType = view.g[2]
+            this.settings.changeView()
+          }
           this.settings.filterMode = "advanced"
         }
       }
