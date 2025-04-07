@@ -34,18 +34,18 @@
   </div>
   <div class="flex flex-col box bg-base-100">
     <div class="flex flex-col flex-1 gap-3 md:flex-row">
-      {#if dash.user}
+      {#if dash.system}
         <div class="flex flex-row flex-1 gap-2">
-          {@render systemIcon(dash.user)}
+          {@render systemIcon(dash.system)}
           <div class="flex flex-col flex-1 gap-1">
             <h3 class="text-lg font-semibold">
-              {#if dash.user.name}
-                <AwaitHtml htmlPromise={parseMarkdown(dash.user.name)}></AwaitHtml>
+              {#if dash.system.name}
+                <AwaitHtml htmlPromise={parseMarkdown(dash.system.name)}></AwaitHtml>
                 <span class="font-normal text-muted">
-                  ({dash.user.id})
+                  ({dash.system.id})
                 </span>
               {:else}
-                System ID: {dash.user.id}
+                System ID: {dash.system.id}
               {/if}
             </h3>
             <ul class="flex-1 text-sm">
@@ -98,13 +98,13 @@
     <h3 class="font-semibold text-xl">Quick Links</h3>
     <ul class="mt-2 gap-1 flex flex-col">
       <li>
-        <a class="btn btn-neutral btn-sm w-full" href={`./${dash.user?.id}/bulk-privacy`}>
+        <a class="btn btn-neutral btn-sm w-full" href={`./${dash.system?.id}/bulk-privacy`}>
           <IconEyeOff size={18} /> Bulk privacy settings
         </a>
       </li>
       <li></li>
       <li>
-        <a class="btn btn-neutral btn-sm w-full" href={`./${dash.user?.id}/config`}>
+        <a class="btn btn-neutral btn-sm w-full" href={`./${dash.system?.id}/config`}>
           <IconSettings size={18} /> Config Settings
         </a>
       </li>
