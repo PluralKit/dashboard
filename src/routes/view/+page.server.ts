@@ -25,7 +25,7 @@ export function load({ url }) {
       }
     } catch (e) {
       console.error(e)
-      error(404, "Could not decode the given URI.")
+      error(400, "Could not decode the given URI.")
     }
 
     if (system)
