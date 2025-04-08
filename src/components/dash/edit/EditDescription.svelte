@@ -10,10 +10,14 @@
     original,
     value = $bindable(),
     item,
+    index,
+    title,
   }: {
     original: string | undefined | null
     value: string | undefined
-    item: Member | Group | System
+    item?: Member | Group | System
+    index?: number
+    title?: string
   } = $props()
 
   let popupElement: HTMLDialogElement
@@ -23,7 +27,9 @@
   <div
     class="flex flex-row flex-wrap items-center gap-3 px-4 pt-2 pb-1 mx-4 font-bold rounded-t-xl bg-base-100 w-fit"
   >
-    <label for={`${item.uuid}-edit-description`} class="text-lg">Description</label>
+    <label for={`${item?.uuid ?? index ?? ""}-edit-description`} class="text-lg"
+      >{title ?? "Description"}</label
+    >
     <button onclick={() => popupElement.showModal()} class="btn btn-primary btn-xs">Preview</button>
     <span
       title={original === value || original === null ? "" : "Edited"}
@@ -37,7 +43,7 @@
   </div>
   <div class="p-4 rounded-xl bg-base-100">
     <textarea
-      id={`${item.uuid}-edit-description`}
+      id={`${item?.uuid ?? index ?? ""}-edit-description`}
       bind:value
       use:autoresize
       rows={5}
@@ -50,7 +56,7 @@
 
 <dialog bind:this={popupElement} class="modal">
   <div class="w-11/12 max-w-3xl modal-box">
-    <h3 class="text-lg">Description preview</h3>
+    <h3 class="text-lg">{title ?? "Description"} preview</h3>
     <form method="dialog">
       <button
         class="absolute btn btn-sm btn-circle btn-ghost right-4 top-4"
