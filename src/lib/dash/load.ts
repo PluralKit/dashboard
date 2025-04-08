@@ -48,7 +48,7 @@ export async function loadDash(api: ApiClient, cookies: Cookies, url: URL, param
     // we can go ahead and fetch using the token
     if (params.sid === sid && !url.searchParams.get("public") && !url.searchParams.get("api")) {
       try {
-        const { system, members, groups, errors, ratelimited } = await getDashInfo(
+        const { system, members, groups, errors, ratelimited, config } = await getDashInfo(
           api,
           sid || "@me",
           token
@@ -62,6 +62,7 @@ export async function loadDash(api: ApiClient, cookies: Cookies, url: URL, param
           members: members || [],
           groups: groups || [],
           privacyMode: PrivacyMode.PRIVATE,
+          config,
           meta: {
             title: system?.name,
             color: system?.color,
@@ -87,6 +88,7 @@ export async function loadDash(api: ApiClient, cookies: Cookies, url: URL, param
           system: system || {},
           members: members || [],
           groups: groups || [],
+          config: undefined,
           privacyMode: PrivacyMode.PUBLIC,
           meta: {
             title: system?.name,

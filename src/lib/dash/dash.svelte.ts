@@ -1,4 +1,4 @@
-import type { Group, Member, proxytag, System } from "$api/types"
+import type { Config, Group, Member, proxytag, System } from "$api/types"
 import {
   FilterMode,
   createFilter,
@@ -107,6 +107,8 @@ function createDash() {
   let memberList = $state(createMemberListState())
   let groupList = $state(createGroupListState())
 
+  let configSettings = createConfigState()
+
   let member = $state(createMemberState())
   let group = $state(createGroupState())
 
@@ -138,6 +140,12 @@ function createDash() {
     },
     get user() {
       return user
+    },
+    get config() {
+      return configSettings as Config
+    },
+    set config(value: Config | undefined) {
+      configSettings = createConfigState(value as Config)
     },
     init: (system: System, members: Member[], groups: Group[], mode: PrivacyMode, view?: any) => {
       systemData.init(system)
@@ -450,6 +458,32 @@ function createGroupListState(): DashList<Group> {
         listSettings.filterMode === "simple" ? simpleSorts : sorts
       )
       paginatedGroups = paginateList(processedGroups, listSettings)
+    },
+  }
+}
+
+export function createConfigState(config?: Config) {
+  let privateMember = $state(config?.member_default_private)
+  let privateGroup = $state(config?.group_default_private)
+  let templates = $state(config?.description_templates ?? [])
+  return {
+    get member_default_private() {
+      return privateMember
+    },
+    set member_default_private(value) {
+      privateMember = value
+    },
+    get group_default_private() {
+      return privateGroup
+    },
+    set group_default_private(value) {
+      privateGroup = value
+    },
+    get description_templates() {
+      return templates
+    },
+    set description_templates(value: string[]) {
+      templates = value
     },
   }
 }

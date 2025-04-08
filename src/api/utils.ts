@@ -1,7 +1,7 @@
 import { ErrorType, type ApiError, type ApiClient, type ApiOptions } from "$api"
 import type { Cookies } from "@sveltejs/kit"
 import { env } from "$env/dynamic/private"
-import type { Member, System, Group } from "./types"
+import type { Member, System, Group, Config } from "./types"
 
 export async function login(api: ApiClient, cookies: Cookies): Promise<System | null> {
   try {
@@ -65,11 +65,21 @@ export async function getDashInfo(api: ApiClient, sid: string, token?: string) {
     errors.groups = e.message || "Unknown error while fetching groups"
   }
 
+  let config: Config | undefined = undefined
+  try {
+    config = (await api<Config>(`systems/${sid}/settings`, options)) ?? undefined
+  } catch (err) {
+    const e = err as ApiError
+    if (e.type === ErrorType.RateLimit) ratelimited.config = true
+    errors.config = e.message || "Unknown error while fetching config"
+  }
+
   return {
     errors,
     ratelimited,
     system,
     members,
     groups,
+    config,
   }
 }
