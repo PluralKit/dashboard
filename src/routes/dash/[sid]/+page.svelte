@@ -29,8 +29,6 @@
 
   const p = page.url.searchParams
   p.delete("uri")
-
-  if (browser) goto(`?${p.toString()}`)
 </script>
 
 <div class="container px-4 mx-auto">
