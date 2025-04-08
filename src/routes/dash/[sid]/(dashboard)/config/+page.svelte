@@ -54,8 +54,8 @@
   }
 </script>
 
-<div class="flex max-w-6xl gap-4 flex-col md:flex-row mx-auto items-start flex-wrap">
-  <div class="box bg-base-100 md:max-w-sm">
+<div class="flex max-w-2xl lg:max-w-6xl gap-4 flex-col lg:flex-row mx-auto items-start flex-wrap">
+  <div class="box bg-base-100 lg:max-w-sm">
     <h2 class="text-2xl font-semibold mb-1"><IconSettings class="inline" /> Config</h2>
     <p class="mb-2">
       You can edit your system's bot config settings here, as well as description templates.
@@ -105,7 +105,7 @@
       </div>
     </div>
   </div>
-  <div class="flex flex-col flex-1 gap-3">
+  <div class="flex flex-col flex-1 gap-3 w-full">
     <div class="box bg-base-100 flex flex-col p-5 w-full">
       <h3 class="font-semibold text-lg mb-2">Bot config settings</h3>
       <div class="grid grid-rows-1 md:grid-cols-2 grid-rows-auto gap-4">
