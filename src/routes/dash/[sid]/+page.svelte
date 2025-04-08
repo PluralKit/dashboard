@@ -7,6 +7,7 @@
   import Overview from "$components/dash/overview/Overview.svelte"
   import SystemHome from "$components/dash/system/SystemHome.svelte"
   import { dash, PrivacyMode } from "$lib/dash/dash.svelte.js"
+  import { dashTabs } from "$lib/dash/utils.js"
 
   let { data } = $props()
   let tab: string = $state(
@@ -33,33 +34,17 @@
 
 <div class="container px-4 mx-auto">
   <div role="tablist" class="grid-cols-2 mb-4 tabs tabs-boxed md:grid-cols-none">
-    {#if dash.privacyMode === PrivacyMode.PRIVATE}
-      <button
-        role="tab"
-        class={`tab ${tab === "overview" ? "tab-active" : ""} row-auto md:row-start-1`}
-        onclick={() => changeTab("overview")}>Overview</button
-      >
-    {/if}
-    <button
-      role="tab"
-      class={`tab ${tab === "system" ? "tab-active" : ""} row-auto md:row-start-1`}
-      onclick={() => changeTab("system")}>System</button
-    >
-    <button
-      role="tab"
-      class={`tab ${tab === "members" ? "tab-active" : ""} row-auto md:row-start-1`}
-      onclick={() => changeTab("members")}>Members</button
-    >
-    <button
-      role="tab"
-      class={`tab ${tab === "groups" ? "tab-active" : ""} row-auto md:row-start-1`}
-      onclick={() => changeTab("groups")}>Groups</button
-    >
-    <!-- <button
-      role="tab"
-      class={`tab ${tab === "switches" ? "tab-active" : ""} row-auto md:row-start-1`}
-      onclick={() => changeTab("switches")}>Switches</button
-    > -->
+    {#each dashTabs as t}
+      {#if !t.private || dash.privacyMode === PrivacyMode.PRIVATE}
+        <button
+          role="tab"
+          class={`tab ${tab === t.title.toLowerCase() ? "tab-active" : ""} row-auto md:row-start-1`}
+          onclick={() => changeTab(t.title.toLowerCase())}
+        >
+          {t.title}
+        </button>
+      {/if}
+    {/each}
   </div>
 </div>
 

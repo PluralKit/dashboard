@@ -28,3 +28,19 @@ export function toggleSetting(dash: any, ...path: string[]) {
   }
   previous[path[path.length - 1]] = previous[path[path.length - 1]] === true ? false : true
 }
+
+export const dashTabs = [
+  {
+    title: "Overview",
+    private: true,
+  },
+  {
+    title: "System",
+  },
+  {
+    title: "Members",
+  },
+  {
+    title: "Groups",
+  },
+]
