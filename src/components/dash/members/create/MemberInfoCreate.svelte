@@ -2,7 +2,7 @@
   import type { Member, MemberPrivacy, proxytag } from "$api/types"
   import EditPrivacy from "$components/dash/edit/EditPrivacy.svelte"
   import EditProxyTag from "$components/dash/edit/EditProxyTag.svelte"
-  import type { DashList } from "$lib/dash/dash.svelte"
+  import { dash, type DashList } from "$lib/dash/dash.svelte"
   import { IconPlus, IconAlertTriangle } from "@tabler/icons-svelte"
 
   let {
@@ -50,13 +50,14 @@
     })
   )
 
-  function changeAllPrivacy(event: Event) {
-    const target = event.target as HTMLSelectElement
-    if (target.value === "public" || target.value === "private") {
-      Object.entries(privacy).forEach(
-        ([key]) => (privacy[key as keyof MemberPrivacy] = target.value)
-      )
-    } else if (target.value) {
+  changeAllPrivacy(undefined, dash.config?.member_default_private ? "private" : "public")
+
+  function changeAllPrivacy(event: Event | undefined, value?: "public" | "private") {
+    const target = event?.target as HTMLSelectElement
+    const v = value ?? target?.value
+    if (v === "public" || v === "private") {
+      Object.entries(privacy).forEach(([key]) => (privacy[key as keyof MemberPrivacy] = v))
+    } else if (v) {
       Object.entries(privacy).forEach(
         ([key]) =>
           (privacy[key as keyof MemberPrivacy] = (privacy as MemberPrivacy)[

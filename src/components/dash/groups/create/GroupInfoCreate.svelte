@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Group, GroupPrivacy, proxytag } from "$api/types"
   import EditPrivacy from "$components/dash/edit/EditPrivacy.svelte"
+  import { dash } from "$lib/dash/dash.svelte"
   import { IconPlus } from "@tabler/icons-svelte"
 
   let {
@@ -15,13 +16,14 @@
     privacy: GroupPrivacy
   } = $props()
 
-  function changeAllPrivacy(event: Event) {
-    const target = event.target as HTMLSelectElement
-    if (target.value === "public" || target.value === "private") {
-      Object.entries(privacy).forEach(
-        ([key]) => (privacy[key as keyof GroupPrivacy] = target.value)
-      )
-    } else if (target.value) {
+  changeAllPrivacy(undefined, dash.config?.member_default_private ? "private" : "public")
+
+  function changeAllPrivacy(event: Event | undefined, value?: "public" | "private") {
+    const target = event?.target as HTMLSelectElement
+    const v = value ?? target?.value
+    if (v === "public" || v === "private") {
+      Object.entries(privacy).forEach(([key]) => (privacy[key as keyof GroupPrivacy] = v))
+    } else if (v) {
       Object.entries(privacy).forEach(
         ([key]) =>
           (privacy[key as keyof GroupPrivacy] = (privacy as GroupPrivacy)[
