@@ -132,6 +132,7 @@
       <div class="flex flex-col gap-3 -mx-4">
         {#each new Array(3) as _, i}
           <EditDescription
+            showTemplates={false}
             title={`Template ${i + 1}`}
             index={i + 1}
             original={dash.config?.description_templates[i]}

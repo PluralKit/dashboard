@@ -5,6 +5,7 @@
   import { autoresize } from "svelte-textarea-autoresize"
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
+  import { dash } from "$lib/dash/dash.svelte"
 
   let {
     original,
@@ -12,15 +13,26 @@
     item,
     index,
     title,
+    showTemplates = true,
   }: {
     original: string | undefined | null
     value: string | undefined
     item?: Member | Group | System
     index?: number
     title?: string
+    showTemplates?: boolean
   } = $props()
 
   let popupElement: HTMLDialogElement
+
+  let templatesVisible =
+    showTemplates &&
+    dash.config?.description_templates &&
+    dash.config?.description_templates.length > 0
+
+  function insertTemplate(index: number) {
+    value = dash.config?.description_templates[index]
+  }
 </script>
 
 <div class="flex flex-col w-full">
@@ -41,7 +53,18 @@
       {value?.length ?? 0}/1000
     </span>
   </div>
-  <div class="p-4 rounded-xl bg-base-100">
+  <div class={`p-4 rounded-xl bg-base-100 flex flex-col gap-2 ${templatesVisible ? "pt-2" : ""}`}>
+    {#if templatesVisible}
+      <ol class="flex flex-row gap-2 items-center">
+        {#each dash.config?.description_templates ?? [] as template, i}
+          <li>
+            <button class="btn btn-xs btn-neutral" onclick={() => insertTemplate(i)}
+              >Template {i + 1}</button
+            >
+          </li>
+        {/each}
+      </ol>
+    {/if}
     <textarea
       id={`${item?.uuid ?? index ?? ""}-edit-description`}
       bind:value
