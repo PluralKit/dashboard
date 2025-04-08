@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { dash } from "$lib/dash/dash.svelte"
+  import { dash, PrivacyMode } from "$lib/dash/dash.svelte"
   import { toggleSetting } from "$lib/dash/utils"
   import { IconAddressBook, IconSettings } from "@tabler/icons-svelte"
 </script>
@@ -9,9 +9,11 @@
     <h2 class="text-xl">
       <IconAddressBook class="inline mr-2" /> System options
     </h2>
-    <button class="btn btn-sm btn-primary p-2 ml-2">
-      <IconSettings class="inline" size={16} /> Settings
-    </button>
+    {#if dash.privacyMode === PrivacyMode.PRIVATE}
+      <a class="btn btn-sm btn-primary p-2 ml-2" href={`./${dash.system?.id}/config`}>
+        <IconSettings class="inline" size={16} /> Config
+      </a>
+    {/if}
   </div>
   <div class="text-sm mt-2">
     <button
