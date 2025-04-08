@@ -5,15 +5,6 @@
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
   import { IconEyeOff, IconSettings } from "@tabler/icons-svelte"
-
-  const createUrl = () => {
-    return Base64.encodeURI(
-      JSON.stringify({
-        members: [dash.members.filters, dash.members.sorts],
-        groups: [dash.groups.filters, dash.groups.sorts],
-      })
-    )
-  }
 </script>
 
 <div
