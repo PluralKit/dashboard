@@ -21,7 +21,7 @@
   let sortField: string = $state("")
   let sortOrder: 1 | -1 = $state(1)
 
-  const modeDisabled = ["color", "date", "members", "groups", "created", "birthday"]
+  const modeDisabled = ["color", "members", "groups", "birthday"]
 
   function addSort() {
     let mode = sortMode
@@ -87,7 +87,9 @@
         {:else if sortField === "color"}
           <option value={null} disabled>color</option>
         {:else if filterFieldType(sortField) === "date"}
-          <option value={null} disabled>date</option>
+          <option value={null} disabled>Sort mode...</option>
+          <option value={SortMode.ABSOLUTE}>with years</option>
+          <option value={SortMode.RELATIVE}>without years</option>
         {:else if filterFieldType(sortField) === "number"}
           <option value={null} disabled>amount</option>
         {:else}

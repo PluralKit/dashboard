@@ -10,6 +10,8 @@ export interface Sort {
 }
 
 export enum SortMode {
+  ABSOLUTE = "absolute",
+  RELATIVE = "relative",
   ALPHABETICAL = "alphabetical",
   SIZE = "size",
 }
@@ -20,12 +22,23 @@ export const sortModeText = (mode: SortMode, type: string, withComma?: boolean) 
   const text: Record<string, string> = {
     alphabetical: `alphabetically${comma}`,
     size: type === "string" ? `by character length${comma}` : "",
+    absolute: `including years${comma}`,
+    relative: `excluding years${comma}`
   }
   return {
     get text() {
       return text[mode.toString()] ?? "???"
     },
   }
+}
+
+export const defaultSortMode = (field: string): SortMode => {
+  const mode: Record<string, SortMode> = {
+    birthday: SortMode.RELATIVE,
+    created: SortMode.ABSOLUTE,
+  }
+
+  return mode[field] ?? SortMode.ALPHABETICAL
 }
 
 export function createSort(
@@ -110,6 +123,19 @@ function applySort<T>(list: T[], sort: Sort, groupList: Group[]): T[] {
 
         if (am.length === bm.length) result = 0
         else result = am.length > bm.length ? 1 : -1
+        return result * sort.order
+      case "birthday":
+      case "created":
+        if (a[field] === b[field]) result = 0
+        else if (!a[field]) result = 1
+        else if (!b[field]) result = -1
+        else if (sort.mode === SortMode.RELATIVE) {
+          const aa = (a[field] as string).slice(5)
+          const bb = (b[field] as string).slice(5)
+          result = aa.localeCompare(bb)
+        } else {
+          result = (a[field] as string).localeCompare(b[field] as string)
+        }
         return result * sort.order
       default:
         if (typeof a[field] === "string" || typeof b[field] === "string") {

@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
   import { type DashList } from "$lib/dash/dash.svelte"
+  import { defaultSortMode } from "$lib/dash/sorts.svelte"
   import { IconSearch } from "@tabler/icons-svelte"
   import Svelecte from "svelecte"
   // @ts-ignore
@@ -148,6 +149,7 @@
         id="member-list-sort-by"
         bind:value={list.simpleSorts[0].field}
         onchange={() => {
+          list.simpleSorts[0].mode = defaultSortMode(list.simpleSorts[0].field)
           list.process(groupList.list.raw)
           list.paginate()
         }}
