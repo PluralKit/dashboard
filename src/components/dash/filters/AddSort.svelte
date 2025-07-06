@@ -21,7 +21,7 @@
   let sortField: string = $state("")
   let sortOrder: 1 | -1 = $state(1)
 
-  const modeDisabled = ["color", "members", "groups", "birthday"]
+  const modeDisabled = ["color", "members", "groups"]
 
   function addSort() {
     let mode = sortMode
