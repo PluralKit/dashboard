@@ -242,9 +242,13 @@ function getColor(hex: string) {
 }
 
 export function createSimpleSorts() {
+  let baseSort = $state(
+    createSort(SortMode.ALPHABETICAL, "name", "name", 1, "simple-sort--name")
+  )
+
   let simpleNameSort = $state(
     createSort(SortMode.ALPHABETICAL, "name", "name", 1, "simple-sort--name")
   )
 
-  return [simpleNameSort]
+  return [baseSort, simpleNameSort]
 }

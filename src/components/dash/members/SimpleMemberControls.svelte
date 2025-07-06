@@ -147,9 +147,9 @@
       <select
         class="input input-sm input-bordered join-item flex-1"
         id="member-list-sort-by"
-        bind:value={list.simpleSorts[0].field}
+        bind:value={list.simpleSorts[1].field}
         onchange={() => {
-          list.simpleSorts[0].mode = defaultSortMode(list.simpleSorts[0].field)
+          list.simpleSorts[1].mode = defaultSortMode(list.simpleSorts[1].field)
           list.process(groupList.list.raw)
           list.paginate()
         }}
@@ -174,7 +174,7 @@
       <select
         class="input input-sm input-bordered join-item flex-1"
         id="member-list-sort-order"
-        bind:value={list.simpleSorts[0].order}
+        bind:value={list.simpleSorts[1].order}
         onchange={() => {
           list.process(groupList.list.raw)
           list.paginate()

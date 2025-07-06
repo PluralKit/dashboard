@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Group } from "$api/types"
   import { dash, type DashList } from "$lib/dash/dash.svelte"
+  import { defaultSortMode } from "$lib/dash/sorts.svelte"
   import { IconSearch } from "@tabler/icons-svelte"
   import Svelecte from "svelecte"
   // @ts-ignore
@@ -128,8 +129,9 @@
       <select
         class="input input-sm input-bordered join-item flex-1"
         id="group-list-sort-by"
-        bind:value={list.simpleSorts[0].field}
+        bind:value={list.simpleSorts[1].field}
         onchange={() => {
+          list.simpleSorts[1].mode = defaultSortMode(list.simpleSorts[1].field)
           list.process(list.list.raw)
           list.paginate()
         }}
@@ -151,7 +153,7 @@
       <select
         class="input input-sm input-bordered join-item flex-1"
         id="group-list-sort-order"
-        bind:value={list.simpleSorts[0].order}
+        bind:value={list.simpleSorts[1].order}
         onchange={() => {
           list.process(list.list.raw)
           list.paginate()
