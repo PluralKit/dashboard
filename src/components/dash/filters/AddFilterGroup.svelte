@@ -220,6 +220,8 @@
               <option value={FilterMode.EXCLUDES}>exclude</option>
               <option value={FilterMode.EXACT}>match</option>
               <option value={FilterMode.NOTEXACT}>don't match</option>
+              <option value={FilterMode.STARTSWITH}>starts with</option>
+              <option value={FilterMode.ENDSWITH}>ends with</option>
               <option value={FilterMode.EMPTY}>empty</option>
               <option value={FilterMode.NOTEMPTY}>not empty</option>
               <option value={FilterMode.HIGHERTHAN}>longer than</option>

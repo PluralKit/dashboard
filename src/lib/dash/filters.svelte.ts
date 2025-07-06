@@ -113,6 +113,14 @@ export const filterModeText = (newMode: FilterMode, type: string) => {
       verb: type === "date" ? "are before" : "are less than",
       afterVerb: type === "string" ? "characters long" : "",
     },
+    {
+      mode: FilterMode.STARTSWITH,
+      verb: "start with",
+    },
+    {
+      mode: FilterMode.ENDSWITH,
+      verb: "end with",
+    }
   ]
 
   return {
@@ -142,6 +150,10 @@ export enum FilterMode {
   EXACT = "match",
   // string: any no exact match, int: != value, groups: exclude members in all groups
   NOTEXACT = "no match",
+  // string: starts with, int: N/A, groups: N/A
+  STARTSWITH = "starts with",
+  // string: ends with, int: N/A, groups N/A
+  ENDSWITH = "ends with"
 }
 
 export const groupArrayModes = [
@@ -405,6 +417,22 @@ function applyFilter<T>(list: T[], filter: Filter, groupList?: Group[]): T[] {
         } else return false
       })
       break
+    case FilterMode.STARTSWITH:
+      processedList = processedList.filter((i) => {
+        if (!value) return true
+        if (!i[field]) return false
+        if (typeof i[field] !== "string") return true
+        return (i[field] as string).startsWith(value as string)
+      })
+      break
+    case FilterMode.ENDSWITH:
+      processedList = processedList.filter((i) => {
+        if (!value) return true
+        if (!i[field]) return false
+        if (typeof i[field] !== "string") return true
+        return (i[field] as string).endsWith(value as string)
+      })
+    break
   }
   return processedList
 }
