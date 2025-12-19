@@ -32,7 +32,7 @@
 
 {#if style === "button"}
   <div class="flex flex-row justify-end items-center">
-    <a target="_blank" class={`btn btn-sm mt-2 btn-${color}`} href={getLink()}>
+    <a class={`btn btn-sm mt-2 btn-${color}`} href={getLink()}>
       {#if dash.member.member?.uuid !== item.uuid || !asPage}
         View page
       {:else}
@@ -42,7 +42,6 @@
   </div>
 {:else if style === "icon"}
   <a
-    target="_blank"
     class={`
       text-muted flex items-center hover:text-primary
       transition-all hover:scale-110 hover:bg-base-200 active:scale-110 active:bg-base-300 rounded-md

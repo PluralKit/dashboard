@@ -72,7 +72,6 @@
       <ul>
         <li>
           You can view your public system while logged in <a
-            target="_blank"
             class="text-primary"
             href={`?public=true`}>by clicking this link</a
           >!
