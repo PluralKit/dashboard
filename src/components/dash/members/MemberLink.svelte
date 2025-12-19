@@ -2,7 +2,7 @@
   import type { Member } from "$api/types"
   import { dash } from "$lib/dash/dash.svelte"
   import { page } from "$app/stores"
-  import { IconExternalLink } from "@tabler/icons-svelte"
+  import { IconExternalLink, IconShare2 } from "@tabler/icons-svelte"
 
   let {
     asPage,
@@ -14,7 +14,7 @@
     asPage: boolean
     item: Member
     color?: "primary" | "neutral"
-    style?: "button" | "icon"
+    style?: "button" | "icon" | "ghost"
     class?: string
   } = $props()
 
@@ -52,5 +52,9 @@
     aria-label="View member page"
   >
     <IconExternalLink size={22} />
+  </a>
+{:else if style === "ghost"}
+  <a href={getLink()} class="btn btn-ghost btn-circle btn-lg text-center" title={`View member page (${item.name})`}>
+    <IconShare2 size={36} class="inline" />
   </a>
 {/if}

@@ -28,8 +28,8 @@ let availableViews: View[] = [
   },
   {
     type: ViewType.CARD,
-    itemsPerPageSelection: [24, 36, 48, 60],
-    defaultItemsPerPage: 36,
+    itemsPerPageSelection: [12, 24, 48],
+    defaultItemsPerPage: 24,
   },
   {
     type: ViewType.TINY,
