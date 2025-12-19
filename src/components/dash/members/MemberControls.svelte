@@ -128,6 +128,7 @@
       <option value={dash.settings.display?.keepOpen === true ? ViewType.OPEN : ViewType.COLLAPSE}
         >List</option
       >
+      <option value={ViewType.CARD}>Card</option>
       <option value={ViewType.TINY}>Tiny</option>
     </select>
   </div>
