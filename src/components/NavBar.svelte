@@ -20,7 +20,7 @@
 </script>
 
 <div class="navbar bg-base-100">
-  <div class="navbar-start">
+  <div class="navbar-start flex-1">
     <details class="dropdown" bind:this={navbarMenu}>
       <summary class="btn btn-ghost md:hidden">
         <IconMenu2 />
@@ -66,8 +66,8 @@
       <li><a href="https://discord.gg/PczBt78"><IconBrandDiscord /> Support server</a></li>
     </ul>
   </div>
-  <div class="navbar-end">
-    <a href="/settings#theme" class="mr-4 tooltip tooltip-left" data-tip="Change theme"
+  <div class="navbar-end w-auto">
+    <a href="/settings#theme" class="mr-4 tooltip tooltip-bottom" data-tip="Change theme"
       ><IconPaint /></a
     >
     {#if dash.user}
