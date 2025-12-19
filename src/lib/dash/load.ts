@@ -46,7 +46,7 @@ export async function loadDash(api: ApiClient, cookies: Cookies, url: URL, param
     // if the param system id matches the cookie system id
     // AND we aren't forcing public mode
     // we can go ahead and fetch using the token
-    if (params.sid === sid && !url.searchParams.get("public") && !url.searchParams.get("api")) {
+    if (params.sid === sid && !url.searchParams.get("public")) {
       try {
         const { system, members, groups, errors, ratelimited, config } = await getDashInfo(
           api,
@@ -61,8 +61,9 @@ export async function loadDash(api: ApiClient, cookies: Cookies, url: URL, param
           system: system || {},
           members: members || [],
           groups: groups || [],
-          privacyMode: PrivacyMode.PRIVATE,
+          privacyMode: PrivacyMode.PRIVATE, // TODO: refactor this for scoped tokens
           config,
+          isOwner: true,
           meta: {
             title: system?.name,
             color: system?.color,
@@ -90,6 +91,7 @@ export async function loadDash(api: ApiClient, cookies: Cookies, url: URL, param
           groups: groups || [],
           config: undefined,
           privacyMode: PrivacyMode.PUBLIC,
+          isOwner: params.sid === sid, // used to display the "view private info" button
           meta: {
             title: system?.name,
             color: system?.color,

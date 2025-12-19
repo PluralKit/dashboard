@@ -26,7 +26,7 @@ export async function load({ cookies, params, url, locals }) {
     else error(e.code, e.message)
   }
 
-  if (sid && token && !url.searchParams.get("public") && !url.searchParams.get("api")) {
+  if (sid && token && !url.searchParams.get("public")) {
     options = { token }
     privacyMode = PrivacyMode.PRIVATE
   }

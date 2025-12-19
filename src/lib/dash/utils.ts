@@ -1,4 +1,5 @@
 import { browser } from "$app/environment"
+import type { Page } from "@sveltejs/kit"
 
 export function getDashLink(sid: string, page: string, params?: URLSearchParams) {
   return `/dash${sid ? `/${sid}` : ""}${sid && page ? `?tab=${page}` : ""}${
@@ -44,3 +45,13 @@ export const dashTabs = [
     title: "Groups",
   },
 ]
+
+export const publicPrivateLink = (url: string, isOwner: boolean) => {
+  let params = url
+  if (isOwner) {
+    if (url.includes("public=true")) params = url.replace("public=true", "")
+    else params = url + "&public=true"
+  }
+
+  return params
+}

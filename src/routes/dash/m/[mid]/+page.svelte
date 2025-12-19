@@ -2,7 +2,10 @@
   import GroupControls from "$components/dash/groups/GroupControls.svelte"
   import GroupList from "$components/dash/groups/GroupList.svelte"
   import ItemCollapse from "$components/dash/ItemCollapse.svelte"
-  import { dash } from "$lib/dash/dash.svelte"
+  import { dash, initDash } from "$lib/dash/dash.svelte"
+
+  let { data } = $props()
+  initDash(data)
 </script>
 
 <div class="flex flex-col gap-8 mx-auto w-full max-w-4xl">

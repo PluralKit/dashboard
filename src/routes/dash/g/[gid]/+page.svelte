@@ -2,7 +2,11 @@
   import ItemCollapse from "$components/dash/ItemCollapse.svelte"
   import MemberControls from "$components/dash/members/MemberControls.svelte"
   import MemberList from "$components/dash/members/MemberList.svelte"
-  import { dash } from "$lib/dash/dash.svelte"
+  import { dash, initDash } from "$lib/dash/dash.svelte"
+
+  let { data } = $props()
+
+  initDash(data)
 </script>
 
 <div class="flex flex-col gap-8 mx-auto w-full max-w-4xl">

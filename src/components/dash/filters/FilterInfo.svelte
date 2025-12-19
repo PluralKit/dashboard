@@ -80,7 +80,7 @@
 {:else if filter.proxy && filter.field === "proxy"}
   <Svelecte
     class="svelecte-control-pk w-full"
-    options={list.proxytags ? [...list.proxytags] : []}
+    options={list.proxyTags ? [...list.proxyTags] : []}
     multiple
     bind:value={proxyValue}
     valueField="value"

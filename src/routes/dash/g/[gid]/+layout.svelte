@@ -6,13 +6,6 @@
 
   export let data: LayoutData
 
-  dash.group.group = data.group
-  dash.group.members.filter = data.groupMembers.map((g) => g.uuid || "")
-  dash.group.members.page = data.group
-  dash.group.members.init(data.members)
-  dash.group.groups.init(data.groups)
-  dash.group.privacyMode = data.privacyMode
-
   let params = $page.url.searchParams
   params.append("tab", "groups")
 </script>

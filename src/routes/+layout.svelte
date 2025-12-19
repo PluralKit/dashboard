@@ -32,8 +32,6 @@
     if ($navigating) nprogress.start()
     else if (!$navigating) nprogress.done()
   }
-
-  dash.initUser(data.system)
 </script>
 
 <div

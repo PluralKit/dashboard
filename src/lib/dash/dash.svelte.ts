@@ -1,4 +1,4 @@
-import type { Config, Group, Member, proxytag, System } from "$api/types"
+import type { Config, Group, Member, System } from "$api/types"
 import {
   FilterMode,
   createFilter,
@@ -30,13 +30,12 @@ export interface DashList<T> {
   simpleFilters: FilterGroup[]
   simpleSorts: Sort[]
   settings: ListSettings
-  proxytags?: SvelecteOption[]
+  proxyTags?: SvelecteOption[]
   filter: string[] | undefined
   page: Member | Group | undefined
-  process: (groupList?: Group[]) => void
-  paginate: () => void
   fetch: (token?: string, groups?: Group[]) => Promise<void>
-  init: (data: Member[] | Group[], groups?: Group[], view?: any) => void
+  process: (groups: Group[]) => void
+  paginate: () => void
 }
 
 export interface SvelecteOption {
@@ -45,146 +44,48 @@ export interface SvelecteOption {
   extra?: any
 }
 
-const getDashList = <T>(l: DashList<T>) => {
-  return {
-    list: l.list,
-    get filters() {
-      return l.filters
-    },
-    set filters(filterGroups: FilterGroup[]) {
-      l.filters = filterGroups
-    },
-    get sorts() {
-      return l.sorts
-    },
-    set sorts(sortList: Sort[]) {
-      l.sorts = sortList
-    },
-    get simpleFilters() {
-      return l.simpleFilters
-    },
-    set simpleFilters(filterGroups: FilterGroup[]) {
-      l.simpleFilters = filterGroups
-    },
-    get simpleSorts() {
-      return l.simpleSorts
-    },
-    set simpleSorts(sortList: Sort[]) {
-      l.simpleSorts = sortList
-    },
-    get settings() {
-      return l.settings
-    },
-    set settings(settings: ListSettings) {
-      l.settings = settings
-    },
-    get filter() {
-      return l.filter
-    },
-    set filter(f: string[] | undefined) {
-      l.filter = f
-    },
-    get page() {
-      return l.page
-    },
-    set page(p: Member | Group | undefined) {
-      l.page = p
-    },
-    process: l.process,
-    paginate: l.paginate,
-    fetch: l.fetch,
-    init: l.init,
-  }
+const createSystemState: (data: any) => System = (data: any) => data?.system ?? {}
+
+export let dash: ReturnType<typeof createDash> = createDash(null)
+
+export const initDash = (data: any) => {
+  dash = createDash(data)
 }
 
-export let dash = createDash()
+function createDash(data: any) {
+  let user: System | null = $derived(data?.user ?? null)
+  let privacyMode: PrivacyMode = $derived(data?.privacyMode ?? PrivacyMode.PUBLIC)
 
-function createDash() {
-  let user: System | null = $state(null)
-  let privacyMode: PrivacyMode = $state(PrivacyMode.PRIVATE)
+  let systemData = $derived(createSystemState(data))
+  let memberList = $derived(createMemberListState(data))
+  let groupList = $derived(createGroupListState(data))
 
-  let systemData = $state(createSystemState())
-  let memberList = $state(createMemberListState())
-  let groupList = $state(createGroupListState())
+  let configSettings = $derived(createConfigState(data?.config))
 
-  let configSettings = createConfigState()
+  let member = $derived(createMemberState(data))
+  let group = $derived(createGroupState(data))
 
-  let member = $state(createMemberState())
-  let group = $state(createGroupState())
-
-  let ratelimited: Record<string, boolean> = $state({})
-  let errors: Record<string, string> = $state({})
+  let ratelimited: Record<string, boolean> = $derived({})
+  let errors: Record<string, string> = $derived(data?.errors ?? {})
 
   let settings: Record<string, any> = $state({})
   return {
-    get members(): DashList<Member> {
-      return getDashList<Member>(memberList)
-    },
-    get groups() {
-      return getDashList<Group>(groupList)
-    },
-    get system() {
-      return systemData.system
-    },
-    get member() {
-      return member
-    },
-    get group() {
-      return group
-    },
-    get privacyMode() {
-      return privacyMode
-    },
-    get sid() {
-      return systemData.system?.id ?? ""
-    },
-    get user() {
-      return user
-    },
-    get config() {
-      return configSettings as Config
-    },
-    set config(value: Config | undefined) {
-      configSettings = createConfigState(value as Config)
-    },
-    init: (system: System, members: Member[], groups: Group[], mode: PrivacyMode, view?: any) => {
-      systemData.init(system)
-      memberList.init(members, groups, view)
-      groupList.init(groups, view)
-      privacyMode = mode
-    },
-    initUser: (system: System | null) => {
-      user = system
-    },
-    get settings() {
-      return settings
-    },
-    get ratelimited() {
-      return ratelimited
-    },
-    set ratelimited(ratelimit: Record<string, boolean>) {
-      ratelimited = ratelimit
-    },
-    get errors() {
-      return errors
-    },
-    set errors(error: Record<string, string>) {
-      errors = error
-    },
+    members: memberList,
+    groups: groupList,
+    system: systemData,
+    member,
+    group,
+    privacyMode,
+    sid: systemData?.id,
+    user,
+    config: configSettings,
+    settings,
+    ratelimited,
+    errors,
   }
 }
 
-function createSystemState() {
-  let system: System | null = $state(null)
-  return {
-    get system() {
-      return system
-    },
-    init: (data: System | null) => (system = data),
-  }
-}
-
-function createMemberListState(): DashList<Member> {
+function createMemberListState(data: any): DashList<Member> {
   let listSettings: ListSettings = $state(createListSettings())
 
   let filters: FilterGroup[] = $state([
@@ -195,12 +96,21 @@ function createMemberListState(): DashList<Member> {
   let simpleFilters: FilterGroup[] = $state([createSimpleFilters()])
   let simpleSorts: Sort[] = $state(createSimpleSorts())
 
-  let members: Member[] = $state([])
-  let processedMembers: Member[] = $state(processList(members, filters, sorts))
-  let paginatedMembers: Member[] = $state(paginateList(processedMembers, listSettings))
-
-  let groupFilter: string[] | undefined = $state(undefined)
+  let groupFilter: string[] = $state([])
   let page: Group | undefined = $state(undefined)
+
+  let members: Member[] = $derived(mapMemberGroups(data?.members ?? [], data?.groups ?? []))
+  let processedMembers: Member[] = $derived.by(() => {
+    return processList(
+      groupFilter.length > 0
+        ? members.filter((m) => groupFilter.find((g) => g === m.uuid))
+        : members,
+      listSettings.filterMode === "simple" ? simpleFilters : filters,
+      listSettings.filterMode === "simple" ? simpleSorts : sorts,
+      data?.groups
+    )
+  })
+  let paginatedMembers: Member[] = $derived(paginateList(processedMembers, listSettings))
 
   let optionMembers: SvelecteOption[] = $derived(
     members
@@ -229,112 +139,43 @@ function createMemberListState(): DashList<Member> {
   return {
     get list() {
       return {
-        get raw() {
-          return members
-        },
-        set raw(value: Member[]) {
-          members = value
-        },
+        raw: members,
         processed: processedMembers,
         paginated: paginatedMembers,
         options: optionMembers,
       }
     },
-    get filters() {
-      return filters
-    },
-    set filters(groups: FilterGroup[]) {
-      filters = groups
-    },
-    get sorts() {
-      return sorts
-    },
-    set sorts(newSorts: Sort[]) {
-      sorts = newSorts
-    },
-    get simpleFilters() {
-      return simpleFilters
-    },
-    set simpleFilters(groups: FilterGroup[]) {
-      simpleFilters = groups
-    },
-    get simpleSorts() {
-      return simpleSorts
-    },
-    set simpleSorts(newSorts: Sort[]) {
-      simpleSorts = newSorts
-    },
-    get proxytags() {
-      return proxyTags
-    },
-    get settings() {
-      return listSettings
-    },
-    set settings(settings: ListSettings) {
-      listSettings = settings
-    },
-    get filter() {
-      return groupFilter
-    },
-    set filter(g: string[] | undefined) {
-      groupFilter = g
-    },
-    get page() {
-      return page
-    },
-    set page(p: Group | undefined) {
-      page = p
-    },
-    process: function (groupList?: Group[]) {
-      processedMembers = processList(
-        groupFilter ? members.filter((m) => groupFilter?.find((g) => g === m.uuid)) : members,
-        listSettings.filterMode === "simple" ? simpleFilters : filters,
-        listSettings.filterMode === "simple" ? simpleSorts : sorts,
-        groupList
-      )
-    },
-    paginate: function () {
-      paginatedMembers = paginateList(processedMembers, listSettings)
-    },
+    filters,
+    sorts,
+    simpleFilters,
+    simpleSorts,
+    proxyTags,
+    settings: listSettings,
+    filter: groupFilter,
+    page,
     fetch: async function (token?: string, groups?: Group[]) {
       members = mapMemberGroups(
         await fetchList(`systems/${dash.system?.id || "exmpl"}/members`, token),
         groups || []
       )
-      processedMembers = processList(
-        groupFilter ? members.filter((m) => groupFilter?.find((g) => g === m.uuid)) : members,
-        listSettings.filterMode === "simple" ? simpleFilters : filters,
-        listSettings.filterMode === "simple" ? simpleSorts : sorts,
-        groups
-      )
-      paginatedMembers = paginateList(processedMembers, listSettings)
     },
-    init: function (data: Member[], groups?: Group[], view?: any) {
-      members = mapMemberGroups(data, groups || [])
-      if (view && view.m) {
-        if (Array.isArray(view.m) && view.m.length >= 2) {
-          filters = view.m[0]
-          sorts = view.m[1]
-          if (view.m.length > 2) {
-            this.settings.viewType = view.m[2]
-            console.log(this.settings.viewType, view.m[2])
-            this.settings.changeView()
-          }
-          this.settings.filterMode = "advanced"
-        }
-      }
+    process: function (groups: Group[]) {
       processedMembers = processList(
-        groupFilter ? members.filter((m) => groupFilter?.find((g) => g === m.uuid)) : members,
+        groupFilter.length > 0
+          ? members.filter((m) => groupFilter.find((g) => g === m.uuid))
+          : members,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
         listSettings.filterMode === "simple" ? simpleSorts : sorts,
         groups
       )
+    },
+    paginate: function () {
       paginatedMembers = paginateList(processedMembers, listSettings)
     },
   }
 }
 
-function createGroupListState(): DashList<Group> {
+function createGroupListState(data: any): DashList<Group> {
   let listSettings: ListSettings = $state(createListSettings())
 
   let filters: FilterGroup[] = $state([
@@ -345,12 +186,20 @@ function createGroupListState(): DashList<Group> {
   let simpleFilters: FilterGroup[] = $state([createSimpleFilters("group")])
   let simpleSorts: Sort[] = $state(createSimpleSorts())
 
-  let groups: Group[] = $state([])
-  let processedGroups: Group[] = $state(processList(groups, filters, sorts))
-  let paginatedGroups: Group[] = $state(paginateList(processedGroups, listSettings))
-
-  let memberFilter: string[] | undefined = $state(undefined)
+  let memberFilter: string[] | undefined = $state([])
   let page: Member | undefined = $state(undefined)
+
+  let groups: Group[] = $derived(data?.groups ?? [])
+  let processedGroups: Group[] = $state(
+    processList(
+      memberFilter.length > 0
+        ? groups.filter((g) => memberFilter.find((m) => m === g.uuid))
+        : groups,
+      listSettings.filterMode === "simple" ? simpleFilters : filters,
+      listSettings.filterMode === "simple" ? simpleSorts : sorts
+    )
+  )
+  let paginatedGroups: Group[] = $state(paginateList(processedGroups, listSettings))
 
   let optionGroups: SvelecteOption[] = $derived(
     groups
@@ -360,104 +209,51 @@ function createGroupListState(): DashList<Group> {
       .sort((a, b) => a.text.localeCompare(b.text))
   )
 
+  if (data?.view && data?.view.g) {
+    if (Array.isArray(data?.view.g) && data?.view.g.length >= 2) {
+      filters = data?.view.g[0]
+      sorts = data?.view.g[1]
+      if (data?.view.g.length > 2) {
+        listSettings.viewType = data?.view.g[2]
+        listSettings.changeView()
+      }
+      listSettings.filterMode = "advanced"
+    }
+  }
+
   return {
     get list() {
       return {
-        get raw() {
-          return groups
-        },
-        set raw(value: Group[]) {
-          groups = value
-        },
+        raw: groups,
         processed: processedGroups,
         paginated: paginatedGroups,
         options: optionGroups,
       }
     },
-    get filters() {
-      return filters
-    },
-    set filters(groups: FilterGroup[]) {
-      filters = groups
-    },
-    get sorts() {
-      return sorts
-    },
-    set sorts(newSorts: Sort[]) {
-      sorts = newSorts
-    },
-    get simpleFilters() {
-      return simpleFilters
-    },
-    set simpleFilters(groups: FilterGroup[]) {
-      simpleFilters = groups
-    },
-    get simpleSorts() {
-      return simpleSorts
-    },
-    set simpleSorts(newSorts: Sort[]) {
-      simpleSorts = newSorts
-    },
-    get settings() {
-      return listSettings
-    },
-    set settings(settings: ListSettings) {
-      listSettings = settings
-    },
-    get filter() {
-      return memberFilter
-    },
-    set filter(m: string[] | undefined) {
-      memberFilter = m
-    },
-    get page() {
-      return page
-    },
-    set page(p: Member | undefined) {
-      page = p
-    },
-    process: function (groupList?: Group[]) {
-      processedGroups = processList(
-        memberFilter ? groups.filter((g) => memberFilter?.find((m) => m === g.uuid)) : groups,
-        listSettings.filterMode === "simple" ? simpleFilters : filters,
-        listSettings.filterMode === "simple" ? simpleSorts : sorts,
-        groupList
-      )
-    },
-    paginate: function () {
-      paginatedGroups = paginateList(processedGroups, listSettings)
-    },
+    filters,
+    sorts,
+    simpleFilters,
+    simpleSorts,
+    settings: listSettings,
+    filter: memberFilter,
+    page,
     fetch: async function (token?: string) {
       groups = await fetchList(
         `systems/${dash.system?.id || "exmpl"}/groups?with_members=true`,
         token
       )
-      processedGroups = processList(
-        memberFilter ? groups.filter((g) => memberFilter?.find((m) => m === g.uuid)) : groups,
-        listSettings.filterMode === "simple" ? simpleFilters : filters,
-        listSettings.filterMode === "simple" ? simpleSorts : sorts
-      )
-      paginatedGroups = paginateList(processedGroups, listSettings)
     },
-    init: function (data: Group[], view?: any) {
-      groups = data
-      if (view && view.g) {
-        if (Array.isArray(view.g) && view.g.length >= 2) {
-          filters = view.g[0]
-          sorts = view.g[1]
-          if (view.g.length > 2) {
-            this.settings.viewType = view.g[2]
-            this.settings.changeView()
-          }
-          this.settings.filterMode = "advanced"
-        }
-      }
+    process: function (groups: Group[]) {
       processedGroups = processList(
-        memberFilter ? groups.filter((g) => memberFilter?.find((m) => m === g.uuid)) : groups,
+        memberFilter.length > 0
+          ? groups.filter((g) => memberFilter.find((m) => m === g.uuid))
+          : groups,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
         listSettings.filterMode === "simple" ? simpleSorts : sorts
       )
-      paginatedGroups = paginateList(processedGroups, listSettings)
+    },
+    paginate: function () {
+      paginateList(processedGroups, listSettings)
     },
   }
 }
@@ -488,11 +284,11 @@ export function createConfigState(config?: Config) {
   }
 }
 
-function createMemberState() {
-  let member: Member | undefined = $state(undefined)
-  let groups: DashList<Group> = $state(createGroupListState())
-  let members: DashList<Member> = $state(createMemberListState())
-  let privacyMode: PrivacyMode = $state(PrivacyMode.PUBLIC)
+function createMemberState(data: any) {
+  let member: Member | undefined = $state(data?.member ?? undefined)
+  let groups: DashList<Group> = $state(createGroupListState(data))
+  let members: DashList<Member> = $state(createMemberListState(data))
+  let privacyMode: PrivacyMode = $derived(data?.privacyMode ?? PrivacyMode.PUBLIC)
 
   return {
     get member() {
@@ -502,10 +298,10 @@ function createMemberState() {
       member = m
     },
     get groups() {
-      return getDashList<Group>(groups)
+      return groups
     },
     get members() {
-      return getDashList<Member>(members)
+      return members
     },
     get privacyMode() {
       return privacyMode
@@ -516,11 +312,11 @@ function createMemberState() {
   }
 }
 
-function createGroupState() {
-  let group: Group | undefined = $state(undefined)
-  let members: DashList<Member> = $state(createMemberListState())
-  let groups: DashList<Group> = $state(createGroupListState())
-  let privacyMode: PrivacyMode = $state(PrivacyMode.PUBLIC)
+function createGroupState(data: any) {
+  let group: Group | undefined = $state(data?.group ?? undefined)
+  let members: DashList<Member> = $state(createMemberListState(data))
+  let groups: DashList<Group> = $state(createGroupListState(data))
+  let privacyMode: PrivacyMode = $derived(data?.privacyMode ?? PrivacyMode.PUBLIC)
 
   return {
     get group() {
@@ -530,10 +326,10 @@ function createGroupState() {
       group = g
     },
     get members() {
-      return getDashList<Member>(members)
+      return members
     },
     get groups() {
-      return getDashList<Group>(groups)
+      return groups
     },
     get privacyMode() {
       return privacyMode
@@ -546,5 +342,6 @@ function createGroupState() {
 
 function processList<T>(raw: T[], filters: FilterGroup[], sorts: Sort[], groupList?: Group[]) {
   let processed = filterList(raw, filters, groupList)
-  return sortList(processed, sorts, groupList || [])
+  let sorted = sortList(processed, sorts, groupList || [])
+  return sorted
 }

@@ -73,6 +73,7 @@
         <li>
           You can view your public system while logged in <a
             class="text-primary"
+            target="_blank"
             href={`?public=true`}>by clicking this link</a
           >!
         </li>

@@ -8,7 +8,7 @@
   export let data: PageData
   export let form: ActionData
 
-  let system = dash.user
+  let system = data.system
 </script>
 
 <div class="hero bg-base-200">
