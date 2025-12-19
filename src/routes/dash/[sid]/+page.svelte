@@ -10,7 +10,7 @@
   import { dashTabs } from "$lib/dash/utils.js"
 
   let { data } = $props()
-  let tab: string = $state(
+  let tab: string|null = $derived(
     page.url.searchParams.get("tab") !== null
       ? page.url.searchParams.get("tab")
       : data.tab
