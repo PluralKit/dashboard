@@ -7,7 +7,7 @@ import MagicString from "magic-string"
 const hash = execSync("git rev-parse --short HEAD").toString().trim()
 
 export default defineConfig({
-  plugins: [sveltekit(), commonjs(), tablerOptimizer()],
+  plugins: [sveltekit(), commonjs()],
   define: {
     __COMMIT_HASH__: JSON.stringify("_" + hash),
   },
@@ -15,6 +15,8 @@ export default defineConfig({
 
 // taken from https://github.com/tabler/tabler-icons/issues/669#issuecomment-1993756128
 // converts all named imports to direct imports during transforming
+
+// no longer seems to be relevant? including it just in case.
 function tablerOptimizer(): import("vite").Plugin {
   return {
     name: "tabler-svelte optimizer",
