@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { PUBLIC_REPOSITORY_URL } from "$env/static/public"
+  import { env } from "$env/dynamic/public"
 
   // @ts-ignore
   const version = __COMMIT_HASH__.slice(1, __COMMIT_HASH__.length - 1)
@@ -12,8 +12,8 @@
         aria-label="View commit on github"
         class="underline"
         href={`${
-          PUBLIC_REPOSITORY_URL
-            ? PUBLIC_REPOSITORY_URL
+          env.PUBLIC_REPOSITORY_URL
+            ? env.PUBLIC_REPOSITORY_URL
             : "https://github.com/Draconizations/pk-dashboard-sveltekit"
         }/commit/${version}`}>{version}</a
       >

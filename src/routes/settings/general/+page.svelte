@@ -1,13 +1,13 @@
 <script lang="ts">
   import type { ActionData } from "./$types"
   import { enhance } from "$app/forms"
-  import { PUBLIC_BASE_API_URL } from "$env/static/public"
+  import { env } from "$env/dynamic/public"
   import { IconAlertTriangle } from "@tabler/icons-svelte"
 
   export let form: ActionData
   export let data
 
-  let apiUrl = form?.apiBaseUrl || data.apiBaseUrl || PUBLIC_BASE_API_URL
+  let apiUrl = form?.apiBaseUrl || data.apiBaseUrl || env.PUBLIC_BASE_API_URL || "https://api.pluralkit.me"
 </script>
 
 <h2 class="text-3xl mb-4 font-bold" id="api-url">General settings</h2>

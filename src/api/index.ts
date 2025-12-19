@@ -1,4 +1,4 @@
-import { PUBLIC_BASE_API_URL } from "$env/static/public"
+import { env } from "$env/dynamic/public"
 
 export interface ApiOptions {
   token?: string
@@ -45,7 +45,7 @@ export default function apiClient(fetch: SvelteFetch, baseUrl?: string): ApiClie
       const { options, resolve, reject } = scheduled.shift() as (typeof scheduled)[0]
       try {
         const resp = await fetch(
-          `${baseUrl ?? PUBLIC_BASE_API_URL ?? "https://api.pluralkit.me"}/v2/${options.path}`,
+          `${baseUrl ?? env.PUBLIC_BASE_API_URL ?? "https://api.pluralkit.me"}/v2/${options.path}`,
           {
             method: (options && options.method) || "GET",
             headers: {
