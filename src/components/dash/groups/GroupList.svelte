@@ -5,6 +5,7 @@
   import ItemCollapse from "../ItemCollapse.svelte"
   import Pagination from "../Pagination.svelte"
   import GroupCreate from "./create/GroupCreate.svelte"
+  import GroupCard from "./GroupCard.svelte"
   import GroupTiny from "./GroupTiny.svelte"
 
   let {
@@ -69,6 +70,14 @@
       forceOpen={list.settings.view.type === ViewType.OPEN}
     />
   {/each}
+{:else if list.settings.view.type === ViewType.CARD}
+  <div class="w-full max-w-96 sm:max-w-none mx-auto px-8 sm:px-0">
+    <div class="w-full justify-start flex flex-wrap">
+      {#each list.list.paginated as group (group.uuid)}
+        <GroupCard {group} {wide} asPage={false} />
+      {/each}
+    </div>
+  </div>
 {:else if list.settings.view.type === ViewType.TINY}
   <div class="w-full max-w-96 sm:max-w-none mx-auto px-8 sm:px-0">
     <div class="w-full justify-start flex flex-wrap">

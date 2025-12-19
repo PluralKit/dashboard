@@ -2,7 +2,7 @@
   import type { Group } from "$api/types"
   import { page } from "$app/stores"
   import { dash } from "$lib/dash/dash.svelte"
-  import { IconExternalLink } from "@tabler/icons-svelte"
+  import { IconExternalLink, IconShare2 } from "@tabler/icons-svelte"
 
   let {
     item,
@@ -14,7 +14,7 @@
     item: Group
     asPage?: boolean
     color?: "primary" | "neutral"
-    style?: "button" | "icon"
+    style?: "button" | "icon" | "ghost"
     class?: string
   } = $props()
 
@@ -52,5 +52,9 @@
     aria-label="View group page"
   >
     <IconExternalLink size={22} />
+  </a>
+{:else if style === "ghost"}
+  <a href={getLink()} class="btn btn-ghost btn-circle btn-lg text-center" title={`View group page (${item.name})`}>
+    <IconShare2 size={36} class="inline" />
   </a>
 {/if}
