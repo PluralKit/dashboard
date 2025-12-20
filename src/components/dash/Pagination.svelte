@@ -27,12 +27,17 @@
   function goToPage(page: number) {
     currentPage = page
   }
+
+  let actualPage = $derived.by(() => {
+    let pageAmount = Math.ceil(rawList.length / itemsPerPage)
+    return currentPage > pageAmount ? pageAmount : currentPage
+  })
 </script>
 
 <nav class={`join ${className}`} aria-label="List pagination">
   {#if pageAmount > 1}
     <!-- first page (visible if 1 < previous page)-->
-    {#if 1 < currentPage - 1}
+    {#if 1 < actualPage - 1}
       <button
         aria-label={`Go to first page (page 1)`}
         class={`btn btn-${size} join-item btn-neutral`}
@@ -47,7 +52,7 @@
    AND there's more than 4 pages
    AND skip forwards + 1 isn't visible OR skip backwards isn't visible
    -->
-    {#if currentPage - 1 > 2 && pageAmount > 4 && (!(currentPage + 1 < pageAmount - 1) || !(currentPage - 1 > 3 && pageAmount > 6))}
+    {#if actualPage - 1 > 2 && pageAmount > 4 && (!(actualPage + 1 < pageAmount - 1) || !(actualPage - 1 > 3 && pageAmount > 6))}
       <button
         aria-label={`Go to second page (page 2)`}
         class={`btn btn-${size} join-item btn-neutral`}
@@ -58,7 +63,7 @@
     {/if}
 
     <!-- third page, only visible if we're on the last two pages AND there's more than 5 pages-->
-    {#if currentPage > pageAmount - 2 && pageAmount > 5}
+    {#if actualPage > pageAmount - 2 && pageAmount > 5}
       <button
         aria-label={`Go to third page (page 3)`}
         class={`btn btn-${size} join-item btn-neutral`}
@@ -73,18 +78,18 @@
      AND currentPage - 1 > 3
      displays 4 if currentPage > 4, displays 3 otherwise
      -->
-    {#if pageAmount === 7 && currentPage - 1 > 3}
+    {#if pageAmount === 7 && actualPage - 1 > 3}
       <button
-        aria-label={`Jump to page ${currentPage > 5 ? 4 : 3}`}
+        aria-label={`Jump to page ${actualPage > 5 ? 4 : 3}`}
         class={`btn btn-${size} join-item btn-neutral`}
-        onclick={() => goToPage(currentPage > 5 ? 4 : 3)}
+        onclick={() => goToPage(actualPage > 5 ? 4 : 3)}
       >
-        {currentPage > 5 ? 4 : 3}
+        {actualPage > 5 ? 4 : 3}
       </button>
     {/if}
 
     <!-- skip backward (visible if previous page > third page) AND there's more than 7 pages -->
-    {#if currentPage - 1 > 3 && pageAmount > 7}
+    {#if actualPage - 1 > 3 && pageAmount > 7}
       <button
         aria-label="Jump to any page"
         class={`btn btn-${size} join-item btn-neutral`}
@@ -97,7 +102,7 @@
     <!-- third to last page
    ONLY visible if we're on the last page
    -->
-    {#if currentPage === pageAmount && pageAmount > 3}
+    {#if actualPage === pageAmount && pageAmount > 3}
       <button
         aria-label={`Go to third page (page ${pageAmount - 2})`}
         class={`btn btn-${size} join-item btn-neutral`}
@@ -109,40 +114,40 @@
 
     {#if pageAmount > 1}
       <!-- previous page (visible if we're not on first page)-->
-      {#if currentPage != 1}
+      {#if actualPage != 1}
         <button
-          aria-label={`Go to previous page (page ${currentPage - 1})`}
+          aria-label={`Go to previous page (page ${actualPage - 1})`}
           class={`btn btn-${size} join-item btn-neutral`}
-          onclick={() => goToPage(currentPage - 1)}
+          onclick={() => goToPage(actualPage - 1)}
         >
-          {currentPage - 1}
+          {actualPage - 1}
         </button>
       {/if}
 
       <!-- Current page (always visible)-->
       <button
-        aria-label={`Go to current page (page ${currentPage})`}
+        aria-label={`Go to current page (page ${actualPage})`}
         class={`btn btn-${size} join-item btn-primary`}
-        onclick={() => goToPage(currentPage)}
+        onclick={() => goToPage(actualPage)}
       >
-        {currentPage}
+        {actualPage}
       </button>
     {/if}
 
     <!-- next page (visible if we're not on the last page)-->
-    {#if currentPage < pageAmount}
+    {#if actualPage < pageAmount}
       <button
-        aria-label={`Go to next page (page ${currentPage + 1})`}
+        aria-label={`Go to next page (page ${actualPage + 1})`}
         class={`btn btn-${size} join-item btn-neutral`}
-        onclick={() => goToPage(currentPage + 1)}
+        onclick={() => goToPage(actualPage + 1)}
       >
-        {currentPage + 1}
+        {actualPage + 1}
       </button>
     {/if}
     <!-- third page
    ONLY visible if there's more than 3 pages and we're on page 1
    -->
-    {#if currentPage === 1 && pageAmount > 3}
+    {#if actualPage === 1 && pageAmount > 3}
       <button
         aria-label={`Go to third page (page 3)`}
         class={`btn btn-${size} join-item btn-neutral`}
@@ -153,7 +158,7 @@
     {/if}
 
     <!-- skip forward (visible if next page < third to last page) AND there's more than 7 pages -->
-    {#if currentPage + 1 < pageAmount - 2 && pageAmount > 7}
+    {#if actualPage + 1 < pageAmount - 2 && pageAmount > 7}
       <button
         aria-label="Jump to any page"
         class={`btn btn-${size} join-item btn-neutral`}
@@ -167,18 +172,18 @@
      AND currentPage + 1 < 5
      displays 4 if currentPage < 3, displays 5 otherwise
      -->
-    {#if pageAmount === 7 && currentPage + 1 < 5}
+    {#if pageAmount === 7 && actualPage + 1 < 5}
       <button
-        aria-label={`Jump to page ${currentPage < 3 ? 4 : 5}`}
+        aria-label={`Jump to page ${actualPage < 3 ? 4 : 5}`}
         class={`btn btn-${size} join-item btn-neutral`}
-        onclick={() => goToPage(currentPage < 3 ? 4 : 5)}
+        onclick={() => goToPage(actualPage < 3 ? 4 : 5)}
       >
-        {currentPage < 3 ? 4 : 5}
+        {actualPage < 3 ? 4 : 5}
       </button>
     {/if}
 
     <!-- third to last page, only visible if we're on the first two pages AND there's more than 5 pages-->
-    {#if currentPage < 3 && pageAmount > 5}
+    {#if actualPage < 3 && pageAmount > 5}
       <button
         aria-label={`Go to third to last page (page ${pageAmount - 2})`}
         class={`btn btn-${size} join-item btn-neutral`}
@@ -193,7 +198,7 @@
       AND there's more than 4 pages
       AND skip backwards - 1 isn't visible OR skip forwards isn't visible
       -->
-    {#if pageAmount > 4 && currentPage + 1 < pageAmount - 1 && (!(currentPage > 3) || !(currentPage + 1 < pageAmount - 2))}
+    {#if pageAmount > 4 && actualPage + 1 < pageAmount - 1 && (!(actualPage > 3) || !(actualPage + 1 < pageAmount - 2))}
       <button
         aria-label={`Go to second to last page ${pageAmount - 1}`}
         class={`btn btn-${size} join-item btn-neutral`}
@@ -204,7 +209,7 @@
     {/if}
 
     <!-- last page (visible if last page > next page)-->
-    {#if pageAmount > currentPage + 1}
+    {#if pageAmount > actualPage + 1}
       <button
         aria-label={`Go to next page (page ${pageAmount})`}
         class={`btn btn-${size} join-item btn-neutral`}

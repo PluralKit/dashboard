@@ -90,7 +90,11 @@ export function createListSettings(): ListSettings {
 }
 
 export function paginateList<T>(list: T[], settings: ListSettings) {
-  const last = settings.currentPage * settings.itemsPerPage
+  const pageAmount = Math.ceil(list.length / settings.itemsPerPage)
+
+  let page = settings.currentPage > pageAmount ? pageAmount : settings.currentPage
+
+  const last = page * settings.itemsPerPage
   const first = last - settings.itemsPerPage
 
   return list.slice(first, last)
