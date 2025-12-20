@@ -3,7 +3,6 @@
   import {
     IconPaint,
     IconLayout,
-    IconEyeHeart,
     IconAmbulance,
     IconSettings,
   } from "@tabler/icons-svelte"
@@ -22,7 +21,6 @@
   <li><a href="/settings/general"><IconSettings /> General</a></li>
   <li><a href="/settings/theme"><IconPaint /> Theme</a></li>
   <li><a href="/settings/layout"><IconLayout /> Layout</a></li>
-  <li><a href="/settings/accessibility"><IconEyeHeart /> Accessibility</a></li>
   {#if system}
     <li>
       <a href="/settings/recovery"><span class="text-error"><IconAmbulance /></span> Recovery</a>

@@ -8,7 +8,8 @@
   export let data: PageData
 </script>
 
-<h2 class="text-3xl mb-4 font-bold" id="theme">Theme</h2>
+<h2 class="text-3xl my-4 font-bold" id="theme">Theme</h2>
+<p class="my-4">Change your preferred appearance here!</p>
 <div class="flex flex-col md:flex-row gap-5">
   <form class="flex-1" method="post" action="?/theme" use:enhance>
     <label class="label" for="theme-select"><span class="label-text">Change theme</span></label>
