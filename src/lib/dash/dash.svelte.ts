@@ -190,7 +190,7 @@ function createGroupListState(data: any): DashList<Group> {
   let page: Member | undefined = $state(undefined)
 
   let groups: Group[] = $state(data?.groups ?? [])
-  let processedGroups: Group[] = $state(
+  let processedGroups: Group[] = $derived(
     processList(
       memberFilter.length > 0
         ? groups.filter((g) => memberFilter.find((m) => m === g.uuid))
@@ -199,7 +199,7 @@ function createGroupListState(data: any): DashList<Group> {
       listSettings.filterMode === "simple" ? simpleSorts : sorts
     )
   )
-  let paginatedGroups: Group[] = $state(paginateList(processedGroups, listSettings))
+  let paginatedGroups: Group[] = $derived(paginateList(processedGroups, listSettings))
 
   let optionGroups: SvelecteOption[] = $derived(
     groups
