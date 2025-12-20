@@ -11,6 +11,7 @@
   import SystemView from "./system/SystemView.svelte"
   import SystemInfo from "./system/SystemInfo.svelte"
   import { untrack } from "svelte"
+  import IconImage from "./IconImage.svelte"
 
   let {
     type,
@@ -83,13 +84,7 @@
       </div>
     </div>
     <div class="ml-3 h-14">
-      {#if type === "member"}
-        {@render memberIcon(item)}
-      {:else if type === "system"}
-        {@render systemIcon(item)}
-      {:else if type === "group"}
-        {@render groupIcon(item)}
-      {/if}
+      <IconImage {type} {item} />
     </div>
   </button>
   <div
@@ -142,49 +137,6 @@
     </div>
   </div>
 </div>
-
-{#snippet memberIcon(member: Member)}
-  {#if member.webhook_avatar_url || member.avatar_url}
-    <div class="avatar w-14 h-14">
-      {@render iconImage(
-        member.webhook_avatar_url || member.avatar_url || "",
-        `${member.name}'s avatar'`
-      )}
-    </div>
-  {:else}
-    <div class="avatar w-14 h-14">
-      {@render iconImage("/discord_icon.svg", "Default avatar")}
-    </div>
-  {/if}
-{/snippet}
-
-{#snippet systemIcon(system: System)}
-  {#if system.avatar_url}
-    <div class="avatar w-14 h-14">
-      {@render iconImage(system.avatar_url || "", `Avatar of ${system.name ?? "this system"}`)}
-    </div>
-  {:else}
-    <div class="avatar w-14 h-14">
-      {@render iconImage("/discord_icon.svg", "Default avatar")}
-    </div>
-  {/if}
-{/snippet}
-
-{#snippet groupIcon(group: Group)}
-  {#if group.icon}
-    <div class="avatar w-14 h-14">
-      {@render iconImage(group.icon || "", `${group.name}'s icon'`)}
-    </div>
-  {:else}
-    <div class="avatar w-14 h-14">
-      {@render iconImage("/discord_icon.svg", "Default avatar")}
-    </div>
-  {/if}
-{/snippet}
-
-{#snippet iconImage(url: string, altText: string)}
-  <img class="object-cover rounded-full item-icon" src={url} alt={altText} />
-{/snippet}
 
 <style>
   .tab-contents {
