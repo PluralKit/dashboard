@@ -83,6 +83,18 @@ html {
     small {
       @apply block text-muted;
     }
+
+    h1 {
+      @apply text-xl font-semibold
+    }
+
+    h2 {
+      @apply text-lg font-semibold
+    }
+
+    h3 {
+      @apply text-base font-semibold
+    }
   }
 
   /* end of discord markdown styling */
