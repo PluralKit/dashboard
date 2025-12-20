@@ -10,7 +10,7 @@
 
   let {
     asPage = false,
-    group,
+    group = $bindable(),
     tab,
     memberList,
     groupList,
@@ -59,6 +59,6 @@
       </div>
     </div>
   {:else if mode === "edit"}
-    <GroupMemberEdit {memberList} {groupList} membersCurrent={members} {group} {asPage} bind:mode />
+    <GroupMemberEdit {memberList} {groupList} membersCurrent={members} bind:group {asPage} bind:mode />
   {/if}
 </div>

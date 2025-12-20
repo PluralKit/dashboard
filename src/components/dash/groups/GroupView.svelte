@@ -10,7 +10,7 @@
   import OpenEditButton from "../edit/OpenEditButton.svelte"
 
   let {
-    group,
+    group = $bindable(),
     tab,
     open,
     asPage,
@@ -153,6 +153,6 @@
       <GroupLink item={group} {asPage} />
     </div>
   {:else if mode === "edit"}
-    <GroupViewEdit {memberList} {list} {group} {asPage} bind:mode />
+    <GroupViewEdit {memberList} {list} bind:group {asPage} bind:mode />
   {/if}
 </div>

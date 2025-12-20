@@ -14,7 +14,7 @@
 
   let {
     asPage = false,
-    member,
+    member = $bindable(),
     tab,
     groupList,
     memberList,

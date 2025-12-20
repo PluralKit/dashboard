@@ -99,7 +99,7 @@ function createMemberListState(data: any): DashList<Member> {
   let groupFilter: string[] = $state([])
   let page: Group | undefined = $state(undefined)
 
-  let members: Member[] = $derived(mapMemberGroups(data?.members ?? [], data?.groups ?? []))
+  let members: Member[] = $state(mapMemberGroups(data?.members ?? [], data?.groups ?? []))
   let processedMembers: Member[] = $derived.by(() => {
     return processList(
       groupFilter.length > 0
@@ -189,7 +189,7 @@ function createGroupListState(data: any): DashList<Group> {
   let memberFilter: string[] | undefined = $state([])
   let page: Member | undefined = $state(undefined)
 
-  let groups: Group[] = $derived(data?.groups ?? [])
+  let groups: Group[] = $state(data?.groups ?? [])
   let processedGroups: Group[] = $state(
     processList(
       memberFilter.length > 0

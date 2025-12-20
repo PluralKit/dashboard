@@ -14,7 +14,7 @@
 
   let {
     type,
-    item,
+    item: i,
     forceOpen = false,
     asPage = false,
     open = $bindable(false),
@@ -53,6 +53,8 @@
     if (untrack(() => tabbedOnce)) return
     else if (tab === "groups") tabbedOnce = true
   })
+
+  let item = $state(i)
 </script>
 
 <div
@@ -118,40 +120,28 @@
     </div>
     <div class="flex flex-col p-2 rounded-b-lg tab-contents lg:p-4 bg-base-200">
       {#if type === "member"}
-        {@render memberTabs(item, tab)}
+          {#if openedOnce}
+            <MemberView {privacyMode} {memberList} {groupList} bind:member={item} {tab} open={isOpen} {asPage} />
+            <MemberInfo {privacyMode} {memberList} {groupList} bind:member={item} {tab} {asPage} />
+            {#if tabbedOnce}
+              <MemberGroups {privacyMode} {memberList} {groupList} bind:member={item} {tab} {asPage} />
+            {/if}
+          {/if}
       {:else if type === "system"}
-        {@render systemTabs(item, tab)}
+          <SystemView bind:system={item} {tab} open={isOpen} {asPage} />
+          <SystemInfo bind:system={item} {tab} {asPage} />
       {:else if type === "group"}
-        {@render groupTabs(item, tab)}
+          {#if openedOnce}
+            <GroupView {memberList} {privacyMode} list={groupList} bind:group={item} {tab} open={isOpen} {asPage} />
+            <GroupInfo {memberList} {privacyMode} list={groupList} bind:group={item} {tab} {asPage} />
+            {#if tabbedOnce}
+              <GroupMembers {privacyMode} {memberList} {groupList} bind:group={item} {tab} {asPage} />
+            {/if}
+          {/if}
       {/if}
     </div>
   </div>
 </div>
-
-{#snippet memberTabs(member: Member, tab: "view" | "info" | "groups")}
-  {#if openedOnce}
-    <MemberView {privacyMode} {memberList} {groupList} {member} {tab} open={isOpen} {asPage} />
-    <MemberInfo {privacyMode} {memberList} {groupList} {member} {tab} {asPage} />
-    {#if tabbedOnce}
-      <MemberGroups {privacyMode} {memberList} {groupList} {member} {tab} {asPage} />
-    {/if}
-  {/if}
-{/snippet}
-
-{#snippet systemTabs(system: System, tab: "view" | "info" | "groups")}
-  <SystemView {system} {tab} open={isOpen} {asPage} />
-  <SystemInfo {system} {tab} {asPage} />
-{/snippet}
-
-{#snippet groupTabs(group: Group, tab: "view" | "info" | "groups")}
-  {#if openedOnce}
-    <GroupView {memberList} {privacyMode} list={groupList} {group} {tab} open={isOpen} {asPage} />
-    <GroupInfo {memberList} {privacyMode} list={groupList} {group} {tab} {asPage} />
-    {#if tabbedOnce}
-      <GroupMembers {privacyMode} {memberList} {groupList} {group} {tab} {asPage} />
-    {/if}
-  {/if}
-{/snippet}
 
 {#snippet memberIcon(member: Member)}
   {#if member.webhook_avatar_url || member.avatar_url}

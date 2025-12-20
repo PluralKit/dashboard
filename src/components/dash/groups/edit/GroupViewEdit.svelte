@@ -16,7 +16,7 @@
 
   let {
     mode = $bindable(),
-    group,
+    group: g = $bindable(),
     asPage,
     list,
   }: {
@@ -27,6 +27,7 @@
     memberList: DashList<Member>
   } = $props()
 
+  let group = $state(g)
   let editedState: Group = $derived(createViewEditState(group))
 
   let edited = $derived(

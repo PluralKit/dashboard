@@ -11,7 +11,7 @@
   import OpenEditButton from "../edit/OpenEditButton.svelte"
 
   let {
-    member,
+    member = $bindable(),
     tab,
     asPage,
     groupList,

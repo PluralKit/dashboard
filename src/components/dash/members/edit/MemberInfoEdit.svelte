@@ -12,7 +12,7 @@
 
   let {
     mode = $bindable(),
-    member,
+    member: m = $bindable(),
     asPage,
     list,
     groupList,
@@ -24,6 +24,7 @@
     groupList: DashList<Group>
   } = $props()
 
+  let member = $state(m)
   let editedState = $derived(createInfoEditState(member))
 
   // these are nested objects, so we have to handle them accordingly

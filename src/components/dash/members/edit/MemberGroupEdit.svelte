@@ -19,7 +19,7 @@
 
   let {
     groupsCurrent,
-    member,
+    member: m = $bindable(),
     mode = $bindable(),
     asPage = false,
     memberList,
@@ -32,6 +32,8 @@
     memberList: DashList<Member>
     groupList: DashList<Group>
   } = $props()
+
+  let member = $state(m)
 
   let err: string[] = $state([])
   let success = $state(false)
