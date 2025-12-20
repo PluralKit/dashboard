@@ -52,20 +52,20 @@ html {
       @apply h-4 w-auto inline;
     }
 
-    .d-spoiler {
-      @apply bg-base-content text-base-content;
+    .d-spoiler, .d-spoiler * {
+      @apply bg-base-content text-base-content inline-block px-1;
       border-radius: 4px;
       transition-delay: 6000s;
+      cursor: pointer;
+    }
+    .d-spoiler::selection, .d-spoiler::selection * {
+      @apply text-base-content;
+      background-color: transparent;
+    }
 
-      &::selection {
-        @apply text-base-content;
-        background-color: transparent;
-      }
-
-      &:active {
-        @apply bg-base-300;
-        transition-delay: 0s;
-      }
+    .d-spoiler:active, .d-spoiler:active * {
+      @apply bg-base-300;
+      transition-delay: 0s;
     }
 
     code {
