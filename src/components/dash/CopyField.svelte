@@ -27,7 +27,7 @@
 
 {#if dash.settings.devMode || visible}
   <button
-    title="copy"
+    title={`Copy ${field}`}
     onclick={() => copy()}
     aria-label={`Copy ${field}`}
     disabled={copied}
