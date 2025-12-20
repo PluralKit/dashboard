@@ -26,10 +26,6 @@
     class="input input-bordered resize-none p-2"
     use:autoresize
     bind:value={list.simpleFilters[0].filters[0].value}
-    oninput={() => {
-      list.process(groupList.list.raw)
-      list.paginate()
-    }}
     placeholder="Search by name..."
   ></textarea>
 </div>
@@ -56,10 +52,6 @@
           class="input input-bordered input-sm flex-1 join-item resize-none"
           id="member-list-dn-search"
           bind:value={list.simpleFilters[0].filters[1].value}
-          oninput={() => {
-            list.process(groupList.list.raw)
-            list.paginate()
-          }}
           placeholder="Search by display name..."
         ></textarea>
       </div>
@@ -73,10 +65,6 @@
           use:autoresize
           id="member-list-desc-search"
           bind:value={list.simpleFilters[0].filters[2].value}
-          oninput={() => {
-            list.process(groupList.list.raw)
-            list.paginate()
-          }}
           placeholder="Search by description..."
         ></textarea>
       </div>
@@ -90,10 +78,6 @@
           class="input input-bordered input-sm flex-1 join-item resize-none"
           id="member-list-id-search"
           bind:value={list.simpleFilters[0].filters[3].value}
-          oninput={() => {
-            list.process(groupList.list.raw)
-            list.paginate()
-          }}
           placeholder="Search by ID..."
         ></textarea>
       </div>
@@ -107,10 +91,6 @@
           class="input input-bordered input-sm flex-1 join-item resize-none"
           id="member-list-prns-search"
           bind:value={list.simpleFilters[0].filters[4].value}
-          oninput={() => {
-            list.process(groupList.list.raw)
-            list.paginate()
-          }}
           placeholder="Search by pronouns..."
         ></textarea>
       </div>
@@ -126,10 +106,6 @@
           valueField="value"
           labelField="text"
           bind:value={list.simpleFilters[0].filters[6].value}
-          onChange={() => {
-            list.process(groupList.list.raw)
-            list.paginate()
-          }}
         />
       </div>
     </div>
@@ -150,8 +126,6 @@
         bind:value={list.simpleSorts[1].field}
         onchange={() => {
           list.simpleSorts[1].mode = defaultSortMode(list.simpleSorts[1].field)
-          list.process(groupList.list.raw)
-          list.paginate()
         }}
       >
         <option value="name">Name</option>
@@ -175,10 +149,6 @@
         class="input input-sm input-bordered join-item flex-1"
         id="member-list-sort-order"
         bind:value={list.simpleSorts[1].order}
-        onchange={() => {
-          list.process(groupList.list.raw)
-          list.paginate()
-        }}
       >
         <option value={1}>Ascending</option>
         <option value={-1}>Descending</option>
@@ -193,10 +163,6 @@
         class="input input-sm input-bordered join-item flex-1"
         id="member-list-filter-privacy"
         bind:value={list.simpleFilters[0].filters[5].value}
-        onchange={() => {
-          list.process(groupList.list.raw)
-          list.paginate()
-        }}
       >
         <option value="all">All</option>
         <option value="public">Public only</option>

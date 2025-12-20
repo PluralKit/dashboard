@@ -30,8 +30,6 @@
   const changeValue = (e: Event) => {
     const target = e.target as HTMLInputElement
     filter.value = filter.valueType === "number" ? parseInt(target.value) : target.value
-    list.process(groupList.list.raw)
-    list.paginate()
   }
 </script>
 
@@ -46,8 +44,6 @@
     bind:value={filterValue}
     onChange={() => {
       filter.value = $state.snapshot(filterValue)
-      list.process(groupList.list.raw)
-      list.paginate()
     }}
   />
 {:else if filter.field === "member" && groupArrayModes.includes(filter.mode)}
@@ -60,8 +56,6 @@
     bind:value={filterValue}
     onChange={() => {
       filter.value = $state.snapshot(filterValue)
-      list.process(groupList.list.raw)
-      list.paginate()
     }}
   />
 {:else if filter.privacy}
@@ -69,8 +63,6 @@
     class="input input-sm input-bordered"
     onchange={(e) => {
       filter.value = (e.target as HTMLSelectElement)?.value
-      list.process(groupList.list.raw)
-      list.paginate()
     }}
     value={filter.value}
   >
@@ -92,9 +84,6 @@
         proxyCreated = null
       }
       filter.proxy = $state.snapshot(proxyValue)
-
-      list.process(groupList.list.raw)
-      list.paginate()
     }}
     strictMode={false}
     creatable

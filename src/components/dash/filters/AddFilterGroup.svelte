@@ -108,9 +108,6 @@
       else existingGroup.filters.push(filter)
     }
 
-    list.process(groupList.list.raw)
-    list.paginate()
-
     filterField = ""
     filterMode = null
     filterValue = null

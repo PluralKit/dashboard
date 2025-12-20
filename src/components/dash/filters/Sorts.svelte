@@ -20,16 +20,10 @@
     const to = from + shift > list.filters.length || from + shift < 0 ? from : from + shift
 
     list.sorts.splice(to, 0, list.sorts.splice(from, 1)[0])
-
-    list.process(groupList.list.raw)
-    list.paginate()
   }
 
   function changeOrder(sort: Sort, order: 1 | -1) {
     sort.order = order
-
-    list.process(groupList.list.raw)
-    list.paginate()
   }
 </script>
 
@@ -86,8 +80,6 @@
               class="text-muted hover:text-error hover:scale-110 transition-all focus:text-error focus:scale-110 btn-circle btn-xs"
               onclick={() => {
                 list.sorts = list.sorts.filter((s) => s.id !== sort.id)
-                list.process(groupList.list.raw)
-                list.paginate()
               }}
               aria-label="Delete sort"
             >

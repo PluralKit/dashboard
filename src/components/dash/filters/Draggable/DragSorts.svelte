@@ -27,24 +27,15 @@
 
   function handleFinal(event: CustomEvent<DndEvent<Sort>>) {
     handleConsider(event)
-
-    list.process(dash.groups.list.raw)
-    list.paginate()
   }
 
   function removeSort(id: string) {
     list.sorts = list.sorts.filter((s) => s.id !== id)
-
-    list.process(dash.groups.list.raw)
-    list.paginate()
   }
 
   function changeOrder(order: 1 | -1, id: string) {
     const sort = list.sorts.findIndex((s) => s.id === id)
     list.sorts[sort].order = order
-
-    list.process(dash.groups.list.raw)
-    list.paginate()
   }
 </script>
 

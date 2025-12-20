@@ -25,9 +25,6 @@
     const to = from + shift > list.filters.length || from + shift < 0 ? from : from + shift
 
     list.filters.splice(to, 0, list.filters.splice(from, 1)[0])
-
-    list.process(groupList.list.raw)
-    list.paginate()
   }
 
   const moveFilter = (filter: Filter, group: FilterGroup, shift: 1 | -1) => {
@@ -55,9 +52,6 @@
 
     const moved = list.filters[groupFrom].filters.splice(filterFrom, 1)[0]
     list.filters[groupTo].filters.splice(filterTo, 0, moved)
-
-    list.process(groupList.list.raw)
-    list.paginate()
   }
 </script>
 

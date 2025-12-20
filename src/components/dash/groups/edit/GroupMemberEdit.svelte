@@ -98,11 +98,10 @@
       memberList.filter = listBody
     }
 
-    groupList.process(groupList.list.raw)
-    groupList.paginate()
-
     memberList.process(groupList.list.raw)
     memberList.paginate()
+    groupList.process(groupList.list.raw)
+    groupList.paginate()
 
     toAdd = []
     toRemove = []

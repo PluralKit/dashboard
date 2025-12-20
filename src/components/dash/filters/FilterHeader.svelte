@@ -109,8 +109,6 @@
     class="text-muted hover:text-error hover:scale-110 transition-all focus:text-error focus:scale-110 btn-circle btn-xs"
     onclick={() => {
       group.filters = group.filters.filter((f) => f.id !== filter.id)
-      list.process(groupList.list.raw)
-      list.paginate()
     }}
     aria-label="Delete filter"
   >

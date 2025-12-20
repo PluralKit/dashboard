@@ -28,9 +28,6 @@
     list.settings.filterMode === "simple"
       ? (list.settings.filterMode = "advanced")
       : (list.settings.filterMode = "simple")
-
-    list.process(groupList.list.raw)
-    list.paginate()
   }
 </script>
 
@@ -83,8 +80,6 @@
         list.settings.viewType = ViewType.COLLAPSE
       }
       list.settings.changeView()
-
-      list.paginate()
     }}
   >
     Force open
@@ -104,7 +99,6 @@
       class="input input-sm input-bordered join-item flex-1"
       id="member-list-page-length"
       bind:value={list.settings.itemsPerPage}
-      onchange={() => list.paginate()}
     >
       {#each list.settings.view.itemsPerPageSelection as option}
         <option value={option}>{option}</option>
@@ -122,7 +116,6 @@
       bind:value={list.settings.viewType}
       onchange={() => {
         list.settings.changeView()
-        list.paginate()
       }}
     >
       <option value={dash.settings.display?.keepOpen === true ? ViewType.OPEN : ViewType.COLLAPSE}

@@ -7,14 +7,12 @@
     rawList,
     size = "xs",
     currentPage = $bindable(),
-    paginate,
   }: {
     itemsPerPage: number
     class?: string
     rawList: any[]
     currentPage: number
     size?: "sm" | "xs"
-    paginate?: () => void
   } = $props()
 
   let pageAmount = $derived(Math.ceil(rawList.length / itemsPerPage))
@@ -28,7 +26,6 @@
 
   function goToPage(page: number) {
     currentPage = page
-    if (paginate) paginate()
   }
 </script>
 

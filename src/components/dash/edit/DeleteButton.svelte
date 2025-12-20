@@ -35,10 +35,8 @@
     element.close()
 
     if (!asPage) {
-      list.list.raw = list.list.raw.filter((g) => g.uuid !== item.uuid)
-
+      list.list.raw.splice(list.list.raw.indexOf(item), 1)
       list.process(groupList.list.raw)
-      list.paginate()
     } else {
       goto(`/dash/${dash.user?.id}?tab=${type}s`)
     }

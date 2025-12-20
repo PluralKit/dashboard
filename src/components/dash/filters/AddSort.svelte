@@ -39,9 +39,6 @@
     sortField = ""
     sortMode = null
     sortOrder = 1
-
-    list.process(groupList.list.raw)
-    list.paginate()
   }
 </script>
 

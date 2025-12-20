@@ -108,15 +108,12 @@
     // if on the member page: filter out groups that no longer belong to this member
     if (groupList.filter && groupList.page) {
       groupList.filter = listBody
-
-      groupList.process(groupList.list.raw)
-      groupList.paginate()
-    } else {
-      groupList.process(groupList.list.raw)
     }
-
+    groupList.process(groupList.list.raw)
+    groupList.paginate()
     memberList.process(groupList.list.raw)
     memberList.paginate()
+
     toAdd = []
     toRemove = []
     uuidSelection = uuidsCurrent

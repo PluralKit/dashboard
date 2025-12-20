@@ -112,10 +112,7 @@
           (response as Member).group_count = groupCount(response.uuid || "", groupList.list.raw)
 
         list.list.raw.push(response)
-
-        groupList.process(groupList.list.raw)
-        memberList.process(groupList.list.raw)
-        list.paginate()
+        list.process(groupList.list.raw)
       }
     } catch (e) {
       const error = e as ApiError
