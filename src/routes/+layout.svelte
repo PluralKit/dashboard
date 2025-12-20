@@ -32,6 +32,8 @@
     if ($navigating) nprogress.start()
     else if (!$navigating) nprogress.done()
   }
+
+  dash.user = data.system
 </script>
 
 <div
