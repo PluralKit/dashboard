@@ -120,7 +120,7 @@
       >
         <option value="name">Name</option>
         <option value="display_name">Display Name</option>
-        <option value="ID">ID</option>
+        <option value="id">ID</option>
         <option value="description">Description</option>
         <option value="color">Color</option>
         <option value="members">Member Count</option>
