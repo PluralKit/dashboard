@@ -38,13 +38,13 @@
 
 <div class="flex flex-col-reverse sm:flex-row sm:justify-between">
   <span class="mt-2 sm:mt-0">
-  <h2 class="text-xl flex-1">
-    <IconUsers class="inline mr-2" /> Group list options
-  </h2>
-  <div class="text-sm mt-2">
-  <a href="/settings/layout" class="link-secondary">Change layout settings</a>
-</div>
-</span>
+    <h2 class="text-xl flex-1">
+      <IconUsers class="inline mr-2" /> Group list options
+    </h2>
+    <div class="text-sm mt-2">
+      <a href="/settings/layout" class="link-secondary">Change layout settings</a>
+    </div>
+  </span>
   {#if !simpleOnly}
     <button class="btn btn-sm btn-primary h-10" onclick={() => changeMode()}>
       <div class="flex flex-row items-center gap-2">
@@ -96,13 +96,11 @@
   </div>
 </div>
 {#if simpleOnly || list.settings.filterMode === "simple"}
-  <SimpleGroupControls {list} wide={wide || dash.settings.display?.forceControlsAtTop === true} />
+  <SimpleGroupControls {list} {wide} />
 {:else if list.settings.filterMode === "advanced"}
   <div
     class={`grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 ${
-      wide || dash.settings.display?.forceControlsAtTop === true
-        ? "xl:grid-cols-2"
-        : "xl:grid-cols-1"
+      wide ? "xl:grid-cols-2" : "xl:grid-cols-1"
     }`}
   >
     <div class="flex flex-col gap-2">

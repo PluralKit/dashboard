@@ -4,6 +4,6 @@
   "editor.formatOnSaveMode": "modifications",
   "svelte.plugin.svelte.format.enable": false,
   "[svelte]": {
-    "editor.defaultFormatter": "svelte.svelte-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

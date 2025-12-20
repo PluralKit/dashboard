@@ -99,12 +99,12 @@
   <SimpleMemberControls
     {groupList}
     {list}
-    wide={wide || dash.settings.display?.forceControlsAtTop === true}
+    wide={wide}
   />
 {:else if list.settings.filterMode === "advanced"}
   <div
     class={`grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 ${
-      wide || dash.settings.display?.forceControlsAtTop === true
+      wide
         ? "xl:grid-cols-2"
         : "xl:grid-cols-1"
     }`}
