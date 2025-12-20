@@ -1,6 +1,6 @@
 <script lang="ts">
   import { dash, PrivacyMode, type DashList } from "$lib/dash/dash.svelte"
-  import { IconAdjustments, IconUsers } from "@tabler/icons-svelte"
+  import { IconAdjustments, IconSettings, IconUsers } from "@tabler/icons-svelte"
   import FilterGroups from "../filters/FilterGroups.svelte"
   import AddFilterGroup from "../filters/AddFilterGroup.svelte"
   import Sorts from "../filters/Sorts.svelte"
@@ -36,57 +36,23 @@
   }
 </script>
 
-<div class="flex flex-row justify-between items-center">
+<div class="flex flex-col-reverse sm:flex-row sm:justify-between">
+  <span class="mt-2 sm:mt-0">
   <h2 class="text-xl flex-1">
     <IconUsers class="inline mr-2" /> Member list options
   </h2>
+  <div class="text-sm mt-2">
+  <a href="/settings/layout" class="link-secondary">Change layout settings</a>
+</div>
+</span>
   {#if !simpleOnly}
-    <button class="btn btn-sm btn-primary mt-2 w-min h-10" onclick={() => changeMode()}>
+    <button class="btn btn-sm btn-primary h-10" onclick={() => changeMode()}>
       <div class="flex flex-row items-center gap-2">
         <IconAdjustments size={32} />
         <span>{list.settings.filterMode === "simple" ? "Advanced" : "Simple"} mode</span>
       </div>
     </button>
   {/if}
-</div>
-<div class="text-sm mt-2">
-  <button
-    class="text-secondary hover:text-primary cursor-pointer transition-all"
-    onclick={() => toggleSetting(dash, "devMode")}
-  >
-    Dev mode
-  </button>
-  |
-  <button
-    class="text-secondary hover:text-primary cursor-pointer transition-all"
-    onclick={() => toggleSetting(dash, "display", "forceControlsAtTop")}
-  >
-    Controls at top
-  </button>
-  |
-  <button
-    class="text-secondary hover:text-primary cursor-pointer transition-all"
-    onclick={() => toggleSetting(dash, "display", "fullColorBorder")}
-  >
-    Show colors
-  </button>
-  |
-  <button
-    class="text-secondary hover:text-primary cursor-pointer transition-all"
-    onclick={() => {
-      toggleSetting(dash, "display", "keepOpen")
-
-      if (dash.settings.display?.keepOpen && list.settings.view.type === ViewType.COLLAPSE) {
-        list.settings.viewType = ViewType.OPEN
-        list.settings.changeView()
-      } else if (list.settings.view.type === ViewType.OPEN) {
-        list.settings.viewType = ViewType.COLLAPSE
-        list.settings.changeView()
-      }
-    }}
-  >
-    Force open
-  </button>
 </div>
 <div
   class={`grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4 mb-2 ${
