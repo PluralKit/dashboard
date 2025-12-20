@@ -15,7 +15,7 @@
   <div
     class="hero-content my-8 flex-col md:flex-row-reverse flex-wrap w-full max-w-5xl px-4 items-center md:items-stretch"
   >
-    {#if !system}
+    <!-- {#if !system}
       <div class="w-full max-w-md md:max-w-none mb-4">
         <div class="alert bg-base-100">
           <IconInfoCircle class="text-info" />
@@ -29,7 +29,7 @@
           </div>
         </div>
       </div>
-    {/if}
+    {/if} -->
     <div class="text-center flex flex-col flex-1">
       {#if system}
         {#if system.name}
@@ -38,13 +38,13 @@
           <h1 class="text-3xl font-bold">Welcome!</h1>
         {/if}
       {:else}
-        <h1 class="text-3xl font-bold">Welcome to the new dashboard!</h1>
+        <h1 class="text-3xl font-bold">Welcome to the dashboard!</h1>
       {/if}
       <div class="alert mt-4 bg-base-100 max-w-md md:max-w-none flex-1">
         <IconFlask class="text-info" />
         <p>
-          This is a complete rewrite of PluralKit's current dashboard, and hosted only for testing
-          purposes. This is a <b>work in progress</b>, many things aren't functional yet.
+          This is a complete rewrite of PluralKit's current dashboard, scheduled to become the main dashboard soon™.
+          This is a <b>work in progress</b>, some things aren't functional yet.
           <span class="text-error">Proceed with caution.</span>
         </p>
       </div>

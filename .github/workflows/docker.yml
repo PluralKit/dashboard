@@ -25,6 +25,6 @@ jobs:
           -t ghcr.io/pluralkit/dashboard-v2:${{ env.BRANCH_NAME }} \
           -t ghcr.io/pluralkit/dashboard-v2:${{ github.sha }} \
           -t ghcr.io/pluralkit/dashboard-v2:latest \
-          --build-arg base_api_url=https://api.beta.pluralkit.me \
+          --build-arg base_api_url=https://api.pluralkit.me \
           --push \
           .
