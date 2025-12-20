@@ -151,7 +151,6 @@ function createMemberListState(data: any): DashList<Member> {
       sorts = data?.view.m[1]
       if (data?.view.m.length > 2) {
         listSettings.viewType = data?.view.m[2]
-        listSettings.changeView()
       }
       listSettings.filterMode = "advanced"
     }
@@ -236,7 +235,6 @@ function createGroupListState(data: any): DashList<Group> {
       sorts = data?.view.g[1]
       if (data?.view.g.length > 2) {
         listSettings.viewType = data?.view.g[2]
-        listSettings.changeView()
       }
       listSettings.filterMode = "advanced"
     }

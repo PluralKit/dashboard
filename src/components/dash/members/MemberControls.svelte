@@ -32,7 +32,6 @@
 
   if (dash.settings.display?.keepOpen && list.settings.view.type === ViewType.COLLAPSE) {
     list.settings.viewType = ViewType.OPEN
-    list.settings.changeView()
   }
 
   let filterGroups = $state(list.filters)
@@ -86,9 +85,6 @@
       class="input input-sm input-bordered join-item flex-1"
       id="member-list-view"
       bind:value={list.settings.viewType}
-      onchange={() => {
-        list.settings.changeView()
-      }}
     >
       <option value={dash.settings.display?.keepOpen === true ? ViewType.OPEN : ViewType.COLLAPSE}
         >List</option

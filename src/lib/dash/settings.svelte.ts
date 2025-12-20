@@ -15,7 +15,7 @@ interface View {
   defaultItemsPerPage: number
 }
 
-let availableViews: View[] = [
+const availableViews: View[] = [
   {
     type: ViewType.COLLAPSE,
     itemsPerPageSelection: [10, 25, 50],
@@ -51,7 +51,6 @@ let availableViews: View[] = [
 export interface ListSettings {
   readonly view: View
   viewType: ViewType
-  changeView: () => void
   itemsPerPage: number
   currentPage: number
   filterMode: "simple" | "advanced"
@@ -80,35 +79,13 @@ export function createListSettings(): ListSettings {
     },
     set viewType(type: ViewType) {
       viewType = type
-    },
-    changeView: () => {
       itemsPerPage = view.defaultItemsPerPage
       currentPage = 1
     },
-    get itemsPerPage() {
-      return itemsPerPage
-    },
-    set itemsPerPage(ipp: number) {
-      itemsPerPage = ipp
-    },
-    get currentPage() {
-      return currentPage
-    },
-    set currentPage(page: number) {
-      currentPage = page
-    },
-    get filterMode() {
-      return filterMode
-    },
-    set filterMode(mode: "simple" | "advanced") {
-      filterMode = mode
-    },
-    get extraFields() {
-      return extraFields
-    },
-    set extraFields(open: boolean) {
-      extraFields = open
-    },
+    itemsPerPage,
+    currentPage,
+    filterMode,
+    extraFields,
   }
 }
 
