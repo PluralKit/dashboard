@@ -21,7 +21,7 @@
   class={`center-small
     self-stretch flex flex-col w-full sm:w-1/2 md:w-1/3 ${!wide ? "xl:w-1/3" : ""}`}
 >
-  <div class="box bg-base-100 m-1 h-full px-0">
+  <div class="box bg-base-100 m-1 h-full px-0" style={`border-bottom: 4px solid #${member.color}`}>
     <h4 class="text-xl p-3 pt-0 flex gap-2 items-center">
           {#if !member.privacy || !member.privacy.visibility}
             <IconUser size={20} />
