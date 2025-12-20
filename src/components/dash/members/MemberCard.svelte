@@ -21,7 +21,7 @@
   class={`center-small
     self-stretch flex flex-col w-full sm:w-1/2 md:w-1/3 ${!wide ? "xl:w-1/3" : ""}`}
 >
-  <div class="box bg-base-100 m-1 h-full px-0" style={`border-bottom: 4px solid #${member.color}`}>
+  <div class="box bg-base-100 m-1 h-full px-0 flex flex-col" style={`border-bottom: 4px solid #${member.color}`}>
     <h4 class="text-xl p-3 pt-0 flex gap-2 items-center">
           {#if !member.privacy || !member.privacy.visibility}
             <IconUser size={20} />
@@ -33,7 +33,7 @@
           {member.name}
     </h4>
     <hr />
-    <div class=" max-h-96 overflow-y-auto p-4 text-center flex flex-col">
+    <div class=" max-h-96 overflow-y-auto p-4 pb-0 flex-1 text-center flex flex-col">
       <img
         class="rounded-md aspect-square object-cover"
         src={member.webhook_avatar_url ?? member.avatar_url ?? "/discord_icon.svg"}
@@ -58,7 +58,7 @@
       </div>
       {/if}
       <hr class="mb-2">
-      <div class="flex justify-around">
+      <div class="flex justify-around mt-auto">
         <!-- 
           If there's enough demand I'll add the edit button back. Otherwise it's just extra maintenance
         
