@@ -11,6 +11,7 @@ import { fetchList } from "./utils"
 import { createListSettings, paginateList, type ListSettings } from "./settings.svelte"
 import { SortMode, createSimpleSorts, createSort, sortList, type Sort } from "./sorts.svelte"
 import { mapMemberGroups } from "./member/utils"
+import { browser } from "$app/environment"
 
 export enum PrivacyMode {
   PUBLIC,
@@ -68,7 +69,9 @@ function createDash(data: any) {
   let ratelimited: Record<string, boolean> = $derived({})
   let errors: Record<string, string> = $derived(data?.errors ?? {})
 
-  let settings: Record<string, any> = $state({})
+  let settings: Record<string, any> = $derived(
+    browser ? JSON.parse(localStorage.getItem("pk-settings") ?? "{}") : {}
+  )
   return {
     members: memberList,
     groups: groupList,
@@ -79,7 +82,13 @@ function createDash(data: any) {
     sid: systemData?.id,
     user,
     config: configSettings,
-    settings,
+    get settings() {
+      return settings
+    },
+    set settings(value) {
+      if (browser) localStorage.setItem("pk-settings", JSON.stringify($state.snapshot(value)))
+      settings = $state.snapshot(value)
+    },
     ratelimited,
     errors,
   }

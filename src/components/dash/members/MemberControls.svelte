@@ -29,6 +29,11 @@
       ? (list.settings.filterMode = "advanced")
       : (list.settings.filterMode = "simple")
   }
+
+  if (dash.settings.display?.keepOpen && list.settings.view.type === ViewType.COLLAPSE) {
+    list.settings.viewType = ViewType.OPEN
+    list.settings.changeView()
+  }
 </script>
 
 <div class="flex flex-row justify-between items-center">
@@ -71,15 +76,13 @@
     onclick={() => {
       toggleSetting(dash, "display", "keepOpen")
 
-      if (
-        list.settings.view.type === ViewType.COLLAPSE &&
-        dash.settings.display?.keepOpen === true
-      ) {
+      if (dash.settings.display?.keepOpen && list.settings.view.type === ViewType.COLLAPSE) {
         list.settings.viewType = ViewType.OPEN
-      } else if (list.settings.view.type === ViewType.OPEN && !dash.settings.display?.keepOpen) {
+        list.settings.changeView()
+      } else if (list.settings.view.type === ViewType.OPEN) {
         list.settings.viewType = ViewType.COLLAPSE
+        list.settings.changeView()
       }
-      list.settings.changeView()
     }}
   >
     Force open
