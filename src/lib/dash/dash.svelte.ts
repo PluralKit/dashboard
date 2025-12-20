@@ -145,6 +145,18 @@ function createMemberListState(data: any): DashList<Member> {
       .sort((a, b) => a.text.localeCompare(b.text))
   )
 
+  if (data?.view && data?.view.m) {
+    if (Array.isArray(data?.view.m) && data?.view.m.length >= 2) {
+      filters = data?.view.m[0]
+      sorts = data?.view.m[1]
+      if (data?.view.m.length > 2) {
+        listSettings.viewType = data?.view.m[2]
+        listSettings.changeView()
+      }
+      listSettings.filterMode = "advanced"
+    }
+  }
+
   return {
     get list() {
       return {

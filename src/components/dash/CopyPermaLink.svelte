@@ -14,7 +14,7 @@
   let viewUrl = $derived(
     Base64.encodeURI(
       JSON.stringify({
-        system: dash.user?.id,
+        system: dash.system.id,
         public: dash.privacyMode !== PrivacyMode.PRIVATE,
         tab,
         m: [dash.members.filters, dash.members.sorts, dash.members.settings.view.type],
