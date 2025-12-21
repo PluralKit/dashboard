@@ -41,6 +41,7 @@
       class="input input-sm input-bordered join-item flex-1"
       id="member-list-view"
       bind:value={list.settings.viewType}
+      onchange={() => list.settings.itemsPerPage = list.settings.view.defaultItemsPerPage}
     >
       <option value={dash.settings.display?.keepOpen === true ? ViewType.OPEN : ViewType.COLLAPSE}
         >List</option
