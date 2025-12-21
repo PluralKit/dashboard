@@ -82,7 +82,7 @@
           {:else}
             <div class="avatar">
               <div class="w-12 rounded-full">
-                <img alt="An icon of myriad" src="/myriad_write.png" />
+                <img alt="Default system avatar" src="/discord_icon.png" />
               </div>
             </div>
           {/if}
