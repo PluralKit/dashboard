@@ -1,8 +1,9 @@
 <script lang="ts">
+  import { browser } from "$app/environment"
   import CopyField from "$components/dash/CopyField.svelte"
   import { IconAlertTriangle } from "@tabler/icons-svelte"
 
-  let token = localStorage.getItem("pk-token")
+  let { data } = $props()
 
   let show = $state(false)
 
@@ -24,13 +25,13 @@
   Also, please do not ping staff or DM a staff member directly. We'll get to you, promise!
 </p>
 
-{#if token}
+{#if data.token}
     <div class="flex flex-row flex-wrap gap-4">
     <button onclick={toggle} class="btn btn-error w-fit">Reveal Token</button>
     {#if show}
     <div class="box flex flex-row gap-3 break-all">
-      <CopyField value={token} field="token" visible ></CopyField>
-      <span class="break-words">{token}</span>
+      <CopyField value={data.token} field="token" visible ></CopyField>
+      <span class="break-words">{data.token}</span>
     </div>
     {/if}
     </div>
