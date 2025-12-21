@@ -12,10 +12,8 @@
   import { IconTrash } from "@tabler/icons-svelte"
 
   let {
-    filter,
-    group,
-    list,
-    groupList,
+    filter = $bindable(),
+    group = $bindable(),
   }: {
     filter: Filter
     group: FilterGroup
@@ -108,7 +106,7 @@
   <button
     class="text-muted hover:text-error hover:scale-110 transition-all focus:text-error focus:scale-110 btn-circle btn-xs"
     onclick={() => {
-      group.filters = group.filters.filter((f) => f.id !== filter.id)
+      group.filters.splice(group.filters.indexOf(filter), 1)
     }}
     aria-label="Delete filter"
   >

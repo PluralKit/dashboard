@@ -7,14 +7,10 @@
 
   let {
     type,
-    list,
     sorts = $bindable(),
-    groupList,
   }: {
     type: "members" | "groups"
-    list: DashList<Member | Group>
     sorts: Sort[]
-    groupList: DashList<Group>
   } = $props()
 
   let sortMode: SortMode | null = $state(null)
@@ -34,7 +30,7 @@
       sortOrder
     )
 
-    sorts = [...sorts, sort]
+    sorts.push(sort)
 
     sortField = ""
     sortMode = null

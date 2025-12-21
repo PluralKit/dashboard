@@ -18,7 +18,7 @@
 >
   <div class={dash.settings.display?.forceControlsAtTop === true ? "" : "xl:w-1/3"}>
     <div class="box bg-base-100 h-min">
-      <GroupControls privacyMode={dash.privacyMode} list={dash.groups} memberList={dash.members} wide={dash.settings.display?.forceControlsAtTop === true} />
+      <GroupControls privacyMode={dash.privacyMode} bind:list={dash.groups} memberList={dash.members} wide={dash.settings.display?.forceControlsAtTop === true} />
     </div>
     {#if dash.groups.settings.filterMode === "advanced"}
       <CopyPermaLink tab="groups" />

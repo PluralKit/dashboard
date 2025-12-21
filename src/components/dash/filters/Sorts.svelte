@@ -7,11 +7,9 @@
   import { flip } from "svelte/animate"
 
   let {
-    list,
-    groupList,
+    list = $bindable(),
   }: {
     list: DashList<Member | Group>
-    groupList: DashList<Group>
   } = $props()
 
   const moveSort = (sort: Sort, shift: 1 | -1) => {
@@ -79,7 +77,7 @@
             <button
               class="text-muted hover:text-error hover:scale-110 transition-all focus:text-error focus:scale-110 btn-circle btn-xs"
               onclick={() => {
-                list.sorts = list.sorts.filter((s) => s.id !== sort.id)
+                list.sorts.splice(list.sorts.indexOf(sort), 1)
               }}
               aria-label="Delete sort"
             >

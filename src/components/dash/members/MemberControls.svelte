@@ -118,12 +118,12 @@
         {list}
         type="members"
       />
-      <FilterGroups {groupList} {list} memberList={list} />
+      <FilterGroups {groupList} bind:list memberList={list} />
     </div>
     <div class="flex flex-col gap-2">
       <h3 class="text-xl">Sort list</h3>
-      <AddSort {groupList} bind:sorts {list} type="members" />
-      <Sorts {groupList} {list} />
+      <AddSort bind:sorts type="members" />
+      <Sorts bind:list />
     </div>
   </div>
 {/if}

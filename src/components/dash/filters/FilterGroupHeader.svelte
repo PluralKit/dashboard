@@ -5,9 +5,8 @@
   import { IconTrash } from "@tabler/icons-svelte"
 
   let {
-    group,
-    list,
-    groupList,
+    group = $bindable(),
+    list = $bindable(),
   }: {
     group: FilterGroup
     list: DashList<Member | Group>
@@ -37,7 +36,7 @@
   <button
     class="text-muted hover:text-error hover:scale-110 transition-all focus:text-error focus:scale-110 btn-circle btn-xs"
     onclick={() => {
-      list.filters = list.filters.filter((g) => g.id !== group.id)
+      list.filters.splice(list.filters.indexOf(group), 1)
     }}
     aria-label="Delete filter group"><IconTrash /></button
   >

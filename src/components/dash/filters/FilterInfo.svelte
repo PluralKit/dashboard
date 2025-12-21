@@ -11,7 +11,7 @@
   import Svelecte from "svelecte"
 
   let {
-    filter,
+    filter = $bindable(),
     list,
     groupList,
     memberList,

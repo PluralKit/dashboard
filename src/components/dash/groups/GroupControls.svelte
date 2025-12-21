@@ -11,7 +11,7 @@
   import { ViewType } from "$lib/dash/settings.svelte"
 
   let {
-    list,
+    list = $bindable(),
     memberList,
     privacyMode,
     simpleOnly = false,
@@ -33,6 +33,9 @@
   if (dash.settings.display?.keepOpen && list.settings.view.type === ViewType.COLLAPSE) {
     list.settings.viewType = ViewType.OPEN
   }
+
+  let filterGroups = $state(list.filters)
+  let sorts = $state(list.sorts)
 </script>
 
 <div class="flex flex-col-reverse sm:flex-row sm:justify-between">
@@ -105,7 +108,7 @@
         {privacyMode}
         groupList={list}
         {memberList}
-        bind:filterGroups={list.filters}
+        bind:filterGroups
         {list}
         type="groups"
       />
@@ -113,8 +116,8 @@
     </div>
     <div class="flex flex-col gap-2">
       <h3 class="text-xl">Sort list</h3>
-      <AddSort groupList={list} bind:sorts={list.sorts} {list} type="groups" />
-      <Sorts groupList={list} {list} />
+      <AddSort bind:sorts type="groups" />
+      <Sorts bind:list />
     </div>
   </div>
 {/if}
