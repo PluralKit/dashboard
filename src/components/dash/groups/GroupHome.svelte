@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { dash } from "$lib/dash/dash.svelte"
+  import { dash, PrivacyMode } from "$lib/dash/dash.svelte"
   import { IconAlertTriangle } from "@tabler/icons-svelte"
   import GroupControls from "./GroupControls.svelte"
   import GroupList from "./GroupList.svelte"
   import CopyPermaLink from "../CopyPermaLink.svelte"
+  import GroupCreate from "./create/GroupCreate.svelte"
 </script>
 
 {#if dash.errors.groups}
@@ -29,6 +30,9 @@
       dash.settings.display?.forceControlsAtTop === true ? "" : "lg:flex-1"
     }`}
   >
+    {#if dash.privacyMode === PrivacyMode.PRIVATE}
+      <GroupCreate memberList={dash.members} groupList={dash.groups} />
+    {/if}
     <GroupList privacyMode={dash.privacyMode} memberList={dash.members} list={dash.groups} />
   </div>
 </div>

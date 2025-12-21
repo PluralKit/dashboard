@@ -8,7 +8,6 @@
   import { dash, initDash, PrivacyMode } from "$lib/dash/dash.svelte.js"
   import { dashTabs, publicPrivateLink } from "$lib/dash/utils.js"
   import { IconLock, IconShare2 } from "@tabler/icons-svelte"
-  import { onMount } from "svelte"
 
   let { data } = $props()
   let tab: string|null = $derived(

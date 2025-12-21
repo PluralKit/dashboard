@@ -1,8 +1,10 @@
 <script lang="ts">
   import { dash, PrivacyMode } from "$lib/dash/dash.svelte"
   import { dashTabs } from "$lib/dash/utils"
+  import { initDash } from "$lib/dash/dash.svelte.js"
+  let { children, data } = $props()
 
-  let { children } = $props()
+  initDash(data)
 </script>
 
 <div class="container px-4 mx-auto">
@@ -20,6 +22,5 @@
   </div>
 </div>
 
-<div class="flex flex-col flex-1 w-full p-6 px-2 mx-auto bg-base-200 sm:px-4 lg:px-6 xl:px-8">
-  {@render children()}
-</div>
+
+{@render children()}

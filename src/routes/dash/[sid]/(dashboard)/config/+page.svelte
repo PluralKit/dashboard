@@ -54,6 +54,7 @@
   }
 </script>
 
+<div class="flex flex-col flex-1 w-full p-6 px-2 mx-auto bg-base-200 sm:px-4 lg:px-6 xl:px-8">
 <div class="flex max-w-2xl lg:max-w-6xl gap-4 flex-col lg:flex-row mx-auto items-start flex-wrap">
   <div class="box bg-base-100 lg:max-w-sm">
     <h2 class="text-2xl font-semibold mb-1"><IconSettings class="inline" /> Config</h2>
@@ -142,4 +143,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>

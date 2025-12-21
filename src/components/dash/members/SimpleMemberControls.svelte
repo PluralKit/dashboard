@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
-  import { type DashList } from "$lib/dash/dash.svelte"
+  import { dash, PrivacyMode, type DashList } from "$lib/dash/dash.svelte"
   import { defaultSortMode } from "$lib/dash/sorts.svelte"
   import { IconSearch } from "@tabler/icons-svelte"
   import Svelecte from "svelecte"
@@ -154,6 +154,7 @@
         <option value={-1}>Descending</option>
       </select>
     </div>
+    {#if dash.privacyMode === PrivacyMode.PRIVATE}
     <div class="join">
       <label
         class="input input-disabled input-bordered input-sm w-fit join-item"
@@ -169,5 +170,6 @@
         <option value="private">Private only</option>
       </select>
     </div>
+    {/if}
   </div>
 </div>

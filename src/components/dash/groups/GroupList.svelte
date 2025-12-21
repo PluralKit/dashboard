@@ -36,14 +36,13 @@
     }
     fetching = false
   }
+
+  let rawList = $derived(list.list.random ?? list.list.processed)
 </script>
 
-{#if privacyMode === PrivacyMode.PRIVATE}
-  <GroupCreate groupList={list} {memberList} {initialMembers} />
-{/if}
 <div class="text-center">
   <p>
-    {list.list.processed.length} groups ({list.list.paginated.length} shown)
+    {rawList.length} groups ({list.list.paginated.length} shown)
     <button disabled={fetching} class="btn btn-xs btn-primary ml-2" onclick={() => refreshList()}
       >{fetching ? "Loading..." : "Refresh list"}</button
     >
@@ -52,8 +51,7 @@
 <Pagination
   class="mx-auto"
   size="sm"
-  rawList={list.list.processed}
-  paginate={list.paginate}
+  {rawList}
   itemsPerPage={list.settings.itemsPerPage}
   bind:currentPage={list.settings.currentPage}
 />
@@ -85,14 +83,13 @@
     </div>
   </div>
 {/if}
-{#if list.list.processed.length === 0}
+{#if rawList.length === 0}
   <div class="alert bg-info/20 flex flex-col text-center">No groups found.</div>
 {/if}
 <Pagination
   class="mx-auto"
   size="sm"
-  rawList={list.list.processed}
-  paginate={list.paginate}
+  {rawList}
   itemsPerPage={list.settings.itemsPerPage}
   bind:currentPage={list.settings.currentPage}
 />

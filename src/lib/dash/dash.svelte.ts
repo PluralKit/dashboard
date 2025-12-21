@@ -7,7 +7,7 @@ import {
   filterList,
   type FilterGroup,
 } from "./filters.svelte"
-import { fetchList } from "./utils"
+import { fetchList, getRandom } from "./utils"
 import { createListSettings, paginateList, type ListSettings } from "./settings.svelte"
 import { SortMode, createSimpleSorts, createSort, sortList, type Sort } from "./sorts.svelte"
 import { mapMemberGroups } from "./member/utils"
@@ -24,6 +24,7 @@ export interface DashList<T> {
     raw: T[]
     processed: T[]
     paginated: T[]
+    random: T[] | null
     options: SvelecteOption[]
   }
   filters: FilterGroup[]
@@ -36,6 +37,7 @@ export interface DashList<T> {
   page: Member | Group | undefined
   fetch: (token?: string, groups?: Group[]) => Promise<void>
   process: (groups: Group[]) => void
+  getRandom: (amount: number, included: string[] | undefined, privacy: string) => void
   paginate: () => void
 }
 
@@ -119,7 +121,10 @@ function createMemberListState(data: any): DashList<Member> {
       data?.groups
     )
   })
-  let paginatedMembers: Member[] = $derived(paginateList(processedMembers, listSettings))
+  let randomMembers: Member[] | null = $state(null)
+  let paginatedMembers: Member[] = $derived(
+    paginateList(randomMembers ?? processedMembers, listSettings)
+  )
 
   let optionMembers: SvelecteOption[] = $derived(
     members
@@ -161,6 +166,7 @@ function createMemberListState(data: any): DashList<Member> {
       return {
         raw: members,
         processed: processedMembers,
+        random: randomMembers,
         paginated: paginatedMembers,
         options: optionMembers,
       }
@@ -180,6 +186,8 @@ function createMemberListState(data: any): DashList<Member> {
       )
     },
     process: function (groups: Group[]) {
+      if (randomMembers) return
+
       processedMembers = processList(
         groupFilter.length > 0
           ? members.filter((m) => groupFilter.find((g) => g === m.uuid))
@@ -189,8 +197,40 @@ function createMemberListState(data: any): DashList<Member> {
         groups
       )
     },
+    getRandom: function (amount: number, included: string[] | undefined, privacy: string) {
+      let includedMembers = members
+      if (included && included.length > 0) {
+        includedMembers = members.filter((m) => included.includes(m.uuid || ""))
+      }
+      if (privacy !== "all") {
+        includedMembers = processList(
+          includedMembers,
+          [
+            createFilterGroup([
+              createFilter(
+                "privacy",
+                "privacy",
+                FilterMode.NOTEMPTY,
+                privacy,
+                {
+                  field: "visibility",
+                  fieldName: "visibility",
+                },
+                undefined,
+                "random-filter--visibility"
+              ),
+            ]),
+          ],
+          []
+        )
+      }
+      randomMembers = getRandom(
+        includedMembers,
+        amount > includedMembers.length ? includedMembers.length : amount < 0 ? 0 : amount
+      )
+    },
     paginate: function () {
-      paginatedMembers = paginateList(processedMembers, listSettings)
+      paginatedMembers = paginateList(randomMembers ?? processedMembers, listSettings)
     },
   }
 }
@@ -219,7 +259,10 @@ function createGroupListState(data: any): DashList<Group> {
       listSettings.filterMode === "simple" ? simpleSorts : sorts
     )
   )
-  let paginatedGroups: Group[] = $derived(paginateList(processedGroups, listSettings))
+  let randomGroups: Group[] | null = $state(null)
+  let paginatedGroups: Group[] = $derived(
+    paginateList(randomGroups ?? processedGroups, listSettings)
+  )
 
   let optionGroups: SvelecteOption[] = $derived(
     groups
@@ -245,6 +288,7 @@ function createGroupListState(data: any): DashList<Group> {
       return {
         raw: groups,
         processed: processedGroups,
+        random: randomGroups,
         paginated: paginatedGroups,
         options: optionGroups,
       }
@@ -263,6 +307,8 @@ function createGroupListState(data: any): DashList<Group> {
       )
     },
     process: function (groups: Group[]) {
+      if (randomGroups) return
+
       processedGroups = processList(
         memberFilter.length > 0
           ? groups.filter((g) => memberFilter.find((m) => m === g.uuid))
@@ -271,8 +317,40 @@ function createGroupListState(data: any): DashList<Group> {
         listSettings.filterMode === "simple" ? simpleSorts : sorts
       )
     },
+    getRandom: function (amount: number, included: string[] | undefined, privacy: string) {
+      let includedGroups = groups
+      if (included && included.length > 0) {
+        includedGroups = groups.filter((g) => included.includes(g.uuid || "aaa"))
+      }
+      if (privacy !== "all") {
+        includedGroups = processList(
+          includedGroups,
+          [
+            createFilterGroup([
+              createFilter(
+                "privacy",
+                "privacy",
+                FilterMode.NOTEMPTY,
+                privacy,
+                {
+                  field: "visibility",
+                  fieldName: "visibility",
+                },
+                undefined,
+                "random-filter--visibility"
+              ),
+            ]),
+          ],
+          []
+        )
+      }
+      randomGroups = getRandom(
+        includedGroups,
+        amount > includedGroups.length ? includedGroups.length : amount < 0 ? 0 : amount
+      )
+    },
     paginate: function () {
-      paginateList(processedGroups, listSettings)
+      paginatedGroups = paginateList(randomGroups ?? processedGroups, listSettings)
     },
   }
 }

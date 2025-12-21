@@ -56,3 +56,18 @@ export const publicPrivateLink = (url: string, isOwner: boolean) => {
 
   return params
 }
+
+// https://stackoverflow.com/a/19270021
+export function getRandom(arr: any[], n: number) {
+    let result = new Array(n)
+    let len = arr.length
+    let taken = new Array(len)
+    if (n > len)
+        throw new RangeError("getRandom: more elements taken than available");
+    while (n--) {
+        var x = Math.floor(Math.random() * len)
+        result[n] = arr[x in taken ? taken[x] : x]
+        taken[x] = --len in taken ? taken[len] : len
+    }
+    return result;
+}
