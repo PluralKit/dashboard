@@ -2,7 +2,7 @@
   import { dash, initDash } from "$lib/dash/dash.svelte"
   import { toggleSetting } from "$lib/dash/utils"
 
-  initDash(null)
+  initDash({ user: dash.user })
 </script>
 
 <h2 class="text-3xl my-4 font-bold" id="display">Display Settings</h2>
