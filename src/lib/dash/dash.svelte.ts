@@ -359,7 +359,9 @@ export function createConfigState(config?: Config) {
   let privateMember = $state(config?.member_default_private)
   let privateGroup = $state(config?.group_default_private)
   let templates = $state(config?.description_templates ?? [])
+  let dash_views = $state(config?.dash_views)
   return {
+    dash_views,
     get member_default_private() {
       return privateMember
     },
