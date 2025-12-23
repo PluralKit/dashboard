@@ -30,7 +30,7 @@ export function load({ url }) {
 
     if (system)
       redirect(
-        302,
+        308,
         `/dash/${system}?${isPublic ? `public=true&` : ""}uri=${uri}&tab=${tab}&${url.searchParams.toString()}`
       )
   }

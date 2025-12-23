@@ -31,7 +31,7 @@
   const p = page.url.searchParams
   p.delete("uri")
 
-  initDash(data)
+  initDash({...data, user: dash.user})
 </script>
 
 <div class="container px-4 mx-auto">

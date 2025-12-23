@@ -21,7 +21,7 @@
     <div class="box bg-base-100 h-min">
       <MemberControls privacyMode={dash.privacyMode} groupList={dash.groups} bind:list={dash.members} wide={dash.settings.display?.forceControlsAtTop === true} />
     </div>
-    {#if dash.members.settings.filterMode === "advanced"}
+    {#if dash.members.settings.filterMode === "advanced" && dash.user?.uuid === dash.system.uuid}
       <CopyPermaLink tab="members" />
     {/if}
   </div>

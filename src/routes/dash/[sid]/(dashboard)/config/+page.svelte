@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Config } from "$api/types"
   import EditBoolean from "$components/dash/edit/EditBoolean.svelte"
+  import EditDashView from "$components/dash/edit/EditDashView.svelte"
   import EditDescription from "$components/dash/edit/EditDescription.svelte"
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
   import Spinny from "$components/Spinny.svelte"
@@ -15,12 +15,12 @@
         if (typeof $state.snapshot(value) === "object") {
           return (
             JSON.stringify(value) !==
-            JSON.stringify(dash.config ? dash.config[key as unknown as keyof Config] : undefined)
+            JSON.stringify(dash.config ? dash.config[key as unknown as keyof typeof dash.config] : undefined)
           )
         } else {
           return (
             $state.snapshot(value) !==
-            $state.snapshot(dash.config ? dash.config[key as unknown as keyof Config] : undefined)
+            $state.snapshot(dash.config ? dash.config[key as unknown as keyof typeof dash.config] : undefined)
           )
         }
       })
@@ -37,6 +37,9 @@
     const body = edited
     if (body.description_templates) {
       body.description_templates = (body.description_templates as string[]).filter((t) => t)
+    }
+    if (body.dash_views) {
+      delete body.dash_views
     }
 
     if (err.length > 0) return
@@ -128,6 +131,22 @@
         </EditBoolean>
       </div>
     </div>
+    {#if dash.config.dash_views}
+    <div class="box bg-base-100 flex flex-col p-5 w-full">
+      <h3 class="font-semibold text-lg mb-2">Saved Views</h3>
+      <p class="my-2">You can create views from your member/group list, when advanced mode is enabled.
+        Any saved views will show up here.</p>
+      {#if dash.config.dash_views.length === 0}
+        <div class="alert bg-info/20 flex flex-col text-center">No views saved.</div>
+      {:else}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+        {#each dash.config.dash_views as view (view.id)}
+          <EditDashView {view} bind:config={dash.config} bind:editedState />
+        {/each}
+        </div>
+      {/if}
+    </div>
+    {/if}
     <div class="box bg-base-100 w-full flex flex-col p-5">
       <h3 class="font-semibold text-lg mb-2">Description templates</h3>
       <div class="flex flex-col gap-3 -mx-4">

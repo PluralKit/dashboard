@@ -6,7 +6,7 @@
 
   let { data } = $props()
 
-  initDash(data)
+  initDash({...data, user: dash.user})
 </script>
 
 <div class="flex flex-col gap-8 mx-auto w-full max-w-4xl">

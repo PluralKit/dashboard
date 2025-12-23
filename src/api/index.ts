@@ -45,7 +45,7 @@ export default function apiClient(fetch: SvelteFetch, baseUrl?: string): ApiClie
       const { options, resolve, reject } = scheduled.shift() as (typeof scheduled)[0]
       try {
         const resp = await fetch(
-          `${baseUrl ?? env.PUBLIC_BASE_API_URL ?? "https://api.pluralkit.me"}/v2/${options.path}`,
+          `${baseUrl ?? env.PUBLIC_BASE_API_URL ?? "https://api.pluralkit.me"}${options.path.startsWith("private") ? "" : "/v2"}/${options.path}`,
           {
             method: (options && options.method) || "GET",
             headers: {
