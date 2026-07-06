@@ -165,6 +165,9 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: 6.2.1
         version: 6.2.1(svelte@5.56.4(@typescript-eslint/types@8.62.1))(vite@7.3.6(@types/node@25.9.4)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.97.0)(yaml@2.9.0))
+      '@tabler/icons-svelte':
+        specifier: ^3.44.0
+        version: 3.44.0(svelte@5.56.4(@typescript-eslint/types@8.62.1))
       sass:
         specifier: ^1.97.0
         version: 1.97.0

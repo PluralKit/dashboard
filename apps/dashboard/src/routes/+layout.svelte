@@ -1,6 +1,5 @@
 <script lang="ts">
   import { browser } from "$app/environment"
-  import NavBar from "$components/NavBar.svelte"
   import "$lib/app.scss"
   import "$lib/nprogress.scss"
   import "$lib/highlightjs.scss"
@@ -12,7 +11,8 @@
   import apiClient from "$api"
 
   import favicon from "@pluralkit-web/ui/assets/favicon.png"
-  import { Footer } from "@pluralkit-web/ui"
+  import { Footer, NavBar } from "@pluralkit-web/ui"
+  import { IconBook, IconBrandDiscord, IconShare3, IconUrgent } from "@tabler/icons-svelte"
 
   export let data: LayoutData
 
@@ -43,7 +43,31 @@
   class="max-w-screen min-h-screen bg-base-100 flex flex-col"
   data-theme={data.theme}
 >
-  <NavBar />
+  <NavBar
+    links={[
+      {
+        href: "https://pluralkit.me",
+        label: "Documentation",
+        icon: IconBook,
+      },
+      {
+        href: "https://discord.com/oauth2/authorize?client_id=466378653216014359&scope=bot%20applications.commands&permissions=536995904",
+        label: "Invite Bot",
+        icon: IconShare3,
+      },
+      {
+        href: "https://discord.gg/PczBt78",
+        label: "Support Server",
+        icon: IconBrandDiscord,
+      },
+      {
+        href: "https://status.pluralkit.me/",
+        label: "Bot Status",
+        icon: IconUrgent,
+      },
+    ]}
+    user={dash.user}
+  />
   <div class="flex flex-col flex-1">
     <slot />
   </div>
