@@ -4,6 +4,8 @@
   import { dash } from "$lib/dash/dash.svelte"
   import { IconLock, IconShare, IconUser } from "@tabler/icons-svelte"
 
+  import discord_icon from "@pluralkit-web/ui/assets/discord_icon.svg"
+
   let {
     group,
     asPage,
@@ -40,7 +42,7 @@
   >
     <img
       class="rounded-t-md aspect-square object-cover"
-      src={group.icon ?? "/discord_icon.svg"}
+      src={group.icon ?? discord_icon}
       alt={group.icon ? `${group.name}'s icon` : "Default icon"}
     />
     <div class="text-sm relative">

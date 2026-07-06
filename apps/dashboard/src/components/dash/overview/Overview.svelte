@@ -5,6 +5,8 @@
   import AwaitHtml from "../AwaitHtml.svelte"
   import parseMarkdown from "$api/parseMarkdown"
   import { IconEyeOff, IconSettings } from "@tabler/icons-svelte"
+
+  import discord_icon from "@pluralkit-web/ui/assets/discord_icon.svg"
 </script>
 
 <div
@@ -111,7 +113,7 @@
     </div>
   {:else}
     <div class="avatar w-14 h-14">
-      {@render iconImage("/discord_icon.svg", "Default avatar")}
+      {@render iconImage(discord_icon, "Default avatar")}
     </div>
   {/if}
 {/snippet}

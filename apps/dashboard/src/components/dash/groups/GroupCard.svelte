@@ -6,6 +6,8 @@
   import parseMarkdown from "$api/parseMarkdown"
   import GroupLink from "./GroupLink.svelte"
 
+  import discord_icon from "@pluralkit-web/ui/assets/discord_icon.svg"
+
   let {
     group,
     wide = dash.settings.display?.forceControlsAtTop === true,
@@ -39,7 +41,7 @@
     <div class="max-h-96 overflow-y-auto p-4 pb-0 flex-1 text-center flex flex-col">
       <img
         class="rounded-md aspect-square object-cover"
-        src={group.icon ?? "/discord_icon.svg"}
+        src={group.icon ?? discord_icon}
         alt={group.icon ? `${group.name}'s icon` : "Default avatar"}
       />
       <div class="my-2">

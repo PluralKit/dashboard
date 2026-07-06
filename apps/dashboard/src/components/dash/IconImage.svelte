@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Group, Member, System } from "$api/types"
   import { browser } from "$app/environment"
+  import discord_icon from "@pluralkit-web/ui/assets/discord_icon.svg"
 
   let {
     type,
@@ -23,11 +24,7 @@
       </div>
     {:else}
       <div class="avatar w-14 h-14">
-        <img
-          class="object-cover rounded-full item-icon"
-          src="/discord_icon.svg"
-          alt="Default avatar"
-        />
+        <img class="object-cover rounded-full item-icon" src={discord_icon} alt="Default avatar" />
       </div>
     {/if}
   {:else if type === "system"}
@@ -41,11 +38,7 @@
       </div>
     {:else}
       <div class="avatar w-14 h-14">
-        <img
-          class="object-cover rounded-full item-icon"
-          src="/discord_icon.svg"
-          alt="Default avatar"
-        />
+        <img class="object-cover rounded-full item-icon" src={discord_icon} alt="Default avatar" />
       </div>
     {/if}
   {:else if type === "group"}
@@ -59,11 +52,7 @@
       </div>
     {:else}
       <div class="avatar w-14 h-14">
-        <img
-          class="object-cover rounded-full item-icon"
-          src="/discord_icon.svg"
-          alt="Default avatar"
-        />
+        <img class="object-cover rounded-full item-icon" src={discord_icon} alt="Default avatar" />
       </div>
     {/if}
   {/if}

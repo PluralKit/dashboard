@@ -14,6 +14,7 @@
     IconSettings,
   } from "@tabler/icons-svelte"
   import { dash } from "$lib/dash/dash.svelte"
+  import discord_icon from "@pluralkit-web/ui/assets/discord_icon.svg"
 
   let userMenu: HTMLDetailsElement
   let navbarMenu: HTMLDetailsElement
@@ -82,7 +83,7 @@
           {:else}
             <div class="avatar">
               <div class="w-12 rounded-full">
-                <img alt="Default system avatar" src="/discord_icon.png" />
+                <img alt="Default system avatar" src={discord_icon} />
               </div>
             </div>
           {/if}

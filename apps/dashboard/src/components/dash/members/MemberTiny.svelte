@@ -4,6 +4,8 @@
   import { dash } from "$lib/dash/dash.svelte"
   import { IconLock, IconShare, IconUser } from "@tabler/icons-svelte"
 
+  import discord_icon from "@pluralkit-web/ui/assets/discord_icon.svg"
+
   let {
     member,
     asPage,
@@ -40,7 +42,7 @@
   >
     <img
       class="rounded-t-md aspect-square object-cover"
-      src={member.webhook_avatar_url ?? member.avatar_url ?? "/discord_icon.svg"}
+      src={member.webhook_avatar_url ?? member.avatar_url ?? discord_icon}
       alt={member.webhook_avatar_url || member.avatar_url
         ? `${member.name}'s avatar`
         : "Default avatar"}

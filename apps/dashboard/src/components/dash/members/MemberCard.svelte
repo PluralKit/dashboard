@@ -6,6 +6,8 @@
   import parseMarkdown from "$api/parseMarkdown"
   import MemberLink from "./MemberLink.svelte"
 
+  import discord_icon from "@pluralkit-web/ui/assets/discord_icon.svg"
+
   let {
     member,
     wide = dash.settings.display?.forceControlsAtTop === true,
@@ -39,7 +41,7 @@
     <div class=" max-h-96 overflow-y-auto p-4 pb-0 flex-1 text-center flex flex-col">
       <img
         class="rounded-md aspect-square object-cover"
-        src={member.webhook_avatar_url ?? member.avatar_url ?? "/discord_icon.svg"}
+        src={member.webhook_avatar_url ?? member.avatar_url ?? discord_icon}
         alt={member.webhook_avatar_url || member.avatar_url
           ? `${member.name}'s avatar`
           : "Default avatar"}
