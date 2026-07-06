@@ -1,0 +1,30 @@
+{
+  "name": "@pluralkit-web/ui",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "svelte": "./src/lib/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/lib/index.ts",
+      "svelte": "./src/lib/index.ts",
+      "default": "./src/lib/index.ts"
+    },
+    "./styles/*": "./src/styles/*",
+    "./assets/*": "./src/assets/*"
+  },
+  "scripts": {
+    "check": "svelte-check --tsconfig ./tsconfig.json"
+  },
+  "peerDependencies": {
+    "sass": "^1.77.8",
+    "svelte": "^5.0.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "6.2.1",
+    "sass": "^1.77.8",
+    "svelte": "5.46.0",
+    "svelte-check": "^4.3.4",
+    "typescript": "^5.9.3"
+  }
+}
