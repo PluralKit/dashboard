@@ -22,8 +22,8 @@
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "6.2.1",
-    "sass": "^1.77.8",
-    "svelte": "5.46.0",
+    "sass": "^1.97.0",
+    "svelte": "5.56.4",
     "svelte-check": "^4.3.4",
     "typescript": "^5.9.3"
   }
