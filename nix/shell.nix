@@ -10,7 +10,7 @@
     let
       web = pkgs.mkShellNoCC {
         buildInputs = with pkgs; [
-          nodejs_24
+          nodejs
           pnpm
         ];
       };

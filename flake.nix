@@ -22,12 +22,33 @@
       perSystem =
         {
           pkgs,
+          system,
           ...
         }:
         {
+          # is there an easier way to do this?
+          _module.args.pkgs = inp.nixpkgs.legacyPackages.${system}.extend (
+            final: prev: {
+              nodejs = final.nodejs_24;
+              nodejs-slim = final.nodejs-slim_24;
+              pnpm = final.pnpm_11;
+            }
+          );
           treefmt = {
             projectRootFile = "flake.nix";
             programs.nixfmt.enable = true;
+          };
+
+          pluralkit.webApps = {
+            dashboard = {
+              adapter = "node";
+              workspaces = [
+                "pluralkit-web"
+                "@pluralkit-web/dashboard"
+                "@pluralkit-web/config"
+                "@pluralkit-web/ui"
+              ];
+            };
           };
         };
     };
