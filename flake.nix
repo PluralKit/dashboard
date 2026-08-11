@@ -1,25 +1,34 @@
 {
-  description = "pluralkit web dev flake";
-  inputs.nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
+  description = "flake for pluralkit web";
+
+  inputs = {
+    nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
+    parts.url = "github:hercules-ci/flake-parts";
+    systems.url = "github:nix-systems/default";
+    # misc
+    treefmt.url = "github:numtide/treefmt-nix";
+    treefmt.inputs.nixpkgs.follows = "nixpkgs";
+    flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
+  };
+
   outputs =
-    { self, nixpkgs }:
-    let
-      systems = [
-        "aarch64-darwin"
-        "x86_64-darwin"
-        "aarch64-linux"
-        "x86_64-linux"
+    inp:
+    inp.parts.lib.mkFlake { inputs = inp; } {
+      systems = import inp.systems;
+      imports = [
+        inp.treefmt.flakeModule
+        ./nix
       ];
-      forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
-    in
-    {
-      devShells = forAllSystems (pkgs: {
-        default = pkgs.mkShell {
-          packages = [
-            pkgs.nodejs_24
-            pkgs.pnpm
-          ];
+      perSystem =
+        {
+          pkgs,
+          ...
+        }:
+        {
+          treefmt = {
+            projectRootFile = "flake.nix";
+            programs.nixfmt.enable = true;
+          };
         };
-      });
     };
 }
