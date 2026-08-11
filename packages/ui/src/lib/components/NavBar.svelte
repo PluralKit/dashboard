@@ -25,7 +25,7 @@
           <li>
             <a {href} onclick={() => (navbarMenu.open = false)}>
               {#if Icon}
-                {Icon}
+                <Icon />
               {/if}
               {label}
             </a>
