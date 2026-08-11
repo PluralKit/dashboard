@@ -42,5 +42,4 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REGISTRY_AUTH_FILE: ${{ runner.temp }}/auth.json
         run: |
-          set -euo pipefail
           ci/build-push-images.sh
