@@ -29,6 +29,9 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
+      - name: nuke runner registries
+        run: sudo rm -f /etc/containers/registries.conf
+
       - if: ${{ !env.ACT }}
         env:
           OWNER: ${{ github.repository_owner }}
