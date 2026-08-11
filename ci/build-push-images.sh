@@ -15,10 +15,13 @@ for img in $images; do
     repo="ghcr.io/$owner/$name"
 
     nix build ".#$img" --out-link "result-$img"
+    ./result-$img > "$img.tar"
 
-    skopeo --insecure-policy copy "docker-archive:./result-$img" "docker://$repo:$TAG"
+    skopeo --insecure-policy copy "docker-archive:./$img.tar" "docker://$repo:$TAG"
     skopeo --insecure-policy copy "docker://$repo:$TAG" "docker://$repo:$branch"
     if [ "$BRANCH" == "main" ]; then
         skopeo --insecure-policy copy "docker://$repo:$TAG" "docker://$repo:latest"
     fi
+
+    rm -f "$img.tar"
 done
