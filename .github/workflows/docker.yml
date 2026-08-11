@@ -39,4 +39,4 @@ jobs:
           REGISTRY_AUTH_FILE: ${{ runner.temp }}/auth.json
         run: |
           set -euo pipefail
-          nix shell nixpkgs#skopeo nixpkgs#jq -c ./ci/build-push-images.sh
+          ci/build-push-images.sh

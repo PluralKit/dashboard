@@ -1,3 +1,6 @@
+#! /usr/bin/env nix
+#! nix shell nixpkgs#skopeo nixpkgs#jq --command bash
+
 owner=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
 branch=$(echo "$REF_NAME" | tr '/' '-')
 
