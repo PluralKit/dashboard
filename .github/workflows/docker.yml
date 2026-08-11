@@ -9,6 +9,7 @@ on:
     - 'packages/**'
     - '.dockerignore'
     - '.github/workflows/docker.yml'
+    - 'ci/build-push-images.sh'
     - 'package.json'
     - 'pnpm-lock.yaml'
     - 'pnpm-workspace.yaml'
