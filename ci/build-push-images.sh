@@ -1,6 +1,5 @@
 #! /usr/bin/env nix
 #! nix shell nixpkgs#skopeo nixpkgs#jq --command bash
-set -euo pipefail
 
 owner=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
 branch=$(echo "$REF_NAME" | tr '/' '-')
