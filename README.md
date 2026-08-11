@@ -1,19 +1,8 @@
-This the SvelteKit rewrite of [PluralKit's dashboard](https://github.com/PluralKit/PluralKit/tree/main/dashboard). It uses [svelte 5](https://svelte-5-preview.vercel.app/).
+# PluralKit Web
+This repo is home to web-based applications for PluralKit.
 
 ## Development
-Developing the dashboard requires [node.js v20](https://nodejs.org/en) and [pnpm](https://pnpm.io/).
-
-Create a .env file in the repository root with the following variables
-- `PUBLIC_BASE_API_URL`: the default base API url (not ending in a `/`)
-- `PUBLIC_REPOSITORY_URL`: url of the git repository (use https://github.com/PluralKit/dashboard or your fork)
+Developing any of the apps in this repo requires at least [node.js v20](https://nodejs.org/en) and [pnpm](https://pnpm.io/).
+A Nix flake is provided with a development environment: `nix develop .`
 
 ## Building
-Building can either be done using `pnpm build` or `docker build`.
-
-Example docker build command
-```
-docker build -t pluralkit-dashboard \
-  --build-arg="base_api_url=https://api.pluralkit.me" \
-  --build-arg="repository_url=https://github.com/PluralKit/dashboard" \
-  .
-```
