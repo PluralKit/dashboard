@@ -2,6 +2,8 @@
 
 import type { ApiClient } from "$api"
 
+declare const __COMMIT_HASH__: string
+
 // for information about these interfaces
 declare global {
   namespace App {

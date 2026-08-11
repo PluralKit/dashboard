@@ -4,47 +4,18 @@ import { defineConfig, type PluginOption } from "vite"
 import { execSync } from "node:child_process"
 import MagicString from "magic-string"
 
-const hash = execSync("git rev-parse --short HEAD").toString().trim()
+function getHash(): string {
+  if (process.env.COMMIT_HASH) return process.env.COMMIT_HASH
+  try {
+    return execSync("git rev-parse --short HEAD").toString().trim()
+  } catch {
+    return "unknown"
+  }
+}
 
 export default defineConfig({
   plugins: [sveltekit(), commonjs() as PluginOption],
   define: {
-    __COMMIT_HASH__: JSON.stringify("_" + hash),
+    __COMMIT_HASH__: JSON.stringify("_" + getHash()),
   },
 })
-
-// taken from https://github.com/tabler/tabler-icons/issues/669#issuecomment-1993756128
-// converts all named imports to direct imports during transforming
-
-// no longer seems to be relevant? including it just in case.
-function tablerOptimizer(): import("vite").Plugin {
-  return {
-    name: "tabler-svelte optimizer",
-    transform(code, id) {
-      const ms = new MagicString(code, { filename: id })
-      ms.replace(
-        /([ \t]*)import\s+\{([^;]*?)\}\s+from\s+['"]@tabler\/icons-svelte['"];/g,
-        (match, whitespace: string, importNames: string) => {
-          const hasSemi = match.endsWith(";")
-          const imports = importNames
-            .split(",")
-            .map((v) => v.trim())
-            .map((name) => {
-              const path = name
-              return `${whitespace}import ${name} from '@tabler/icons-svelte/dist/svelte/icons/${path}.svelte'${
-                hasSemi ? ";" : ""
-              }`
-            })
-          return imports.join("\n")
-        }
-      )
-
-      if (ms.hasChanged()) {
-        return {
-          code: ms.toString(),
-          map: ms.generateMap(),
-        }
-      }
-    },
-  }
-}
