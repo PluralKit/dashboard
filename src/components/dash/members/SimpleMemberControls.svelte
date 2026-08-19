@@ -106,6 +106,10 @@
           valueField="value"
           labelField="text"
           bind:value={list.simpleFilters[0].filters[6].value}
+          onChange={() => {
+            dash.members.process(dash.groups.list.raw)
+            dash.groups.process(dash.groups.list.raw)
+          }}
         />
       </div>
     </div>

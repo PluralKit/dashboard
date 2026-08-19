@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Group, Member, proxytag } from "$api/types"
-  import { PrivacyMode, type DashList, type SvelecteOption } from "$lib/dash/dash.svelte"
+  import { dash, PrivacyMode, type DashList, type SvelecteOption } from "$lib/dash/dash.svelte"
   import Svelecte from "svelecte"
   import {
     FilterMode,
@@ -107,6 +107,9 @@
       if (!existingGroup) filterGroups.push(group)
       else existingGroup.filters.push(filter)
     }
+
+    dash.members.process(dash.groups.list.raw)
+    dash.groups.process(dash.groups.list.raw)
 
     filterField = ""
     filterMode = null
