@@ -97,4 +97,5 @@ export interface Group {
   created?: string
   members?: string[]
   system?: string
+  message_count?: number // calculated on the dash itself, used for sorting/filtering by collective message count
 }

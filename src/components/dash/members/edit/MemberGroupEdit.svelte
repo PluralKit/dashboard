@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
-  import { type DashList } from "$lib/dash/dash.svelte"
+  import { dash, type DashList } from "$lib/dash/dash.svelte"
   import {
     IconRefresh,
     IconLoader,
@@ -16,6 +16,7 @@
   import { fade } from "svelte/transition"
   import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
   import Spinny from "$components/Spinny.svelte"
+  import { getGroupMessageCount } from "$lib/dash/group/utils"
 
   let {
     groupsCurrent,
@@ -97,8 +98,10 @@
         g.members = [...(g.members || [])].filter((m) => m !== member.uuid)
       }
 
-      member.group_count = listBody.length
+      g.message_count = getGroupMessageCount(g, dash.members.list.raw)
     }
+
+    member.group_count = listBody.length
 
     // if on the group page: remove self from list if no longer in group
     if (memberList.filter && memberList.page) {

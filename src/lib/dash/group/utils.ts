@@ -32,3 +32,30 @@ function filterGroups(list: Group[], member: Member, filter = true) {
   if (filter) l = l.filter((g) => g.members?.includes(member.uuid || ""))
   return l.sort((a, b) => a.name?.localeCompare(b.name || "") || 0)
 }
+
+export function mapGroupMembers(groups: Group[], members: Member[]) {
+  return groups.map((g) => {
+    return {
+      ...g,
+      message_count: getGroupMessageCount(g, members)
+    }
+  })
+}
+
+export function getGroupMessageCount(group: Group, members: Member[]) {
+  let visible = false
+
+  function add(accumulator: number, uuid: string) {
+    const count = members.find(m => m.uuid === uuid)?.message_count
+    if (count) {
+      visible = true
+      accumulator += count
+    }
+
+    return accumulator
+  }
+
+  const count = group.members?.reduce(add, 0) ?? 0
+
+  return visible ? count : undefined
+}

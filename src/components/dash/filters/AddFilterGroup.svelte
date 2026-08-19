@@ -164,8 +164,8 @@
         <option value="color">color</option>
         {#if type === "members"}
           <option value="birthday">birthday</option>
-          <option value="message_count">message count</option>
         {/if}
+        <option value="message_count">message count</option>
         {#if type === "members"}
           <option value="group">groups</option>
           <option value="proxy">proxy tags</option>

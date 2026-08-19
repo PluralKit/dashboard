@@ -3,6 +3,7 @@
   import type { Group, Member } from "$api/types"
   import { browser } from "$app/environment"
   import { type DashList } from "$lib/dash/dash.svelte"
+  import { getGroupMessageCount } from "$lib/dash/group/utils"
   import { groupCount } from "$lib/dash/member/utils"
   import { IconDeviceFloppy } from "@tabler/icons-svelte"
   import moment from "moment"
@@ -110,6 +111,9 @@
 
         if (itemPath === "members")
           (response as Member).group_count = groupCount(response.uuid || "", groupList.list.raw)
+
+        if (itemPath === "groups")
+          (response as Group).message_count = getGroupMessageCount(response as Group, memberList.list.raw)
 
         list.list.raw.push(response)
         list.process(groupList.list.raw)

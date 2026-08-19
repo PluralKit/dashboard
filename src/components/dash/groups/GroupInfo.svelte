@@ -51,7 +51,7 @@
         </ul>
       </div>
     {/if}
-    {#if !group.created && !group.privacy}
+    {#if !group.created && !group.privacy && !group.message_count}
       <div class="bg-base-100 rounded-box p-4 gap-2">
         <p>There is no additional information available for this group.</p>
       </div>
@@ -59,24 +59,37 @@
     <div class="flex flex-col h-min md:flex-row flex-1 gap-2 lg:gap-3 xl:flex-row flex-wrap">
       {#if group.created}
         <ul class="menu bg-base-100 flex-1 rounded-box text-base">
-          {#if group.created}
-            <li>
-              <span
-                class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
-              >
-                <span class="flex flex-row justify-start gap-2"
-                  ><b>Created:</b>
-                  {moment(group.created).format("MMMM Do, YYYY")} (at {new Date(
-                    group.created
-                  ).toLocaleTimeString([], {
-                    hour: "numeric",
-                    minute: "2-digit",
-                  })})
-                </span>
-                <CopyField class="ml-auto" field="creation date" value={group.created} />
+          <li>
+            <span
+              class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
+            >
+              <span class="flex flex-row justify-start gap-2"
+                ><b>Created:</b>
+                {moment(group.created).format("MMMM Do, YYYY")} (at {new Date(
+                  group.created
+                ).toLocaleTimeString([], {
+                  hour: "numeric",
+                  minute: "2-digit",
+                })})
               </span>
-            </li>
-          {/if}
+              <CopyField class="ml-auto" field="creation date" value={group.created} />
+            </span>
+          </li>
+        </ul>
+      {/if}
+      {#if group.message_count}
+        <ul class="menu bg-base-100 flex-1 rounded-box text-base">
+          <li>
+            <span
+              class="items-start text-left pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
+            >
+              <span class="flex flex-row justify-start gap-2"
+                ><b>Message Count:</b>
+                {group.message_count}
+              </span>
+              <CopyField class="ml-auto" field="creation date" value={group.message_count} />
+            </span>
+          </li>
         </ul>
       {/if}
       {#if group.privacy}

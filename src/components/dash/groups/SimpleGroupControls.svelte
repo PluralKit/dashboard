@@ -124,6 +124,7 @@
         <option value="description">Description</option>
         <option value="color">Color</option>
         <option value="members">Member Count</option>
+        <option value="message_count">Message Count</option>
         <option value="created">Created</option>
       </select>
     </div>

@@ -59,11 +59,11 @@
         <option value="color">color</option>
         {#if type === "members"}
           <option value="birthday">birthday</option>
-          <option value="message_count">message count</option>
           <option value="groups">groups</option>
         {:else if type === "groups"}
           <option value="members">members</option>
         {/if}
+        <option value="message_count">message count</option>
         <option value="created">created</option>
       </select>
     </div>

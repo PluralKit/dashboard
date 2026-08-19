@@ -9,6 +9,7 @@
   import GroupMemberList from "../GroupMemberList.svelte"
   import DeleteButton from "$components/dash/edit/DeleteButton.svelte"
   import Spinny from "$components/Spinny.svelte"
+  import { getGroupMessageCount } from "$lib/dash/group/utils"
 
   let {
     membersCurrent,
@@ -87,6 +88,7 @@
     }
 
     group.members = listBody
+    group.message_count = getGroupMessageCount(group, memberList.list.raw)
 
     // if on the member page: remove self from list if no longer containing member
     if (groupList.filter && groupList.page) {

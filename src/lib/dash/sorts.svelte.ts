@@ -152,6 +152,8 @@ function applySort<T>(list: T[], sort: Sort, groupList: Group[]): T[] {
           }
         } else if (typeof a[field] === "number" || typeof b[field] === "number") {
           if (a[field] === b[field]) result = 0
+          else if (!a[field]) result = 1
+          else if (!b[field]) result = -1
           else if (a[field] !== 0 && !a[field]) result = 1
           else if (b[field] !== 0 && !b[field]) result = -1
           else result = a[field] > b[field] ? 1 : -1

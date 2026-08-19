@@ -12,6 +12,7 @@ import { createListSettings, paginateList, type ListSettings } from "./settings.
 import { SortMode, createSimpleSorts, createSort, sortList, type Sort } from "./sorts.svelte"
 import { mapMemberGroups } from "./member/utils"
 import { browser } from "$app/environment"
+import { mapGroupMembers } from "./group/utils"
 
 export enum PrivacyMode {
   PUBLIC,
@@ -248,7 +249,7 @@ function createGroupListState(data: any): DashList<Group> {
   let memberFilter: string[] | undefined = $state([])
   let page: Member | undefined = $state(undefined)
 
-  let groups: Group[] = $state(data?.groups ?? [])
+  let groups: Group[] = $state(mapGroupMembers(data?.groups ?? [], data?.members ?? []))
   let processedGroups: Group[] = $derived.by(() => {
     const list: Group[] = data?.memberGroups ?? groups
     return processList(
@@ -299,10 +300,10 @@ function createGroupListState(data: any): DashList<Group> {
     filter: memberFilter,
     page,
     fetch: async function (token?: string) {
-      groups = await fetchList(
+      groups = mapGroupMembers(await fetchList(
         `systems/${dash.system?.id || "exmpl"}/groups?with_members=true`,
         token
-      )
+      ), dash.members.list.raw)
     },
     process: function (groups: Group[]) {
       if (randomGroups) return
