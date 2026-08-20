@@ -55,7 +55,7 @@
     else if (tab === "groups") tabbedOnce = true
   })
 
-  let item = $state(i)
+  let item = $derived(i)
 </script>
 
 <div
@@ -123,8 +123,8 @@
             {/if}
           {/if}
       {:else if type === "system"}
-          <SystemView bind:system={item} {tab} open={isOpen} {asPage} />
-          <SystemInfo bind:system={item} {tab} {asPage} />
+          <SystemView system={item} {tab} open={isOpen} {asPage} />
+          <SystemInfo system={item} {tab} {asPage} />
       {:else if type === "group"}
           {#if openedOnce}
             <GroupView {memberList} {privacyMode} list={groupList} bind:group={item} {tab} open={isOpen} {asPage} />

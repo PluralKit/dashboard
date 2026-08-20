@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Member } from "$api/types"
   import { dash } from "$lib/dash/dash.svelte"
-  import { page } from "$app/stores"
+  import { page } from "$app/state"
   import { IconExternalLink, IconShare2 } from "@tabler/icons-svelte"
 
   let {
@@ -18,12 +18,12 @@
     class?: string
   } = $props()
 
-  let params = $page.url.searchParams
+  let params = page.url.searchParams
+  // svelte-ignore state_referenced_locally
   if (!asPage) params.delete("tab")
-  else params.append("tab", "members")
 
   const getLink = () => {
-    if (dash.group.group?.uuid !== item.uuid || !asPage)
+    if ((dash.group.group?.uuid !== item.uuid && dash.member.member?.uuid !== item.uuid)|| !asPage)
       return `/dash/m/${item.id}${params.toString().length > 0 ? `?${params.toString()}` : ""}`
     else
       return `/dash/${(item as Member).system}${params.toString().length > 0 ? `?${params.toString()}` : ""}`

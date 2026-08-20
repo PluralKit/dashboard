@@ -31,6 +31,7 @@
   const p = page.url.searchParams
   p.delete("uri")
 
+  // svelte-ignore state_referenced_locally
   initDash(data)
 </script>
 

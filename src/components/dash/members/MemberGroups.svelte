@@ -33,7 +33,7 @@
   let err = $state("")
 
   let list: Group[] = $derived(deriveGroups(member, asPage, groupList, privacyMode))
-  let groups: Group[] = $state(deriveGroups(member, asPage, groupList, privacyMode))
+  let groups: Group[] = $derived(deriveGroups(member, asPage, groupList, privacyMode))
 
   let groupPromise: Promise<Group[]> = $derived.by(async () => {
     try {

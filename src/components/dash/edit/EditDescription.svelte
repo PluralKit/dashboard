@@ -25,7 +25,7 @@
 
   let popupElement: HTMLDialogElement
 
-  let templatesVisible =
+  let templatesVisible = () =>
     showTemplates &&
     dash.config?.description_templates &&
     dash.config?.description_templates.length > 0
@@ -53,8 +53,8 @@
       {value?.length ?? 0}/1000
     </span>
   </div>
-  <div class={`p-4 rounded-xl bg-base-100 flex flex-col gap-2 ${templatesVisible ? "pt-2" : ""}`}>
-    {#if templatesVisible}
+  <div class={`p-4 rounded-xl bg-base-100 flex flex-col gap-2 ${templatesVisible() ? "pt-2" : ""}`}>
+    {#if templatesVisible()}
       <ol class="flex flex-row gap-2 items-center">
         {#each dash.config?.description_templates ?? [] as template, i}
           <li>

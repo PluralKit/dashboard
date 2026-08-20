@@ -38,7 +38,7 @@
   let filterPrivacy: null | string = $state(null)
   let filterProxy: string[] = $state([])
 
-  let proxyOptions: SvelecteOption[] = $state(list.proxyTags ? [...list.proxyTags] : [])
+  let proxyOptions: SvelecteOption[] = $derived(list.proxyTags ? [...list.proxyTags] : [])
   let proxyCreated: SvelecteOption | null = $state(null)
 
   let inputType: string = $derived.by(() => {

@@ -41,6 +41,7 @@
   let loading = $state(false)
 
   let uuidsCurrent: string[] = $derived(groupsCurrent.map((g) => g.uuid || ""))
+  // svelte-ignore state_referenced_locally
   let uuidSelection: string[] = $state(groupsCurrent.map((g) => g.uuid || ""))
 
   $effect(() => {
