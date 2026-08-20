@@ -49,8 +49,7 @@
     Object.assign(dash.config || {}, response)
     editedState = createConfigState(JSON.parse(JSON.stringify(dash.config)))
     success = true
-    await new Promise((res) => setTimeout(res, 5000))
-    success = false
+    setTimeout(() => success = false, 5000)
   }
 </script>
 
@@ -93,9 +92,9 @@
         <div class="mt-2 join ml-auto">
           {#if !loading}
             {#if Object.keys(edited).length > 0}
-              <SubmitEditButton bind:err {submitEdit} />
+              <SubmitEditButton bind:loading bind:err {submitEdit} />
             {:else}
-              <SubmitEditButton disabled bind:err submitEdit={async () => {}} />
+              <SubmitEditButton bind:loading disabled bind:err submitEdit={async () => {}} />
             {/if}
           {:else}
             <button class="btn btn-sm btn-neutral join-item" disabled>

@@ -78,6 +78,7 @@
     Object.assign(system || {}, response)
 
     success = true
+    setTimeout(() => success = false, 5000)
   }
 </script>
 
@@ -220,7 +221,7 @@
   <div class="mt-2 join">
     {#if !loading}
       {#if Object.keys(edited).length > 0}
-        <SubmitEditButton bind:err {submitEdit} />
+        <SubmitEditButton bind:loading bind:err {submitEdit} />
         <button
           onclick={() => (mode = "view")}
           class="btn btn-sm btn-neutral join-item"

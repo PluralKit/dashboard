@@ -5,10 +5,12 @@
   let {
     submitEdit,
     err = $bindable(),
+    loading = $bindable(),
     disabled,
   }: {
     submitEdit: (token: string) => Promise<void>
     err: string[]
+    loading: boolean
     disabled?: boolean
   } = $props()
 </script>
@@ -19,6 +21,8 @@
     const token = localStorage.getItem("pk-token") || ""
     if (!token) return
 
+    loading = true
+
     try {
       await submitEdit(token)
     } catch (e) {
@@ -26,6 +30,8 @@
       console.error(error.data)
       err.push(error.message || "")
     }
+    
+    loading = false
   }}
   class="btn btn-sm btn-success join-item"
   {disabled}
