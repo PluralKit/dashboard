@@ -5,6 +5,7 @@
   import { dash, initDash } from "$lib/dash/dash.svelte"
 
   let { data } = $props()
+  // svelte-ignore state_referenced_locally
   initDash(data)
 </script>
 
@@ -33,7 +34,6 @@
       list={dash.member.groups}
       memberList={dash.member.members}
       privacyMode={dash.member.privacyMode}
-      initialMembers={dash.member.member ? [dash.member.member] : undefined}
       wide={true}
     />
   </div>

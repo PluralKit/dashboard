@@ -4,7 +4,6 @@
   import { ViewType } from "$lib/dash/settings.svelte"
   import ItemCollapse from "../ItemCollapse.svelte"
   import Pagination from "../Pagination.svelte"
-  import GroupCreate from "./create/GroupCreate.svelte"
   import GroupCard from "./GroupCard.svelte"
   import GroupTiny from "./GroupTiny.svelte"
 
@@ -12,13 +11,11 @@
     list,
     memberList,
     privacyMode,
-    initialMembers,
     wide = dash.settings.display?.forceControlsAtTop === true,
   }: {
     list: DashList<Group>
     memberList: DashList<Member>
     privacyMode: PrivacyMode
-    initialMembers?: Member[]
     wide?: boolean
   } = $props()
 

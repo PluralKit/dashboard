@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Group, Member } from "$api/types"
-  import { type DashList } from "$lib/dash/dash.svelte"
+  import { dash, type DashList } from "$lib/dash/dash.svelte"
   import { IconRefresh, IconMinus, IconPlus, IconX } from "@tabler/icons-svelte"
   import Svelecte from "svelecte"
   import SubmitEditButton from "$components/dash/edit/SubmitEditButton.svelte"
@@ -90,16 +90,19 @@
     group.members = listBody
     group.message_count = getGroupMessageCount(group, memberList.list.raw)
 
-    // if on the member page: remove self from list if no longer containing member
-    if (groupList.filter && groupList.page) {
-      if (listBody.includes(group.uuid || "") && !groupList.filter.includes(group.uuid || "")) {
-        groupList.filter.push(group.uuid || "")
-      } else groupList.filter = groupList.filter.filter((m) => m !== group.uuid)
+    if (dash.member && groupList.filter) {
+      if (!listBody.includes(group.uuid || "")) {
+        groupList.filter.splice(groupList.filter.indexOf(group), 1)
+      }
     }
 
-    // if on the group page: filter out members that no longer belong in this group
-    if (memberList.filter && memberList.page) {
-      memberList.filter = listBody
+    if (dash.group && memberList.filter) {
+      memberList.filter.splice(0, memberList.filter.length)
+
+      for (const mid of listBody) {
+        const member = memberList.list.raw.find(m => m.uuid === mid)
+        if (member) memberList.filter.push(member)
+      }
     }
 
     memberList.process(groupList.list.raw)

@@ -34,7 +34,7 @@ export interface DashList<T> {
   simpleSorts: Sort[]
   settings: ListSettings
   proxyTags?: SvelecteOption[]
-  filter: string[] | undefined
+  filter: Group[]|Member[]|undefined
   page: Member | Group | undefined
   fetch: (token?: string, groups?: Group[]) => Promise<void>
   process: (groups: Group[]) => void
@@ -108,14 +108,14 @@ function createMemberListState(data: any): DashList<Member> {
   let simpleFilters: FilterGroup[] = $state([createSimpleFilters()])
   let simpleSorts: Sort[] = $state(createSimpleSorts())
 
-  let groupFilter: string[] = $state([])
+  let groupFilter: Group[]|undefined = $state(data?.groupMembers)
   let page: Group | undefined = $state(undefined)
 
   let members: Member[] = $state(mapMemberGroups(data?.members ?? [], data?.groups ?? []))
   let processedMembers: Member[] = $derived.by(() => {
-    const list: Member[] = data?.groupMembers ?? members
+    const list: Member[] = groupFilter ? groupFilter : members
     return processList(
-      groupFilter.length > 0 ? list.filter((m) => groupFilter.find((g) => g === m.uuid)) : list,
+      list,
       listSettings.filterMode === "simple" ? simpleFilters : filters,
       listSettings.filterMode === "simple" ? simpleSorts : sorts,
       data?.groups
@@ -188,10 +188,10 @@ function createMemberListState(data: any): DashList<Member> {
     process: function (groups: Group[]) {
       if (randomMembers) return
 
-      const list: Member[] = data?.groupMembers ?? members
+      const list: Member[] = groupFilter ? groupFilter : members
 
       processedMembers = processList(
-        groupFilter.length > 0 ? list.filter((m) => groupFilter.find((g) => g === m.uuid)) : list,
+        list,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
         listSettings.filterMode === "simple" ? simpleSorts : sorts,
         groups
@@ -246,14 +246,14 @@ function createGroupListState(data: any): DashList<Group> {
   let simpleFilters: FilterGroup[] = $state([createSimpleFilters("group")])
   let simpleSorts: Sort[] = $state(createSimpleSorts())
 
-  let memberFilter: string[] | undefined = $state([])
+  let memberFilter: Group[] | undefined = $state(data?.memberGroups)
   let page: Member | undefined = $state(undefined)
 
   let groups: Group[] = $state(mapGroupMembers(data?.groups ?? [], data?.members ?? []))
   let processedGroups: Group[] = $derived.by(() => {
-    const list: Group[] = data?.memberGroups ?? groups
+    const list: Group[] = memberFilter ? memberFilter : groups
     return processList(
-      memberFilter.length > 0 ? list.filter((g) => memberFilter.find((m) => m === g.uuid)) : list,
+      list,
       listSettings.filterMode === "simple" ? simpleFilters : filters,
       listSettings.filterMode === "simple" ? simpleSorts : sorts
     )
@@ -307,11 +307,10 @@ function createGroupListState(data: any): DashList<Group> {
     },
     process: function (groups: Group[]) {
       if (randomGroups) return
-
-      const list: Group[] = data?.memberGroups ?? groups
+      const list: Group[] = memberFilter ? memberFilter : groups
 
       processedGroups = processList(
-        memberFilter.length > 0 ? list.filter((g) => memberFilter.find((m) => m === g.uuid)) : list,
+        list,
         listSettings.filterMode === "simple" ? simpleFilters : filters,
         listSettings.filterMode === "simple" ? simpleSorts : sorts
       )

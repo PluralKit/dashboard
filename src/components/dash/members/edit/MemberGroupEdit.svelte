@@ -3,7 +3,6 @@
   import { dash, type DashList } from "$lib/dash/dash.svelte"
   import {
     IconRefresh,
-    IconLoader,
     IconMinus,
     IconPlus,
     IconX,
@@ -104,17 +103,21 @@
 
     member.group_count = listBody.length
 
-    // if on the group page: remove self from list if no longer in group
-    if (memberList.filter && memberList.page) {
-      if (listBody.includes(member.uuid || "") && !memberList.filter.includes(member.uuid || "")) {
-        memberList.filter.push(member.uuid || "")
-      } else memberList.filter = memberList.filter.filter((m) => m !== member.uuid)
+    if (dash.group && memberList.filter) {
+      if (!listBody.includes(member.uuid || "")) {
+        memberList.filter.splice(memberList.filter.indexOf(member), 1)
+      }
     }
 
-    // if on the member page: filter out groups that no longer belong to this member
-    if (groupList.filter && groupList.page) {
-      groupList.filter = listBody
+    if (dash.member && groupList.filter) {
+      groupList.filter.splice(0, groupList.filter.length)
+
+      for (const gid of listBody) {
+        const group = groupList.list.raw.find(g => g.uuid === gid)
+        if (group) groupList.filter.push(group)
+      }
     }
+
     groupList.process(groupList.list.raw)
     groupList.paginate()
     memberList.process(groupList.list.raw)
@@ -309,7 +312,7 @@
   <div class="mt-2 join">
     {#if !loading}
       {#if added.length > 0 || removed.length > 0}
-        <SubmitEditButton bind:err {submitEdit} />
+        <SubmitEditButton bind:loading bind:err {submitEdit} />
         <button
           onclick={() => (mode = "view")}
           class="btn btn-sm btn-neutral join-item"
