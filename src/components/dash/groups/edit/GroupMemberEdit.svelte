@@ -90,12 +90,16 @@
     group.members = listBody
     group.message_count = getGroupMessageCount(group, memberList.list.raw)
 
+    // if we're on the member page and we just removed the member from the group
+    // remove the group from the visible list
     if (dash.member && groupList.filter) {
       if (!listBody.includes(group.uuid || "")) {
+        // just like in MemberGroupEdit, mutate the array in place
         groupList.filter.splice(groupList.filter.indexOf(group), 1)
       }
     }
 
+    // if we're on the group page, we need to adjust the member list underneath
     if (dash.group && memberList.filter) {
       memberList.filter.splice(0, memberList.filter.length)
 

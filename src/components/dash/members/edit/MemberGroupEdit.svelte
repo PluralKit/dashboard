@@ -103,13 +103,18 @@
 
     member.group_count = listBody.length
 
+    // if we're on a group page, and the member no longer is in said group
+    // we need to remove that member from the list
     if (dash.group && memberList.filter) {
       if (!listBody.includes(member.uuid || "")) {
+        // mutate the array in place because... assigning doesn't work fsr
         memberList.filter.splice(memberList.filter.indexOf(member), 1)
       }
     }
 
+    // if we're on the member page, we need to adjust the group list underneath
     if (dash.member && groupList.filter) {
+      // same deal here, mutate the array in place
       groupList.filter.splice(0, groupList.filter.length)
 
       for (const gid of listBody) {
