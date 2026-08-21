@@ -28,69 +28,37 @@ export type SvelteFetch = (input: RequestInfo, init?: RequestInit | undefined) =
 export type ApiClient = <T>(path: string, options?: ApiOptions) => Promise<T | undefined>
 
 export default function apiClient(fetch: SvelteFetch, baseUrl?: string): ApiClient {
-  // list of API requests to run
-  const scheduled: {
-    resolve: (value: any | PromiseLike<any>) => void
-    reject: (reason: any) => void
-    options: ApiOptions & {
-      path: string
-    }
-  }[] = []
-
-  async function run() {
-    if (scheduled.length === 0) {
-      // use setTimeout instead of a loop since it's non-blocking
-      setTimeout(run, 0)
-    } else {
-      const { options, resolve, reject } = scheduled.shift() as (typeof scheduled)[0]
-      try {
-        const resp = await fetch(
-          `${baseUrl ?? env.PUBLIC_BASE_API_URL ?? "https://api.pluralkit.me"}/v2/${options.path}`,
-          {
-            method: (options && options.method) || "GET",
-            headers: {
-              ...(options && options.token ? { Authorization: options.token } : {}),
-              ...(options && options.headers ? options.headers : {}),
-              "Content-Type": "application/json",
-              "User-Agent": `PluralKit Dashboard (https://github.com/PluralKit/dashboard)`
-            },
-            body: options && options.body ? JSON.stringify(options.body) : null,
-          }
-        )
-
-        const delay = checkRateLimit(resp)
-
-        if (!resp.ok) {
-          await parseError(resp, reject)
-        } else if (resp.status === 204) {
-          resolve(undefined)
-        } else {
-          const data = await resp.json()
-          resolve(data)
-        }
-
-        setTimeout(run, delay)
-      } catch (e) {
-        reject({
-          message: (e as Error).message,
-        })
-
-        setTimeout(run, 0)
+  return async function <T>(path: string, options?: ApiOptions): Promise<T | undefined> {
+    const resp = await fetch(
+      `${baseUrl ?? env.PUBLIC_BASE_API_URL ?? "https://api.pluralkit.me"}/v2/${path}`,
+      {
+        method: (options && options.method) || "GET",
+        headers: {
+          ...(options && options.token ? { Authorization: options.token } : {}),
+          ...(options && options.headers ? options.headers : {}),
+          "Content-Type": "application/json",
+          "User-Agent": `PluralKit Dashboard (https://github.com/PluralKit/dashboard)`
+        },
+        body: options && options.body ? JSON.stringify(options.body) : null,
       }
-    }
-  }
-
-  run()
-
-  return function <T>(path: string, options?: ApiOptions): Promise<T | undefined> {
-    const promise = new Promise<T | undefined>((resolve, reject) =>
-      scheduled.push({ resolve, reject, options: { ...options, path } })
     )
-    return promise
+
+    const delay = checkRateLimit(resp)
+
+    if (!resp.ok) {
+      await parseError(resp)
+    } else if (resp.status === 204) {
+      return undefined
+    } else {
+      const data = await resp.json()
+      return data
+    }
+
+    if (delay > 0) await new Promise((res) => setTimeout(res, delay))
   }
 }
 
-async function parseError(resp: Response, reject: (reason: any) => void) {
+async function parseError(resp: Response) {
   let type = ErrorType.Unknown
   if (!Object.values(ErrorType).includes(resp.status))
     resp.status > 500 ? (type = ErrorType.InternalServerError) : (type = ErrorType.Unknown)
@@ -107,7 +75,7 @@ async function parseError(resp: Response, reject: (reason: any) => void) {
     ;(err.message = body.message), (err.data = body)
   }
 
-  reject(err)
+  throw err
 }
 
 export function checkRateLimit(resp: Response) {
