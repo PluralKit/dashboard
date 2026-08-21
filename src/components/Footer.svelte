@@ -14,7 +14,7 @@
         href={`${
           env.PUBLIC_REPOSITORY_URL
             ? env.PUBLIC_REPOSITORY_URL
-            : "https://github.com/Draconizations/pk-dashboard-sveltekit"
+            : "https://github.com/PluralKit/dashboard"
         }/commit/${version}`}>{version}</a
       >
     </span>

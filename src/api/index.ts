@@ -52,6 +52,7 @@ export default function apiClient(fetch: SvelteFetch, baseUrl?: string): ApiClie
               ...(options && options.token ? { Authorization: options.token } : {}),
               ...(options && options.headers ? options.headers : {}),
               "Content-Type": "application/json",
+              "User-Agent": `PluralKit Dashboard (https://github.com/PluralKit/dashboard)`
             },
             body: options && options.body ? JSON.stringify(options.body) : null,
           }
