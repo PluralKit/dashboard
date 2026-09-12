@@ -5,6 +5,7 @@
     IconLayout,
     IconAmbulance,
     IconSettings,
+    IconTool,
   } from "@tabler/icons-svelte"
 
   let { hide = false } = $props()
@@ -19,6 +20,7 @@
   <!-- Sidebar content here -->
   <li><h1 class="text-3xl font-bold mb-4 pointer-events-none">Settings</h1></li>
   <li><a href="/settings/general"><IconSettings /> General</a></li>
+  <li><a href="/settings/config"><IconTool /> Config</a></li>
   <li><a href="/settings/theme"><IconPaint /> Theme</a></li>
   <li><a href="/settings/layout"><IconLayout /> Layout</a></li>
   {#if system}
