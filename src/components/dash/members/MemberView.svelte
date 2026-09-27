@@ -163,6 +163,29 @@
             {/if}
           </ul>
         {/if}
+        {#if member.aliases && member.aliases.length > 0}
+          <div class="flex flex-col w-full">
+            <div
+              class="ml-4 px-4 pt-2 pb-1 rounded-t-xl bg-base-100 w-fit font-bold flex flex-row gap-3"
+            >
+              Aliases
+            </div>
+            <ul class="menu bg-base-100 rounded-box text-base">
+              {#each member.aliases as alias}
+                <li>
+                <span
+                  class="items-start text-left py-1 pr-1 justify-between gap-1 hover:bg-transparent hover:cursor-default"
+                >
+                  <span class="flex flex-row justify-start gap-2"
+                    >{alias}
+                  </span>
+                  <CopyField class="ml-auto" field="alias" value={alias} />
+                </span>
+              </li>
+              {/each}
+            </ul>
+          </div>
+        {/if}
         {#if member.description}
           <div class="flex flex-col w-full">
             <div

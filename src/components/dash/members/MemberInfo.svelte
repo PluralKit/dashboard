@@ -125,10 +125,15 @@
         </ol>
       {/if}
       {#if member.privacy}
+        <div class="flex flex-col w-full">
+        <div
+              class="ml-4 px-4 pt-2 pb-1 rounded-t-xl bg-base-100 w-fit font-bold flex flex-row gap-3"
+            >
+              Privacy Settings
+            </div>
         <div
           class="flex flex-col w-full bg-base-100 gap-2 md:flex-row xl:flex-row lg:gap-3 p-2 rounded-xl flex-wrap"
         >
-          <b class="inline-block px-4 pt-2 w-full">Privacy settings:</b>
           <ul class="menu flex-1 text-base p-0 flex flex-col sm:flex-row">
             <li class="w-1/2">
               <span
@@ -194,6 +199,7 @@
               >
             </li>
           </ul>
+        </div>
         </div>
       {/if}
       <div class="flex flex-row items-center justify-end gap-2 w-full">
