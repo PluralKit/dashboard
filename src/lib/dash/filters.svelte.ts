@@ -24,7 +24,7 @@ export type Filter = {
 }
 
 export type FilterValueType = string | number | null | string[]
-export type FilterFieldType = "number" | "date" | "string" | "group" | "member"
+export type FilterFieldType = "number" | "date" | "string" | "group" | "member" | "array"
 
 export type FilterModeText = {
   mode: FilterMode
@@ -63,6 +63,8 @@ export const filterPrivacyText = (raw: string) => {
 
 export const filterFieldType = (raw: string): FilterFieldType => {
   const type: Record<string, FilterFieldType> = {
+    namelike: "string",
+    alias: "array",
     message_count: "number",
     created: "date",
     birthday: "date",
@@ -309,32 +311,41 @@ function applyFilter<T>(list: T[], filter: Filter, groupList?: Group[]): T[] {
   const field = filter.field as keyof T
   const value = filter.value
 
-  const fieldType = filterFieldType(filter.field)
-
   // first handle filtering by groups and members since they're rather... special
-  if (fieldType === "group") {
-    return filterMembersByGroup<T>(processedList, filter.mode, value, groupList ?? [])
-  }
 
-  if (fieldType === "member") {
-    return filterGroupsByMember<T>(processedList, filter.mode, value)
-  }
+  switch (field) {
+    case "group":
+      return filterMembersByGroup<T>(processedList, filter.mode, value, groupList ?? [])
+    
+    case "member":
+      return filterGroupsByMember<T>(processedList, filter.mode, value)
 
-  if (fieldType === "date") {
-    return filterByDate<T>(processedList, filter)
-  }
+    case "date":
+      return filterByDate<T>(processedList, filter)
 
-  if (field === "privacy" && filter.privacy) {
-    return filterByPrivacy(processedList as any, filter.privacy.field, value as string) as T[]
-  }
+    case "proxy":
+      return filterByProxy(
+        processedList as Member[],
+        filter.mode,
+        filter.proxy ? filter.proxy : [],
+        filter.value
+      ) as T[]
 
-  if (field === "proxy") {
-    return filterByProxy(
-      processedList as Member[],
-      filter.mode,
-      filter.proxy ? filter.proxy : [],
-      filter.value
-    ) as T[]
+    case "privacy":
+      if (filter.privacy) return filterByPrivacy(processedList as any, filter.privacy.field, value as string) as T[]
+      break
+
+    case "namelike":
+      const namelikeGroup = createFilterGroup([
+        createFilter("name", "name", FilterMode.INCLUDES, filter.value, undefined, undefined, "namelike--name"),
+        createFilter("display_name", "display name", FilterMode.INCLUDES, filter.value, undefined, undefined, "namelike--displayname"),
+        createFilter("aliases", "aliases", FilterMode.INCLUDES, filter.value, undefined, undefined, "namelike--alias"),
+      ], "namelike--group")
+      namelikeGroup.mode = "or"
+      return filterList(list, [namelikeGroup])
+
+    default:
+      break
   }
 
   switch (filter.mode) {
@@ -343,10 +354,14 @@ function applyFilter<T>(list: T[], filter: Filter, groupList?: Group[]): T[] {
       processedList = processedList.filter((i) => {
         if (!value) return true
         if (!i[field]) return false
-        switch (filter.valueType) {
+        switch (typeof i[field]) {
           // string: include any with substring
           case "string": {
             return (i[field] as string).toLowerCase().includes((value as string).toLowerCase())
+          }
+          case "object": {
+            
+            return (i[field] as string[]).some(f => f.toLowerCase().includes((value as string).toLowerCase()))
           }
           default:
             return false
@@ -357,10 +372,13 @@ function applyFilter<T>(list: T[], filter: Filter, groupList?: Group[]): T[] {
       processedList = processedList.filter((i) => {
         if (!value) return true
         if (!i[field]) return true
-        switch (filter.valueType) {
-          // string: include any with substring
+        switch (typeof i[field]) {
+          // string: exclude any with substring
           case "string": {
             return !(i[field] as string).toLowerCase().includes((value as string).toLowerCase())
+          }
+          case "object": {
+            return !(i[field] as string[]).some(f => f.toLowerCase().includes((value as string).toLowerCase()))
           }
           default:
             return true
@@ -369,68 +387,114 @@ function applyFilter<T>(list: T[], filter: Filter, groupList?: Group[]): T[] {
       break
     case FilterMode.EMPTY:
       processedList = processedList.filter((i) => {
-        return !i[field]
+        switch (typeof i[field]) {
+          case "object":
+            return (i[field] as []).length === 0
+          default:
+            return !i[field]
+        }
       })
       break
     case FilterMode.NOTEMPTY:
       processedList = processedList.filter((i) => {
-        return !!i[field]
+        switch (typeof i[field]) {
+          case "object":
+            return (i[field] as []).length !== 0
+          default:
+            return !!i[field]
+        }
       })
       break
     case FilterMode.EXACT:
       processedList = processedList.filter((i) => {
         if (!value) return true
         if (!i[field]) return false
-        if (filter.valueType === "string")
-          return (i[field] as string).toLowerCase() === (value as string).toLowerCase()
-        else return i[field] === filter.value
+        switch (typeof i[field]) {
+          case "string":
+            return (i[field] as string).toLowerCase() === (value as string).toLowerCase()
+          case "object":
+            return (i[field] as string[]).some(f => f.toLowerCase() === (value as string).toLowerCase())
+          default:
+            return i[field] === filter.value
+        }
       })
       break
     case FilterMode.NOTEXACT:
       processedList = processedList.filter((i) => {
         if (!value) return true
         if (!i[field]) return true
-        if (filter.valueType === "string")
-          return (i[field] as string).toLowerCase() !== (value as string).toLowerCase()
-        else return i[field] !== filter.value
+        switch (typeof i[field]) {
+          case "string":
+            return (i[field] as string).toLowerCase() !== (value as string).toLowerCase()
+          case "object":
+            return !(i[field] as string[]).some(f => f.toLowerCase() === (value as string).toLowerCase())
+          default:
+            return i[field] !== filter.value
+        }
       })
       break
     case FilterMode.HIGHERTHAN:
       processedList = processedList.filter((i) => {
         if (!value) return true
         if (!i[field]) return false
-        if (typeof i[field] === "string") {
-          return (i[field] as string).length > (value as number)
-        } else if (typeof i[field] === "number") {
-          return (i[field] as number) > (value as number)
-        } else return false
+
+        switch (typeof i[field]) {
+          case "string":
+            return i[field].length > (value as number)
+          case "number":
+            return i[field] > (value as number)
+          case "object":
+            return Object.entries(i[field]).length > (value as number)
+          default:
+            return false
+        }
       })
       break
     case FilterMode.LOWERTHAN:
       processedList = processedList.filter((i) => {
         if (!value) return true
         if (!i[field]) return false
-        if (typeof i[field] === "string") {
-          return (i[field] as string).length < (value as number)
-        } else if (typeof i[field] === "number") {
-          return (i[field] as number) < (value as number)
-        } else return false
+
+        switch (typeof i[field]) {
+          case "string":
+            return i[field].length < (value as number)
+          case "number":
+            return i[field] < (value as number)
+          case "object":
+            return Object.entries(i[field]).length < (value as number)
+          default:
+            return false
+        }
       })
       break
     case FilterMode.STARTSWITH:
       processedList = processedList.filter((i) => {
         if (!value) return true
         if (!i[field]) return false
-        if (typeof i[field] !== "string") return true
-        return (i[field] as string).startsWith(value as string)
+
+        switch (typeof i[field]) {
+          case "string":
+            return (i[field] as string).toLowerCase().startsWith((value as string).toLowerCase())
+          case "object":
+            return (i[field] as string[]).some(f => f.toLowerCase().startsWith((value as string).toLowerCase()))
+          default:
+            return true
+        }
       })
       break
     case FilterMode.ENDSWITH:
       processedList = processedList.filter((i) => {
         if (!value) return true
         if (!i[field]) return false
-        if (typeof i[field] !== "string") return true
-        return (i[field] as string).endsWith(value as string)
+        
+        switch (typeof i[field]) {
+          case "string":
+            return (i[field] as string).toLowerCase().endsWith((value as string).toLowerCase())
+          case "object":
+            return (i[field] as string[]).some(f => f.toLowerCase().endsWith((value as string).toLowerCase()))
+          default:
+            return true
+        }
       })
     break
   }
@@ -776,15 +840,37 @@ function filterByProxy(
 }
 
 export function createSimpleFilters(type = "member") {
-  let simpleNameFilter = $state(
+  let simpleNamelikeFilter = $state(
     createFilter(
-      "name",
+      "namelike",
       "name",
       FilterMode.INCLUDES,
       "",
       undefined,
       undefined,
+      "simple-filter--namelike"
+    )
+  )
+  let simpleNameFilter = $state(
+    createFilter(
+      "name",
+      "name name",
+      FilterMode.INCLUDES,
+      "",
+      undefined,
+      undefined,
       "simple-filter--name"
+    )
+  )
+  let simpleAliasFilter = $state(
+    createFilter(
+      "aliases",
+      "aliases",
+      FilterMode.INCLUDES,
+      "",
+      undefined,
+      undefined,
+      "simple-filter--alias"
     )
   )
   let simpleDisplayNameFilter = $state(
@@ -846,25 +932,28 @@ export function createSimpleFilters(type = "member") {
   if (type === "member")
     return createFilterGroup(
       [
-        simpleNameFilter,
+        simpleNamelikeFilter,
         simpleDisplayNameFilter,
         simpleDescriptionFilter,
         simpleIdFilter,
         simplePronounFilter,
         simplePrivacyFilter,
         simpleGroupFilter,
+        simpleNameFilter,
+        simpleAliasFilter,
       ],
       "simple-filter--group"
     )
   else if (type === "group")
     return createFilterGroup(
       [
-        simpleNameFilter,
+        simpleNamelikeFilter,
         simpleDisplayNameFilter,
         simpleDescriptionFilter,
         simpleIdFilter,
         simplePrivacyFilter,
         simpleMemberFilter,
+        simpleNameFilter,
       ],
       "simple-filter--group"
     )

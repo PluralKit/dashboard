@@ -26,7 +26,7 @@
     bind:value={list.simpleFilters[0].filters[0].value}
     oninput={() => {
     }}
-    placeholder="Search by name..."
+    placeholder="Search by name or display name..."
   ></textarea>
 </div>
 <div class="flex flex-col mt-3">
@@ -42,6 +42,19 @@
         wide === true ? "xl:grid-cols-2" : "xl:grid-cols-1"
       }`}
     >
+      <div class="join">
+        <label
+          class="input input-disabled input-bordered input-sm w-fit join-item"
+          for="group-list-name-search">Name</label
+        >
+        <textarea
+          use:autoresize
+          class="input input-bordered input-sm flex-1 join-item resize-none"
+          id="group-list-name-search"
+          bind:value={list.simpleFilters[0].filters[6].value}
+          placeholder="Search by name only..."
+        ></textarea>
+      </div>
       <div class="join">
         <label
           class="input input-disabled input-bordered input-sm w-fit join-item"

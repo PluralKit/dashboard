@@ -71,7 +71,8 @@ export interface Member {
   system?: string
   message_count?: number
   proxy_tags?: Array<proxytag>
-  privacy?: MemberPrivacy
+  privacy?: MemberPrivacy,
+  aliases?: string[],
   group_count?: number // calculated on the dash itself, used for sorting/filtering by group count
 }
 

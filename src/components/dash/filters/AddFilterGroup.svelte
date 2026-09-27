@@ -151,6 +151,9 @@
         <option disabled value="">Filter by...</option>
         <option value="id">id</option>
         <option value="name">name</option>
+        {#if type === "members"}
+          <option value="aliases">aliases</option>
+        {/if}
         <option value="display_name">display name</option>
         <option value="description">description</option>
         {#if type === "members"}

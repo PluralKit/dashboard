@@ -19,14 +19,14 @@
 </script>
 
 <div class="flex flex-col mb-3">
-  <label class="label justify-start gap-2" for="member-list-name-search"
+  <label class="label justify-start gap-2" for="member-list-namelike-search"
     ><IconSearch /> Member search</label
   >
   <textarea
     class="input input-bordered resize-none p-2"
     use:autoresize
     bind:value={list.simpleFilters[0].filters[0].value}
-    placeholder="Search by name..."
+    placeholder="Search by name, display name, or alias..."
   ></textarea>
 </div>
 <div class="flex flex-col mt-3">
@@ -42,6 +42,32 @@
         wide === true ? "xl:grid-cols-2" : "xl:grid-cols-1"
       }`}
     >
+      <div class="join">
+        <label
+          class="input input-disabled input-bordered input-sm w-fit join-item"
+          for="member-list-name-search">Name</label
+        >
+        <textarea
+          use:autoresize
+          class="input input-bordered input-sm flex-1 join-item resize-none"
+          id="member-list-name-search"
+          bind:value={list.simpleFilters[0].filters[7].value}
+          placeholder="Search by name only..."
+        ></textarea>
+      </div>
+      <div class="join">
+        <label
+          class="input input-disabled input-bordered input-sm w-fit join-item"
+          for="member-list-alias-search">Aliases</label
+        >
+        <textarea
+          use:autoresize
+          class="input input-bordered input-sm flex-1 join-item resize-none"
+          id="member-list-alias-search"
+          bind:value={list.simpleFilters[0].filters[8].value}
+          placeholder="Search by aliases..."
+        ></textarea>
+      </div>
       <div class="join">
         <label
           class="input input-disabled input-bordered input-sm w-fit join-item"
