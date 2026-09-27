@@ -32,5 +32,10 @@ export function validateViewEdit<T>(item: T, err: string[]) {
     }
   }
 
+  if (body?.aliases) {
+    // remove empty aliases from the list
+    body.aliases = body.aliases.filter((a: string) => a)
+  }
+
   return body
 }

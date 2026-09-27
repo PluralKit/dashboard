@@ -11,7 +11,7 @@
   import { type DashList } from "$lib/dash/dash.svelte"
   import { validateViewEdit } from "$lib/dash/edit"
   import { createViewEditState } from "$lib/dash/member/edit.svelte"
-  import { IconX } from "@tabler/icons-svelte"
+  import { IconPlus, IconX } from "@tabler/icons-svelte"
   import { fade } from "svelte/transition"
 
   let {
@@ -32,10 +32,15 @@
 
   let editedState: Member = $derived(createViewEditState(member))
 
-  let edited = $derived(
+  let edited = $derived.by(() =>
     Object.fromEntries(
       Object.entries(editedState).filter(([key, value]) => {
-        return (
+        // aliases need to be stringified in order to be compared
+        // otherwise they'll always be marked as "edited"
+        if (key === "aliases") {
+          return JSON.stringify($state.snapshot(member.aliases)) !== JSON.stringify($state.snapshot(editedState.aliases))
+        }
+        else return (
           value !== $state.snapshot(member)[key as unknown as keyof Member] &&
           !(!value && !$state.snapshot(member)[key as unknown as keyof Member])
         )
@@ -131,6 +136,32 @@
     />
     <EditColor item={member} original={member.color} bind:value={editedState.color} />
   </div>
+  {#if member.aliases}
+  <div class="flex flex-col w-full gap-2 bg-base-100 rounded-box p-4">
+    <h5 class="text-lg">Aliases</h5>
+    <hr />
+    <div class="flex flex-col gap-2 flex-wrap w-full">
+      {#each editedState.aliases, index}
+        <EditField
+          item={member}
+          original={member.aliases[index]}
+          showCount={true}
+          bind:value={(editedState.aliases as string[])[index]}
+          field="Alias"
+          showField={false}
+        />
+      {/each}
+      <button
+        class="btn btn-sm btn-success w-fit mt-2"
+        onclick={() => {
+          editedState.aliases?.push("")
+        }}
+      >
+        <IconPlus size={20} /> Add alias
+      </button>
+    </div>
+  </div>
+  {/if}
   <div class="flex flex-col w-full gap-2 p-4 bg-base-100 rounded-box">
     <h5 class="text-lg">Images</h5>
     <hr />

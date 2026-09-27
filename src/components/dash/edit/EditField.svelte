@@ -11,6 +11,7 @@
     item,
     field,
     showCount = true,
+    showField = true,
   }: {
     maxLength?: number
     showCount?: boolean
@@ -18,15 +19,18 @@
     value: string | undefined
     item: Member | Group | System
     field: string
+    showField?: boolean
   } = $props()
 </script>
 
 <div class="flex flex-col">
   <span class="flex flex-row gap-2 justify-between items-center mb-1">
     <span class="flex-1 flex flex-row gap-2 justify-between items-center">
+      {#if showField}
       <label for={`${item.uuid}-edit-${field}`}>{field}</label>
+      {/if}
       {#if showCount}
-        <span class="text-xs">{value?.length ?? 0}/{maxLength}</span>
+        <span class="text-xs ml-auto">{value?.length ?? 0}/{maxLength}</span>
       {/if}
     </span>
     {#if original !== value && original !== null}
