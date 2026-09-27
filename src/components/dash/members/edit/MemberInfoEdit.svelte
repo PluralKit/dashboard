@@ -287,6 +287,16 @@
           field="Proxy tags"
         />
       </li>
+      {#if member.privacy?.alias_privacy}
+        <li class="w-full px-2 py-1 md:w-1/2">
+          <EditPrivacy
+            item={member}
+            bind:value={editedState.privacy.alias_privacy}
+            original={member.privacy?.alias_privacy}
+            field="Aliases"
+          />
+        </li>
+      {/if}
       <li class="w-full px-2 py-1 md:w-1/2">
         <EditPrivacy
           item={member}

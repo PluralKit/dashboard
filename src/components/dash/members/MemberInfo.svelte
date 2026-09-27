@@ -179,6 +179,14 @@
                 ><b>Proxy tags:</b> <PrivacyDisplay value={member.privacy.proxy_privacy} /></span
               >
             </li>
+            {#if member.privacy.alias_privacy}
+            <li class="w-1/2">
+              <span
+                class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"
+                ><b>Aliases:</b> <PrivacyDisplay value={member.privacy.alias_privacy} /></span
+              >
+            </li>
+            {/if}
             <li class="w-1/2">
               <span
                 class="items-start text-left justify-start hover:bg-transparent hover:cursor-default"

@@ -46,6 +46,7 @@ export interface MemberPrivacy {
   metadata_privacy?: string
   proxy_privacy?: string
   banner_privacy?: string
+  alias_privacy?: string
 }
 
 export interface proxytag {
