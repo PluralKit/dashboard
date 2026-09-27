@@ -28,6 +28,12 @@ export const createMemberCreationState = (): Member & {
     set name(value: string | undefined) {
       view.name = value
     },
+    get aliases() {
+      return view.aliases
+    },
+    set aliases(value: string[]|undefined) {
+      view.aliases = value
+    },
     get display_name() {
       return view.display_name
     },

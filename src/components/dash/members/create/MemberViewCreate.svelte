@@ -4,6 +4,7 @@
   import EditDescription from "$components/dash/edit/EditDescription.svelte"
   import EditField from "$components/dash/edit/EditField.svelte"
   import EditImage from "$components/dash/edit/EditImage.svelte"
+  import { IconPlus } from "@tabler/icons-svelte"
 
   let {
     tab,
@@ -46,6 +47,30 @@
         field="Birthday"
       />
       <EditColor item={member} original={null} bind:value={member.color} />
+    </div>
+    <div class="flex flex-col w-full gap-2 bg-base-100 rounded-box p-4">
+      <h5 class="text-lg">Aliases</h5>
+      <hr />
+      <div class="flex flex-col gap-2 flex-wrap w-full">
+        {#each member.aliases, index}
+          <EditField
+            item={member}
+            original={null}
+            showCount={true}
+            bind:value={(member.aliases as string[])[index]}
+            field="Alias"
+            showField={false}
+          />
+        {/each}
+        <button
+          class="btn btn-sm btn-success w-fit mt-2"
+          onclick={() => {
+            member.aliases?.push("")
+          }}
+        >
+          <IconPlus size={20} /> Add alias
+        </button>
+      </div>
     </div>
     <div class="bg-base-100 w-full rounded-box p-4 gap-2 flex flex-col">
       <h5 class="text-lg">Images</h5>

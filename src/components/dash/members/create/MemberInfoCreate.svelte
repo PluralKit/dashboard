@@ -182,6 +182,14 @@
             field="Proxy tags"
           />
         </li>
+        <li class="w-full px-2 py-1 md:w-1/2">
+          <EditPrivacy
+            item={member}
+            bind:value={privacy.alias_privacy}
+            original={null}
+            field="Aliases"
+          />
+        </li>
         <li class="w-full md:w-1/2 px-2 py-1">
           <EditPrivacy
             item={member}
