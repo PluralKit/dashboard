@@ -184,8 +184,18 @@ export const createInfoEditState = (
   let privacy = $state(createPrivacyEditState(member))
 
   return {
-    proxy_tags,
-    privacy
+    get proxy_tags() {
+      return proxy_tags
+    },
+    set proxy_tags(value: proxytag[]) {
+      proxy_tags = value
+    },
+    get privacy() {
+      return privacy
+    },
+    set privacy(value: MemberPrivacy) {
+      privacy = value
+    }
   }
 }
 
