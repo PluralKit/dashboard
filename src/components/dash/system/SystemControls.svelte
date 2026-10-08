@@ -12,6 +12,10 @@
       </h2>
       <div class="text-sm mt-2">
         <a href="/settings/layout" class="link-secondary">Change layout settings</a>
+        |
+        <a href={`/dash/${dash.system?.id}/bulk-privacy`} class="link-secondary">
+          Bulk Privacy Settings
+        </a>
       </div>
     </span>
     {#if dash.privacyMode === PrivacyMode.PRIVATE}
@@ -20,6 +24,4 @@
       </a>
     {/if}
   </div>
-  <hr class="my-2" />
-  <p class="my-4">Links to bulk privacy will go here.</p>
 </div>

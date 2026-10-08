@@ -7,11 +7,13 @@
     value = $bindable(),
     item,
     field,
+    bulk = false,
   }: {
     original: string | undefined | null
     value: string | undefined
     item: Member | Group | System
     field: string
+    bulk?: boolean
   } = $props()
 </script>
 
@@ -24,9 +26,16 @@
       <span title="edited">
         <IconPencil size={26} class="text-info" />
       </span>
+    {:else}
+      <span class="opacity-0">
+        <IconPencil size={26} class="text-info" />
+      </span>
     {/if}
   </span>
   <select bind:value class="input input-sm input-bordered">
+    {#if bulk}
+      <option value="no change">No Change</option>
+    {/if}
     <option value="public">Public</option>
     <option value="private">Private</option>
   </select>

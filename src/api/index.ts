@@ -30,7 +30,7 @@ export type ApiClient = <T>(path: string, options?: ApiOptions) => Promise<T | u
 export default function apiClient(fetch: SvelteFetch, baseUrl?: string): ApiClient {
   return async function <T>(path: string, options?: ApiOptions): Promise<T | undefined> {
     const resp = await fetch(
-      `${baseUrl ?? env.PUBLIC_BASE_API_URL ?? "https://api.pluralkit.me"}/v2/${path}`,
+      `${baseUrl ?? env.PUBLIC_BASE_API_URL ?? "https://api.pluralkit.me"}/${path.startsWith("private") ? "" : "v2/"}${path}`,
       {
         method: (options && options.method) || "GET",
         headers: {
